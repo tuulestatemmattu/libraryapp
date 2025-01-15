@@ -17,7 +17,7 @@ export const useGoogleAuth = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
 
   const login = useGoogleLogin({
-    onSuccess: (codeResponse) => setUser(codeResponse),
+    onSuccess: (response) => setUser(response),
     onError: (error) => console.log('Login Failed:', error),
   });
 
