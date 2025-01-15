@@ -6,7 +6,7 @@ const App = () => {
 
   return (
     <div>
-      <h2>React Google Login</h2>
+      <h2>Library App</h2>
       <br />
       <br />
       {profile ? (
