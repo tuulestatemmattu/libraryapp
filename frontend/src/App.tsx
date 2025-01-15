@@ -1,17 +1,24 @@
-import { useEffect } from 'react';
-import axios from 'axios';
-import { apiBaseUrl } from './constants';
-import SignIn from './components/signIn';
+import { useGoogleAuth } from './hooks/useGoogleAuth';
+import Profile from './components/Profile';
 
 const App = () => {
-  useEffect(() => {
-    axios.get(`${apiBaseUrl}/ping`);
-  });
+  const { profile, login, logOut } = useGoogleAuth();
 
   return (
     <div>
-      <h1> Library App </h1>
-      <SignIn />
+      <h2>React Google Login</h2>
+      <br />
+      <br />
+      {profile ? (
+        <div>
+          <Profile profile={profile} />
+          <br />
+          <br />
+          <button onClick={logOut}>Log out</button>
+        </div>
+      ) : (
+        <button onClick={() => login()}>Sign in with Google</button>
+      )}
     </div>
   );
 };
