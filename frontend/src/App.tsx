@@ -1,25 +1,41 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useGoogleAuth } from './hooks/useGoogleAuth';
-import Profile from './components/Profile';
+import ScanPage from './components/ScanPage';
+import HomePage from './components/HomePage';
+import ProfilePage from './components/ProfilePage';
+import SignInPage from './components/SignInPage';
 
 const App = () => {
   const { profile, login, logOut } = useGoogleAuth();
+  if (!profile) {
+    return (
+      <div>
+        <h1>Library App</h1>
+        <SignInPage login={login} />
+      </div>
+    );
+  }
+
+  const padding = {
+    padding: 5
+  }
 
   return (
-    <div>
-      <h2>Library App</h2>
-      <br />
-      <br />
-      {profile ? (
-        <div>
-          <Profile profile={profile} />
-          <br />
-          <br />
-          <button onClick={logOut}>Log out</button>
-        </div>
-      ) : (
-        <button onClick={() => login()}>Sign in with Google</button>
-      )}
-    </div>
+    <BrowserRouter>
+      <h1>Library App</h1>
+      <div>
+        <Link style={padding} to="/">Home</Link>
+        <Link style={padding} to="/scan">Scan</Link>
+        <Link style={padding} to="/profile">Profile</Link>
+      </div>
+
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/scan" element={<ScanPage />} />
+        <Route path="/profile" element={<ProfilePage profile={profile} logOut={logOut}/>} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
