@@ -12,13 +12,10 @@ WORKDIR /app
 COPY backend/package*json ./
 RUN npm install
 COPY backend/ ./
-
-ARG PORT
-ENV PORT=${PORT}
+ENV PORT=8080
 ENV NODE_ENV=production
-ENV DATABASE_URL=postgres://TODO
 RUN npm run build
 
 COPY --from=frontend /app/dist ./dist/public
-EXPOSE ${PORT}
+EXPOSE 8080
 CMD ["node", "dist/index.js"]
