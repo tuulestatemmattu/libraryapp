@@ -22,22 +22,31 @@ const App = () => {
   }
 
   const padding = {
-    padding: 5
-  }
+    padding: 5,
+  };
 
   return (
     <BrowserRouter>
       <h1>Library App</h1>
       <div>
-        <Link style={padding} to="/">Home</Link>
-        <Link style={padding} to="/scan">Scan</Link>
-        <Link style={padding} to="/profile">Profile</Link>
+        <Link style={padding} to="/">
+          Home
+        </Link>
+        <Link style={padding} to="/scan">
+          Scan
+        </Link>
+        <Link style={padding} to="/profile">
+          Profile
+        </Link>
       </div>
 
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/scan" element={<ScanPage />} />
-        <Route path="/profile" element={<ProfilePage profile={profile} logOut={logOut}/>} />
+        <Route
+          path="/profile"
+          element={<ProfilePage profile={profile} logOut={logOut} />}
+        />
       </Routes>
     </BrowserRouter>
   );

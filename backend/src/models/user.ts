@@ -18,7 +18,7 @@ User.init(
         isEmail: true,
       },
     },
-    last_name: {
+    picture: {
       type: DataTypes.STRING,
       allowNull: false,
     },
