@@ -7,10 +7,10 @@ class User extends Model {}
 User.init(
   {
     google_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       primaryKey: true,
     },
-    name: {
+    email: {
       type: DataTypes.STRING,
       unique: true,
       allowNull: false,
@@ -22,7 +22,7 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    email: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },

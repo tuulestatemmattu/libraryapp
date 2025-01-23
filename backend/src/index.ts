@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
 import axios from 'axios';
-import { Request, Response } from 'express';
 
 const { PORT, NODE_ENV, DATABASE_URL } = require('./util/config');
 const { connectToDatabase } = require('./util/db');
@@ -84,6 +83,7 @@ app.get('/oauth', async (req, res): Promise<any> => {
 
       res.cookie('user', JSON.stringify(user));
 
+      await User.create({ ...user, google_id: googleUser.id });
       res.redirect('http://localhost:5173/profile');
     } else {
       res.status(400).send('No authorization code provided.');
