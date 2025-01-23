@@ -28,13 +28,14 @@ export const useGoogleAuth = () => {
 
   const login = async () => {
     // Retrieve Google Authentication url from the server
-    const url = (await axios.get(`${apiBaseUrl}/redirectUrl`)).data;
+    const url = (await axios.get(`${apiBaseUrl}/login`)).data;
 
     // Redirect to the Google Authentication page
     window.location.href = url;
   };
 
   const logOut = () => {
+    document.cookie = 'user=; Max-Age=0;secure;path=/;';
     setProfile(null);
   };
 
