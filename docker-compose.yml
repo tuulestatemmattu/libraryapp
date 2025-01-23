@@ -1,0 +1,53 @@
+services:
+  frontend-dev:
+    image: libraryapp-frontend-dev
+    build:
+      context: ./frontend
+      dockerfile: dev.Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    container_name: frontend-dev
+  
+  backend-dev:
+    image: libraryapp-backend-dev
+    build:
+      context: ./backend
+      dockerfile: dev.Dockerfile
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      PORT: 3001
+      NODE_ENV: development
+      DATABASE_URL: postgres://libraryapp:salainen@db/libraryapp
+    depends_on:
+      db:
+        condition: service_healthy
+    container_name: backend-dev
+  
+  db:
+    image: postgres
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+    environment:
+      PORT: 5432
+      POSTGRES_USER: libraryapp
+      POSTGRES_PASSWORD: salainen
+      POSTGRES_DB: libraryapp
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U libraryapp"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    container_name: db
+  
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    container_name: adminer
