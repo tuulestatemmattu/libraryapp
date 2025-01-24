@@ -7,13 +7,16 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: Install Heroku CLI
       run: |
-        curl https://cli-assets.heroku.com/install.sh | sh 
-    - uses: akhileshns/heroku-deploy@v3.13.15
+        curl https://cli-assets.heroku.com/install.sh | sh
+    - name: Heroku deploy
+      uses: akhileshns/heroku-deploy@v3.13.15
       with:
         heroku_api_key: ${{secrets.HEROKU_API_KEY}}
         heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
         heroku_email: ${{secrets.HEROKU_EMAIL}}
         usedocker: true
+        stack: "container"
