@@ -1,20 +1,15 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
 import { useGoogleAuth } from './hooks/useGoogleAuth';
 import ScanPage from './components/ScanPage';
 import HomePage from './components/HomePage';
 import ProfilePage from './components/ProfilePage';
 import SignInPage from './components/SignInPage';
-import { apiBaseUrl } from './constants';
-import { usePingTest } from './hooks/usePingTest';
 
 const App = () => {
-  const pingResult = usePingTest(apiBaseUrl + '/ping');
   const { profile, login, logOut } = useGoogleAuth();
   if (!profile) {
     return (
       <div>
-        <p>Ping result: {pingResult}</p>
         <h1>Library App</h1>
         <SignInPage login={login} />
       </div>
