@@ -1,12 +1,16 @@
+import '../css/SignInPage.css'
+
 interface SignInPageProps {
   login: () => void;
 }
 
 const SignInPage = ({ login }: SignInPageProps) => {
   return (
-    <div>
-      <h2>Sign In</h2>
-      <button onClick={() => login()}>Sign in with Google</button>
+    <div className='signin-container'>
+      <header>
+        <h1>Library app</h1>
+      </header>
+      <button onClick={() => login()}>Google login</button>
     </div>
   )
 }
