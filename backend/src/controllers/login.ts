@@ -4,6 +4,18 @@ import axios from 'axios';
 const { User } = require('../models/user');
 import { Request, Response } from 'express';
 
+interface TokenResponse {
+  id_token: string;
+  access_token: string;
+}
+
+interface GoogleUser {
+  id: string;
+  name: string;
+  email: string;
+  picture: string;
+}
+
 router.get('/', async (req: Request, res: Response) => {
   const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
   const options: Record<string, any> = {
@@ -37,7 +49,7 @@ router.get('/oauth', async (req: Request, res: Response): Promise<any> => {
     if (code) {
       // Vaihtaa Googlelta saadun koodin tokeneihin
       const { id_token, access_token } = (
-        await axios.post('https://oauth2.googleapis.com/token', {
+        await axios.post<TokenResponse>('https://oauth2.googleapis.com/token', {
           code: code,
           client_id: process.env.CLIENT_ID,
           client_secret: process.env.CLIENT_SECRET,
@@ -47,7 +59,7 @@ router.get('/oauth', async (req: Request, res: Response): Promise<any> => {
       ).data;
       //hakee tokeneilla käyttäjätiedot
       const googleUser = (
-        await axios.get(
+        await axios.get<GoogleUser>(
           `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`,
           {
             headers: {
