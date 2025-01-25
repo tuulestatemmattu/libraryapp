@@ -1,10 +1,6 @@
 import { useState, useEffect } from 'react';
-import {
-  googleLogout,
-  TokenResponse,
-  useGoogleLogin,
-} from '@react-oauth/google';
 import axios from 'axios';
+import { apiBaseUrl } from '../constants';
 
 interface Profile {
   name: string;
@@ -13,33 +9,35 @@ interface Profile {
 }
 
 export const useGoogleAuth = () => {
-  const [user, setUser] = useState<TokenResponse>();
   const [profile, setProfile] = useState<Profile | null>(null);
-
-  const login = useGoogleLogin({
-    onSuccess: (response) => setUser(response),
-    onError: (error) => console.log('Login Failed:', error),
-  });
-
   useEffect(() => {
-    if (user) {
-      axios
-        .get(
-          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`
-        )
-        .then((res) => {
-          setProfile(res.data);
-          console.log(res.data);
-          console.log(user);
-        })
-        .catch((err) => console.log(err));
+    const cookies = document.cookie
+      .split('; ')
+      .map((cookie) => cookie.split('='));
+
+    const userCookie = cookies.find((cookie) => cookie[0] === 'user');
+    if (userCookie) {
+      const decodedValue = decodeURIComponent(userCookie[1]);
+      console.log(decodedValue);
+      const user = JSON.parse(decodedValue);
+      setProfile(user);
+    } else {
+      console.log('User cookie not found');
     }
-  }, [user]);
+  }, []);
+
+  const login = async () => {
+    // Retrieve Google Authentication url from the server
+    const url = (await axios.get(`${apiBaseUrl}/login`)).data;
+
+    // Redirect to the Google Authentication page
+    window.location.href = url;
+  };
 
   const logOut = () => {
-    googleLogout();
+    document.cookie = 'user=; Max-Age=0;secure;path=/;';
     setProfile(null);
   };
 
-  return { user, profile, login, logOut };
+  return { profile, login, logOut };
 };

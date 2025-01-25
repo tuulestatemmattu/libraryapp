@@ -8,7 +8,7 @@ const SignInPage = ({ login }: SignInPageProps) => {
       <h2>Sign In</h2>
       <button onClick={() => login()}>Sign in with Google</button>
     </div>
-  )
-}
+  );
+};
 
 export default SignInPage;

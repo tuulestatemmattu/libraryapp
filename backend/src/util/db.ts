@@ -1,7 +1,5 @@
-import { QueryTypes } from 'sequelize';
-
-const Sequelize = require('sequelize');
-const { DATABASE_URL, NODE_ENV } = require('./config');
+import { Sequelize } from 'sequelize';
+import { DATABASE_URL, NODE_ENV } from './config';
 
 const dialectOptions = NODE_ENV === 'production' ? {
   ssl: {

@@ -1,16 +1,15 @@
-const { Model, DataTypes } = require('sequelize');
-
-const { sequelize } = require('../util/db');
+import { Model, DataTypes } from 'sequelize';
+import { sequelize } from '../util/db';
 
 class User extends Model {}
 
 User.init(
   {
     google_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       primaryKey: true,
     },
-    name: {
+    email: {
       type: DataTypes.STRING,
       unique: true,
       allowNull: false,
@@ -18,11 +17,11 @@ User.init(
         isEmail: true,
       },
     },
-    last_name: {
+    picture: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    email: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -34,4 +33,6 @@ User.init(
   }
 );
 
-export { User };
+User.sync();
+
+export default User;
