@@ -1,8 +1,13 @@
-const router = require('express').Router();
+
+import { Request, Response, Router } from 'express';
 import axios from 'axios';
 
-const { User } = require('../models/user');
-import { Request, Response } from 'express';
+import User from '../models/user';
+import {
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  GOOGLE_OAUTH_REDIRECT_URI 
+} from '../util/config';
 
 interface TokenResponse {
   id_token: string;
@@ -16,11 +21,13 @@ interface GoogleUser {
   picture: string;
 }
 
+const router = Router();
+
 router.get('/', async (req: Request, res: Response) => {
   const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
   const options: Record<string, any> = {
-    redirect_uri: process.env.GOOGLE_OAUTH_REDIRECT_URI,
-    client_id: process.env.CLIENT_ID,
+    redirect_uri:GOOGLE_OAUTH_REDIRECT_URI,
+    client_id: GOOGLE_CLIENT_ID,
     response_type: 'code',
 
     scope: [
@@ -51,12 +58,13 @@ router.get('/oauth', async (req: Request, res: Response): Promise<any> => {
       const { id_token, access_token } = (
         await axios.post<TokenResponse>('https://oauth2.googleapis.com/token', {
           code: code,
-          client_id: process.env.CLIENT_ID,
-          client_secret: process.env.CLIENT_SECRET,
-          redirect_uri: process.env.GOOGLE_OAUTH_REDIRECT_URI,
+          client_id: GOOGLE_CLIENT_ID,
+          client_secret: GOOGLE_CLIENT_SECRET,
+          redirect_uri: GOOGLE_OAUTH_REDIRECT_URI,
           grant_type: 'authorization_code',
         })
       ).data;
+
       //hakee tokeneilla käyttäjätiedot
       const googleUser = (
         await axios.get<GoogleUser>(
@@ -68,6 +76,7 @@ router.get('/oauth', async (req: Request, res: Response): Promise<any> => {
           }
         )
       ).data;
+
       // luo käyttäjä olion ja asettaa sen keksiksi
       const user = {
         name: googleUser.name,
@@ -75,8 +84,8 @@ router.get('/oauth', async (req: Request, res: Response): Promise<any> => {
         picture: googleUser.picture,
       };
       console.log(user);
-
       res.cookie('user', JSON.stringify(user));
+      
       try {
         await User.create({ ...user, google_id: googleUser.id });
       } catch {
@@ -93,4 +102,5 @@ router.get('/oauth', async (req: Request, res: Response): Promise<any> => {
     res.status(500).send('Internal Server Error');
   }
 });
-module.exports = router;
+
+export default router;

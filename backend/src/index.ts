@@ -1,15 +1,10 @@
 import express from 'express';
-import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
-import axios from 'axios';
 
-const { PORT, NODE_ENV, DATABASE_URL } = require('./util/config');
-const { connectToDatabase } = require('./util/db');
-const { User } = require('./models/user');
-const loginRouter = require('./controllers/login');
-
-dotenv.config();
+import { PORT, NODE_ENV, DATABASE_URL } from './util/config';
+import { connectToDatabase } from './util/db';
+import loginRouter from './controllers/login';
 
 const app = express();
 app.use(cors());
@@ -25,10 +20,7 @@ app.get('/api/ping', (_, res) => {
 });
 
 const start = async () => {
-  if (!DATABASE_URL.includes('TODO')) {
-    await connectToDatabase();
-    User.sync();
-  }
+  await connectToDatabase();
 
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
