@@ -6,5 +6,7 @@
 - [Sprint 0 Backlog](https://github.com/orgs/tuulestatemmattu/projects/21)
 
 ### Definition of Done
+Definition of done can be found [here](documents/definition_of_done.md)
 
-Definition of done can be found [here](https://github.com/tuulestatemmattu/libraryapp/blob/main/documents/definition%20of%20done.md#definition-of-done)
+### Setting up a development environment
+Guide can be found [here](documents/development_environment.md)
