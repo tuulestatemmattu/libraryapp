@@ -9,11 +9,14 @@ import loginRouter from './controllers/login';
 const app = express();
 app.use(cors());
 
+app.use('/api/login', loginRouter);
+
 if (NODE_ENV == 'production') {
   app.use(express.static(path.join(__dirname, 'public')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  });
 }
-
-app.use('/api/login', loginRouter);
 
 const start = async () => {
   await connectToDatabase();
