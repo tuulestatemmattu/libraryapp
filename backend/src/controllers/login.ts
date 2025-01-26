@@ -92,7 +92,7 @@ router.get('/oauth', async (req: Request, res: Response): Promise<any> => {
       await User.create({ ...user, google_id: googleUser.id });
     }
 
-    res.redirect('http://localhost:5173/profile');
+    res.redirect('/profile');
   } catch (error) {
     console.error('OAUTH error:', error);
     res.status(500).send('Internal Server Error');
