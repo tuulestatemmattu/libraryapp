@@ -23,5 +23,5 @@
     * Now you should have a Client ID and Client secret
 6. Create a .env file to backend-directory
     * Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET from previous step
-    * Set GOOGLE_OAUTH_REDIRECT_URL=http://localhost:3001/api/login/oauth
+    * Set GOOGLE_OAUTH_REDIRECT_URI=http://localhost:3001/api/login/oauth
 7. Open repository root on command line and run "docker compose up" to start the application in development environment.
