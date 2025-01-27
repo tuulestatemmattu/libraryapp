@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import User from '../models/user';
 import {
+  FRONTEND_URL,
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
   GOOGLE_OAUTH_REDIRECT_URI 
@@ -92,7 +93,7 @@ router.get('/oauth', async (req: Request, res: Response): Promise<any> => {
       await User.create({ ...user, google_id: googleUser.id });
     }
 
-    res.redirect('/profile');
+    res.redirect(FRONTEND_URL + '/profile');
   } catch (error) {
     console.error('OAUTH error:', error);
     res.status(500).send('Internal Server Error');
