@@ -86,7 +86,7 @@ router.get('/oauth', async (req: Request, res: Response): Promise<any> => {
       picture: googleUser.picture,
     };
     res.cookie('user', JSON.stringify(user));
-    const token = jwt.sign(user, JWT_SECRET);
+    const token = jwt.sign(googleUser.id, JWT_SECRET);
     res.cookie('token', token);
 
     // Save / update user in the database
