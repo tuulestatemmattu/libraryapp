@@ -26,6 +26,7 @@ isbnRouter.post('/', async (req, res) => {
     const responseData = (await axios.get<ResponseBook>(apiBaseUrl + '/isbn/' + isbn + '.json')).data
 
     // Get the authors data from the openlibrary api
+    // Promise all calls all the functions inside map asyncronysly so they can be executed at the same time.
     let authors = new Array<string>(responseData.authors.length);
     await Promise.all(
         responseData.authors.map(async (author: AuthorOfBook, i: number) => {

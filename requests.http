@@ -1,0 +1,6 @@
+POST http://localhost:3001/isbn
+Content-Type: application/json
+
+{
+    "isbn": "3-540-44763-6"
+}
