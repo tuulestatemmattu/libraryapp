@@ -1,12 +1,13 @@
-
 import { Request, Response, Router } from 'express';
 import axios from 'axios';
+import jwt from 'jsonwebtoken';
 
 import User from '../models/user';
 import {
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
-  GOOGLE_OAUTH_REDIRECT_URI 
+  GOOGLE_OAUTH_REDIRECT_URI,
+  JWT_SECRET,
 } from '../util/config';
 
 interface TokenResponse {
@@ -26,7 +27,7 @@ const router = Router();
 router.get('/', async (req: Request, res: Response) => {
   const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
   const options: Record<string, any> = {
-    redirect_uri:GOOGLE_OAUTH_REDIRECT_URI,
+    redirect_uri: GOOGLE_OAUTH_REDIRECT_URI,
     client_id: GOOGLE_CLIENT_ID,
     response_type: 'code',
     scope: [
@@ -38,7 +39,7 @@ router.get('/', async (req: Request, res: Response) => {
   // Returns the Google login page URL. After login, Google redirects to the /oauth endpoint.
   const queryString = new URLSearchParams(options).toString();
   const url = `${rootUrl}?${queryString.toString()}`;
-  res.send(url); 
+  res.send(url);
 });
 
 router.get('/oauth', async (req: Request, res: Response): Promise<any> => {
@@ -47,7 +48,7 @@ router.get('/oauth', async (req: Request, res: Response): Promise<any> => {
 
     if (error) {
       console.error('Error from Google:', error);
-      return res.status(400).send('OAuth Error');
+      res.redirect('/');
     }
 
     if (!code) {
@@ -84,9 +85,11 @@ router.get('/oauth', async (req: Request, res: Response): Promise<any> => {
       picture: googleUser.picture,
     };
     res.cookie('user', JSON.stringify(user));
-    
+    const token = jwt.sign(user, JWT_SECRET);
+    res.cookie('token', token);
+
     // Save / update user in the database
-    if(await User.findOne({ where: { google_id: googleUser.id } })) {
+    if (await User.findOne({ where: { google_id: googleUser.id } })) {
       await User.update(user, { where: { google_id: googleUser.id } });
     } else {
       await User.create({ ...user, google_id: googleUser.id });
