@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+    - name: Checkout frontend
+      uses: actions/checkout@v4
+      with:
+        sparse-checkout: frontend
+    - name: Install Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '23'
+    - name: Install dependencies
+      run: npm install
+    - name: Run eslint
+      run: npm run lint
+    - name: Run prettier
+      run: npm run prettier-check
+  
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        sparse-checkout: backend
+    - name: Install Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '23'
+    - name: Install dependencies
+      run: npm install
+    - name: Run eslint
+      run: npm run lint
+    - name: Run prettier
+      run: npm run prettier-check
