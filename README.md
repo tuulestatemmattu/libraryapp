@@ -4,6 +4,7 @@
 
 - [Product Backlog](https://github.com/orgs/tuulestatemmattu/projects/19)
 - [Sprint 0 Backlog](https://github.com/orgs/tuulestatemmattu/projects/21)
+- [Sprint 1 Backlog](https://github.com/orgs/tuulestatemmattu/projects/24)
 
 ### Definition of Done
 Definition of done can be found [here](documents/definition_of_done.md)
