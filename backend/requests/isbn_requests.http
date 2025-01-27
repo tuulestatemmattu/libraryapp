@@ -1,4 +1,4 @@
-POST http://localhost:3001/isbn
+POST http://localhost:3001/api/isbn
 Content-Type: application/json
 
 {
