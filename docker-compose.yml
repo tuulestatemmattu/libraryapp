@@ -25,6 +25,7 @@ services:
       PORT: 3001
       NODE_ENV: development
       DATABASE_URL: postgres://libraryapp:salainen@db/libraryapp
+      FRONTEND_URL: http://localhost:5173
     depends_on:
       db:
         condition: service_healthy

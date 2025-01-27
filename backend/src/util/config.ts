@@ -11,6 +11,8 @@ const GOOGLE_OAUTH_REDIRECT_URI = process.env.GOOGLE_OAUTH_REDIRECT_URI;
 
 const JWT_SECRET = process.env.JWT_SECRET || '';
 
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:' + PORT;
+
 export {
   DATABASE_URL,
   PORT,
@@ -19,4 +21,5 @@ export {
   GOOGLE_CLIENT_SECRET,
   GOOGLE_OAUTH_REDIRECT_URI,
   JWT_SECRET,
+  FRONTEND_URL,
 };
