@@ -49,7 +49,7 @@ router.get('/oauth', async (req: Request, res: Response): Promise<any> => {
 
     if (error) {
       console.error('Error from Google:', error);
-      res.redirect('/');
+      res.redirect(`${FRONTEND_URL}/`);
     }
 
     if (!code) {
