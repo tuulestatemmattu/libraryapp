@@ -24,6 +24,7 @@
 5. Create a .env file to backend-directory
     * Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET from previous step
     * Set GOOGLE_OAUTH_REDIRECT_URI=http://localhost:3001/api/login/oauth
+    * Set JWT_SECRET to some value
 6. Open repository root on command line and run "docker compose up" to start the application in development environment.
 7. To fix vscode errors, run the following commands in root directory:
 ```
