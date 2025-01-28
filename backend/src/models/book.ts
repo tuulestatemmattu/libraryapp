@@ -1,6 +1,5 @@
-const { Model, DataTypes } = require('sequelize');
-
-const { sequelize } = require('../util/db');
+import { Model, DataTypes } from 'sequelize';
+import { sequelize } from '../util/db';
 
 class Book extends Model {}
 
@@ -41,4 +40,4 @@ Book.init(
 
 Book.sync();
 
-export { Book };
+export default Book;
