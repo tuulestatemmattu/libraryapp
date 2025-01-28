@@ -11,9 +11,7 @@ interface Profile {
 export const useGoogleAuth = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
   useEffect(() => {
-    const cookies = document.cookie
-      .split('; ')
-      .map((cookie) => cookie.split('='));
+    const cookies = document.cookie.split('; ').map((cookie) => cookie.split('='));
 
     console.log(cookies);
     const userCookie = cookies.find((cookie) => cookie[0] === 'user');
