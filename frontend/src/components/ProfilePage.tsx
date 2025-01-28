@@ -13,10 +13,10 @@ interface ProfilePageProps {
 const ProfilePage = ({ profile, logOut }: ProfilePageProps) => {
   const navigate = useNavigate();
 
-  const doLogOut =() => {
+  const doLogOut = () => {
     logOut();
     navigate('/');
-  }
+  };
 
   return (
     <div>

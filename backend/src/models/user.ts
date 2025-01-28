@@ -30,7 +30,7 @@ User.init(
     sequelize,
     underscored: true,
     modelName: 'user',
-  }
+  },
 );
 
 User.sync();
