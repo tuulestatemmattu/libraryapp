@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 
 interface BookFormProps {
   onSubmit: (book: { title: string; author: string; genre: string; isbn: string; description: string; publish_year: number }) => void;
+  initialValues?: { title: string, authors: string, isbn: string, description:string, publishDate:string };
 }
 
-const BookForm: React.FC<BookFormProps> = ({ onSubmit }) => {
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
+const BookForm: React.FC<BookFormProps> = ({ onSubmit , initialValues}) => {
+  const [title, setTitle] = useState(initialValues ? initialValues.title : '');
+  const [author, setAuthor] = useState(initialValues ? initialValues.authors : '');
   const [genre, setGenre] = useState('');
-  const [isbn, setIsbn] = useState('');
-  const [description, setDescription] = useState('');
-  const [publishYear, setPublishYear] = useState('');
+  const [isbn, setIsbn] = useState(initialValues ? initialValues.isbn : '');
+  const [description, setDescription] = useState(initialValues ? initialValues.description : '');
+  const [publishYear, setPublishYear] = useState(initialValues ? initialValues.publishDate : '');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
