@@ -4,32 +4,34 @@ import { BookInterface } from '../interfaces/Book';
 interface BookFormProps {
   onSubmit: (book: {
     title: string;
-    author: string;
+    authors: string;
     genre: string;
     isbn: string;
     description: string;
-    publish_year: number;
+    publishedDate: number;
   }) => void;
   initialValues: BookInterface | null;
 }
 
 const BookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
   const [title, setTitle] = useState(initialValues ? initialValues.title : '');
-  const [author, setAuthor] = useState(initialValues ? initialValues.authors : '');
+  const [authors, setAuthors] = useState(initialValues ? initialValues.authors : '');
   const [genre, setGenre] = useState('');
   const [isbn, setIsbn] = useState(initialValues ? initialValues.isbn : '');
   const [description, setDescription] = useState(initialValues ? initialValues.description : '');
-  const [publishYear, setPublishYear] = useState(initialValues ? initialValues.publishedDate : '');
+  const [publishedDate, setPublishedDate] = useState(
+    initialValues ? initialValues.publishedDate : '',
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({ title, author, genre, isbn, description, publish_year: parseInt(publishYear) });
+    onSubmit({ title, authors, genre, isbn, description, publishedDate: parseInt(publishedDate) });
     setTitle('');
-    setAuthor('');
+    setAuthors('');
     setGenre('');
     setIsbn('');
     setDescription('');
-    setPublishYear('');
+    setPublishedDate('');
   };
 
   return (
@@ -40,7 +42,12 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
       </div>
       <div>
         <label htmlFor="author">Author:</label>
-        <input type="text" id="author" value={author} onChange={(e) => setAuthor(e.target.value)} />
+        <input
+          type="text"
+          id="author"
+          value={authors}
+          onChange={(e) => setAuthors(e.target.value)}
+        />
       </div>
       <div>
         <label htmlFor="genre">Genre:</label>
@@ -64,8 +71,8 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
         <input
           type="text"
           id="publishYear"
-          value={publishYear}
-          onChange={(e) => setPublishYear(e.target.value)}
+          value={publishedDate}
+          onChange={(e) => setPublishedDate(e.target.value)}
         />
       </div>
       <button type="submit">Submit</button>
