@@ -1,48 +1,27 @@
 import express from 'express';
 import axios from 'axios';
 
+interface BookResponse {
+    items: {volumeInfo:{title:string, authors: string[], publishedDate: string, description: string, imageLinks:{smallThumbnail: string, thumbnail: string}}}[]
+}
+
 const isbnRouter = express.Router();
 
-interface ResponseAuthor {
-    name: string
-}
-
-interface AuthorOfBook {
-    key: string
-}
-
-interface ResponseBook {
-    authors: {key: string}[],
-    title: string,
-    publish_date: string
-    
-}
-
 isbnRouter.post('/', async (req, res) => {
-    const apiBaseUrl = 'https://openlibrary.org/'
     const { isbn } = req.body
+    const apiUrl = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+isbn
 
     // Get the book data from the openlibrary api
-    const responseData = (await axios.get<ResponseBook>(apiBaseUrl + '/isbn/' + isbn + '.json')).data
-
-    // Get the authors data from the openlibrary api
-    // Promise all calls all the functions inside map asyncronysly so they can be executed at the same time.
-    let authors = new Array<string>(responseData.authors.length);
-    await Promise.all(
-        responseData.authors.map(async (author: AuthorOfBook, i: number) => {
-            const { name } = (await axios.get<ResponseAuthor>(apiBaseUrl + author.key)).data
-            authors[i] = name
-        })
-    )
-
+    console.log('requesting data from:', apiUrl)
+    const volumeInfo = (await axios.get<BookResponse>(apiUrl)).data.items[0].volumeInfo
     const book = {
-        // concat the list of string into one string
-        authors: authors.join(', '),
-        title: responseData.title,
-        publishedYear: responseData.publish_date.split(', ')[1],
-        isbn: isbn
+        authors: volumeInfo.authors.join(', '),
+        publishedDate: volumeInfo.publishedDate,
+        isbn,
+        description: volumeInfo.description,
+        images: volumeInfo.imageLinks
     }
-    
+
     res.send(book)
 })
 
