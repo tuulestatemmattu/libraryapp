@@ -11,7 +11,7 @@ isbnRouter.post('/', async (req, res) => {
     const { isbn } = req.body
     const apiUrl = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+isbn
 
-    // Get the book data from the openlibrary api
+    // Get the book data from the google api
     console.log('requesting data from:', apiUrl)
     const volumeInfo = (await axios.get<BookResponse>(apiUrl)).data.items[0].volumeInfo
     const book = {
