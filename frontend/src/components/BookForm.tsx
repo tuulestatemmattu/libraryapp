@@ -2,17 +2,24 @@ import React, { useState } from 'react';
 import { BookInterface } from '../interfaces/Book';
 
 interface BookFormProps {
-  onSubmit: (book: { title: string; author: string; genre: string; isbn: string; description: string; publish_year: number }) => void;
-  initialValues?: BookInterface;
+  onSubmit: (book: {
+    title: string;
+    author: string;
+    genre: string;
+    isbn: string;
+    description: string;
+    publish_year: number;
+  }) => void;
+  initialValues: BookInterface | null;
 }
 
-const BookForm: React.FC<BookFormProps> = ({ onSubmit , initialValues}) => {
+const BookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
   const [title, setTitle] = useState(initialValues ? initialValues.title : '');
   const [author, setAuthor] = useState(initialValues ? initialValues.authors : '');
   const [genre, setGenre] = useState('');
   const [isbn, setIsbn] = useState(initialValues ? initialValues.isbn : '');
   const [description, setDescription] = useState(initialValues ? initialValues.description : '');
-  const [publishYear, setPublishYear] = useState(initialValues ? initialValues.publishDate : '');
+  const [publishYear, setPublishYear] = useState(initialValues ? initialValues.publishedDate : '');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,11 +52,21 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit , initialValues}) => {
       </div>
       <div>
         <label htmlFor="description">Description:</label>
-        <input type="text" id="description" value={description} onChange={(e) => setDescription(e.target.value)} />
+        <input
+          type="text"
+          id="description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
       </div>
       <div>
         <label htmlFor="publishYear">Publish Year:</label>
-        <input type="text" id="publishYear" value={publishYear} onChange={(e) => setPublishYear(e.target.value)} />
+        <input
+          type="text"
+          id="publishYear"
+          value={publishYear}
+          onChange={(e) => setPublishYear(e.target.value)}
+        />
       </div>
       <button type="submit">Submit</button>
     </form>
