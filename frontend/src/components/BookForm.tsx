@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, SyntheticEvent } from 'react';
 import { BookInterface } from '../interfaces/Book';
 
 interface BookFormProps {
