@@ -1,17 +1,20 @@
 import { Sequelize } from 'sequelize';
 import { DATABASE_URL, NODE_ENV } from './config';
 
-const dialectOptions = NODE_ENV === 'production' ? {
-  ssl: {
-    require: true,
-    rejectUnauthorized: false
-  }
-} : {};
+const dialectOptions =
+  NODE_ENV === 'production'
+    ? {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false,
+        },
+      }
+    : {};
 
 const sequelize = new Sequelize(DATABASE_URL, {
   logging: false,
   dialect: 'postgres',
-  dialectOptions
+  dialectOptions,
 });
 
 const connectToDatabase = async () => {
