@@ -15,6 +15,7 @@ isbnRouter.post('/', async (req, res) => {
     console.log('requesting data from:', apiUrl)
     const volumeInfo = (await axios.get<BookResponse>(apiUrl)).data.items[0].volumeInfo
     const book = {
+        title: volumeInfo.title,
         authors: volumeInfo.authors.join(', '),
         publishedDate: volumeInfo.publishedDate,
         isbn,
