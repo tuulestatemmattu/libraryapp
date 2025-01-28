@@ -7,6 +7,7 @@ import SignInPage from './components/SignInPage';
 
 const App = () => {
   const { profile, login, logOut } = useGoogleAuth();
+
   if (!profile) {
     return (
       <div>
