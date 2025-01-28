@@ -11,3 +11,4 @@ const ScanPage = () => {
 };
 
 export default ScanPage;
+

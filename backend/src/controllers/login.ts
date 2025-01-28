@@ -27,9 +27,9 @@ const router = Router();
 
 router.get('/', async (req: Request, res: Response) => {
   const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
-  const options: Record<string, any> = {
-    redirect_uri: GOOGLE_OAUTH_REDIRECT_URI,
-    client_id: GOOGLE_CLIENT_ID,
+  const options: Record<string, string> = {
+    redirect_uri: GOOGLE_OAUTH_REDIRECT_URI || '',
+    client_id: GOOGLE_CLIENT_ID || '',
     response_type: 'code',
     scope: [
       'https://www.googleapis.com/auth/userinfo.profile',
@@ -43,7 +43,7 @@ router.get('/', async (req: Request, res: Response) => {
   res.send(url);
 });
 
-router.get('/oauth', async (req: Request, res: Response): Promise<any> => {
+router.get('/oauth', async (req: Request, res: Response) => {
   try {
     const { code, error } = req.query;
 

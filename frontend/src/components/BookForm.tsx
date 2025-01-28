@@ -2,14 +2,7 @@ import React, { useState } from 'react';
 import { BookInterface } from '../interfaces/Book';
 
 interface BookFormProps {
-  onSubmit: (book: {
-    title: string;
-    authors: string;
-    genre: string;
-    isbn: string;
-    description: string;
-    publishedDate: number;
-  }) => void;
+  onSubmit: () => void;
   initialValues: BookInterface | null;
 }
 
@@ -23,9 +16,10 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
     initialValues ? initialValues.publishedDate : '',
   );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    onSubmit({ title, authors, genre, isbn, description, publishedDate: parseInt(publishedDate) });
+    //const book = { title, author, genre, isbn, description, publish_year: parseInt(publishYear) };
+    onSubmit(); // onSubmit(book);
     setTitle('');
     setAuthors('');
     setGenre('');
