@@ -9,7 +9,7 @@ import isbnRouter from './controllers/isbn_api';
 import bookRouter from './controllers/books';
 
 const app = express();
-app.use(express.json())
+app.use(express.json());
 app.use(cors());
 
 app.use('/api/login', loginRouter);

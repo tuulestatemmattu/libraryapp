@@ -7,7 +7,7 @@ const HomePage = () => {
       <p>This is the front page</p>
       <BookList />
     </div>
-  )
-}
+  );
+};
 
 export default HomePage;
