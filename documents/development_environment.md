@@ -6,8 +6,8 @@
    sudo usermod -aG docker $USER
    newgrp docker
 ```
-4. Clone the project repository.
-5. Set up Google OAuth API
+3. Clone the project repository.
+4. Set up Google OAuth API
     * Go to [Google API Console](https://console.cloud.google.com/apis/dashboard)
     * Create a new project
     * Go to *OAuth consent screen*
@@ -21,7 +21,14 @@
         * Add "http://localhost:3001" as Authorized JavaScript origin
         * Add "http://localhost:3001/api/login/oauth" as Authorized redirect URL
     * Now you should have a Client ID and Client secret
-6. Create a .env file to backend-directory
+5. Create a .env file to backend-directory
     * Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET from previous step
     * Set GOOGLE_OAUTH_REDIRECT_URI=http://localhost:3001/api/login/oauth
-7. Open repository root on command line and run "docker compose up" to start the application in development environment.
+    * Set JWT_SECRET to some value
+6. Open repository root on command line and run "docker compose up" to start the application in development environment.
+7. To fix vscode errors, run the following commands in root directory:
+```
+sudo chown $USER frontend/node_modules backend/node_modules
+npm install --prefix frontend
+npm install --prefix backend
+```

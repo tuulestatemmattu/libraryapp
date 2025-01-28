@@ -15,6 +15,7 @@ export const useGoogleAuth = () => {
       .split('; ')
       .map((cookie) => cookie.split('='));
 
+    console.log(cookies);
     const userCookie = cookies.find((cookie) => cookie[0] === 'user');
     if (userCookie) {
       const decodedValue = decodeURIComponent(userCookie[1]);
