@@ -1,15 +1,9 @@
 import axios from 'axios';
 import { apiBaseUrl } from '../constants';
 const baseUrl = apiBaseUrl + '/isbn';
+import { BookInterface } from '../interfaces/Book';
 
-interface book {
-    authors: string[],
-    title: string,
-    isbn: string,
-    publishedYear: string
-};
-
-const getInfoFromIsbn = async (isbn: string):Promise<book> => {
+const getInfoFromIsbn = async (isbn: string):Promise<BookInterface> => {
     console.log(baseUrl)
     const resultData = (await axios.post(baseUrl, {isbn:isbn})).data;
     return resultData

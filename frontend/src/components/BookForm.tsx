@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { BookInterface } from '../interfaces/Book';
 
 interface BookFormProps {
   onSubmit: (book: { title: string; author: string; genre: string; isbn: string; description: string; publish_year: number }) => void;
-  initialValues?: { title: string, authors: string, isbn: string, description:string, publishDate:string };
+  initialValues?: BookInterface;
 }
 
 const BookForm: React.FC<BookFormProps> = ({ onSubmit , initialValues}) => {

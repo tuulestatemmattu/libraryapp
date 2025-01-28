@@ -4,11 +4,6 @@ interface IsbnProps {
   isbnCallHandler: (a: string) => void;
 }
 
-interface IsbnProps {
-    isbnCallHandler: (a: string) => void;
-  }
-
-
 const IsbnPage = ({ isbnCallHandler }: IsbnProps) =>{
     const [isbn, setIsbn] = useState<string>('')
     // eslint-disable-next-line no-undef

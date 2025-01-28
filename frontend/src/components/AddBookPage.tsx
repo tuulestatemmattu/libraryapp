@@ -1,19 +1,29 @@
 import { useState } from 'react';
 import BookForm from './BookForm';
 import IsbnPage from './IsbnPage';
+import getInfoFromIsbn from '../services/isbn';
+import { BookInterface } from '../interfaces/Book';
 
 
 type ViewOpt = 'form' | 'scan' | 'isbn'
+type initialValues = BookInterface | undefined
 
 const AddBooksPage = () =>{
   const [view, setView] = useState<ViewOpt>('form');
+  const [book, setBook] = useState<initialValues>(undefined);
+
+  const handleIsbnSubmit = async (isbn: string) => {
+    const book: BookInterface = await getInfoFromIsbn(isbn);
+    setBook(book);
+    setView('form');
+  }
 
   const Content = () => {
     if ( view == 'form' ) {
-      return <BookForm onSubmit={console.log} />
+      return <BookForm onSubmit={console.log} initialValues={book} />
     }
     if (view == 'isbn') {
-      return <IsbnPage isbnCallHandler={console.log}/>
+      return <IsbnPage isbnCallHandler={handleIsbnSubmit}/>
     }
     if (view == 'scan') {
       return <h1 color='red'>This area is not yet finished</h1>
