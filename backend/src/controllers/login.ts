@@ -75,7 +75,7 @@ router.get('/oauth', async (req: Request, res: Response): Promise<any> => {
           headers: {
             Authorization: `Bearer ${id_token}`,
           },
-        }
+        },
       )
     ).data;
 
