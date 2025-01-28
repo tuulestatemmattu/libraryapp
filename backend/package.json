@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "nodemon src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "eslint src; prettier --check src",
+    "prettier": "prettier --write src",
+    "prettier-check": "prettier --check src"
   },
   "keywords": [],
   "author": "",
@@ -27,8 +30,12 @@
     "@types/jsonwebtoken": "^9.0.8",
     "@types/node": "^22.10.6",
     "@types/sequelize": "^4.28.20",
+    "@typescript-eslint/eslint-plugin": "^8.21.0",
+    "@typescript-eslint/parser": "^8.21.0",
     "concurrently": "^9.1.2",
+    "eslint": "^9.19.0",
     "nodemon": "^3.1.9",
+    "prettier": "^3.4.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   }
