@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, SyntheticEvent } from 'react';
 
 interface BookFormProps {
-  onSubmit: (book: { title: string; author: string; genre: string; isbn: string; description: string; publish_year: number }) => void;
+  onSubmit: () => void;
 }
 
 const BookForm: React.FC<BookFormProps> = ({ onSubmit }) => {
@@ -12,9 +12,10 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit }) => {
   const [description, setDescription] = useState('');
   const [publishYear, setPublishYear] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    onSubmit({ title, author, genre, isbn, description, publish_year: parseInt(publishYear) });
+    //const book = { title, author, genre, isbn, description, publish_year: parseInt(publishYear) };
+    onSubmit(); // onSubmit(book);
     setTitle('');
     setAuthor('');
     setGenre('');
@@ -43,11 +44,21 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit }) => {
       </div>
       <div>
         <label htmlFor="description">Description:</label>
-        <input type="text" id="description" value={description} onChange={(e) => setDescription(e.target.value)} />
+        <input
+          type="text"
+          id="description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
       </div>
       <div>
         <label htmlFor="publishYear">Publish Year:</label>
-        <input type="text" id="publishYear" value={publishYear} onChange={(e) => setPublishYear(e.target.value)} />
+        <input
+          type="text"
+          id="publishYear"
+          value={publishYear}
+          onChange={(e) => setPublishYear(e.target.value)}
+        />
       </div>
       <button type="submit">Submit</button>
     </form>
