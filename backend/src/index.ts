@@ -8,12 +8,11 @@ import loginRouter from './controllers/login';
 import isbnRouter from './controllers/isbn_api';
 
 const app = express();
-app.use(express.json())
+app.use(express.json());
 app.use(cors());
 
 app.use('/api/login', loginRouter);
-app.use('/api/isbn', isbnRouter)
-
+app.use('/api/isbn', isbnRouter);
 
 if (NODE_ENV == 'production') {
   app.use(express.static(path.join(__dirname, 'public')));

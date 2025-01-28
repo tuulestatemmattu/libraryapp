@@ -38,10 +38,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/scan" element={<ScanPage />} />
-        <Route
-          path="/profile"
-          element={<ProfilePage profile={profile} logOut={logOut} />}
-        />
+        <Route path="/profile" element={<ProfilePage profile={profile} logOut={logOut} />} />
       </Routes>
     </BrowserRouter>
   );
