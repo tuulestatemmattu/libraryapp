@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import BookForm from './BookForm';
+import BookForm from './AddBookForm';
 import IsbnPage from './IsbnPage';
 import getBookFromIsbn from '../services/isbn';
 import { BookInterface } from '../interfaces/Book';
