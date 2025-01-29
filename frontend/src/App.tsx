@@ -4,6 +4,7 @@ import ScanPage from './components/ScanPage';
 import HomePage from './components/HomePage';
 import ProfilePage from './components/ProfilePage';
 import SignInPage from './components/SignInPage';
+import AddBooksPage from './components/AddBookPage';
 
 const App = () => {
   const { profile, login, logOut } = useGoogleAuth();
@@ -38,6 +39,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/scan" element={<ScanPage />} />
+        <Route path="/addBooks" element={<AddBooksPage />} />
         <Route path="/profile" element={<ProfilePage profile={profile} logOut={logOut} />} />
       </Routes>
     </BrowserRouter>
