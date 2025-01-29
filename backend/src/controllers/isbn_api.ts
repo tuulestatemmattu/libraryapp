@@ -1,5 +1,6 @@
 import express from 'express';
 import axios from 'axios';
+import { CustomRequest, tokenExtractor } from '../util/middleware';
 
 interface googleApiResponse {
   totalItems: string;
@@ -14,9 +15,12 @@ interface googleApiResponse {
   }[];
 }
 
+
+
 const isbnRouter = express.Router();
 
-isbnRouter.post('/', async (req, res) => {
+isbnRouter.post('/',tokenExtractor, async (req, res) => {
+  console.log((req as CustomRequest).UserId)
   const { isbn } = req.body;
   const apiUrl = 'https://www.googleapis.com/books/v1/volumes?q=isbn:' + isbn;
 
