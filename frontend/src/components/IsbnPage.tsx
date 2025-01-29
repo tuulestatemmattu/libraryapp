@@ -1,7 +1,7 @@
 import { useState } from 'react';
 // import BookForm from './BookForm';
 interface IsbnProps {
-  isbnCallHandler: (a: string) => void;
+  isbnCallHandler: (_isbn: string) => void;
 }
 
 const IsbnPage = ({ isbnCallHandler }: IsbnProps) => {
