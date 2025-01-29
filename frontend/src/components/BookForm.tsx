@@ -28,6 +28,15 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
     setPublishedDate('');
   };
 
+  const handleClear = () => {
+    setTitle('');
+    setAuthors('');
+    setGenre('');
+    setIsbn('');
+    setDescription('');
+    setPublishedDate('');
+  };
+
   return (
     <form onSubmit={handleSubmit}>
       <div>
@@ -70,6 +79,7 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
         />
       </div>
       <button type="submit">Submit</button>
+      <button type="button" onClick={handleClear}>Clear</button>
     </form>
   );
 };
