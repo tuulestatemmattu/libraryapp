@@ -11,3 +11,4 @@ Definition of done can be found [here](documents/definition_of_done.md)
 
 ### Setting up a development environment
 Guide can be found [here](documents/development_environment.md)
+Fixes to common problems [here](documents/common_problems.md)
