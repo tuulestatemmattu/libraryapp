@@ -1,7 +1,8 @@
 import express from 'express';
 import axios from 'axios';
 
-interface BookResponse {
+interface googleApiResponse {
+  totalItems: string;
   items: {
     volumeInfo: {
       title: string;
@@ -21,17 +22,22 @@ isbnRouter.post('/', async (req, res) => {
 
   // Get the book data from the google api
   console.log('requesting data from:', apiUrl);
-  const volumeInfo = (await axios.get<BookResponse>(apiUrl)).data.items[0].volumeInfo;
-  const book = {
-    title: volumeInfo.title,
-    authors: volumeInfo.authors.join(', '),
-    publishedDate: volumeInfo.publishedDate,
-    isbn,
-    description: volumeInfo.description,
-    images: volumeInfo.imageLinks,
-  };
+  const responseData = (await axios.get<googleApiResponse>(apiUrl)).data;
+  if (responseData.totalItems == '0') {
+    res.status(400).send({message: 'Did not find any works relating to this isbn.'}).end()
+  } else {
+    const volumeInfo = responseData.items[0].volumeInfo
+    const book = {
+      title: volumeInfo.title,
+      authors: volumeInfo.authors.join(', '),
+      publishedDate: volumeInfo.publishedDate,
+      isbn,
+      description: volumeInfo.description,
+      images: volumeInfo.imageLinks,
+    };
 
-  res.send(book);
+    res.send(book);
+  }
 });
 
 export default isbnRouter;
