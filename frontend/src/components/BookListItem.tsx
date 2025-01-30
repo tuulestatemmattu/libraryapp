@@ -11,7 +11,7 @@ interface BookListItemProps {
 
 const BookListItem = ({ book }: BookListItemProps) => {
   return (
-    <div style={{ border: '1px solid black', padding: '10px', margin: '10px' }}>
+    <div style={{ border: '1px solid black', padding: '10px', margin: '10px', display: 'inline-block' }}>
       <p>Title: {book.title}</p>
       <p>Author: {book.author}</p>
       <p>Year: {book.publish_year}</p>
