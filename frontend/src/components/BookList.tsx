@@ -25,13 +25,17 @@ const BookList = () => {
     });
   }, []);
 
-  const filteredBooks = books.filter((book) =>
-    filterType === 'all'
-      ? Object.values(book).some((value) =>
-          String(value).toLowerCase().includes(filter.toLowerCase()),
-        )
-      : String(book[filterType]).toLowerCase().includes(filter.toLowerCase()),
-  );
+  const filteredBooks = books.filter(book => {
+    if (filterType === "all") {
+      return (
+        String(book.title).toLowerCase().includes(filter.toLowerCase()) ||
+        String(book.author).toLowerCase().includes(filter.toLowerCase()) ||
+        String(book.publish_year).toLowerCase().includes(filter.toLowerCase())
+      );
+    }
+
+    return String(book[filterType]).toLowerCase().includes(filter.toLowerCase());
+  });
 
   return (
     <div>
