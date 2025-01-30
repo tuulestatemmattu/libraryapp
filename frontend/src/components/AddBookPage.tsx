@@ -2,7 +2,7 @@ import { useState } from 'react';
 import AddBookForm from './AddBookForm';
 import IsbnPage from './IsbnPage';
 import getBookFromIsbn from '../services/isbn';
-import addBookFromManualEntry from '../services/book';
+import addBook from '../services/book';
 import { BookInterface } from '../interfaces/Book';
 
 type ViewOpt = 'form' | 'scan' | 'isbn';
@@ -19,7 +19,7 @@ const AddBooksPage = () => {
   };
 
   const handleManualSubmit = async (book: BookInterface) => {
-    const addedBook: BookInterface = await addBookFromManualEntry(book);
+    const addedBook: BookInterface = await addBook(book);
     setBook(addedBook);
   }
 
