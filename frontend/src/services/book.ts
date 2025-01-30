@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { apiBaseUrl } from '../constants';
-const baseUrl = apiBaseUrl + '/book';
+const baseUrl = apiBaseUrl + '/books';
 import { BookInterface } from '../interfaces/Book';
 
 const addBookFromManualEntry = async (book: BookInterface): Promise<BookInterface> => {
