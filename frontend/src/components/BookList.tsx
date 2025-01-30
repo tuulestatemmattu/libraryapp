@@ -25,8 +25,8 @@ const BookList = () => {
     });
   }, []);
 
-  const filteredBooks = books.filter(book => {
-    if (filterType === "all") {
+  const filteredBooks = books.filter((book) => {
+    if (filterType === 'all') {
       return (
         String(book.title).toLowerCase().includes(filter.toLowerCase()) ||
         String(book.author).toLowerCase().includes(filter.toLowerCase()) ||
