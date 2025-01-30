@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize';
-import { DATABASE_URL, NODE_ENV } from './config';
+import { TEST_DATABASE_URL, DATABASE_URL, NODE_ENV } from './config';
 
 const dialectOptions =
   NODE_ENV === 'production'
@@ -11,7 +11,9 @@ const dialectOptions =
       }
     : {};
 
-const sequelize = new Sequelize(DATABASE_URL, {
+const url = NODE_ENV === 'test' ? TEST_DATABASE_URL : DATABASE_URL;
+
+const sequelize = new Sequelize(url, {
   logging: false,
   dialect: 'postgres',
   dialectOptions,
@@ -31,4 +33,8 @@ const connectToDatabase = async () => {
   return null;
 };
 
-export { connectToDatabase, sequelize };
+const disconnectDatabase = async () => {
+  await sequelize.close();
+};
+
+export { sequelize, connectToDatabase, disconnectDatabase };
