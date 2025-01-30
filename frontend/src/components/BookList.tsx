@@ -19,7 +19,7 @@ const BookList = () => {
     axios.get(`${apiBaseUrl}/books`).then((res) => {
       setBooks(res.data);
     });
-  });
+  }, []);
 
   return (
     <div>
