@@ -12,7 +12,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
   const [isbn, setIsbn] = useState(initialValues?.isbn || '');
   const [description, setDescription] = useState(initialValues?.description || '');
   const [publishedDate, setPublishedDate] = useState(
-    initialValues ? initialValues.publishedDate : '',
+    initialValues?.publishedDate || '',
   );
 
   const handleSubmit = (e: SyntheticEvent) => {
