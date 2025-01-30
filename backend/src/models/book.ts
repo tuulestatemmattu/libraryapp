@@ -13,7 +13,7 @@ Book.init(
     title: {
       type: DataTypes.STRING,
     },
-    author: {
+    authors: {
       type: DataTypes.STRING,
     },
     isbn: {
@@ -26,7 +26,7 @@ Book.init(
     description: {
       type: DataTypes.TEXT,
     },
-    publish_year: {
+    publishedDate: {
       type: DataTypes.INTEGER,
     },
   },

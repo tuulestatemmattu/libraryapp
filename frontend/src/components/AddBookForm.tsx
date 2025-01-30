@@ -7,10 +7,10 @@ interface BookFormProps {
 }
 
 const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
-  const [title, setTitle] = useState(initialValues ? initialValues.title : '');
-  const [authors, setAuthors] = useState(initialValues ? initialValues.authors : '');
-  const [isbn, setIsbn] = useState(initialValues ? initialValues.isbn : '');
-  const [description, setDescription] = useState(initialValues ? initialValues.description : '');
+  const [title, setTitle] = useState(initialValues?.title || '');
+  const [authors, setAuthors] = useState(initialValues?.authors || '');
+  const [isbn, setIsbn] = useState(initialValues?.isbn || '');
+  const [description, setDescription] = useState(initialValues?.description || '');
   const [publishedDate, setPublishedDate] = useState(
     initialValues ? initialValues.publishedDate : '',
   );
