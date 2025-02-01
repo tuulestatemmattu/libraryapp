@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "NODE_ENV=development src/index.ts",
+    "dev": "NODE_ENV=development nodemon src/index.ts",
     "test": "NODE_ENV=test jest",
     "build": "NODE_ENV=production tsc",
     "lint": "eslint src",
