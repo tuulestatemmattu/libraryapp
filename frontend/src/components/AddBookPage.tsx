@@ -4,6 +4,10 @@ import IsbnPage from './IsbnPage';
 import getBookFromIsbn from '../services/isbn';
 import addBook from '../services/book';
 import { BookInterface } from '../interfaces/Book';
+import { Button, ButtonGroup } from '@mui/material';
+import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
+import TagIcon from '@mui/icons-material/Tag';
+import TextFieldsIcon from '@mui/icons-material/TextFields';
 
 type ViewOpt = 'form' | 'scan' | 'isbn';
 type initialValues = BookInterface | null;
@@ -38,9 +42,17 @@ const AddBooksPage = () => {
   return (
     <div>
       <h2>On this page you can add books to the application.</h2>
-      <button onClick={() => setView('form')}>form</button>
-      <button onClick={() => setView('isbn')}>isbn</button>
-      <button onClick={() => setView('scan')}>scan</button>
+      <ButtonGroup variant="contained">
+        <Button variant="contained" onClick={() => setView('form')}>
+          <TextFieldsIcon style={{ marginRight: 5 }} /> form
+        </Button>
+        <Button variant="contained" onClick={() => setView('isbn')}>
+          <TagIcon style={{ marginRight: 5 }} /> isbn
+        </Button>
+        <Button variant="contained" onClick={() => setView('scan')}>
+          <QrCodeScannerIcon style={{ marginRight: 5 }} /> scan
+        </Button>
+      </ButtonGroup>
       <Content />
     </div>
   );

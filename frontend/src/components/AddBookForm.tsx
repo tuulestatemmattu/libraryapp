@@ -1,5 +1,7 @@
 import React, { useState, SyntheticEvent } from 'react';
 import { BookInterface } from '../interfaces/Book';
+import StyledInput from './StyledInput';
+import { TextField, Button } from '@mui/material';
 
 interface BookFormProps {
   onSubmit: (book: BookInterface) => void;
@@ -41,44 +43,34 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="title">Title:</label>
-        <input type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
+        <StyledInput lable="title" value={title} setValue={setTitle} />
       </div>
       <div>
-        <label htmlFor="author">Author:</label>
-        <input
+        <StyledInput lable="Author" value={authors} setValue={setAuthors} />
+      </div>
+      <div>
+        <StyledInput lable="ISBN" value={isbn} setValue={setIsbn} />
+      </div>
+      <div>
+        <TextField
+          margin="normal"
+          label="Description"
+          multiline
           type="text"
-          id="author"
-          value={authors}
-          onChange={(e) => setAuthors(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="isbn">ISBN:</label>
-        <input type="text" id="isbn" value={isbn} onChange={(e) => setIsbn(e.target.value)} />
-      </div>
-      <div>
-        <label htmlFor="description">Description:</label>
-        <input
-          type="text"
-          id="description"
+          variant="standard"
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          name="description"
+          onChange={({ target }) => setDescription(target.value)}
+          sx={{ width: 0.9, maxWidth: 700 }}
         />
       </div>
       <div>
-        <label htmlFor="publishYear">Publish Year:</label>
-        <input
-          type="text"
-          id="publishYear"
-          value={publishedDate}
-          onChange={(e) => setPublishedDate(e.target.value)}
-        />
+        <StyledInput lable="publishYear" value={publishedDate} setValue={setPublishedDate} />
       </div>
-      <button type="submit">Submit</button>
-      <button type="button" onClick={handleClear}>
+      <Button type="submit">Add</Button>
+      <Button type="button" onClick={handleClear}>
         Clear
-      </button>
+      </Button>
     </form>
   );
 };
