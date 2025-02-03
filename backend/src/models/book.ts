@@ -27,7 +27,7 @@ Book.init(
       type: DataTypes.TEXT,
     },
     publishedDate: {
-      type: DataTypes.STRING // TODO: check this, string is not ideal
+      type: DataTypes.STRING, // TODO: check this, string is not ideal
     },
   },
   {

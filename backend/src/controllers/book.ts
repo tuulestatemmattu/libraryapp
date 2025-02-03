@@ -11,10 +11,7 @@ bookRouter.post('/', async (req, res) => {
     const existingBook = await Book.findOne({ where: { isbn } });
 
     if (existingBook) {
-      await Book.update(
-        { title, authors, description, publishedDate },
-        { where: { isbn } }
-      );
+      await Book.update({ title, authors, description, publishedDate }, { where: { isbn } });
       const updatedBook = await Book.findOne({ where: { isbn } });
       res.status(200).send(updatedBook);
     } else {
