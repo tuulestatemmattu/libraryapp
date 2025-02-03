@@ -12,9 +12,11 @@ Book.init(
     },
     title: {
       type: DataTypes.STRING,
+      allowNull: true,
     },
     authors: {
       type: DataTypes.STRING,
+      allowNull: true,
     },
     isbn: {
       type: DataTypes.STRING,
@@ -22,12 +24,15 @@ Book.init(
       validate: {
         len: [10, 13],
       },
+      allowNull: true,
     },
     description: {
       type: DataTypes.TEXT,
+      allowNull: true,
     },
     publishedDate: {
       type: DataTypes.STRING, // TODO: check this, string is not ideal
+      allowNull: true,
     },
   },
   {
