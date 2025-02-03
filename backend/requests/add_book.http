@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/books
+Content-Type: application/json
+
+{
+  "title": "Refactoring",
+  "authors": "Martin Fowler",
+  "publishedDate": "2019",
+  "isbn": "0134757599",
+  "description": "\"Whenever you read Refactoring], it's time to read it again. And if you haven't read it yet, please do before writing another line of code.\" -David Heinemeier Hansson, Creator of Ruby on Rails, Founder & CTO at Basecamp Fully Revised and Updated--Includes New Refactorings and Code Examples \"Any fool can write code that a computer can understand. Good programmers write code that humans can understand.\" -M. Fowler (1999) For more than twenty years, experienced programmers worldwide have relied on Martin Fowler's Refactoring to improve the design of existing code and to enhance software maintainability, as well as to make existing code easier to understand. This eagerly awaited new edition has been fully updated to reflect crucial changes in the programming landscape. Refactoring, Second Edition, features an updated catalog of refactorings and includes JavaScript code examples, as well as new functional examples that demonstrate refactoring without classes. Like the original, this edition explains what refactoring is; why you should refactor; how to recognize code that needs refactoring; and how to actually do it successfully, no matter what language you use. Understand the process and general principles of refactoring Quickly apply useful refactorings to make a program easier to comprehend and change Recognize \"bad smells\" in code that signal opportunities to refactor Explore the refactorings, each with explanations, motivation, mechanics, and simple examples Build solid tests for your refactorings Recognize tradeoffs and obstacles to refactoring Includes free access to the canonical web edition, with even more refactoring resources. (See inside the book for details about how to access the web edition.)"
+}
