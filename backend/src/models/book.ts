@@ -22,7 +22,7 @@ Book.init(
       type: DataTypes.STRING,
       unique: true,
       validate: {
-        len: [10, 13],
+        isIsbn: true,
       },
       allowNull: true,
     },

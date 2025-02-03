@@ -1,6 +1,5 @@
 import express from 'express';
 import Book from '../models/book';
-import isIsbn from 'validator/lib/isISBN';
 
 const bookRouter = express.Router();
 
@@ -8,10 +7,6 @@ bookRouter.post('/', async (req, res) => {
   const { title, authors, isbn, description, publishedDate } = req.body;
 
   try {
-    if (isbn && !isIsbn(isbn)) {
-      res.status(400).send({ message: 'Invalid ISBN' });
-    }
-
     const existingBook = await Book.findOne({ where: { isbn } });
 
     if (existingBook) {
