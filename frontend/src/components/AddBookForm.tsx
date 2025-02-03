@@ -11,9 +11,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
   const [authors, setAuthors] = useState(initialValues?.authors || '');
   const [isbn, setIsbn] = useState(initialValues?.isbn || '');
   const [description, setDescription] = useState(initialValues?.description || '');
-  const [publishedDate, setPublishedDate] = useState(
-    initialValues?.publishedDate || '',
-  );
+  const [publishedDate, setPublishedDate] = useState(initialValues?.publishedDate || '');
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -78,7 +76,9 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
         />
       </div>
       <button type="submit">Submit</button>
-      <button type="button" onClick={handleClear}>Clear</button>
+      <button type="button" onClick={handleClear}>
+        Clear
+      </button>
     </form>
   );
 };

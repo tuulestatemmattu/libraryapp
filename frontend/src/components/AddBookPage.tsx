@@ -21,7 +21,7 @@ const AddBooksPage = () => {
   const handleManualSubmit = async (book: BookInterface) => {
     const addedBook: BookInterface = await addBook(book);
     setBook(addedBook);
-  }
+  };
 
   const Content = () => {
     if (view == 'form') {
