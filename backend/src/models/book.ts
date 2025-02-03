@@ -31,7 +31,10 @@ Book.init(
       allowNull: true,
     },
     publishedDate: {
-      type: DataTypes.STRING, // TODO: check this, string is not ideal
+      type: DataTypes.STRING,
+      validate: {
+        is: /^(19|20)\d{2}$/, // years between 1900 and 2099
+      },
       allowNull: true,
     },
   },
