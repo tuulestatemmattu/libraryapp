@@ -13,7 +13,7 @@ Book.init(
     title: {
       type: DataTypes.STRING,
     },
-    author: {
+    authors: {
       type: DataTypes.STRING,
     },
     isbn: {
@@ -26,8 +26,8 @@ Book.init(
     description: {
       type: DataTypes.TEXT,
     },
-    publish_year: {
-      type: DataTypes.INTEGER,
+    publishedDate: {
+      type: DataTypes.STRING, // TODO: check this, string is not ideal
     },
   },
   {
