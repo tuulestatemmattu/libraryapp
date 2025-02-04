@@ -1,0 +1,11 @@
+.navbarbox {
+    flex-grow: 1;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    }
+    .appbar {
+        position: static;
+    }
+    .menuicon {
+        height: 40px;
+    }

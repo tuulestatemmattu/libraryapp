@@ -6,7 +6,7 @@ import HomePage from './components/HomePage';
 import ProfilePage from './components/ProfilePage';
 import SignInPage from './components/SignInPage';
 import AddBooksPage from './components/AddBookPage';
-import NavBar from './components/NavBar';
+import NavBar from './components/NavBar/NavBar';
 import FloatingButton from './components/FloatingButton';
 
 const App = () => {

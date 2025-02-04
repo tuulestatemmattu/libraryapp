@@ -12,12 +12,12 @@ interface ProfileProps {
 
 const NavBar: React.FC<ProfileProps> = ({ profile }) => {
   return (
-    <Box sx={{ flexGrow: 1, justifyContent: 'space-between' }}>
-      <AppBar position="static">
+    <Box className="navbarbox">
+      <AppBar className="appbar">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link href="/" color="inherit" underline="none">
-              <MenuBookIcon sx={{ width: 'auto', height: '40px' }} />
+              <MenuBookIcon className="menuicon" />
             </Link>
           </Typography>
           <Link href="/profile">
