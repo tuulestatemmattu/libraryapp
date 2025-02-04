@@ -11,16 +11,33 @@ type initialValues = BookInterface | null;
 const AddBooksPage = () => {
   const [view, setView] = useState<ViewOpt>('form');
   const [book, setBook] = useState<initialValues>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleIsbnSubmit = async (isbn: string) => {
-    const book: BookInterface = await getBookFromIsbn(isbn);
-    setBook(book);
-    setView('form');
+    try {
+      const book: BookInterface = await getBookFromIsbn(isbn);
+      setBook(book);
+      setView('form');
+      setError(null);
+    } catch (error: any) {
+      console.error('Error fetching book fron isbn', error);
+      if (error.response?.status === 400) {
+        setError('The given ISBN appears to be invalid. Please check the input');
+      } else {
+        setError('An unexpected error occured');
+      }
+    }
+    setTimeout(() => setError(null), 3000);
   };
 
   const handleManualSubmit = async (book: BookInterface) => {
-    const addedBook: BookInterface = await addBook(book);
-    setBook(addedBook);
+    try {
+      const response = await addBook(book);
+      return response;
+    } catch (error) {
+      console.error('Error adding book:', error);
+      return { data: book, status: 500 };
+    }
   };
 
   const Content = () => {
@@ -41,6 +58,10 @@ const AddBooksPage = () => {
       <button onClick={() => setView('form')}>form</button>
       <button onClick={() => setView('isbn')}>isbn</button>
       <button onClick={() => setView('scan')}>scan</button>
+      {error && (
+        <div style={{ background: 'red', padding: '10px', marginBottom: '10px' }}>{error}</div>
+      )}{' '}
+      {/* #TODO: move styling to css mui element for error */}
       <Content />
     </div>
   );
