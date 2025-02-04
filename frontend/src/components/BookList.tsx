@@ -2,6 +2,7 @@ import BookListItem from './BookListItem';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { apiBaseUrl } from '../constants';
+import { Paper, TextField, MenuItem, Box, Grid2 } from '@mui/material';
 
 interface Book {
   id: number;
@@ -38,33 +39,50 @@ const BookList = () => {
   });
 
   return (
-    <div>
-      <div>
-        <select
+    <><Paper 
+        elevation={4}
+        sx={{ 
+          padding: 2,
+          marginBottom: 2
+        }}
+      >
+      <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+        <TextField
+          select
+          label="Filter By"
           value={filterType}
           onChange={(e) => setFilterType(e.target.value as keyof Book | 'all')}
+          sx={{ minWidth: { xs: 100, sm: 170, md: 170 } }}
         >
           {filterOptions.map((option) => (
-            <option key={option} value={option}>
-              {option === 'all'
-                ? 'All Fields'
-                : option.charAt(0).toUpperCase() + option.slice(1).replace('_', ' ')}
-            </option>
+            <MenuItem key={option} value={option}>
+              {option === 'all' ? 'All Fields' : option.charAt(0).toUpperCase() + option.slice(1)}
+            </MenuItem>
           ))}
-        </select>
-        <input
-          type="text"
+        </TextField>
+        <TextField
+          fullWidth
+          placeholder={`Search by ${filterType === 'all' ? 'any field' : filterType}`}
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          placeholder={`Filter by ${filterType === 'all' ? 'any field' : filterType.replace('_', ' ')}`}
         />
-      </div>
-      <div>
+      </Box>
+    </Paper>
+    <Grid2 
+      container
+      spacing={2}
+      sx={{ 
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
+        marginLeft: '10px'
+      }}
+    >
         {filteredBooks.map((book) => (
+          <Grid2>
           <BookListItem key={book.id} book={book} />
+          </Grid2>
         ))}
-      </div>
-    </div>
+    </Grid2></>
   );
 };
 
