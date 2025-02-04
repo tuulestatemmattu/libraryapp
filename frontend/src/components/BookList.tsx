@@ -6,13 +6,13 @@ import { apiBaseUrl } from '../constants';
 interface Book {
   id: number;
   title: string;
-  author: string;
+  authors: string;
   isbn: string;
   description: string;
-  publish_year: string;
+  publishedDate: string;
 }
 
-const filterOptions: (keyof Book | 'all')[] = ['all', 'title', 'author', 'publish_year'];
+const filterOptions: (keyof Book | 'all')[] = ['all', 'title', 'authors', 'publishedDate'];
 
 const BookList = () => {
   const [books, setBooks] = useState<Book[]>([]);
@@ -29,8 +29,8 @@ const BookList = () => {
     if (filterType === 'all') {
       return (
         String(book.title).toLowerCase().includes(filter.toLowerCase()) ||
-        String(book.author).toLowerCase().includes(filter.toLowerCase()) ||
-        String(book.publish_year).toLowerCase().includes(filter.toLowerCase())
+        String(book.authors).toLowerCase().includes(filter.toLowerCase()) ||
+        String(book.publishedDate).toLowerCase().includes(filter.toLowerCase())
       );
     }
 

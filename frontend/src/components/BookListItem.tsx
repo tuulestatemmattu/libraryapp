@@ -2,10 +2,10 @@ interface BookListItemProps {
   book: {
     id: number;
     title: string;
-    author: string;
+    authors: string;
     isbn: string;
     description: string;
-    publish_year: string;
+    publishedDate: string;
   };
 }
 
@@ -20,8 +20,8 @@ const BookListItem = ({ book }: BookListItemProps) => {
       }}
     >
       <p>Title: {book.title}</p>
-      <p>Author: {book.author}</p>
-      <p>Year: {book.publish_year}</p>
+      <p>Author: {book.authors}</p>
+      <p>Year: {book.publishedDate}</p>
     </div>
   );
 };
