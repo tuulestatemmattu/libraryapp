@@ -12,7 +12,7 @@ bookRouter.post('/', async (req, res) => {
     if (existingBook) {
       await Book.update(
         { title, authors, description, publishedDate },
-        { where: { isbn }, validate: true }
+        { where: { isbn }, validate: true },
       );
       const updatedBook = await Book.findOne({ where: { isbn } });
       res.status(200).send(updatedBook);
@@ -25,13 +25,13 @@ bookRouter.post('/', async (req, res) => {
           description,
           publishedDate,
         },
-        { validate: true }
+        { validate: true },
       );
       res.status(201).send(newBook);
     }
   } catch (error: unknown) {
     if (error instanceof Error) {
-      res.status(500).send({ message: error.message});
+      res.status(500).send({ message: error.message });
     }
   }
 });
