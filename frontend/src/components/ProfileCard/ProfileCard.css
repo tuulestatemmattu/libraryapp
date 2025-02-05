@@ -5,12 +5,12 @@
     flex-direction: column;
     justify-content:baseline;
     border-radius: 15px;
+    background-color: rgba(230, 230, 230, 0.9);
     
     }
     .profile-info-box {
         display: flex;
         flex-direction: row;
-        background-color: lightblue;
         height: 120px;
         position: relative;
         border-top-left-radius: 15px;
@@ -34,7 +34,7 @@
         .profile-info {
             position: absolute;
             left: 80px;
-            bottom: 22px;
+            top: 50px;
             }
             .profile-card-name {
                 font-size: 12px;
@@ -46,7 +46,6 @@
                 color: grey;
             }
     .profile-card-buttons {
-        background-color: lightgreen;
         position: relative;
         display: flex;      
         flex-direction: column;
