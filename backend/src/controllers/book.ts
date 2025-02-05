@@ -3,7 +3,13 @@ import Book from '../models/book';
 
 const bookRouter = express.Router();
 
+bookRouter.get('/', async (_req, res) => {
+  const books = await Book.findAll();
+  res.send(books);
+});
+
 bookRouter.post('/', async (req, res) => {
+  console.log('User ID', req.UserId);
   const { title, authors, isbn, description, publishedDate } = req.body;
 
   try {

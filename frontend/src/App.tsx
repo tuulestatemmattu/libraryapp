@@ -8,6 +8,7 @@ import AddBooksPage from './components/AddBookPage';
 
 const App = () => {
   const { profile, login, logOut } = useGoogleAuth();
+
   if (!profile) {
     return (
       <div>

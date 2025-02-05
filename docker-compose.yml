@@ -5,19 +5,19 @@ services:
       context: ./frontend
       dockerfile: dev.Dockerfile
     ports:
-      - "5173:5173"
+      - '5173:5173'
     volumes:
       - ./frontend:/app
       - /app/node_modules
     container_name: frontend-dev
-  
+
   backend-dev:
     image: libraryapp-backend-dev
     build:
       context: ./backend
       dockerfile: dev.Dockerfile
     ports:
-      - "3001:3001"
+      - '3001:3001'
     volumes:
       - ./backend:/app
       - /app/node_modules
@@ -27,11 +27,12 @@ services:
       DATABASE_URL: postgres://libraryapp:salainen@db/libraryapp
       TEST_DATABASE_URL: postgres://libraryapp:salainen@test-db/libraryapp_test
       FRONTEND_URL: http://localhost:5173
+      JWT_SECRET: salainen
     depends_on:
       db:
         condition: service_healthy
     container_name: backend-dev
-  
+
   db:
     image: postgres
     volumes:
@@ -42,12 +43,12 @@ services:
       POSTGRES_PASSWORD: salainen
       POSTGRES_DB: libraryapp
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U libraryapp"]
+      test: ['CMD-SHELL', 'pg_isready -U libraryapp']
       interval: 5s
       timeout: 5s
       retries: 5
     container_name: db
-  
+
   test-db:
     image: postgres
     environment:
@@ -55,7 +56,7 @@ services:
       POSTGRES_PASSWORD: salainen
       POSTGRES_DB: libraryapp_test
     container_name: test-db
-  
+
   adminer:
     image: adminer
     ports:
