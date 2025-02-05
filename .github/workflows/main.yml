@@ -3,10 +3,10 @@ name: CI
 on:
   push:
     branches:
-    - main
+    - '**'
   pull_request:
     branches:
-    - main
+    - '**'
 
 jobs:
   frontend:
@@ -68,3 +68,32 @@ jobs:
       run: npm run lint
     - name: Run prettier
       run: npm run prettier-check
+  
+  deploy:
+    needs: [frontend, backend]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Install Heroku CLI
+      run: |
+        curl https://cli-assets.heroku.com/install.sh | sh
+    - name: Set Heroku stack to container
+      run: heroku stack:set container --app ${{ secrets.HEROKU_APP_NAME }}
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+    - name: Heroku deploy
+      uses: akhileshns/heroku-deploy@v3.13.15
+      with:
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
+        heroku_email: ${{secrets.HEROKU_EMAIL}}
+        usedocker: true
+        stack: "container"
+      env:
+        HD_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+        HD_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+        HD_GOOGLE_OAUTH_REDIRECT_URI: ${{ secrets.GOOGLE_OAUTH_REDIRECT_URI }}
+        HD_JWT_SECRET: ${{ secrets.JWT_SECRET }}
