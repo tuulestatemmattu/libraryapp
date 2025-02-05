@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../util/db';
+import isIsbn from 'validator/lib/isISBN';
 
 class Book extends Model {}
 
@@ -22,7 +23,11 @@ Book.init(
       type: DataTypes.STRING,
       unique: true,
       validate: {
-        isIsbn: true,
+        isValidIsbn(value: string) {
+          if (!isIsbn(value)) {
+            throw new Error('Model error: Invalid ISBN');
+          }
+        },
       },
       allowNull: true,
     },
@@ -33,7 +38,11 @@ Book.init(
     publishedDate: {
       type: DataTypes.STRING,
       validate: {
-        is: /^(19|20)\d{2}$/, // years between 1900 and 2099
+        isValidYear(value: string) {
+          if (!/^(19|20)\d{2}$/.test(value)) {
+            throw new Error('Model error: Invalid year');
+          }
+        },
       },
       allowNull: true,
     },
