@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Button from '@mui/material/Button';
-import StyledInput from './StyledInput';
+import StyledInput from './StyledInput/StyledInput';
 
 interface IsbnProps {
   isbnCallHandler: (_isbn: string) => void;

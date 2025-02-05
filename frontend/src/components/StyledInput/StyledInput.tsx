@@ -1,4 +1,6 @@
 import TextField from '@mui/material/TextField';
+import './StyledInput.css';
+
 interface InputProps {
   lable: string;
   value: string;
@@ -8,14 +10,13 @@ interface InputProps {
 const StyledInput = ({ lable, value, setValue }: InputProps) => {
   return (
     <TextField
-      margin="normal"
+      className="styled-input"
       label={lable}
       type="text"
       variant="standard"
       value={value}
       name="Isbn"
       onChange={({ target }) => setValue(target.value)}
-      sx={{ width: 0.9, maxWidth: 700 }}
     />
   );
 };

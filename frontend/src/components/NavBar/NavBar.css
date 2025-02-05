@@ -6,6 +6,9 @@
     .appbar {
         position: static;
     }
+    .typmenuicon {
+        flex-grow: 1;
+    }
     .menuicon {
         height: 40px;
     }

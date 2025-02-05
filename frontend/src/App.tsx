@@ -7,7 +7,7 @@ import ProfilePage from './components/ProfilePage';
 import SignInPage from './components/SignInPage';
 import AddBooksPage from './components/AddBookPage';
 import NavBar from './components/NavBar/NavBar';
-import FloatingButton from './components/FloatingButton';
+import FloatingButton from './components/FloatingButton/FloatingButton';
 
 const App = () => {
   const { profile, login, logOut } = useGoogleAuth();
