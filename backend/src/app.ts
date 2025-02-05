@@ -6,7 +6,7 @@ import { NODE_ENV } from './util/config';
 import loginRouter from './controllers/login';
 import isbnRouter from './controllers/isbn_api';
 import bookRouter from './controllers/book';
-import bookValidator from './util/validation'
+import bookValidator from './util/validation';
 import { tokenExtractor } from './util/middleware';
 
 declare global {
