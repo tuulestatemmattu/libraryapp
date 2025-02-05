@@ -2,23 +2,11 @@ import express from 'express';
 import Book from '../models/book';
 
 const bookRouter = express.Router();
-import isIsbn from 'validator/lib/isISBN';
 
 bookRouter.post('/', async (req, res) => {
   const { title, authors, isbn, description, publishedDate } = req.body;
 
   try {
-
-    if (!isIsbn(isbn)) {
-    res.status(400).send({ message: 'Invalid ISBN' });
-    return
-    }
-
-    if (!/^(19|20)\d{2}$/.test(publishedDate)) {
-      res.status(400).send({ message: 'Invalid year' });
-      return;
-    }
-
     const existingBook = await Book.findOne({ where: { isbn } });
 
     if (existingBook) {
