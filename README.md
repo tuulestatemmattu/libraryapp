@@ -9,5 +9,6 @@
 ### Definition of Done
 Definition of done can be found [here](documents/definition_of_done.md)
 
-### Setting up a development environment
-Guide can be found [here](documents/development_environment.md)
+### Development environment
+* [Services & commands](documents/development_environment.md)
+* [Setting up a development environment](documents/development_environment_setup.md)

@@ -25,6 +25,7 @@ services:
       PORT: 3001
       NODE_ENV: development
       DATABASE_URL: postgres://libraryapp:salainen@db/libraryapp
+      TEST_DATABASE_URL: postgres://libraryapp:salainen@test-db/libraryapp_test
       FRONTEND_URL: http://localhost:5173
       JWT_SECRET: salainen
     depends_on:
@@ -47,6 +48,14 @@ services:
       timeout: 5s
       retries: 5
     container_name: db
+
+  test-db:
+    image: postgres
+    environment:
+      POSTGRES_USER: libraryapp
+      POSTGRES_PASSWORD: salainen
+      POSTGRES_DB: libraryapp_test
+    container_name: test-db
 
   adminer:
     image: adminer

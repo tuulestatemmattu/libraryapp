@@ -28,9 +28,9 @@ isbnRouter.post('/',tokenExtractor, async (req, res) => {
   console.log('requesting data from:', apiUrl);
   const responseData = (await axios.get<googleApiResponse>(apiUrl)).data;
   if (responseData.totalItems == '0') {
-    res.status(400).send({message: 'Did not find any works relating to this isbn.'}).end()
+    res.status(400).send({ message: 'Did not find any works relating to this isbn.' }).end();
   } else {
-    const volumeInfo = responseData.items[0].volumeInfo
+    const volumeInfo = responseData.items[0].volumeInfo;
     const book = {
       title: volumeInfo.title,
       authors: volumeInfo.authors.join(', '),
