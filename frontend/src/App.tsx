@@ -3,7 +3,7 @@ import { useGoogleAuth } from './hooks/useGoogleAuth';
 
 import ScanPage from './components/ScanPage';
 import HomePage from './components/HomePage';
-import ProfilePage from './components/ProfilePage';
+import ProfilePage from './components/ProfilePagebak';
 import SignInPage from './components/SignInPage';
 import AddBooksPage from './components/AddBookPage';
 import NavBar from './components/NavBar/NavBar';

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import Profile from './Profile';
+import Profile from './Profilebak';
 
 interface ProfilePageProps {
   profile: {

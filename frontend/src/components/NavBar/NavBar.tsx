@@ -1,6 +1,7 @@
-import { Typography, Toolbar, Box, AppBar, Avatar, Link } from '@mui/material';
+import { Typography, Toolbar, Box, AppBar, Link } from '@mui/material';
 import React from 'react';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import Profile from '../Profile';
 import './NavBar.css';
 interface ProfileProps {
   profile: {
@@ -20,9 +21,7 @@ const NavBar: React.FC<ProfileProps> = ({ profile }) => {
               <MenuBookIcon className="menuicon" />
             </Link>
           </Typography>
-          <Link href="/profile">
-            <Avatar src={profile.picture} />
-          </Link>
+          <Profile profile={profile} />
         </Toolbar>
       </AppBar>
     </Box>

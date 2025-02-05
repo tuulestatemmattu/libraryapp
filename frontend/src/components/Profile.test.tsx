@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest';
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
-import Profile from './Profile';
+import Profile from './Profilebak';
 
 describe('Profile Component', () => {
   const profile = {

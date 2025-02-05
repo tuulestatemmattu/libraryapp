@@ -1,4 +1,6 @@
-import React from 'react';
+import { Avatar, Backdrop } from '@mui/material';
+import React, { useState } from 'react';
+import ProfileCard from './ProfileCard/ProfileCard';
 
 interface ProfileProps {
   profile: {
@@ -9,16 +11,16 @@ interface ProfileProps {
 }
 
 const Profile: React.FC<ProfileProps> = ({ profile }) => {
+  const [open, setOpen] = useState(false);
   return (
-    <div>
-      <img src={profile.picture} alt={`${profile.name}'s avatar`} />
-      <p>
-        <strong>Name:</strong> {profile.name}
-      </p>
-      <p>
-        <strong>Email Address:</strong> {profile.email}
-      </p>
-    </div>
+    <>
+      <div onClick={() => setOpen(true)}>
+        <Avatar src={profile.picture} />
+      </div>
+      <Backdrop open={open} onClick={() => setOpen(false)}>
+        <ProfileCard profile={profile} />
+      </Backdrop>
+    </>
   );
 };
 
