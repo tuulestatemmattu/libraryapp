@@ -9,6 +9,7 @@ bookRouter.get('/', async (_req, res) => {
 });
 
 bookRouter.post('/', async (req, res) => {
+  console.log('User ID', req.UserId);
   // TODO: handle errors and edge cases
   const { title, authors, isbn, description, publishedDate } = req.body;
 
