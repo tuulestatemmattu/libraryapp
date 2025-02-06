@@ -62,27 +62,29 @@ const BookList = () => {
         </TextField>
         <TextField
           fullWidth
-          placeholder={`Search by ${filterType === 'all' ? 'any field' : filterType}`}
+          placeholder='Search'
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
         />
       </Box>
     </Paper>
-    <Grid2 
-      container
-      spacing={2}
-      sx={{ 
-        justifyContent: "flex-start",
-        alignItems: "flex-start",
-        marginLeft: '10px'
-      }}
-    >
-        {filteredBooks.map((book) => (
-          <Grid2>
-          <BookListItem key={book.id} book={book} />
-          </Grid2>
-        ))}
-    </Grid2></>
+      <Grid2
+        container
+        spacing={2}
+        wrap='wrap'
+        sx={{ 
+          justifyContent: "flex-start",
+          alignItems: "flex-start",
+          margin: "1vw",
+        }}
+      >
+          {filteredBooks.map((book) => (
+            <Grid2>
+            <BookListItem key={book.id} book={book} />
+            </Grid2>
+          ))}
+      </Grid2>
+    </>
   );
 };
 
