@@ -48,7 +48,6 @@ const AddBooksPage = () => {
 
   return (
     <div>
-      <h2>On this page you can add books to the application.</h2>
       <ButtonGroup variant="contained">
         <Button variant="contained" onClick={() => setView('form')}>
           <TextFieldsIcon style={{ marginRight: 5 }} /> form
