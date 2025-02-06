@@ -18,9 +18,6 @@ const ProfileCard: React.FC<ProfileProps> = ({ profile, logOut }) => {
         <Button variant="text" color="inherit" onClick={logOut}>
           Logout
         </Button>
-        <Button variant="text" color="inherit">
-          POOPI
-        </Button>
       </ButtonGroup>
     </div>
   );

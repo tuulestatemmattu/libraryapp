@@ -8,6 +8,8 @@ import AddBooksPage from './components/AddBookPage';
 import NavBar from './components/NavBar/NavBar';
 import FloatingButton from './components/FloatingButton/FloatingButton';
 
+import './style.css';
+
 const App = () => {
   const { profile, login, logOut } = useGoogleAuth();
 
