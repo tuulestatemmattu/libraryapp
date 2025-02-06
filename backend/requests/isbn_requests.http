@@ -1,5 +1,6 @@
 POST http://localhost:3001/api/isbn
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjExNzM0NTU3NjQzNTUyMDY3ODUwMyIsImlhdCI6MTczODE0NzQyOX0.azjb89xNIEqrzveURGJvctzHRgsjJpD6dw-tNw7EorI
 
 {
     "isbn": "3-540-44763-6"
