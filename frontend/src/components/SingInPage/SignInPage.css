@@ -1,27 +1,26 @@
 .sign-in-div {
-    position: absolute;
-    width: 300px;
-    height: 200px;
-    z-index: 15;
-    top: 50%;
-    left: 50%;
-    margin: -100px 0 0 -150px;
-
+  position: absolute;
+  width: 300px;
+  height: 200px;
+  z-index: 15;
+  top: 50%;
+  left: 50%;
+  margin: -100px 0 0 -150px;
 }
 
 .sign-in-paper {
-    margin-bottom: 50px;
+  margin-bottom: 50px;
 }
 
 .sign-in-header {
-    text-align: center;
-    padding: 5px;
+  text-align: center;
+  padding: 5px;
 }
 
 .sign-in-div > Button {
-    left: 50%;
-    
-    transform: translate(-50%,-50%);
-    /* or 3d alternative if you will add animations (smoother transitions) */
-    transform: translate3d(-50%,-50%,0);
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+  /* or 3d alternative if you will add animations (smoother transitions) */
+  transform: translate3d(-50%, -50%, 0);
 }

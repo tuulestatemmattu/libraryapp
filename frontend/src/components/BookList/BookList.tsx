@@ -66,7 +66,7 @@ const BookList = () => {
       </Paper>
       <Grid2 container spacing={2} wrap="wrap" className="grid-container">
         {filteredBooks.map((book) => (
-            <BookListItem key={book.id} book={book} />
+          <BookListItem key={book.id} book={book} />
         ))}
       </Grid2>
     </>

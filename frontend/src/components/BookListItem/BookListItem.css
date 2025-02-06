@@ -1,74 +1,72 @@
 .book-card {
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    width: 150px;
-    height: 250px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  width: 150px;
+  height: 250px;
+}
+
+@media (min-width: 600px) {
+  .book-card {
+    width: 200px;
+    height: 350px;
   }
-  
-  @media (min-width: 600px) {
-    .book-card {
-      width: 200px;
-      height: 350px;
-    }
+}
+
+@media (min-width: 900px) {
+  .book-card {
+    width: 250px;
+    height: 415px;
   }
-  
-  @media (min-width: 900px) {
-    .book-card {
-      width: 250px;
-      height: 415px;
-    }
-  }
-  
-  .book-card-action {
-    height: 100%;
-  }
-  
+}
+
+.book-card-action {
+  height: 100%;
+}
+
+.book-card-content {
+  text-align: left;
+  padding: 8px !important;
+}
+
+@media (min-width: 900px) {
   .book-card-content {
-    text-align: left;
-    padding: 8px !important;
+    padding: 16px !important;
   }
-  
-  @media (min-width: 900px) {
-    .book-card-content {
-      padding: 16px !important;
-    }
-  }
-  
+}
+
+.book-title {
+  font-size: 1rem !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (min-width: 600px) {
   .book-title {
-    font-size: 1rem !important;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 1.25rem !important;
   }
+}
 
-  @media (min-width: 600px) {
-      .book-title {
-          font-size: 1.25rem !important;
-      }
+@media (min-width: 900px) {
+  .book-title {
+    font-size: 1.5rem !important;
   }
+}
 
-  @media (min-width: 900px) {
-      .book-title {
-          font-size: 1.5rem !important;
-      }
-  }
+.book-authors {
+  font-size: 0.75rem !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
+@media (min-width: 600px) {
   .book-authors {
-      font-size: 0.75rem !important;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    font-size: 0.875rem !important;
   }
+}
 
-  @media (min-width: 600px) {
-      .book-authors {
-          font-size: 0.875rem !important;
-      }
+@media (min-width: 900px) {
+  .book-authors {
+    font-size: 1rem !important;
   }
-
-  @media (min-width: 900px) {
-      .book-authors {
-          font-size: 1rem !important;
-      }
-  }
-
-  
+}

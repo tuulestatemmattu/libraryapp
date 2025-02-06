@@ -1,14 +1,14 @@
 .navbarbox {
-    flex-grow: 1;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    }
-    .appbar {
-        position: static;
-    }
-    .typmenuicon {
-        flex-grow: 1;
-    }
-    .menuicon {
-        height: 40px;
-    }
+  flex-grow: 1;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.appbar {
+  position: static;
+}
+.typmenuicon {
+  flex-grow: 1;
+}
+.menuicon {
+  height: 40px;
+}
