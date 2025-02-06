@@ -9,4 +9,6 @@ A User Story is considered done, when:
 * Pull request has been peer reviewed and merged
 * Acceptance criteria met
 * User dialogue is implemented ("Operation succesful!" / "Sorry, something went wrong.")
+* Lighthouse accessibility score is at least 90 for both mobile and desktop
+* Components use Material-UI, any use of raw html/css must be justified
 * Story has been approved by customer
