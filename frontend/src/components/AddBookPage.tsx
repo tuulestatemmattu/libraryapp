@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import AddBookForm from './AddBookForm';
 import IsbnPage from './IsbnPage';
+import BarcodeScanner from './BarcodeScanner';
 import getBookFromIsbn from '../services/isbn';
 import addBook from '../services/book';
 import { BookInterface } from '../interfaces/Book';
@@ -11,6 +12,7 @@ type initialValues = BookInterface | null;
 const AddBooksPage = () => {
   const [view, setView] = useState<ViewOpt>('form');
   const [book, setBook] = useState<initialValues>(null);
+  const [isbn, setIsbn] = useState<string>('');
 
   const handleIsbnSubmit = async (isbn: string) => {
     const book: BookInterface = await getBookFromIsbn(isbn);
@@ -23,15 +25,20 @@ const AddBooksPage = () => {
     setBook(addedBook);
   };
 
+  const handleScannerSubmit = (isbn: string) => {
+    setIsbn(isbn);
+    setView('isbn');
+  };
+
   const Content = () => {
     if (view == 'form') {
       return <AddBookForm onSubmit={handleManualSubmit} initialValues={book} />;
     }
     if (view == 'isbn') {
-      return <IsbnPage isbnCallHandler={handleIsbnSubmit} />;
+      return <IsbnPage isbnCallHandler={handleIsbnSubmit} isbn_code={isbn} />;
     }
     if (view == 'scan') {
-      return <h1 color="red">This area is not yet finished</h1>;
+      return <BarcodeScanner isbnHandler={handleScannerSubmit} />;
     }
   };
 
