@@ -1,5 +1,6 @@
 import express from 'express';
 import Book from '../models/book';
+import bookValidator from '../util/validation';
 
 const bookRouter = express.Router();
 
@@ -8,7 +9,7 @@ bookRouter.get('/', async (_req, res) => {
   res.send(books);
 });
 
-bookRouter.post('/', async (req, res) => {
+bookRouter.post('/', bookValidator, async (req, res) => {
   console.log('User ID', req.UserId);
   const { title, authors, isbn, description, publishedDate } = req.body;
 
