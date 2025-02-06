@@ -1,24 +1,31 @@
-import React from 'react';
+import { Avatar, Backdrop } from '@mui/material';
+import React, { useState } from 'react';
+import ProfileCard from './ProfileCard/ProfileCard';
+import { ProfileProps } from '../interfaces/ProfileProps';
 
-interface ProfileProps {
-  profile: {
-    name: string;
-    email: string;
-    picture: string;
+const Profile: React.FC<ProfileProps> = ({ profile, logOut }) => {
+  const [open, setOpen] = useState(false);
+
+  const logOutAndClose = () => {
+    logOut();
+    setOpen(false);
   };
-}
-
-const Profile: React.FC<ProfileProps> = ({ profile }) => {
   return (
-    <div>
-      <img src={profile.picture} alt={`${profile.name}'s avatar`} />
-      <p>
-        <strong>Name:</strong> {profile.name}
-      </p>
-      <p>
-        <strong>Email Address:</strong> {profile.email}
-      </p>
-    </div>
+    <>
+      <div onClick={() => setOpen(true)}>
+        <Avatar src={profile.picture} />
+      </div>
+      <Backdrop
+        open={open}
+        onClick={(e) => {
+          if (e.currentTarget === e.target) {
+            setOpen(false);
+          }
+        }}
+      >
+        <ProfileCard profile={profile} logOut={logOutAndClose} />
+      </Backdrop>
+    </>
   );
 };
 

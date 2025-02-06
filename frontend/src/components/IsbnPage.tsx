@@ -1,5 +1,7 @@
 import { useState } from 'react';
-// import BookForm from './BookForm';
+import Button from '@mui/material/Button';
+import StyledInput from './StyledInput/StyledInput';
+
 interface IsbnProps {
   isbnCallHandler: (_isbn: string) => void;
   isbn_code: string;
@@ -17,16 +19,9 @@ const IsbnPage = ({ isbnCallHandler, isbn_code }: IsbnProps) => {
   return (
     <div>
       <form onSubmit={handleSubmitIsbn}>
-        <div>
-          Isbn
-          <input
-            type="text"
-            value={isbn}
-            name="Isbn"
-            onChange={({ target }) => setIsbn(target.value)}
-          />
-        </div>
-        <button type="submit">Submit</button>
+        <StyledInput lable="isbn" value={isbn} setValue={setIsbn} />
+        <br />
+        <Button type="submit">Search</Button>
       </form>
     </div>
   );

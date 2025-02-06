@@ -1,7 +1,9 @@
-import BookListItem from './BookListItem';
+import './BookList.css';
+import BookListItem from '../BookListItem/BookListItem';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { apiBaseUrl } from '../constants';
+import { apiBaseUrl } from '../../constants';
+import { Paper, TextField, MenuItem, Box, Grid2 } from '@mui/material';
 
 interface Book {
   id: number;
@@ -38,33 +40,36 @@ const BookList = () => {
   });
 
   return (
-    <div>
-      <div>
-        <select
-          value={filterType}
-          onChange={(e) => setFilterType(e.target.value as keyof Book | 'all')}
-        >
-          {filterOptions.map((option) => (
-            <option key={option} value={option}>
-              {option === 'all'
-                ? 'All Fields'
-                : option.charAt(0).toUpperCase() + option.slice(1).replace('_', ' ')}
-            </option>
-          ))}
-        </select>
-        <input
-          type="text"
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-          placeholder={`Filter by ${filterType === 'all' ? 'any field' : filterType.replace('_', ' ')}`}
-        />
-      </div>
-      <div>
+    <>
+      <Paper elevation={4} className="paper-container">
+        <Box className="filter-box">
+          <TextField
+            select
+            label="Filter By"
+            value={filterType}
+            onChange={(e) => setFilterType(e.target.value as keyof Book | 'all')}
+            className="filter-select"
+          >
+            {filterOptions.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option === 'all' ? 'All Fields' : option.charAt(0).toUpperCase() + option.slice(1)}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            fullWidth
+            placeholder="Search"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+        </Box>
+      </Paper>
+      <Grid2 container spacing={2} wrap="wrap" className="grid-container">
         {filteredBooks.map((book) => (
           <BookListItem key={book.id} book={book} />
         ))}
-      </div>
-    </div>
+      </Grid2>
+    </>
   );
 };
 

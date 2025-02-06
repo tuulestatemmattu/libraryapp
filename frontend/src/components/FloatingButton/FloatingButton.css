@@ -1,0 +1,13 @@
+.floatingbutton {
+  position: fixed !important;
+  bottom: 20px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  color: white;
+}
+
+.floatingicon {
+  width: 24px;
+  height: 24px;
+}
