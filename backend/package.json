@@ -5,11 +5,11 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "NODE_ENV=development nodemon src/index.ts",
-    "test": "NODE_ENV=test jest",
+    "test": "NODE_ENV=test jest  --detectOpenHandles --forceExit",
     "build": "NODE_ENV=production tsc",
-    "lint": "eslint src",
-    "prettier": "prettier --write src",
-    "prettier-check": "prettier --check src"
+    "lint": "eslint src tests",
+    "prettier": "prettier --write src tests",
+    "prettier-check": "prettier --check src tests"
   },
   "keywords": [],
   "author": "",

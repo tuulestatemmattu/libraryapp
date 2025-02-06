@@ -6,5 +6,5 @@ module.exports = {
         '^.+\\.tsx?$': 'ts-jest',
     },
     testMatch: ['**/tests/**/*.test.ts'],
-    globalTeardown: './tests/teardown.js',
+    globalTeardown: './tests/teardown.ts',
 };
