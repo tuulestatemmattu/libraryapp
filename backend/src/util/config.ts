@@ -13,7 +13,7 @@ const GOOGLE_OAUTH_REDIRECT_URI = process.env.GOOGLE_OAUTH_REDIRECT_URI;
 
 const JWT_SECRET = process.env.JWT_SECRET || '';
 
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:' + PORT;
+const FRONTEND_URL = process.env.FRONTEND_URL || '';
 
 export {
   PORT,
