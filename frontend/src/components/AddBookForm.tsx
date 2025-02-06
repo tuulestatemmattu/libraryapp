@@ -1,7 +1,8 @@
 import React, { useState, SyntheticEvent } from 'react';
 import { BookInterface } from '../interfaces/Book';
-import StyledInput from './StyledInput';
+import StyledInput from './StyledInput/StyledInput';
 import { TextField, Button } from '@mui/material';
+import './StyledInput/StyledInput.css';
 
 interface BookFormProps {
   onSubmit: (book: BookInterface) => void;
@@ -53,7 +54,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
       </div>
       <div>
         <TextField
-          margin="normal"
+          className="styled-input"
           label="Description"
           multiline
           type="text"
@@ -61,7 +62,6 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
           value={description}
           name="description"
           onChange={({ target }) => setDescription(target.value)}
-          sx={{ width: 0.9, maxWidth: 700 }}
         />
       </div>
       <div>
