@@ -2,10 +2,11 @@ import { useState } from 'react';
 // import BookForm from './BookForm';
 interface IsbnProps {
   isbnCallHandler: (_isbn: string) => void;
+  isbn_code: string;
 }
 
-const IsbnPage = ({ isbnCallHandler }: IsbnProps) => {
-  const [isbn, setIsbn] = useState<string>('');
+const IsbnPage = ({ isbnCallHandler, isbn_code }: IsbnProps) => {
+  const [isbn, setIsbn] = useState<string>(isbn_code);
   // eslint-disable-next-line no-undef
   const handleSubmitIsbn = (event: React.SyntheticEvent) => {
     event.preventDefault();
