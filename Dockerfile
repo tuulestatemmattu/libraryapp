@@ -16,6 +16,7 @@ ENV PORT=8080
 ENV NODE_ENV=production
 RUN npm run build
 
-COPY --from=frontend /app/dist ./dist/public
+
+COPY --from=frontend /app/dist ./dist/src/public
 EXPOSE 8080
-CMD ["node", "dist/index.js"]
+CMD ["node", "dist/src/index.js"]

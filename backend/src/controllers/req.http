@@ -6,3 +6,13 @@ Content-Type: application/json
 }
 
 ###
+
+POST http://localhost:3001/api/books
+Content-Type: application/json
+
+{
+    "isbn": "978-0-7475-3269-9"    
+    
+}
+
+###
