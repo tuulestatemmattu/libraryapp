@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-
 const ScanPage = () => {
   return (
     <div>
