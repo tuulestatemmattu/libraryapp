@@ -16,7 +16,7 @@ type initialValues = BookInterface | null;
 const AddBooksPage = () => {
   const [view, setView] = useState<ViewOpt>('form');
   const [book, setBook] = useState<initialValues>(null);
-  const [isbn, setIsbn] = useState<string>('');
+  const [isbn, _] = useState<string>('');
 
   const handleIsbnSubmit = async (isbn: string) => {
     const book: BookInterface = await getBookFromIsbn(isbn);
@@ -29,9 +29,14 @@ const AddBooksPage = () => {
     setBook(addedBook);
   };
 
-  const handleScannerSubmit = (isbn: string) => {
-    setIsbn(isbn);
-    setView('isbn');
+  const handleScannerSubmit = async (isbn: string) => {
+    const book: BookInterface = await getBookFromIsbn(isbn);
+    if (book) {
+      setBook(book);
+    } else {
+      setBook({ isbn, title: '', authors: '', publishedDate: '', description: '' });
+    }
+    setView('form');
   };
 
   const Content = () => {
