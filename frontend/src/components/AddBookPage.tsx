@@ -3,7 +3,7 @@ import AddBookForm from './AddBookForm';
 import IsbnPage from './IsbnPage';
 import BarcodeScanner from './BarcodeScanner';
 import getBookFromIsbn from '../services/isbn';
-import addBook from '../services/book';
+import { addBook } from '../services/book';
 import { BookInterface } from '../interfaces/Book';
 import { Button, ButtonGroup } from '@mui/material';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';

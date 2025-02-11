@@ -1,9 +1,8 @@
 import './BookList.css';
 import BookListItem from '../BookListItem/BookListItem';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { apiBaseUrl } from '../../constants';
 import { Paper, TextField, MenuItem, Box, Grid2 } from '@mui/material';
+import { getBooks } from '../../services/book';
 
 interface Book {
   id: number;
@@ -22,8 +21,8 @@ const BookList = () => {
   const [filterType, setFilterType] = useState<keyof Book | 'all'>('all');
 
   useEffect(() => {
-    axios.get(`${apiBaseUrl}/books`).then((res) => {
-      setBooks(res.data);
+    getBooks().then((data) => {
+      setBooks(data);
     });
   }, []);
 
