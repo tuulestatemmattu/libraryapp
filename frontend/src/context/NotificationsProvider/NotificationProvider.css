@@ -1,0 +1,16 @@
+.notification {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: baseline;
+  border-radius: 15px;
+  background-color: rgba(230, 230, 230, 0.9);
+}
+
+.notif-box {
+  display: flex;
+  flex-direction: row;
+  height: 120px;
+  position: relative;
+  border-radius: 15px;
+}

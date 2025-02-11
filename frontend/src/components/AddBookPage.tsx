@@ -9,6 +9,7 @@ import { Button, ButtonGroup } from '@mui/material';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import TagIcon from '@mui/icons-material/Tag';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
+import { useNotification } from '../context/NotificationsProvider/NotificationProvider';
 
 type ViewOpt = 'form' | 'scan' | 'isbn';
 type initialValues = BookInterface | null;
@@ -17,16 +18,33 @@ const AddBooksPage = () => {
   const [view, setView] = useState<ViewOpt>('form');
   const [book, setBook] = useState<initialValues>(null);
   const [isbn, setIsbn] = useState<string>('');
+  const { showNotification } = useNotification();
 
   const handleIsbnSubmit = async (isbn: string) => {
-    const book: BookInterface = await getBookFromIsbn(isbn);
-    setBook(book);
-    setView('form');
+    try {
+      const book: BookInterface = await getBookFromIsbn(isbn);
+      setBook(book);
+      setView('form');
+    } catch (error: any) {
+      console.error('Error fetching book fron isbn', error);
+      if (error.response?.status === 400) {
+        showNotification('The given ISBN appears to be invalid. Please check the input', 'info');
+      } else {
+        showNotification('An unexpected error occured', 'error');
+      }
+    }
   };
 
   const handleManualSubmit = async (book: BookInterface) => {
-    const addedBook: BookInterface = await addBook(book);
-    setBook(addedBook);
+    try {
+      await addBook(book);
+      setBook(null);
+      return { status: 201 };
+    } catch (error) {
+      console.error('Error adding book', error);
+      setBook(book);
+      return { status: 400 };
+    }
   };
 
   const handleScannerSubmit = (isbn: string) => {

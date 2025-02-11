@@ -1,0 +1,7 @@
+.dialog-box {
+  width: 300px;
+  height: 120px;
+  border: none;
+  background-color: transparent;
+  overflow: hidden;
+}

@@ -9,11 +9,6 @@ const bookValidator = (req: Request, res: Response, next: NextFunction) => {
     return;
   }
 
-  if (!/^(19|20)\d{2}$/.test(publishedDate)) {
-    res.status(400).send({ message: 'Invalid year' });
-    return;
-  }
-
   next();
 };
 
