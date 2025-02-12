@@ -16,7 +16,7 @@ interface Book {
 }
 
 const filterOptions: (keyof Book | 'all')[] = ['all', 'title', 'authors', 'publishedDate'];
-const officeLocations: string[] = ["Helsinki", "Tampere"];
+const officeLocations: string[] = ['Helsinki', 'Tampere'];
 
 const BookList = () => {
   const [books, setBooks] = useState<Book[]>([]);
@@ -31,23 +31,22 @@ const BookList = () => {
   }, []);
 
   const filteredBooks = books.filter((book) => {
-    const filteredByLocation = location === "All"
-      ? true
-      : String(book.location).toLowerCase().includes(location.toLowerCase());
+    const filteredByLocation =
+      location === 'All'
+        ? true
+        : String(book.location).toLowerCase().includes(location.toLowerCase());
 
     if (filterType === 'all') {
       return (
-        filteredByLocation && (
-          String(book.title).toLowerCase().includes(filter.toLowerCase()) ||
+        filteredByLocation &&
+        (String(book.title).toLowerCase().includes(filter.toLowerCase()) ||
           String(book.authors).toLowerCase().includes(filter.toLowerCase()) ||
-          String(book.publishedDate).toLowerCase().includes(filter.toLowerCase())
-        )
+          String(book.publishedDate).toLowerCase().includes(filter.toLowerCase()))
       );
     }
 
     return (
-      filteredByLocation &&
-      String(book[filterType]).toLowerCase().includes(filter.toLowerCase())
+      filteredByLocation && String(book[filterType]).toLowerCase().includes(filter.toLowerCase())
     );
   });
 
@@ -56,11 +55,11 @@ const BookList = () => {
       <Paper elevation={4} className="paper-container">
         <Box className="filter-box">
           <TextField
-          select
-          label="Location"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          className="filter-select"
+            select
+            label="Location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="filter-select"
           >
             <MenuItem value="All">All</MenuItem>
             {officeLocations.map((officeLocation) => (

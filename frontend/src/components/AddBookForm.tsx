@@ -47,8 +47,8 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
   };
 
   const handleChangeLocation = (value: string) => {
-    setLocation(value)
-  }
+    setLocation(value);
+  };
 
   return (
     <form onSubmit={handleSubmit}>
