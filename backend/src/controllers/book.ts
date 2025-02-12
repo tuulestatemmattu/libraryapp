@@ -11,14 +11,14 @@ bookRouter.get('/', async (_req, res) => {
 
 bookRouter.post('/', bookValidator, async (req, res) => {
   console.log('User ID', req.UserId);
-  const { title, authors, isbn, description, publishedDate } = req.body;
+  const { title, authors, isbn, description, publishedDate, location } = req.body;
 
   try {
     const existingBook = await Book.findOne({ where: { isbn } });
 
     if (existingBook) {
       await Book.update(
-        { title, authors, description, publishedDate },
+        { title, authors, description, publishedDate, location },
         { where: { isbn }, validate: true },
       );
       const updatedBook = await Book.findOne({ where: { isbn } });
@@ -31,6 +31,7 @@ bookRouter.post('/', bookValidator, async (req, res) => {
           isbn,
           description,
           publishedDate,
+          location,
         },
         { validate: true },
       );
