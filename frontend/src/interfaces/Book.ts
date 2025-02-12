@@ -4,4 +4,5 @@ export interface BookInterface {
   isbn: string;
   publishedDate: string;
   description: string;
+  location: string;
 }

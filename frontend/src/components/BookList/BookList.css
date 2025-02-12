@@ -11,6 +11,7 @@
 
 .filter-select {
   min-width: 100px;
+  width: 15%;
 }
 
 @media (min-width: 600px) {

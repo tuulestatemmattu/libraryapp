@@ -12,14 +12,17 @@ interface Book {
   isbn: string;
   description: string;
   publishedDate: string;
+  location: string;
 }
 
 const filterOptions: (keyof Book | 'all')[] = ['all', 'title', 'authors', 'publishedDate'];
+const officeLocations: string[] = ["Helsinki", "Tampere"];
 
 const BookList = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState<keyof Book | 'all'>('all');
+  const [location, setLocation] = useState<string>('Helsinki');
 
   useEffect(() => {
     axios.get(`${apiBaseUrl}/books`).then((res) => {
@@ -28,21 +31,44 @@ const BookList = () => {
   }, []);
 
   const filteredBooks = books.filter((book) => {
+    const filteredByLocation = location === "All"
+      ? true
+      : String(book.location).toLowerCase().includes(location.toLowerCase());
+
     if (filterType === 'all') {
       return (
-        String(book.title).toLowerCase().includes(filter.toLowerCase()) ||
-        String(book.authors).toLowerCase().includes(filter.toLowerCase()) ||
-        String(book.publishedDate).toLowerCase().includes(filter.toLowerCase())
+        filteredByLocation && (
+          String(book.title).toLowerCase().includes(filter.toLowerCase()) ||
+          String(book.authors).toLowerCase().includes(filter.toLowerCase()) ||
+          String(book.publishedDate).toLowerCase().includes(filter.toLowerCase())
+        )
       );
     }
 
-    return String(book[filterType]).toLowerCase().includes(filter.toLowerCase());
+    return (
+      filteredByLocation &&
+      String(book[filterType]).toLowerCase().includes(filter.toLowerCase())
+    );
   });
 
   return (
     <>
       <Paper elevation={4} className="paper-container">
         <Box className="filter-box">
+          <TextField
+          select
+          label="Location"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          className="filter-select"
+          >
+            <MenuItem value="All">All</MenuItem>
+            {officeLocations.map((officeLocation) => (
+              <MenuItem key={officeLocation} value={officeLocation}>
+                {officeLocation}
+              </MenuItem>
+            ))}
+          </TextField>
           <TextField
             select
             label="Filter By"
