@@ -1,7 +1,8 @@
 .bookcard {
+  display: flex;
   width: 90%; /* Take most of the screen width */
   max-width: 800px; /* Prevent it from getting too large on big screens */
-  height: auto;
+  height: 80%;
   max-height: 80vh; /* Ensure it never overflows the screen height */
   overflow-y: auto; /* Allow scrolling if content overflows */
   color: black;
@@ -48,14 +49,14 @@
 }
 
 .book-card-desc {
-  font-size: 12px;
+  font-size: 13px;
   margin: 5px 0;
   color: rgb(65, 65, 65);
   line-height: 1.5;
 }
 
 .book-card-meta {
-  font-size: 12px;
+  font-size: 15px;
   color: #0e0e0e;
   margin-top: 5px;
 }
@@ -67,7 +68,7 @@
 
 .book-image {
   width: 70%;
-  height: 70%;
+
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
 }
