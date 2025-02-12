@@ -1,6 +1,9 @@
 .bookcard {
-  width: 300px;
+  width: 90%; /* Take most of the screen width */
+  max-width: 800px; /* Prevent it from getting too large on big screens */
   height: auto;
+  max-height: 80vh; /* Ensure it never overflows the screen height */
+  overflow-y: auto; /* Allow scrolling if content overflows */
   color: black;
   display: flex;
   flex-direction: column;
@@ -63,8 +66,8 @@
 }
 
 .book-image {
-  width: 100%;
-  height: auto;
+  width: 70%;
+  height: 70%;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
 }

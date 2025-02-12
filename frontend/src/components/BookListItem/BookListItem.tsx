@@ -47,6 +47,9 @@ const BookListItem = ({ book }: BookListItemProps) => {
             setOpen(false);
           }
         }}
+        sx={{
+          zIndex: 1500,
+        }}
       >
         <BookCard book={book} />
       </Backdrop>
