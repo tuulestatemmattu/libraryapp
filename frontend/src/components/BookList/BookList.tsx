@@ -1,30 +1,18 @@
 import './BookList.css';
 import BookListItem from '../BookListItem/BookListItem';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Paper, TextField, MenuItem, Box, Grid2 } from '@mui/material';
-import { getBooks } from '../../services/book';
+import { FetchedBook } from '../../interfaces/Book';
 
-interface Book {
-  id: number;
-  title: string;
-  authors: string;
-  isbn: string;
-  description: string;
-  publishedDate: string;
+const filterOptions: (keyof FetchedBook | 'all')[] = ['all', 'title', 'authors', 'publishedDate'];
+
+interface props {
+  books: FetchedBook[];
 }
 
-const filterOptions: (keyof Book | 'all')[] = ['all', 'title', 'authors', 'publishedDate'];
-
-const BookList = () => {
-  const [books, setBooks] = useState<Book[]>([]);
+const BookList = ({ books }: props) => {
   const [filter, setFilter] = useState('');
-  const [filterType, setFilterType] = useState<keyof Book | 'all'>('all');
-
-  useEffect(() => {
-    getBooks().then((data) => {
-      setBooks(data);
-    });
-  }, []);
+  const [filterType, setFilterType] = useState<keyof FetchedBook | 'all'>('all');
 
   const filteredBooks = books.filter((book) => {
     if (filterType === 'all') {
@@ -46,7 +34,7 @@ const BookList = () => {
             select
             label="Filter By"
             value={filterType}
-            onChange={(e) => setFilterType(e.target.value as keyof Book | 'all')}
+            onChange={(e) => setFilterType(e.target.value as keyof FetchedBook | 'all')}
             className="filter-select"
           >
             {filterOptions.map((option) => (
