@@ -43,4 +43,9 @@ bookRouter.post('/', bookValidator, async (req, res) => {
   }
 });
 
+bookRouter.get('/:id', async (req, res) => {
+  console.log(req.params.id);
+  res.json('details');
+});
+
 export default bookRouter;

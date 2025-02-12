@@ -20,4 +20,12 @@ const getBooks = async () => {
   return response.data;
 };
 
-export { addBook, getBooks };
+const getDetails = async (id: number) => {
+  const token = getToken();
+  const response = await axios.get(`${baseUrl}/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+export { addBook, getBooks, getDetails };
