@@ -16,7 +16,24 @@ interface Book {
 }
 
 const filterOptions: (keyof Book | 'all')[] = ['all', 'title', 'authors', 'publishedDate'];
-const officeLocations: string[] = ['Helsinki', 'Tampere'];
+const officeLocations: string[] = [
+  'Helsinki',
+  'Tampere',
+  'Copenhagen',
+  'Aarhus',
+  'Munich',
+  'Berlin',
+  'Oslo',
+  'Łódź',
+  'Malmö',
+  'Stockholm',
+  'Gothenburg',
+  'Amsterdam',
+  'Zurich',
+  'London',
+  'Southampton',
+  'Philadelphia',
+];
 
 const BookList = () => {
   const [books, setBooks] = useState<Book[]>([]);

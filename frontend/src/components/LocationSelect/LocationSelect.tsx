@@ -6,7 +6,24 @@ interface InputProps {
   onChangeLocation: (arg0: string) => void;
 }
 
-const officeLocations: string[] = ['Helsinki', 'Tampere'];
+const officeLocations: string[] = [
+  'Helsinki',
+  'Tampere',
+  'Copenhagen',
+  'Aarhus',
+  'Munich',
+  'Berlin',
+  'Oslo',
+  'Łódź',
+  'Malmö',
+  'Stockholm',
+  'Gothenburg',
+  'Amsterdam',
+  'Zurich',
+  'London',
+  'Southampton',
+  'Philadelphia',
+];
 
 const LocationSelect = ({ value, onChangeLocation }: InputProps) => {
   return (
