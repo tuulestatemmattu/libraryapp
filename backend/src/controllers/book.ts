@@ -40,7 +40,7 @@ bookRouter.post('/', bookValidator, async (req, res) => {
         );
         res.status(201).send(newBook);
       } else {
-        res.status(403).send({ message: 'must be logged in to add books' });
+        res.status(401).send({ message: 'must be logged in to add books' });
       }
     }
   } catch (error: unknown) {
@@ -73,7 +73,30 @@ bookRouter.put('/borrow/:id', async (req, res) => {
       res.status(404).send({ message: 'book does not exist' });
     }
   } else {
-    res.status(403).send({ message: 'must be logged in to borrow books' });
+    res.status(401).send({ message: 'must be logged in to borrow books' });
+  }
+});
+
+bookRouter.put('/return/:id', async (req, res) => {
+  const bookId = req.params.id;
+  const book = await Book.findOne({ where: { id: bookId } });
+
+  if (req.UserId) {
+    if (book) {
+      if (req.UserId.toString() === book.userGoogleId) {
+        book.available = true;
+
+        await book.save();
+
+        res.json(book);
+      } else {
+        res.status(403).send({ message: 'no permission to return this book' });
+      }
+    } else {
+      res.status(404).send({ message: 'book does not exist' });
+    }
+  } else {
+    res.status(401).send({ message: 'must be logged in to return books' });
   }
 });
 
