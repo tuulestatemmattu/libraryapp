@@ -1,6 +1,7 @@
 import React, { useState, SyntheticEvent } from 'react';
 import { CreatedBook } from '../interfaces/Book';
 import StyledInput from './StyledInput/StyledInput';
+import LocationSelect from './LocationSelect/LocationSelect';
 import { TextField, Button } from '@mui/material';
 import './StyledInput/StyledInput.css';
 import { useNotification } from '../context/NotificationsProvider/NotificationProvider';
@@ -16,6 +17,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
   const [isbn, setIsbn] = useState(initialValues?.isbn || '');
   const [description, setDescription] = useState(initialValues?.description || '');
   const [publishedDate, setPublishedDate] = useState(initialValues?.publishedDate || '');
+  const [location, setLocation] = useState(initialValues?.location || 'Helsinki');
   const { showNotification } = useNotification();
 
   const handleSubmit = async (e: SyntheticEvent) => {
@@ -26,6 +28,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
       isbn,
       description,
       publishedDate,
+      location,
     };
 
     try {
@@ -38,6 +41,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
         setIsbn('');
         setDescription('');
         setPublishedDate('');
+        setLocation('');
       } else {
         showNotification('Failed to add the book. Please try again!', 'error');
       }
@@ -53,6 +57,11 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
     setIsbn('');
     setDescription('');
     setPublishedDate('');
+    setLocation('');
+  };
+
+  const handleChangeLocation = (value: string) => {
+    setLocation(value);
   };
 
   return (
@@ -80,6 +89,9 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
       </div>
       <div>
         <StyledInput label="publishYear" value={publishedDate} setValue={setPublishedDate} />
+      </div>
+      <div className="location-select-div">
+        <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
       </div>
       <Button type="submit">Add</Button>
       <Button type="button" onClick={handleClear}>

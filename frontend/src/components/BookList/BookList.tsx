@@ -1,5 +1,6 @@
 import './BookList.css';
 import BookListItem from '../BookListItem/BookListItem';
+import { officeLocations } from '../../constants';
 import { useState } from 'react';
 import { Paper, TextField, MenuItem, Box, Grid2 } from '@mui/material';
 import { FetchedBook } from '../../interfaces/Book';
@@ -13,17 +14,26 @@ interface props {
 const BookList = ({ books }: props) => {
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState<keyof FetchedBook | 'all'>('all');
+  const [location, setLocation] = useState<string>('Helsinki');
 
   const filteredBooks = books.filter((book) => {
+    const filteredByLocation =
+      location === 'All'
+        ? true
+        : String(book.location).toLowerCase().includes(location.toLowerCase());
+
     if (filterType === 'all') {
       return (
-        String(book.title).toLowerCase().includes(filter.toLowerCase()) ||
-        String(book.authors).toLowerCase().includes(filter.toLowerCase()) ||
-        String(book.publishedDate).toLowerCase().includes(filter.toLowerCase())
+        filteredByLocation &&
+        (String(book.title).toLowerCase().includes(filter.toLowerCase()) ||
+          String(book.authors).toLowerCase().includes(filter.toLowerCase()) ||
+          String(book.publishedDate).toLowerCase().includes(filter.toLowerCase()))
       );
     }
 
-    return String(book[filterType]).toLowerCase().includes(filter.toLowerCase());
+    return (
+      filteredByLocation && String(book[filterType]).toLowerCase().includes(filter.toLowerCase())
+    );
   });
 
   return (
@@ -32,10 +42,32 @@ const BookList = ({ books }: props) => {
         <Box className="filter-box">
           <TextField
             select
+            label="Location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="filter-select"
+            slotProps={{
+              input: { id: 'filter-location' },
+              inputLabel: { htmlFor: 'filter-location' },
+            }}
+          >
+            <MenuItem value="All">All</MenuItem>
+            {officeLocations.map((officeLocation) => (
+              <MenuItem key={officeLocation} value={officeLocation}>
+                {officeLocation}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            select
             label="Filter By"
             value={filterType}
             onChange={(e) => setFilterType(e.target.value as keyof FetchedBook | 'all')}
             className="filter-select"
+            slotProps={{
+              input: { id: 'filter-by' },
+              inputLabel: { htmlFor: 'filter-by' },
+            }}
           >
             {filterOptions.map((option) => (
               <MenuItem key={option} value={option}>
