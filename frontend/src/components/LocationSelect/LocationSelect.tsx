@@ -1,29 +1,11 @@
 import { TextField, MenuItem } from '@mui/material';
+import { officeLocations } from '../../constants';
 import './LocationSelect.css';
 
 interface InputProps {
   value: string;
   onChangeLocation: (arg0: string) => void;
 }
-
-const officeLocations: string[] = [
-  'Helsinki',
-  'Tampere',
-  'Copenhagen',
-  'Aarhus',
-  'Munich',
-  'Berlin',
-  'Oslo',
-  'Łódź',
-  'Malmö',
-  'Stockholm',
-  'Gothenburg',
-  'Amsterdam',
-  'Zurich',
-  'London',
-  'Southampton',
-  'Philadelphia',
-];
 
 const LocationSelect = ({ value, onChangeLocation }: InputProps) => {
   return (

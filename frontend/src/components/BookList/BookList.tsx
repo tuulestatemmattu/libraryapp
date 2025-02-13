@@ -1,28 +1,11 @@
 import './BookList.css';
 import BookListItem from '../BookListItem/BookListItem';
+import { officeLocations } from '../../constants';
 import { useState } from 'react';
 import { Paper, TextField, MenuItem, Box, Grid2 } from '@mui/material';
 import { FetchedBook } from '../../interfaces/Book';
 
 const filterOptions: (keyof FetchedBook | 'all')[] = ['all', 'title', 'authors', 'publishedDate'];
-const officeLocations: string[] = [
-  'Helsinki',
-  'Tampere',
-  'Copenhagen',
-  'Aarhus',
-  'Munich',
-  'Berlin',
-  'Oslo',
-  'Łódź',
-  'Malmö',
-  'Stockholm',
-  'Gothenburg',
-  'Amsterdam',
-  'Zurich',
-  'London',
-  'Southampton',
-  'Philadelphia',
-];
 
 interface props {
   books: FetchedBook[];
