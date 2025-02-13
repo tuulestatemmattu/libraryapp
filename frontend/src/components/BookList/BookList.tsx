@@ -63,6 +63,10 @@ const BookList = ({ books }: props) => {
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             className="filter-select"
+            slotProps={{
+              input: { id: "filter-location" },
+              inputLabel: { htmlFor: "filter-location" },
+              }}
           >
             <MenuItem value="All">All</MenuItem>
             {officeLocations.map((officeLocation) => (
@@ -77,6 +81,10 @@ const BookList = ({ books }: props) => {
             value={filterType}
             onChange={(e) => setFilterType(e.target.value as keyof FetchedBook | 'all')}
             className="filter-select"
+            slotProps={{
+              input: { id: "filter-by" },
+              inputLabel: { htmlFor: "filter-by" },
+              }}
           >
             {filterOptions.map((option) => (
               <MenuItem key={option} value={option}>
