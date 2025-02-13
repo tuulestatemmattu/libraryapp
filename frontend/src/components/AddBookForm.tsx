@@ -42,6 +42,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
         showNotification('Failed to add the book. Please try again!', 'error');
       }
     } catch (error) {
+      console.error('error while adding a book', error);
       showNotification('Error occurred while adding a book', 'error');
     }
   };

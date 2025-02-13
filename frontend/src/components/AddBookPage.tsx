@@ -25,7 +25,7 @@ const AddBooksPage = () => {
       const book: CreatedBook = await getBookFromIsbn(isbn);
       setBook(book);
       setView('form');
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error fetching book fron isbn', error);
       if (error.response?.status === 400) {
         showNotification('The given ISBN appears to be invalid. Please check the input', 'info');
