@@ -3,35 +3,40 @@ import AddBookForm from './AddBookForm';
 import IsbnPage from './IsbnPage';
 import BarcodeScanner from './BarcodeScanner';
 import getBookFromIsbn from '../services/isbn';
-import addBook from '../services/book';
-import { BookInterface } from '../interfaces/Book';
+import { addBook } from '../services/book';
+import { CreatedBook } from '../interfaces/Book';
 import { Button, ButtonGroup } from '@mui/material';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import TagIcon from '@mui/icons-material/Tag';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 
 type ViewOpt = 'form' | 'scan' | 'isbn';
-type initialValues = BookInterface | null;
+type initialValues = CreatedBook | null;
 
 const AddBooksPage = () => {
   const [view, setView] = useState<ViewOpt>('form');
   const [book, setBook] = useState<initialValues>(null);
-  const [isbn, setIsbn] = useState<string>('');
+  const [isbn, _] = useState<string>('');
 
   const handleIsbnSubmit = async (isbn: string) => {
-    const book: BookInterface = await getBookFromIsbn(isbn);
+    const book: CreatedBook = await getBookFromIsbn(isbn);
     setBook(book);
     setView('form');
   };
 
-  const handleManualSubmit = async (book: BookInterface) => {
-    const addedBook: BookInterface = await addBook(book);
+  const handleManualSubmit = async (book: CreatedBook) => {
+    const addedBook: CreatedBook = await addBook(book);
     setBook(addedBook);
   };
 
-  const handleScannerSubmit = (isbn: string) => {
-    setIsbn(isbn);
-    setView('isbn');
+  const handleScannerSubmit = async (isbn: string) => {
+    const book: CreatedBook = await getBookFromIsbn(isbn);
+    if (book) {
+      setBook(book);
+    } else {
+      setBook({ isbn, title: '', authors: '', publishedDate: '', description: '', location: '' });
+    }
+    setView('form');
   };
 
   const Content = () => {

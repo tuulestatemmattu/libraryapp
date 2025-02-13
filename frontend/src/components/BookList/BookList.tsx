@@ -1,21 +1,10 @@
 import './BookList.css';
 import BookListItem from '../BookListItem/BookListItem';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { apiBaseUrl } from '../../constants';
+import { useState } from 'react';
 import { Paper, TextField, MenuItem, Box, Grid2 } from '@mui/material';
+import { FetchedBook } from '../../interfaces/Book';
 
-interface Book {
-  id: number;
-  title: string;
-  authors: string;
-  isbn: string;
-  description: string;
-  publishedDate: string;
-  location: string;
-}
-
-const filterOptions: (keyof Book | 'all')[] = ['all', 'title', 'authors', 'publishedDate'];
+const filterOptions: (keyof FetchedBook | 'all')[] = ['all', 'title', 'authors', 'publishedDate'];
 const officeLocations: string[] = [
   'Helsinki',
   'Tampere',
@@ -35,17 +24,14 @@ const officeLocations: string[] = [
   'Philadelphia',
 ];
 
-const BookList = () => {
-  const [books, setBooks] = useState<Book[]>([]);
-  const [filter, setFilter] = useState('');
-  const [filterType, setFilterType] = useState<keyof Book | 'all'>('all');
-  const [location, setLocation] = useState<string>('Helsinki');
+interface props {
+  books: FetchedBook[];
+}
 
-  useEffect(() => {
-    axios.get(`${apiBaseUrl}/books`).then((res) => {
-      setBooks(res.data);
-    });
-  }, []);
+const BookList = ({ books }: props) => {
+  const [filter, setFilter] = useState('');
+  const [filterType, setFilterType] = useState<keyof FetchedBook | 'all'>('all');
+  const [location, setLocation] = useState<string>('Helsinki');
 
   const filteredBooks = books.filter((book) => {
     const filteredByLocation =
@@ -89,7 +75,7 @@ const BookList = () => {
             select
             label="Filter By"
             value={filterType}
-            onChange={(e) => setFilterType(e.target.value as keyof Book | 'all')}
+            onChange={(e) => setFilterType(e.target.value as keyof FetchedBook | 'all')}
             className="filter-select"
           >
             {filterOptions.map((option) => (
