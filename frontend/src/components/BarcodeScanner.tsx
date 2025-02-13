@@ -8,6 +8,8 @@ interface ScannerProps {
 const BarcodeScanner = ({ isbnHandler }: ScannerProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  let alreadyScanned = false;
+
   const getVideoStream = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -22,7 +24,12 @@ const BarcodeScanner = ({ isbnHandler }: ScannerProps) => {
   };
 
   const handleBarcodeDetection = async (data: QuaggaJSResultObject) => {
+    if (alreadyScanned) {
+      return;
+    }
+
     if (data.codeResult.code) {
+      alreadyScanned = true;
       await Quagga.stop();
       Quagga.offDetected();
       isbnHandler(data.codeResult.code);

@@ -1,13 +1,13 @@
 import React, { useState, SyntheticEvent } from 'react';
-import { BookInterface } from '../interfaces/Book';
+import { CreatedBook } from '../interfaces/Book';
 import StyledInput from './StyledInput/StyledInput';
 import { TextField, Button } from '@mui/material';
 import './StyledInput/StyledInput.css';
 import { useNotification } from '../context/NotificationsProvider/NotificationProvider';
 
 interface BookFormProps {
-  onSubmit: (book: BookInterface) => Promise<{ status: number }>;
-  initialValues: BookInterface | null;
+  onSubmit: (book: CreatedBook) => Promise<{ status: number }>;
+  initialValues: CreatedBook | null;
 }
 
 const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
@@ -20,7 +20,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    const book: BookInterface = {
+    const book: CreatedBook = {
       title,
       authors,
       isbn,
