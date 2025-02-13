@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { apiBaseUrl } from '../constants';
 const baseUrl = apiBaseUrl + '/books';
-import { BookInterface } from '../interfaces/Book';
+import { CreatedBook } from '../interfaces/Book';
 import { getToken } from '../util/getToken';
 
-const addBook = async (book: BookInterface): Promise<BookInterface> => {
+const addBook = async (book: CreatedBook): Promise<CreatedBook> => {
   const token = getToken();
 
   const response = await axios.post(baseUrl, book, {
