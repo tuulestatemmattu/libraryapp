@@ -1,5 +1,5 @@
 import express from 'express';
-import Book from '../models/book';
+import { Book } from '../models';
 import bookValidator from '../util/validation';
 
 const bookRouter = express.Router();
@@ -31,6 +31,9 @@ bookRouter.post('/', bookValidator, async (req, res) => {
           isbn,
           description,
           publishedDate,
+          lastBorrowedDate: null,
+          available: true,
+          userGoogleId: req.UserId,
         },
         { validate: true },
       );
@@ -39,6 +42,21 @@ bookRouter.post('/', bookValidator, async (req, res) => {
   } catch (error: unknown) {
     if (error instanceof Error) {
       res.status(500).send({ message: error.message });
+    }
+  }
+});
+
+bookRouter.put('/borrow/:id', async (req, res) => {
+  const bookId = req.params.id;
+
+  const book = await Book.findOne({ where: { id: bookId } });
+
+  if (book) {
+    if (book.available) {
+      //const timeNow = new Date();
+      //book.lastBorrowedDate = timeNow;
+      //book.available = false
+      //book.userGoogleId = req.UserId
     }
   }
 });

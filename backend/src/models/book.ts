@@ -1,8 +1,19 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, InferAttributes, ForeignKey } from 'sequelize';
+import User from './user';
 import { sequelize } from '../util/db';
 import isIsbn from 'validator/lib/isISBN';
 
-class Book extends Model {}
+class Book extends Model<InferAttributes<Book>> {
+  declare id: number;
+  declare title: string | null;
+  declare authors: string | null;
+  declare isbn: string | null;
+  declare description: string | null;
+  declare publishedDate: string | null;
+  declare lastBorrowedDate: Date | null;
+  declare available: boolean;
+  declare userGoogleId: ForeignKey<User['google_id']>;
+}
 
 Book.init(
   {
@@ -46,6 +57,13 @@ Book.init(
       },
       allowNull: true,
     },
+    lastBorrowedDate: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    available: {
+      type: DataTypes.BOOLEAN,
+    },
   },
   {
     sequelize,
@@ -53,7 +71,5 @@ Book.init(
     modelName: 'book',
   },
 );
-
-Book.sync();
 
 export default Book;
