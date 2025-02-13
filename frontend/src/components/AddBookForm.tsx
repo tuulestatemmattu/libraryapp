@@ -26,11 +26,6 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
       publishedDate,
     };
     onSubmit(book);
-    setTitle('');
-    setAuthors('');
-    setIsbn('');
-    setDescription('');
-    setPublishedDate('');
   };
 
   const handleClear = () => {

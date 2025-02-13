@@ -25,8 +25,8 @@ const AddBooksPage = () => {
   };
 
   const handleManualSubmit = async (book: CreatedBook) => {
-    const addedBook: CreatedBook = await addBook(book);
-    setBook(addedBook);
+    await addBook(book);
+    setBook(null);
   };
 
   const handleScannerSubmit = async (isbn: string) => {
