@@ -1,6 +1,7 @@
 import React, { useState, SyntheticEvent } from 'react';
 import { CreatedBook } from '../interfaces/Book';
 import StyledInput from './StyledInput/StyledInput';
+import LocationSelect from './LocationSelect/LocationSelect';
 import { TextField, Button } from '@mui/material';
 import './StyledInput/StyledInput.css';
 
@@ -15,6 +16,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
   const [isbn, setIsbn] = useState(initialValues?.isbn || '');
   const [description, setDescription] = useState(initialValues?.description || '');
   const [publishedDate, setPublishedDate] = useState(initialValues?.publishedDate || '');
+  const [location, setLocation] = useState(initialValues?.location || 'Helsinki');
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -24,6 +26,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
       isbn,
       description,
       publishedDate,
+      location,
     };
     onSubmit(book);
     setTitle('');
@@ -31,6 +34,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
     setIsbn('');
     setDescription('');
     setPublishedDate('');
+    setLocation('');
   };
 
   const handleClear = () => {
@@ -39,6 +43,11 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
     setIsbn('');
     setDescription('');
     setPublishedDate('');
+    setLocation('');
+  };
+
+  const handleChangeLocation = (value: string) => {
+    setLocation(value);
   };
 
   return (
@@ -66,6 +75,9 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
       </div>
       <div>
         <StyledInput lable="publishYear" value={publishedDate} setValue={setPublishedDate} />
+      </div>
+      <div className="location-select-div">
+        <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
       </div>
       <Button type="submit">Add</Button>
       <Button type="button" onClick={handleClear}>

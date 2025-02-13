@@ -34,7 +34,14 @@ const AddBooksPage = () => {
     if (book) {
       setBook(book);
     } else {
-      setBook({ isbn, title: '', authors: '', publishedDate: '', description: '' });
+      setBook({
+        isbn,
+        title: '',
+        authors: '',
+        publishedDate: '',
+        description: '',
+        location: 'Helsinki',
+      });
     }
     setView('form');
   };

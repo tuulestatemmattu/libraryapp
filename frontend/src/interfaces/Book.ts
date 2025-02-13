@@ -5,6 +5,7 @@ interface FetchedBook {
   isbn: string;
   publishedDate: string;
   description: string;
+  location: string;
 }
 
 interface CreatedBook {
@@ -13,6 +14,7 @@ interface CreatedBook {
   isbn: string;
   publishedDate: string;
   description: string;
+  location: string;
 }
 
 export type { CreatedBook, FetchedBook };
