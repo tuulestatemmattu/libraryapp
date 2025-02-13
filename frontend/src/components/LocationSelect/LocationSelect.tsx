@@ -35,9 +35,9 @@ const LocationSelect = ({ value, onChangeLocation }: InputProps) => {
       className="location-select"
       style={{ marginTop: '20px' }}
       slotProps={{
-        input: { id: "location-select" },
-        inputLabel: { htmlFor: "location-select" },
-        }}
+        input: { id: 'location-select' },
+        inputLabel: { htmlFor: 'location-select' },
+      }}
     >
       {officeLocations.map((officeLocation) => (
         <MenuItem key={officeLocation} value={officeLocation}>
