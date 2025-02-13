@@ -4,9 +4,10 @@ import StyledInput from './StyledInput/StyledInput';
 import LocationSelect from './LocationSelect/LocationSelect';
 import { TextField, Button } from '@mui/material';
 import './StyledInput/StyledInput.css';
+import { useNotification } from '../context/NotificationsProvider/NotificationProvider';
 
 interface BookFormProps {
-  onSubmit: (book: CreatedBook) => void;
+  onSubmit: (book: CreatedBook) => Promise<{ status: number }>;
   initialValues: CreatedBook | null;
 }
 
@@ -17,8 +18,9 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
   const [description, setDescription] = useState(initialValues?.description || '');
   const [publishedDate, setPublishedDate] = useState(initialValues?.publishedDate || '');
   const [location, setLocation] = useState(initialValues?.location || 'Helsinki');
+  const { showNotification } = useNotification();
 
-  const handleSubmit = (e: SyntheticEvent) => {
+  const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     const book: CreatedBook = {
       title,
@@ -28,13 +30,25 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
       publishedDate,
       location,
     };
-    onSubmit(book);
-    setTitle('');
-    setAuthors('');
-    setIsbn('');
-    setDescription('');
-    setPublishedDate('');
-    setLocation('');
+
+    try {
+      const response = await onSubmit(book);
+
+      if (response?.status === 201 || response?.status === 200) {
+        showNotification('New book added successfully!', 'success');
+        setTitle('');
+        setAuthors('');
+        setIsbn('');
+        setDescription('');
+        setPublishedDate('');
+        setLocation('');
+      } else {
+        showNotification('Failed to add the book. Please try again!', 'error');
+      }
+    } catch (error) {
+      console.error('error while adding a book', error);
+      showNotification('Error occurred while adding a book', 'error');
+    }
   };
 
   const handleClear = () => {
@@ -53,13 +67,13 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <StyledInput lable="title" value={title} setValue={setTitle} />
+        <StyledInput label="title" value={title} setValue={setTitle} />
       </div>
       <div>
-        <StyledInput lable="Author" value={authors} setValue={setAuthors} />
+        <StyledInput label="Author" value={authors} setValue={setAuthors} />
       </div>
       <div>
-        <StyledInput lable="ISBN" value={isbn} setValue={setIsbn} />
+        <StyledInput label="ISBN" value={isbn} setValue={setIsbn} />
       </div>
       <div>
         <TextField
@@ -74,7 +88,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
         />
       </div>
       <div>
-        <StyledInput lable="publishYear" value={publishedDate} setValue={setPublishedDate} />
+        <StyledInput label="publishYear" value={publishedDate} setValue={setPublishedDate} />
       </div>
       <div className="location-select-div">
         <LocationSelect value={location} onChangeLocation={handleChangeLocation} />

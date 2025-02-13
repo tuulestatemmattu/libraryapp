@@ -19,7 +19,7 @@ const IsbnPage = ({ isbnCallHandler, isbn_code }: IsbnProps) => {
   return (
     <div>
       <form onSubmit={handleSubmitIsbn}>
-        <StyledInput lable="isbn" value={isbn} setValue={setIsbn} />
+        <StyledInput label="isbn" value={isbn} setValue={setIsbn} />
         <br />
         <Button type="submit">Search</Button>
       </form>
