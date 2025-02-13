@@ -27,11 +27,7 @@ const AddBooksPage = () => {
       setView('form');
     } catch (error) {
       console.error('Error fetching book fron isbn', error);
-      if (error.response?.status === 400) {
-        showNotification('The given ISBN appears to be invalid. Please check the input', 'info');
-      } else {
-        showNotification('An unexpected error occured', 'error');
-      }
+      showNotification('The given ISBN appears to be invalid. Please check the input', 'info');
     }
   };
 
