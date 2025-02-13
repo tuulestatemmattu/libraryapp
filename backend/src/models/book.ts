@@ -1,10 +1,17 @@
-import { Model, DataTypes, InferAttributes, ForeignKey } from 'sequelize';
+import {
+  Model,
+  DataTypes,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+  ForeignKey,
+} from 'sequelize';
 import User from './user';
 import { sequelize } from '../util/db';
 import isIsbn from 'validator/lib/isISBN';
 
-class Book extends Model<InferAttributes<Book>> {
-  declare id: number;
+class Book extends Model<InferAttributes<Book>, InferCreationAttributes<Book>> {
+  declare id: CreationOptional<number>;
   declare title: string | null;
   declare authors: string | null;
   declare isbn: string | null;

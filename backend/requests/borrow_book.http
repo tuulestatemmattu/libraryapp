@@ -1,0 +1,3 @@
+PUT http://localhost:3001/api/books/borrow/3
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjExNjgwOTMzMTIyMzA5NDY0NTM0OCIsImlhdCI6MTczOTQ0MzI5Nn0.dhHKzYtT3q8xTg04oNe9Sd9MtrQbNVfTxEw3G3oXiXc
