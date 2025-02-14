@@ -6,10 +6,9 @@ import { FetchedBook } from '../../interfaces/Book';
 
 interface props {
   books: FetchedBook[];
-  loction: string;
 }
 
-const BookList = ({ books, location }: props) => {
+const BookList = ({ books }: props) => {
   const [filter, setFilter] = useState('');
 
   const location: string = 'Helsinki';
