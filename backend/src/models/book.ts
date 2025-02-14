@@ -21,7 +21,6 @@ Book.init(
     },
     isbn: {
       type: DataTypes.STRING,
-      unique: true,
       validate: {
         isValidIsbn(value: string) {
           if (!isIsbn(value)) {
@@ -48,6 +47,12 @@ Book.init(
     sequelize,
     underscored: true,
     modelName: 'book',
+    indexes: [
+      {
+        unique: true,
+        fields: ['isbn', 'location'],
+      },
+    ],
   },
 );
 
