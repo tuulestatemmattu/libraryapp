@@ -2,16 +2,16 @@ import TextField from '@mui/material/TextField';
 import './StyledInput.css';
 
 interface InputProps {
-  lable: string;
+  label: string;
   value: string;
   setValue: (arg0: string) => void;
 }
 
-const StyledInput = ({ lable, value, setValue }: InputProps) => {
+const StyledInput = ({ label, value, setValue }: InputProps) => {
   return (
     <TextField
       className="styled-input"
-      label={lable}
+      label={label}
       type="text"
       variant="standard"
       value={value}
