@@ -1,4 +1,5 @@
-import { useState, useRef, ReactElement } from 'react';
+import { useState, ReactElement } from 'react';
+import React from 'react';
 import './ItemsSlider.css';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -10,7 +11,7 @@ interface Props {
 }
 
 const ItemsSlider = ({ title, children }: Props) => {
-  const scrl = useRef<HTMLDivElement>(null);
+  const scrl = React.useRef() as React.MutableRefObject<HTMLInputElement>;
   const [scrollX, setscrollX] = useState(0);
   const [scrollEnd, setScrollEnd] = useState(false);
 
