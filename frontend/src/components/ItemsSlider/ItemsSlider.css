@@ -1,0 +1,40 @@
+.scroll-item-container {
+    position: relative;
+}
+
+.scroll-button-container {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+}
+
+.scroll-button-container.left {
+    left: 5px;
+}
+
+.scroll-button-container.right {
+    right: 5px;
+}
+
+.scroll-button {
+    margin: auto;
+    padding: 3px;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 1000px;
+}
+
+.scroll-list-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.scroll-list-container::-webkit-scrollbar {
+    display: none;
+}
+
+.scroll-list-item-container {
+    padding: 6px;
+}

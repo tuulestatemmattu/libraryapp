@@ -8,68 +8,31 @@ interface Props {
   children: ReactElement[];
 }
 
-const ItemsSlider = ({ title, children }: Props) => {
+const ItemsSlider = ({ children }: Props) => {
   const scrollref = useRef<HTMLDivElement | null>(null);
   const scrollAmount = 400;
   return (
-    <div style={{ overflow: 'hidden' }}>
-      <h2>{title}</h2>
-      <div style={{ position: 'relative', backgroundColor: 'red' }}>
+    <div>
+      <div className="scroll-item-container">
         <div
-          style={{
-            justifyContent: 'space-between',
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            zIndex: 1,
+          className="scroll-button-container left"
+          onClick={() => {
+            if (scrollref.current) scrollref.current.scrollLeft -= scrollAmount;
           }}
         >
-          <div
-            style={{ margin: 'auto 0' }}
-            onClick={() => {
-              if (scrollref.current) scrollref.current.scrollLeft -= scrollAmount;
-            }}
-          >
-            <KeyboardArrowLeftIcon
-              fontSize="large"
-              style={{
-                margin: 'auto 0',
-                backgroundColor: 'rgba(255, 255, 255, 1)',
-                borderRadius: '1000px',
-                padding: '3px',
-                zIndex: 1,
-              }}
-            />
-          </div>
-          <div
-            style={{ margin: 'auto 0' }}
-            onClick={() => {
-              if (scrollref.current) scrollref.current.scrollLeft += scrollAmount;
-            }}
-          >
-            <KeyboardArrowRightIcon
-              fontSize="large"
-              style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                borderRadius: '1000px',
-                padding: '3px',
-              }}
-            />
-          </div>
+          <KeyboardArrowLeftIcon fontSize="large" className="scroll-button" />
         </div>
         <div
-          ref={scrollref}
-          style={{
-            position: 'relative',
-            display: 'flex',
-            flexDirection: 'row',
-            overflowX: 'auto',
-            scrollBehavior: 'smooth',
+          className="scroll-button-container right"
+          onClick={() => {
+            if (scrollref.current) scrollref.current.scrollLeft += scrollAmount;
           }}
         >
+          <KeyboardArrowRightIcon fontSize="large" className="scroll-button" />
+        </div>
+        <div ref={scrollref} className="scroll-list-container">
           {children.map((child) => (
-            <div style={{ padding: 20 }}>{child}</div>
+            <div className="scroll-list-item-container">{child}</div>
           ))}
         </div>
       </div>
