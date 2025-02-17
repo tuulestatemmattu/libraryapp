@@ -17,6 +17,7 @@ interface BookListItemProps {
     isbn: string;
     description: string;
     publishedDate: string;
+    location: string;
   };
 }
 

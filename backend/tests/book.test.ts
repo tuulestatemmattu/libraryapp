@@ -59,21 +59,6 @@ describe('POST /api/books', () => {
     const response = await api.post('/api/books').send(newBook);
     expect(response.status).toBe(500);
   });
-
-  it('should return 400 status for invalid publishedDate', async () => {
-    const newBook = {
-      title: 'Clean Code: A Handbook of Agile Software Craftsmanship',
-      authors: 'Robert C. Martin',
-      isbn: '9780132350884',
-      description: 'A handbook of agile software craftsmanship.',
-      publishedDate: '1800',
-    };
-
-    const response = await api.post('/api/books').send(newBook);
-
-    expect(response.status).toBe(400);
-    expect(response.body).toEqual({ message: 'Invalid year' });
-  });
 });
 
 afterAll(async () => {

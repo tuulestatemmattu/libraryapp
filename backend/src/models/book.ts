@@ -21,7 +21,6 @@ Book.init(
     },
     isbn: {
       type: DataTypes.STRING,
-      unique: true,
       validate: {
         isValidIsbn(value: string) {
           if (!isIsbn(value)) {
@@ -37,13 +36,10 @@ Book.init(
     },
     publishedDate: {
       type: DataTypes.STRING,
-      validate: {
-        isValidYear(value: string) {
-          if (!/^(19|20)\d{2}$/.test(value)) {
-            throw new Error('Model error: Invalid year');
-          }
-        },
-      },
+      allowNull: true,
+    },
+    location: {
+      type: DataTypes.STRING,
       allowNull: true,
     },
   },
@@ -51,6 +47,12 @@ Book.init(
     sequelize,
     underscored: true,
     modelName: 'book',
+    indexes: [
+      {
+        unique: true,
+        fields: ['isbn', 'location'],
+      },
+    ],
   },
 );
 
