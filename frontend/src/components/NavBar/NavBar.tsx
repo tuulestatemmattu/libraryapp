@@ -4,7 +4,7 @@ import Profile from '../Profile';
 import './NavBar.css';
 import { officeLocations } from '../../constants';
 import { LocationContext } from '../../context/LocationProvider/LocationProvider';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 
 interface navBarProps {
   profile: {
