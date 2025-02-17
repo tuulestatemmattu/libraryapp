@@ -1,42 +1,39 @@
 import './BookList.css';
 import BookListItem from '../BookListItem/BookListItem';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { apiBaseUrl } from '../../constants';
+import { officeLocations } from '../../constants';
+import { useState } from 'react';
 import { Paper, TextField, MenuItem, Box, Grid2 } from '@mui/material';
+import { FetchedBook } from '../../interfaces/Book';
 
-interface Book {
-  id: number;
-  title: string;
-  authors: string;
-  isbn: string;
-  description: string;
-  publishedDate: string;
+const filterOptions: (keyof FetchedBook | 'all')[] = ['all', 'title', 'authors', 'publishedDate'];
+
+interface props {
+  books: FetchedBook[];
 }
 
-const filterOptions: (keyof Book | 'all')[] = ['all', 'title', 'authors', 'publishedDate'];
-
-const BookList = () => {
-  const [books, setBooks] = useState<Book[]>([]);
+const BookList = ({ books }: props) => {
   const [filter, setFilter] = useState('');
-  const [filterType, setFilterType] = useState<keyof Book | 'all'>('all');
-
-  useEffect(() => {
-    axios.get(`${apiBaseUrl}/books`).then((res) => {
-      setBooks(res.data);
-    });
-  }, []);
+  const [filterType, setFilterType] = useState<keyof FetchedBook | 'all'>('all');
+  const [location, setLocation] = useState<string>('Helsinki');
 
   const filteredBooks = books.filter((book) => {
+    const filteredByLocation =
+      location === 'All'
+        ? true
+        : String(book.location).toLowerCase().includes(location.toLowerCase());
+
     if (filterType === 'all') {
       return (
-        String(book.title).toLowerCase().includes(filter.toLowerCase()) ||
-        String(book.authors).toLowerCase().includes(filter.toLowerCase()) ||
-        String(book.publishedDate).toLowerCase().includes(filter.toLowerCase())
+        filteredByLocation &&
+        (String(book.title).toLowerCase().includes(filter.toLowerCase()) ||
+          String(book.authors).toLowerCase().includes(filter.toLowerCase()) ||
+          String(book.publishedDate).toLowerCase().includes(filter.toLowerCase()))
       );
     }
 
-    return String(book[filterType]).toLowerCase().includes(filter.toLowerCase());
+    return (
+      filteredByLocation && String(book[filterType]).toLowerCase().includes(filter.toLowerCase())
+    );
   });
 
   return (
@@ -45,10 +42,32 @@ const BookList = () => {
         <Box className="filter-box">
           <TextField
             select
+            label="Location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="filter-select"
+            slotProps={{
+              input: { id: 'filter-location' },
+              inputLabel: { htmlFor: 'filter-location' },
+            }}
+          >
+            <MenuItem value="All">All</MenuItem>
+            {officeLocations.map((officeLocation) => (
+              <MenuItem key={officeLocation} value={officeLocation}>
+                {officeLocation}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            select
             label="Filter By"
             value={filterType}
-            onChange={(e) => setFilterType(e.target.value as keyof Book | 'all')}
+            onChange={(e) => setFilterType(e.target.value as keyof FetchedBook | 'all')}
             className="filter-select"
+            slotProps={{
+              input: { id: 'filter-by' },
+              inputLabel: { htmlFor: 'filter-by' },
+            }}
           >
             {filterOptions.map((option) => (
               <MenuItem key={option} value={option}>

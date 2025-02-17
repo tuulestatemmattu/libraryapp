@@ -17,6 +17,7 @@ class Book extends Model<InferAttributes<Book>, InferCreationAttributes<Book>> {
   declare isbn: string | null;
   declare description: string | null;
   declare publishedDate: string | null;
+  declare location: string | null;
   declare lastBorrowedDate: Date | null;
   declare available: boolean;
   declare userGoogleId: ForeignKey<User['google_id']>;
@@ -39,7 +40,6 @@ Book.init(
     },
     isbn: {
       type: DataTypes.STRING,
-      unique: true,
       validate: {
         isValidIsbn(value: string) {
           if (!isIsbn(value)) {
@@ -55,13 +55,10 @@ Book.init(
     },
     publishedDate: {
       type: DataTypes.STRING,
-      validate: {
-        isValidYear(value: string) {
-          if (!/^(19|20)\d{2}$/.test(value)) {
-            throw new Error('Model error: Invalid year');
-          }
-        },
-      },
+      allowNull: true,
+    },
+    location: {
+      type: DataTypes.STRING,
       allowNull: true,
     },
     lastBorrowedDate: {
@@ -76,6 +73,12 @@ Book.init(
     sequelize,
     underscored: true,
     modelName: 'book',
+    indexes: [
+      {
+        unique: true,
+        fields: ['isbn', 'location'],
+      },
+    ],
   },
 );
 
