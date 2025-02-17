@@ -22,8 +22,8 @@ const BookCard: React.FC<BookListItemProps> = ({ book }) => {
   return (
     <Card
       sx={{
-        width: '80%',
-        height: '80vh',
+        width: '85%',
+        height: '85vh',
         margin: 'auto',
         my: 4,
         display: 'flex',
@@ -33,7 +33,7 @@ const BookCard: React.FC<BookListItemProps> = ({ book }) => {
       {/* Top: Book Cover */}
       <CardMedia
         component="img"
-        sx={{ height: '50%', objectFit: 'contain' }}
+        sx={{ height: '50%', objectFit: 'contain', paddingTop: 2 }}
         image="https://m.media-amazon.com/images/I/91VvijsCGIL._AC_UF894,1000_QL80_.jpg"
         alt="book cover"
       />
@@ -47,13 +47,31 @@ const BookCard: React.FC<BookListItemProps> = ({ book }) => {
           overflow: 'hidden', // prevents overflowing content
         }}
       >
-        <Typography gutterBottom variant="h4" component="div">
-          {book.title}
-        </Typography>
-        <Typography variant="subtitle1" color="text.secondary">
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+
+            marginBottom: '10',
+          }}
+        >
+          <Typography gutterBottom variant="h4" component="div" fontSize={15}>
+            {book.title}
+          </Typography>
+          <CardActions sx={{ padding: 0, alignSelf: 'start' }}>
+            <Button
+              size="small"
+              variant="contained"
+              sx={{ fontSize: 10, marginBottom: 1, marginLeft: 1 }}
+            >
+              Borrow
+            </Button>
+          </CardActions>
+        </Box>
+        <Typography variant="subtitle1" color="text.secondary" fontSize={10}>
           <strong>Author:</strong> {book.authors}
         </Typography>
-        <Typography variant="subtitle1" color="text.secondary">
+        <Typography variant="subtitle1" color="text.secondary" fontSize={10}>
           <strong>Published:</strong> {book.publishedDate}
         </Typography>
         <Box
@@ -64,19 +82,13 @@ const BookCard: React.FC<BookListItemProps> = ({ book }) => {
             pr: 1, // space for scrollbar
           }}
         >
-          <Typography variant="body1">{book.description}</Typography>
+          <Typography variant="body1" fontSize={10}>
+            {book.description}
+          </Typography>
         </Box>
       </CardContent>
 
       {/* Bottom: Action Buttons */}
-      <CardActions>
-        <Button size="small" variant="contained">
-          Borrow
-        </Button>
-        <Button size="small" variant="contained">
-          Return
-        </Button>
-      </CardActions>
     </Card>
   );
 };
