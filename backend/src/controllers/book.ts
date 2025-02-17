@@ -4,9 +4,26 @@ import bookValidator from '../util/validation';
 
 const bookRouter = express.Router();
 
-bookRouter.get('/', async (_req, res) => {
+bookRouter.get('/', async (req, res) => {
   const books = await Book.findAll();
-  res.send(books);
+
+  if (req.UserId) {
+    const userId = req.UserId.toString();
+
+    const mapBooks = (book: Book, id: string) => {
+      const bookData = book.dataValues;
+      const { userGoogleId, ...bookWithoutId } = bookData;
+      if (userGoogleId === id && !bookData.available) {
+        return { ...bookWithoutId, borrowedByMe: true };
+      } else {
+        return { ...bookWithoutId, borrowedByMe: false };
+      }
+    };
+    const booksWithBorrowInfo = books.map((book) => mapBooks(book, userId));
+    res.send(booksWithBorrowInfo);
+  } else {
+    res.status(401).send({ message: 'must be logged in to get books' });
+  }
 });
 
 bookRouter.post('/', bookValidator, async (req, res) => {
