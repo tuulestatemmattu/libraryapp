@@ -1,8 +1,9 @@
 import './BookList.css';
 import BookListItem from '../BookListItem/BookListItem';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Paper, TextField, Box, Grid2 } from '@mui/material';
 import { FetchedBook } from '../../interfaces/Book';
+import { LocationContext } from '../../context/LocationProvider/LocationProvider';
 
 interface props {
   books: FetchedBook[];
@@ -10,14 +11,10 @@ interface props {
 
 const BookList = ({ books }: props) => {
   const [filter, setFilter] = useState('');
-
-  const location: string = 'Helsinki';
+  const [location, _setLocation] = useContext(LocationContext);
 
   const filteredBooks = books.filter((book) => {
-    const filteredByLocation =
-      location === 'All'
-        ? true
-        : String(book.location).toLowerCase().includes(location.toLowerCase());
+    const filteredByLocation = String(book.location).toLowerCase().includes(location.toLowerCase());
     return (
       filteredByLocation &&
       (String(book.title).toLowerCase().includes(filter.toLowerCase()) ||
