@@ -1,6 +1,5 @@
 services:
   frontend-dev:
-    image: libraryapp-frontend-dev
     build:
       context: ./frontend
       dockerfile: dev.Dockerfile
@@ -12,7 +11,6 @@ services:
     container_name: frontend-dev
 
   backend-dev:
-    image: libraryapp-backend-dev
     build:
       context: ./backend
       dockerfile: dev.Dockerfile
@@ -32,6 +30,18 @@ services:
       db:
         condition: service_healthy
     container_name: backend-dev
+
+  e2e:
+    build:
+      context: ./e2e
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./e2e:/app
+      - /app/node_modules
+    environment:
+      FRONTEND_URL: http://frontend-dev:5173
+      BACKEND_URL: http://backend-dev:3001
+    container_name: e2e
 
   db:
     image: postgres

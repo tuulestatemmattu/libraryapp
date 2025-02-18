@@ -22,3 +22,4 @@ Setup guide [here](./development_environment_setup.md).
 * `make testfront`: Runt unit tests for frontend
 * `make lint`: Lints both frontend & backend
 * `make prettier`: Runs prettier for both frontend & backend
+* `make e2e`: Run e2e tests
