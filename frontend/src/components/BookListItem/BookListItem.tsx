@@ -47,6 +47,7 @@ const BookListItem = ({ book }: BookListItemProps) => {
               position: 'absolute',
               bottom: 8,
               right: 8,
+              fontWeight: 'bold',
               backgroundColor: isAvailable ? 'green' : 'red',
               color: 'white',
               '.MuiChip-icon': {

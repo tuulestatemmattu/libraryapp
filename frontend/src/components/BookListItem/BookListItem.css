@@ -12,49 +12,51 @@
 
 .book-card-content {
   text-align: left;
-  padding: 8px !important;
+  padding: 1vw !important;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 700px) {
   .book-card-content {
-    padding: 16px !important;
+    padding: 7px !important;
   }
 }
 
 .book-title {
-  font-size: 1rem !important;
+  font-size: 20px !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-@media (min-width: 600px) {
+@media (max-width: 800px) {
   .book-title {
-    font-size: 1.25rem !important;
-  }
-}
-
-@media (min-width: 900px) {
-  .book-title {
-    font-size: 1.5rem !important;
+    font-size: 2.5vw !important;
   }
 }
 
 .book-authors {
-  font-size: 0.75rem !important;
+  font-size: 16px !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-@media (min-width: 600px) {
+@media (max-width: 800px) {
   .book-authors {
-    font-size: 0.875rem !important;
+    font-size: 2vw !important;
   }
 }
 
-@media (min-width: 900px) {
-  .book-authors {
-    font-size: 1rem !important;
+
+@media (max-width: 600px) {
+  .card-chip {
+    font-size: 2.2vw !important;
+    height: auto !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+
+  .card-chip .MuiChip-icon {
+    font-size: 3.7vw;
   }
 }
