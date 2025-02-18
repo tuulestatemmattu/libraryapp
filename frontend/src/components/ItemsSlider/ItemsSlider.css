@@ -1,5 +1,6 @@
 .scroll-item-container {
   position: relative;
+  margin: 6px;
 }
 
 .scroll-button-container {
@@ -24,7 +25,6 @@
 }
 
 .scroll-list-container {
-  position: relative;
   display: flex;
   flex-direction: row;
   overflow-x: auto;
@@ -36,5 +36,14 @@
 }
 
 .scroll-list-item-container {
-  padding: 6px;
+  width: 30vw;
+  max-width: 250px;
+  margin: 0 8px;
+}
+
+.scroll-list-item-container > .book-card {
+  width: 30vw;
+  max-width: 250px;
+
+  
 }

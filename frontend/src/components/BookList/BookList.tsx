@@ -1,14 +1,13 @@
 import './BookList.css';
 import BookListItem from '../BookListItem/BookListItem';
 import { useContext, useState } from 'react';
-import { Paper, TextField, Box, Grid2 } from '@mui/material';
+import { Input, Box, Grid2 } from '@mui/material';
 import { FetchedBook } from '../../interfaces/Book';
 import { LocationContext } from '../../context/LocationProvider/LocationProvider';
 
 interface props {
   books: FetchedBook[];
 }
-
 
 const BookList = ({ books }: props) => {
   const [filter, setFilter] = useState('');
@@ -26,19 +25,25 @@ const BookList = ({ books }: props) => {
 
   return (
     <>
-      <Paper elevation={4} className="paper-container">
-        <Box className="filter-box">
-          <TextField
-            fullWidth
-            placeholder="Search"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-          />
-        </Box>
-      </Paper>
+      Books in office
+      <Box className="filter-box">
+        <Input
+          disableUnderline={true}
+          placeholder="Search books in office"
+          style={{
+            backgroundColor: 'rgba(230, 230, 230, 1)',
+            color: 'rgb(50, 50, 50)',
+            borderRadius: '100px',
+            padding: '3px 10px',
+            width: '100%',
+          }}
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+        />
+      </Box>
       <Grid2 container spacing={1} wrap="wrap" className="grid-container">
         {filteredBooks.map((book) => (
-          <BookListItem key={book.id} book={book}/>
+          <BookListItem key={book.id} book={book} />
         ))}
       </Grid2>
     </>

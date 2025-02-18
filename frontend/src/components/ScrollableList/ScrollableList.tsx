@@ -3,15 +3,19 @@ import BookListItem from '../BookListItem/BookListItem';
 import { FetchedBook } from '../../interfaces/Book';
 
 interface props {
+  title: string;
   books: FetchedBook[];
 }
-const ScrollableList = ({ books }: props) => {
+const ScrollableList = ({ title, books }: props) => {
   return (
-    <ItemsSlider title="stuff">
-      {books.map((book: FetchedBook) => (
-        <BookListItem key={book.id} book={book} />
-      ))}
-    </ItemsSlider>
+    <div>
+      {title}
+      <ItemsSlider>
+        {books.map((book: FetchedBook) => (
+          <BookListItem key={book.id} book={book} />
+        ))}
+      </ItemsSlider>
+    </div>
   );
 };
 

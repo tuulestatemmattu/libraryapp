@@ -1,12 +1,8 @@
-.paper-container {
-  padding: 16px;
-  margin-bottom: 16px;
-}
-
 .filter-box {
   display: flex;
-  gap: 16px;
   align-items: center;
+  margin-bottom: 5px;
+  border-radius: 100px;
 }
 
 .filter-select {
