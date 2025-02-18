@@ -6,6 +6,9 @@ interface FetchedBook {
   publishedDate: string;
   description: string;
   location: string;
+  borrowedByMe: boolean;
+  available: boolean;
+  lastBorrowedDate: Date;
 }
 
 interface CreatedBook {

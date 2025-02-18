@@ -1,7 +1,12 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, InferAttributes } from 'sequelize';
 import { sequelize } from '../util/db';
 
-class User extends Model {}
+class User extends Model<InferAttributes<User>> {
+  declare google_id: string;
+  declare email: string;
+  declare picture: string;
+  declare name: string;
+}
 
 User.init(
   {
@@ -32,7 +37,5 @@ User.init(
     modelName: 'user',
   },
 );
-
-User.sync();
 
 export default User;

@@ -1,0 +1,3 @@
+PUT http://localhost:3001/api/books/borrow/2
+Content-type: application/json
+Authorization: 
