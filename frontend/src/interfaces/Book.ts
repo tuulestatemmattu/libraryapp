@@ -6,6 +6,7 @@ interface FetchedBook {
   publishedDate: string;
   description: string;
   location: string;
+  available: boolean;
 }
 
 interface CreatedBook {

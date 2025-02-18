@@ -11,6 +11,7 @@ interface props {
   books: FetchedBook[];
 }
 
+
 const BookList = ({ books }: props) => {
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState<keyof FetchedBook | 'all'>('all');
@@ -83,9 +84,9 @@ const BookList = ({ books }: props) => {
           />
         </Box>
       </Paper>
-      <Grid2 container spacing={2} wrap="wrap" className="grid-container">
+      <Grid2 container spacing={1} wrap="wrap" className="grid-container">
         {filteredBooks.map((book) => (
-          <BookListItem key={book.id} book={book} />
+          <BookListItem key={book.id} book={book}/>
         ))}
       </Grid2>
     </>
