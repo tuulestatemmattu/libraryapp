@@ -2,7 +2,7 @@ import { Request, Response, Router } from 'express';
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 
-import User from '../models/user';
+import { User } from '../models';
 import {
   FRONTEND_URL,
   GOOGLE_CLIENT_ID,
