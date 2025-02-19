@@ -9,4 +9,9 @@ const syncModels = async () => {
   await Book.sync({ alter: true });
 };
 
-export { syncModels, Book, User };
+const resetTables = async () => {
+  await Book.destroy({ where: {} });
+  await User.destroy({ where: {} });
+};
+
+export { syncModels, resetTables, Book, User };
