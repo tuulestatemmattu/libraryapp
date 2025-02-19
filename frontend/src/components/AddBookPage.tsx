@@ -21,13 +21,12 @@ const AddBooksPage = () => {
   const { showNotification } = useNotification();
 
   const handleIsbnSubmit = async (isbn: string) => {
-    try {
-      const book: CreatedBook = await getBookFromIsbn(isbn);
+    const book = await getBookFromIsbn(isbn);
+    if (book) {
       setBook(book);
       setView('form');
-    } catch (error) {
-      console.error('Error fetching book fron isbn', error);
-      showNotification('The given ISBN appears to be invalid. Please check the input', 'info');
+    } else {
+      showNotification('The given ISBN not found in the database. Please check the input', 'info');
     }
   };
 
@@ -44,7 +43,7 @@ const AddBooksPage = () => {
   };
 
   const handleScannerSubmit = async (isbn: string) => {
-    const book: CreatedBook = await getBookFromIsbn(isbn);
+    const book = await getBookFromIsbn(isbn);
     if (book) {
       setBook(book);
     } else {
