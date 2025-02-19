@@ -16,7 +16,7 @@ const sampleBook = {
 };
 
 const sampleBook2 = {
-  title: 'Harry Potter and the Sorcerer\'s Stone',
+  title: "Harry Potter and the Sorcerer's Stone",
   authors: 'J. K. Rowling',
   isbn: '9780590353427',
   description: 'The book that started the magic.',
@@ -24,12 +24,11 @@ const sampleBook2 = {
   location: 'Helsinki',
 };
 
-
 jest.mock('../src/util/middleware', () => ({
   tokenExtractor: jest.fn((req, _res, next) => {
     req.UserId = 'sample_google_id';
     next();
-  })
+  }),
 }));
 
 beforeAll(async () => {
@@ -111,7 +110,8 @@ describe('POST /api/books', () => {
 
   it('should update an existing book and return correct book', async () => {
     await api.post('/api/books').send({
-      ...sampleBook2, isbn: sampleBook.isbn
+      ...sampleBook2,
+      isbn: sampleBook.isbn,
     });
 
     const response = await api.post('/api/books').send(sampleBook);

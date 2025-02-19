@@ -5,11 +5,11 @@ import bookValidator from '../util/validation';
 const bookRouter = express.Router();
 
 bookRouter.get('/', async (req, res) => {
-  if(!req.UserId) {
+  if (!req.UserId) {
     res.status(401).send({ message: 'must be logged in to get books' });
     return;
   }
-  
+
   const books = await Book.findAll();
   const userId = req.UserId.toString();
 
