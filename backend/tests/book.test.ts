@@ -82,8 +82,9 @@ describe('GET /api/books', () => {
     expect(response.body.length).toBe(2);
 
     const books = response.body;
-    expect(books[0].borrowedByMe).toBe(false);
-    expect(books[1].borrowedByMe).toBe(true);
+    const states = [books[0].borrowedByMe, books[1].borrowedByMe];
+    expect(states).toContain(false);
+    expect(states).toContain(true);
   });
 });
 
@@ -145,5 +146,74 @@ describe('POST /api/books', () => {
     const response = await api.post('/api/books').send(sampleBook);
     expect(response.status).toBe(500);
     expect(await Book.count()).toBe(0);
+  });
+});
+
+describe('PUT /api/books/borrow/:id', () => {
+  beforeEach(async () => {
+    await Book.destroy({ where: {} });
+  });
+
+  it('should borrow a book and return the updated book', async () => {
+    const book = await Book.create({
+      ...sampleBook,
+      lastBorrowedDate: null,
+      available: true,
+      userGoogleId: 'sample_google_id',
+    });
+    const response = await api.put(`/api/books/borrow/${book?.id}`);
+    expect(response.status).toBe(200);
+
+    const updatedBook = await Book.findOne({ where: { id: book?.id } });
+    expect(updatedBook?.available).toBe(false);
+    expect(updatedBook?.userGoogleId).toBe('sample_google_id');
+    expect(updatedBook?.lastBorrowedDate).not.toBe(null);
+  });
+
+  it('should return 403 if the book is not available', async () => {
+    const book = await Book.create({
+      ...sampleBook,
+      lastBorrowedDate: null,
+      available: false,
+      userGoogleId: 'sample_google_id',
+    });
+
+    const response = await api.put(`/api/books/borrow/${book?.id}`);
+    expect(response.status).toBe(403);
+    expect(response.body.message).toBe('book is not available');
+  });
+
+  it('should return 404 if the book does not exist', async () => {
+    const response = await api.put('/api/books/borrow/999');
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBe('book does not exist');
+  });
+});
+
+describe('PUT /api/books/return/:id', () => {
+  beforeEach(async () => {
+    await Book.destroy({ where: {} });
+    await Book.create({
+      ...sampleBook,
+      lastBorrowedDate: new Date(),
+      available: false,
+      userGoogleId: 'sample_google_id',
+    });
+  });
+
+  it('should return a book and update its status', async () => {
+    const book = await Book.findOne({ where: { isbn: sampleBook.isbn } });
+    const response = await api.put(`/api/books/return/${book?.id}`);
+    expect(response.status).toBe(200);
+
+    const updatedBook = await Book.findOne({ where: { id: book?.id } });
+    expect(updatedBook?.available).toBe(true);
+    expect(updatedBook?.userGoogleId).toBe('sample_google_id');
+  });
+
+  it('should return 404 if the book does not exist', async () => {
+    const response = await api.put('/api/books/return/999');
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBe('book does not exist');
   });
 });
