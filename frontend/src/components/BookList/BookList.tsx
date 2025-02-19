@@ -37,7 +37,7 @@ const BookList = ({ books }: props) => {
   });
 
   return (
-    <>
+    <div>
       <Paper elevation={4} className="paper-container">
         <Box className="filter-box">
           <TextField
@@ -83,12 +83,14 @@ const BookList = ({ books }: props) => {
           />
         </Box>
       </Paper>
-      <Grid2 container spacing={2} wrap="wrap" className="grid-container">
-        {filteredBooks.map((book) => (
-          <BookListItem key={book.id} book={book} />
-        ))}
-      </Grid2>
-    </>
+      <section>
+        <Grid2 container spacing={2} wrap="wrap" className="grid-container">
+          {filteredBooks.map((book) => (
+            <BookListItem key={book.id} book={book} />
+          ))}
+        </Grid2>
+      </section>
+    </div>
   );
 };
 

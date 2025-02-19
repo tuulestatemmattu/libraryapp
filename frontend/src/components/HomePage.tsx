@@ -11,9 +11,9 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div>
+    <article>
       <BookList books={books} />
-    </div>
+    </article>
   );
 };
 
