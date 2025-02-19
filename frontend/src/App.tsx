@@ -8,6 +8,7 @@ import AddBooksPage from './components/AddBookPage';
 import NavBar from './components/NavBar/NavBar';
 import FloatingButton from './components/FloatingButton/FloatingButton';
 import { NotificationProvider } from './context/NotificationsProvider/NotificationProvider';
+import { LocationProvider } from './context/LocationProvider/LocationProvider';
 
 import './style.css';
 
@@ -20,18 +21,21 @@ const App = () => {
 
   return (
     <NotificationProvider>
-      <BrowserRouter>
-        <NavBar profile={profile} logOut={logOut} />
-        <div className="page-content">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/scan" element={<ScanPage />} />
-            <Route path="/addBooks" element={<AddBooksPage />} />
-          </Routes>
-        </div>
+      <LocationProvider>
+        <NavBar profile={profile} logOut={logOut}>
+          <BrowserRouter>
+            <div className="page-content">
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/scan" element={<ScanPage />} />
+                <Route path="/addBooks" element={<AddBooksPage />} />
+              </Routes>
+            </div>
 
-        <FloatingButton />
-      </BrowserRouter>
+            <FloatingButton />
+          </BrowserRouter>
+        </NavBar>
+      </LocationProvider>
     </NotificationProvider>
   );
 };
