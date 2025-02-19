@@ -34,6 +34,7 @@ jest.mock('../src/util/middleware/tokenExtractor', () => ({
     req.admin = true;
     next();
   }),
+  }),
 }));
 
 beforeAll(async () => {
