@@ -4,7 +4,9 @@ import User from './user';
 User.hasMany(Book);
 Book.belongsTo(User);
 
-User.sync({ alter: true });
-Book.sync({ alter: true });
+const syncModels = async () => {
+    await User.sync({ alter: true });
+    await Book.sync({ alter: true });
+};
 
-export { Book, User };
+export { syncModels, Book, User };
