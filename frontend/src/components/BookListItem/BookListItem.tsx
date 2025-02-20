@@ -7,18 +7,11 @@ import CardActionArea from '@mui/material/CardActionArea';
 import { Backdrop } from '@mui/material';
 import { useState } from 'react';
 import BookCard from '../BookCard/BookCard';
+import { FetchedBook } from '../../interfaces/Book';
 //import { getDetails } from '../../services/book';
 
 interface BookListItemProps {
-  book: {
-    id: number;
-    title: string;
-    authors: string;
-    isbn: string;
-    description: string;
-    publishedDate: string;
-    location: string;
-  };
+  book: FetchedBook;
 }
 
 const BookListItem = ({ book }: BookListItemProps) => {
