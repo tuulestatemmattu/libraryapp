@@ -45,7 +45,7 @@ const BookListItem = ({ book }: BookListItemProps) => {
           zIndex: 1500,
         }}
       >
-        <BookCard book={book} />
+        <BookCard book={book} setOpen={setOpen} />
       </Backdrop>
     </Card>
   );

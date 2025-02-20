@@ -11,9 +11,14 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 interface props {
   book: FetchedBook;
+  setOpen: (open: boolean) => void;
 }
 
-const BookCard = ({ book }: props) => {
+const BookCard = ({ book, setOpen }: props) => {
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const borrowBook = (e: SyntheticEvent) => {
     e.preventDefault();
     console.log('borrowing');
@@ -42,7 +47,7 @@ const BookCard = ({ book }: props) => {
           height: '60%',
         }}
       >
-        <Button sx={{ alignSelf: 'flex-start', minWidth: 0 }}>
+        <Button sx={{ alignSelf: 'flex-start', minWidth: 0 }} onClick={handleClose}>
           <ClearIcon fontSize="small" />
         </Button>
         <CardMedia
