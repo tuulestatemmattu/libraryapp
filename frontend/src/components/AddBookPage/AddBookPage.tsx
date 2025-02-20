@@ -1,15 +1,17 @@
 import { useState } from 'react';
-import AddBookForm from './AddBookForm';
-import IsbnPage from './IsbnPage';
-import BarcodeScanner from './BarcodeScanner';
-import getBookFromIsbn from '../services/isbn';
-import { addBook } from '../services/book';
-import { CreatedBook } from '../interfaces/Book';
+import AddBookForm from '../AddBookForm';
+import IsbnPage from '../IsbnPage';
+import BarcodeScanner from '../BarcodeScanner';
+import getBookFromIsbn from '../../services/isbn';
+import { addBook } from '../../services/book';
+import { CreatedBook } from '../../interfaces/Book';
 import { Button, ButtonGroup } from '@mui/material';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import TagIcon from '@mui/icons-material/Tag';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
-import { useNotification } from '../context/NotificationsProvider/NotificationProvider';
+import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
+import '../../style.css';
+import './AddBookPage.css';
 
 type ViewOpt = 'form' | 'scan' | 'isbn';
 type initialValues = CreatedBook | null;
@@ -26,7 +28,7 @@ const AddBooksPage = () => {
       setBook(book);
       setView('form');
     } catch (error) {
-      console.error('Error fetching book fron isbn', error);
+      console.error('Error fetching book from ISBN', error);
       showNotification('The given ISBN appears to be invalid. Please check the input', 'info');
     }
   };
@@ -61,32 +63,32 @@ const AddBooksPage = () => {
   };
 
   const Content = () => {
-    if (view == 'form') {
+    if (view === 'form') {
       return <AddBookForm onSubmit={handleManualSubmit} initialValues={book} />;
     }
-    if (view == 'isbn') {
+    if (view === 'isbn') {
       return <IsbnPage isbnCallHandler={handleIsbnSubmit} isbn_code={isbn} />;
     }
-    if (view == 'scan') {
+    if (view === 'scan') {
       return <BarcodeScanner isbnHandler={handleScannerSubmit} />;
     }
   };
 
   return (
-    <div>
+    <article>
       <ButtonGroup variant="contained">
         <Button variant="contained" onClick={() => setView('form')}>
-          <TextFieldsIcon style={{ marginRight: 5 }} /> form
+          <TextFieldsIcon className="icon" /> form
         </Button>
         <Button variant="contained" onClick={() => setView('isbn')}>
-          <TagIcon style={{ marginRight: 5 }} /> isbn
+          <TagIcon className="icon" /> isbn
         </Button>
         <Button variant="contained" onClick={() => setView('scan')}>
-          <QrCodeScannerIcon style={{ marginRight: 5 }} /> scan
+          <QrCodeScannerIcon className="icon" /> scan
         </Button>
       </ButtonGroup>
       <Content />
-    </div>
+    </article>
   );
 };
 

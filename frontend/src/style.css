@@ -7,6 +7,23 @@ body {
   background-color: lightgrey;
 }
 
+article {
+  margin-top: 10px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: blue;
+  font-family: inherit;
+}
+
+section {
+  background-color: brown;
+  text-align: left;
+}
 .page-content {
   margin-top: 70px; /*margin for navbar*/
+  /* container: w3; */
+  margin-left: auto;
+  margin-right: auto;
+  display: flexbox;
 }
