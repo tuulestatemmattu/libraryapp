@@ -10,7 +10,7 @@ test.beforeEach(async ({ page, context }) => {
   const cookies = await context.cookies(BACKEND_URL);
   await context.addCookies(
     cookies.map((cookie) => {
-      return { ...cookie, domain: 'frontend-dev' }
+      return { ...cookie, domain: 'frontend-e2e' }
     })
   );
 });
