@@ -1,11 +1,17 @@
 # Setting up a development environment
-1. Install docker. For Ubuntu/Cubbli, [this guide](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository) seems to work well.
-2. Add your user to docker group. For Ubuntu/Cubbli:
-```
-   sudo groupadd docker
-   sudo usermod -aG docker $USER
-   newgrp docker
-```
+1. Install docker.
+   * If you are using Cubbli, read [these instructions](https://version.helsinki.fi/cubbli/cubbli-help/-/wikis/sudo) carefully. Then, follow [these steps](https://version.helsinki.fi/cubbli/cubbli-help/-/wikis/Docker). Finally, run
+     
+      ```
+         sudo apt install docker-compose-plugin
+      ```
+   * For Ubuntu, [this guide](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository) seems to work well. After installation, add your user to docker group:
+     
+      ```
+         sudo groupadd docker
+         sudo usermod -aG docker $USER
+         newgrp docker
+      ```
 3. Clone the project repository.
 4. Set up Google OAuth API
     * Go to [Google API Console](https://console.cloud.google.com/apis/dashboard)
