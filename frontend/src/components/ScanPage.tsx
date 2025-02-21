@@ -19,7 +19,7 @@ const placeholderBook: FetchedBook = {
   location: 'Helsinki',
   borrowedByMe: false,
   available: false,
-  lastBorrowedDate: null,
+  lastBorrowedDate: new Date(),
 };
 
 const ScanPage = ({ books }: ScanPageProps) => {

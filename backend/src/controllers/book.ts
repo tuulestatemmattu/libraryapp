@@ -50,7 +50,7 @@ bookRouter.post('/', bookValidator, async (req, res) => {
             description,
             publishedDate,
             location,
-            lastBorrowedDate: null,
+            lastBorrowedDate: new Date(),
             available: true,
             userGoogleId: req.UserId.toString(),
           },
