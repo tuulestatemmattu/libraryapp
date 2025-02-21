@@ -6,8 +6,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { FetchedBook } from '../../interfaces/Book';
-import { SyntheticEvent } from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
+import { borrowBook, returnBook } from '../../services/book';
 
 interface props {
   book: FetchedBook;
@@ -19,15 +19,26 @@ const BookCard = ({ book, setOpen }: props) => {
     setOpen(false);
   };
 
-  const borrowBook = (e: SyntheticEvent) => {
-    e.preventDefault();
-    console.log('borrowing');
+  const handleBorrow = async (id: number) => {
+    try {
+      const response = await borrowBook(id);
+      console.log(response);
+      window.location.reload();
+    } catch (error) {
+      console.error('Failed to borrow the book:', error);
+    }
   };
 
-  const returnBook = (e: SyntheticEvent) => {
-    e.preventDefault();
-    console.log('return');
+  const handleReturn = async (id: number) => {
+    try {
+      const response = await returnBook(id);
+      console.log(response);
+      window.location.reload();
+    } catch (error) {
+      console.error('Failed to borrow the book:', error);
+    }
   };
+
   return (
     <Card
       sx={{
@@ -91,7 +102,7 @@ const BookCard = ({ book, setOpen }: props) => {
                 size="small"
                 variant="contained"
                 sx={{ fontSize: 10, marginBottom: 1, marginLeft: 1 }}
-                onClick={returnBook}
+                onClick={() => handleReturn(book.id)}
               >
                 Return
               </Button>
@@ -100,7 +111,7 @@ const BookCard = ({ book, setOpen }: props) => {
                 size="small"
                 variant="contained"
                 sx={{ fontSize: 10, marginBottom: 1, marginLeft: 1 }}
-                onClick={borrowBook}
+                onClick={() => handleBorrow(book.id)}
               >
                 Borrow
               </Button>
