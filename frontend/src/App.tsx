@@ -11,9 +11,17 @@ import { NotificationProvider } from './context/NotificationsProvider/Notificati
 import { LocationProvider } from './context/LocationProvider/LocationProvider';
 
 import './style.css';
+import { FetchedBook } from './interfaces/Book';
+import { useEffect, useState } from 'react';
+import { getBooks } from './services/book';
 
 const App = () => {
   const { profile, login, logOut } = useGoogleAuth();
+  const [books, setBooks] = useState<FetchedBook[]>([]);
+
+  useEffect(() => {
+    getBooks().then((result) => setBooks(result));
+  }, []);
 
   if (!profile) {
     return <SignInPage login={login} />;
@@ -26,8 +34,8 @@ const App = () => {
           <BrowserRouter>
             <div className="page-content">
               <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/scan" element={<ScanPage />} />
+                <Route path="/" element={<HomePage books={books} />} />
+                <Route path="/scan" element={<ScanPage books={books} />} />
                 <Route path="/addBooks" element={<AddBooksPage />} />
               </Routes>
             </div>

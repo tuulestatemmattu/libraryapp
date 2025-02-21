@@ -8,7 +8,7 @@ interface FetchedBook {
   location: string;
   borrowedByMe: boolean;
   available: boolean;
-  lastBorrowedDate: Date;
+  lastBorrowedDate: Date | null;
 }
 
 interface CreatedBook {

@@ -6,16 +6,10 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { FetchedBook } from '../../interfaces/Book';
 
 interface BookListItemProps {
-  book: {
-    id: number;
-    title: string;
-    authors: string;
-    isbn: string;
-    description: string;
-    publishedDate: string;
-  };
+  book: FetchedBook;
 }
 
 const BookCard: React.FC<BookListItemProps> = ({ book }) => {

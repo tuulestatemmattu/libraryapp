@@ -42,7 +42,7 @@ const AddBooksPage = () => {
     }
   };
 
-  const handleScannerSubmit = async (isbn: string) => {
+  const handleScannerSubmit = async (isbn: string): Promise<boolean> => {
     const book = await getBookFromIsbn(isbn);
     if (book) {
       setBook(book);
@@ -57,6 +57,7 @@ const AddBooksPage = () => {
       });
     }
     setView('form');
+    return false; // tels the scanner to not restart
   };
 
   const Content = () => {

@@ -2,12 +2,13 @@ import { useRef, useEffect, useState } from 'react';
 import Quagga, { QuaggaJSResultObject } from '@ericblade/quagga2';
 
 interface ScannerProps {
-  isbnHandler: (isbn: string) => void;
+  isbnHandler: (isbn: string) => Promise<boolean> | boolean;
 }
 
 const BarcodeScanner = ({ isbnHandler }: ScannerProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [showWarning, setShowWarning] = useState<boolean>(false);
+  const restartScanning = useRef(false);
 
   let alreadyScanned: boolean;
   let detectedCodes: { [key: string]: number };
@@ -39,8 +40,18 @@ const BarcodeScanner = ({ isbnHandler }: ScannerProps) => {
     if (detectedCodes[code] >= 5) {
       alreadyScanned = true;
       await Quagga.stop();
-      Quagga.offDetected();
-      isbnHandler(code);
+
+      // if isbnHandler returns true, restarts scanner after 3000ms
+      restartScanning.current = await isbnHandler(code);
+
+      if (restartScanning.current) {
+        setTimeout(() => {
+          restartScanning.current = false;
+          alreadyScanned = false;
+          detectedCodes = {};
+          initScanner();
+        }, 3000);
+      }
     }
   };
 
