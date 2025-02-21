@@ -30,19 +30,18 @@ const App = () => {
   return (
     <NotificationProvider>
       <LocationProvider>
-        <NavBar profile={profile} logOut={logOut}>
-          <BrowserRouter>
-            <div className="page-content">
-              <Routes>
-                <Route path="/" element={<HomePage books={books} />} />
-                <Route path="/scan" element={<ScanPage books={books} />} />
-                <Route path="/addBooks" element={<AddBooksPage />} />
-              </Routes>
-            </div>
-
-            <FloatingButton />
-          </BrowserRouter>
-        </NavBar>
+        <BrowserRouter>
+          <NavBar profile={profile} logOut={logOut} />
+          <div className="page-content">
+            <Routes>
+              <Route path="/" element={<HomePage books={books} />} />
+              <Route path="/scan" element={<ScanPage books={books} />} />
+              <Route path="/addBooks" element={<AddBooksPage />} />
+            </Routes>
+          </div>
+          <FloatingButton />
+          <FloatingButton />
+        </BrowserRouter>
       </LocationProvider>
     </NotificationProvider>
   );
