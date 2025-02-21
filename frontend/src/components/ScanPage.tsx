@@ -1,8 +1,9 @@
 import BarcodeScanner from './BarcodeScanner';
 import { Backdrop } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import BookCard from './BookCard/BookCard';
 import { FetchedBook } from '../interfaces/Book';
+import { useNotification } from '../context/NotificationsProvider/NotificationProvider';
 
 interface ScanPageProps {
   books: FetchedBook[];
@@ -24,27 +25,23 @@ const placeholderBook: FetchedBook = {
 const ScanPage = ({ books }: ScanPageProps) => {
   const [open, setOpen] = useState(false);
   const [scannedBook, setScannedBook] = useState<FetchedBook>(placeholderBook);
-  const [isbnFound, setIsbnFound] = useState<string | null>(null);
-  const isMounted = useRef(false);
+  const [isbn, setIsbn] = useState<string | null>(null);
+  const { showNotification } = useNotification();
 
   useEffect(() => {
-    if (isMounted.current) {
-      if (isbnFound) {
-        const matchingBooks = books.filter((book) => book.isbn === isbnFound);
-        if (matchingBooks.length > 0) {
-          setScannedBook(matchingBooks[0]);
-          setOpen(true);
-        }
+    if (isbn) {
+      const matchingBooks = books.filter((book) => book.isbn === isbn);
+      if (matchingBooks.length > 0) {
+        setScannedBook(matchingBooks[0]);
+        setOpen(true);
       } else {
-        console.log('book not in database');
+        showNotification('Book was not found in the database', 'info');
       }
-    } else {
-      isMounted.current = true;
     }
-  }, [isbnFound]);
+  }, [isbn]);
 
   const isbnHandler = (isbn: string): boolean => {
-    setIsbnFound(isbn);
+    setIsbn(isbn);
     return true; // tells the scanner to restart after a timeout
   };
 
@@ -57,6 +54,7 @@ const ScanPage = ({ books }: ScanPageProps) => {
         onClick={(e) => {
           if (e.currentTarget === e.target) {
             setOpen(false);
+            setIsbn(null);
           }
         }}
         sx={{
