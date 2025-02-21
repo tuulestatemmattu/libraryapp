@@ -17,9 +17,10 @@ interface BookListItemProps {
 }
 
 const BookListItem = ({ book }: BookListItemProps) => {
-  const isAvailable = book.available;
-
   const [open, setOpen] = useState(false);
+
+  const isAvailable = book.available;
+  const BorrowedByMe = book.borrowedByMe;
 
   return (
     <Card variant="outlined" className="book-card">
@@ -32,15 +33,15 @@ const BookListItem = ({ book }: BookListItemProps) => {
             className="book-card-image"
           />
           <Chip
-            label={isAvailable ? 'Avaible' : 'Unavaible'}
-            icon={isAvailable ? <CheckCircle /> : <Cancel />}
+            label={isAvailable ? 'Avaible' : BorrowedByMe ? 'Your book' : 'Unavaible'}
+            icon={isAvailable ? <CheckCircle /> : BorrowedByMe ? <CheckCircle /> : <Cancel />}
             className="card-chip"
             sx={{
               position: 'absolute',
               bottom: 8,
               right: 8,
               fontWeight: 'bold',
-              backgroundColor: isAvailable ? 'green' : 'red',
+              backgroundColor: isAvailable ? 'green' : BorrowedByMe ? 'blue' : 'red',
               color: 'white',
               '.MuiChip-icon': {
                 color: 'white',
@@ -49,7 +50,7 @@ const BookListItem = ({ book }: BookListItemProps) => {
           />
         </Box>
         <CardContent className="book-card-content">
-          <Typography gutterBottom variant="h5" component="div" className="book-title">
+          <Typography variant="h5" component="div" className="book-title">
             {book.title}
           </Typography>
           <Typography gutterBottom variant="body2" component="div" className="book-authors">
