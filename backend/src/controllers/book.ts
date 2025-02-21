@@ -72,7 +72,6 @@ bookRouter.put('/borrow/:id', async (req, res) => {
   const bookId = req.params.id;
 
   const book = await Book.findOne({ where: { id: bookId } });
-
   if (req.UserId) {
     if (book) {
       if (book.available) {
