@@ -61,7 +61,7 @@ const ScanPage = ({ books }: ScanPageProps) => {
           zIndex: 1500,
         }}
       >
-        <BookCard book={scannedBook} />
+        <BookCard book={scannedBook} setOpen={setOpen} />
       </Backdrop>
     </div>
   );
