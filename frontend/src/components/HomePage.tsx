@@ -1,16 +1,12 @@
 import BookList from './BookList/BookList';
-import { getBooks } from '../services/book';
-import { useEffect, useState } from 'react';
 import { FetchedBook } from '../interfaces/Book';
 import ScrollableList from './ScrollableList/ScrollableList';
 
-const HomePage = () => {
-  const [books, setBooks] = useState<FetchedBook[]>([]);
+interface HomePageProps {
+  books: FetchedBook[];
+}
 
-  useEffect(() => {
-    getBooks().then((result) => setBooks(result));
-  }, []);
-
+const HomePage = ({ books }: HomePageProps) => {
   return (
     <div>
       <ScrollableList

@@ -18,7 +18,7 @@ class Book extends Model<InferAttributes<Book>, InferCreationAttributes<Book>> {
   declare description: string | null;
   declare publishedDate: string | null;
   declare location: string | null;
-  declare lastBorrowedDate: Date | null;
+  declare lastBorrowedDate: Date;
   declare available: boolean;
   declare userGoogleId: ForeignKey<User['google_id']>;
 }
