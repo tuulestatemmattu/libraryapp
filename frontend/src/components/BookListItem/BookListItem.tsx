@@ -7,21 +7,13 @@ import CardActionArea from '@mui/material/CardActionArea';
 import { Backdrop } from '@mui/material';
 import { useState } from 'react';
 import BookCard from '../BookCard/BookCard';
+import { FetchedBook } from '../../interfaces/Book';
 //import { getDetails } from '../../services/book';
 import { Box, Chip } from '@mui/material';
 import { Cancel, CheckCircle } from '@mui/icons-material';
 
 interface BookListItemProps {
-  book: {
-    id: number;
-    title: string;
-    authors: string;
-    isbn: string;
-    description: string;
-    publishedDate: string;
-    location: string;
-    available: boolean;
-  };
+  book: FetchedBook;
 }
 
 const BookListItem = ({ book }: BookListItemProps) => {
@@ -76,7 +68,7 @@ const BookListItem = ({ book }: BookListItemProps) => {
           zIndex: 1500,
         }}
       >
-        <BookCard book={book} />
+        <BookCard book={book} setOpen={setOpen} />
       </Backdrop>
     </Card>
   );

@@ -30,7 +30,6 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
       publishedDate,
       location,
     };
-    onSubmit(book);
 
     try {
       const response = await onSubmit(book);
