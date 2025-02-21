@@ -36,11 +36,11 @@ const App = () => {
             <Routes>
               <Route path="/" element={<HomePage books={books} />} />
               <Route path="/scan" element={<ScanPage books={books} />} />
-              <Route path="/addBooks" element={<AddBooksPage />} />
+              <Route path="/addBook" element={<AddBooksPage />} />
             </Routes>
           </div>
-          <FloatingButton />
-          <FloatingButton />
+          <FloatingButton type="scan" />
+          <FloatingButton type="add" />
         </BrowserRouter>
       </LocationProvider>
     </NotificationProvider>
