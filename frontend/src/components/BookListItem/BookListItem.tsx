@@ -45,7 +45,6 @@ const BookListItem = ({ book }: BookListItemProps) => {
               color: 'white',
               '.MuiChip-icon': {
                 color: 'white',
-                color: 'white',
               },
             }}
           />
