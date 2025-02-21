@@ -57,7 +57,7 @@ const BookListItem = ({ book }: BookListItemProps) => {
           />
         </Box>
         <CardContent className="book-card-content">
-          <Typography gutterBottom variant="h5" component="div" className="book-title">
+          <Typography variant="h5" component="div" className="book-title">
             {book.title}
           </Typography>
           <Typography gutterBottom variant="body2" component="div" className="book-authors">
