@@ -4,28 +4,26 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
+import { Backdrop } from '@mui/material';
+import { useState } from 'react';
+import BookCard from '../BookCard/BookCard';
+import { FetchedBook } from '../../interfaces/Book';
+//import { getDetails } from '../../services/book';
 import { Box, Chip } from '@mui/material';
 import { Cancel, CheckCircle } from '@mui/icons-material';
 
 interface BookListItemProps {
-  book: {
-    id: number;
-    title: string;
-    authors: string;
-    isbn: string;
-    description: string;
-    publishedDate: string;
-    location: string;
-    available: boolean;
-  };
+  book: FetchedBook;
 }
 
 const BookListItem = ({ book }: BookListItemProps) => {
+  const [open, setOpen] = useState(false);
+
   const isAvailable = book.available;
 
   return (
     <Card variant="outlined" className="book-card">
-      <CardActionArea className="book-card-action">
+      <CardActionArea className="book-card-action" onClick={() => setOpen(true)}>
       <Box sx={{ position: 'relative' }}>
           <CardMedia
             component="img"
@@ -65,6 +63,19 @@ const BookListItem = ({ book }: BookListItemProps) => {
           </Typography>
         </CardContent>
       </CardActionArea>
+      <Backdrop
+        open={open}
+        onClick={(e) => {
+          if (e.currentTarget === e.target) {
+            setOpen(false);
+          }
+        }}
+        sx={{
+          zIndex: 1500,
+        }}
+      >
+        <BookCard book={book} setOpen={setOpen} />
+      </Backdrop>
     </Card>
   );
 };

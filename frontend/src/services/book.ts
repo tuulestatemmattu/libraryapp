@@ -20,4 +20,36 @@ const getBooks = async () => {
   return response.data;
 };
 
-export { addBook, getBooks };
+const getDetails = async (id: number) => {
+  const token = getToken();
+  const response = await axios.get(`${baseUrl}/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+const borrowBook = async (id: number) => {
+  const token = getToken();
+  const response = await axios.put(
+    `${baseUrl}/borrow/${id}`,
+    {}, //PUT pyynnöt tarvii tähän tyhjän objektin, koska headerit on vasta kolmas parametri
+    {
+      headers: { authorization: `Bearer ${token}` },
+    },
+  );
+  return response.data;
+};
+
+const returnBook = async (id: number) => {
+  const token = getToken();
+  const response = await axios.put(
+    `${baseUrl}/return/${id}`,
+    {}, //PUT pyynnöt tarvii tähän tyhjän objektin, koska headerit on vasta kolmas parametri
+    {
+      headers: { authorization: `Bearer ${token}` },
+    },
+  );
+  return response.data;
+};
+
+export { addBook, getBooks, getDetails, borrowBook, returnBook };
