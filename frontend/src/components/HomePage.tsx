@@ -16,7 +16,7 @@ const HomePage = () => {
       <ScrollableList
         title="Your books"
         books={books
-          /* .filter((book) => book.borrowedByMe) */
+          .filter((book) => book.borrowedByMe)
           .sort((b1, b2) =>
             b1.lastBorrowedDate === b2.lastBorrowedDate
               ? 0
