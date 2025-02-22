@@ -17,14 +17,14 @@ test.beforeEach(async ({ page, context }) => {
 
 test('Manual add', async ({ page, context }) => {
   await page.goto(FRONTEND_URL);
-  await page.locator('.floatingbutton').click();
+  await page.getByLabel('Add book').click();
 
   await page.getByLabel('title').fill('Test book');
   await page.getByLabel('Author').fill('Test author');
   await page.getByLabel('ISBN').fill('978-1-4028-9462-6');
   await page.getByLabel('Description').fill('Test description');
   await page.getByLabel('publishYear').fill('2021');
-  await page.getByRole('button', { name: 'Add' }).click();
+  await page.getByRole('button', { name: 'Add', exact: true }).click();
 
   await page.waitForSelector('text=Book added successfully');
 });
