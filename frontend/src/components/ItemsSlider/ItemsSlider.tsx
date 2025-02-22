@@ -31,7 +31,9 @@ const ItemsSlider = ({ children }: Props) => {
         </div>
         <div ref={scrollref} className="scroll-list-container">
           {children.map((child) => (
-            <div className="scroll-list-item-container">{child}</div>
+            <div className="scroll-list-item-container" key={child.key}>
+              {child}
+            </div>
           ))}
         </div>
       </div>
