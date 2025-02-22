@@ -4,7 +4,6 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import './ItemsSlider.css';
 
 interface Props {
-  title: string;
   children: ReactElement[];
 }
 

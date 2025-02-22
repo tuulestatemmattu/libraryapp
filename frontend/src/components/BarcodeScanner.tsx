@@ -1,14 +1,17 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import Quagga, { QuaggaJSResultObject } from '@ericblade/quagga2';
 
 interface ScannerProps {
-  isbnHandler: (isbn: string) => void;
+  isbnHandler: (isbn: string) => Promise<boolean> | boolean;
 }
 
 const BarcodeScanner = ({ isbnHandler }: ScannerProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [showWarning, setShowWarning] = useState<boolean>(false);
+  const restartScanning = useRef(false);
 
-  let alreadyScanned = false;
+  let alreadyScanned: boolean;
+  let detectedCodes: { [key: string]: number };
 
   const getVideoStream = async () => {
     try {
@@ -24,15 +27,31 @@ const BarcodeScanner = ({ isbnHandler }: ScannerProps) => {
   };
 
   const handleBarcodeDetection = async (data: QuaggaJSResultObject) => {
-    if (alreadyScanned) {
+    const code = data.codeResult.code;
+    if (alreadyScanned || !code) {
       return;
     }
 
-    if (data.codeResult.code) {
+    detectedCodes[code] = ++detectedCodes[code] || 1;
+    if (Object.keys(detectedCodes).length >= 3) {
+      setShowWarning(true);
+    }
+
+    if (detectedCodes[code] >= 5) {
       alreadyScanned = true;
       await Quagga.stop();
-      Quagga.offDetected();
-      isbnHandler(data.codeResult.code);
+
+      // if isbnHandler returns true, restarts scanner after 3000ms
+      restartScanning.current = await isbnHandler(code);
+
+      if (restartScanning.current) {
+        setTimeout(() => {
+          restartScanning.current = false;
+          alreadyScanned = false;
+          detectedCodes = {};
+          initScanner();
+        }, 3000);
+      }
     }
   };
 
@@ -48,6 +67,7 @@ const BarcodeScanner = ({ isbnHandler }: ScannerProps) => {
           decoder: {
             readers: ['ean_reader'],
           },
+          frequency: 20,
         },
         async function (err) {
           if (err) {
@@ -63,12 +83,15 @@ const BarcodeScanner = ({ isbnHandler }: ScannerProps) => {
   };
 
   useEffect(() => {
+    alreadyScanned = false;
+    detectedCodes = {};
     getVideoStream();
     initScanner();
   }, []);
 
   return (
     <div>
+      {showWarning && <p>Warning: Many different codes have been scanned.</p>}
       <p>Scan barcode with camera</p>
       <video ref={videoRef} autoPlay></video>
     </div>
