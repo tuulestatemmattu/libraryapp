@@ -1,24 +1,20 @@
 import BookList from './BookList/BookList';
-import { getBooks } from '../services/book';
-import { useEffect, useState } from 'react';
 import { FetchedBook } from '../interfaces/Book';
 import ScrollableList from './ScrollableList/ScrollableList';
 import '../style.css';
 
-const HomePage = () => {
-  const [books, setBooks] = useState<FetchedBook[]>([]);
+interface HomePageProps {
+  books: FetchedBook[];
+}
 
-  useEffect(() => {
-    getBooks().then((result) => setBooks(result));
-  }, []);
-
+const HomePage = ({ books }: HomePageProps) => {
   return (
     <article>
       <h2>
         <ScrollableList
           title="Your books"
           books={books
-            /* .filter((book) => book.borrowedByMe) */
+            .filter((book) => book.borrowedByMe)
             .sort((b1, b2) =>
               b1.lastBorrowedDate === b2.lastBorrowedDate
                 ? 0

@@ -13,7 +13,6 @@ export const useGoogleAuth = () => {
   useEffect(() => {
     const cookies = document.cookie.split('; ').map((cookie) => cookie.split('='));
 
-    console.log(cookies);
     const userCookie = cookies.find((cookie) => cookie[0] === 'user');
     if (userCookie) {
       const decodedValue = decodeURIComponent(userCookie[1]);

@@ -1,10 +1,11 @@
-import { Typography, Toolbar, Box, AppBar, Link, Select, MenuItem } from '@mui/material';
+import { Typography, Toolbar, Box, AppBar, Select, MenuItem } from '@mui/material';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import Profile from '../Profile';
 import './NavBar.css';
 import { officeLocations } from '../../constants';
 import { LocationContext } from '../../context/LocationProvider/LocationProvider';
 import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface navBarProps {
   profile: {
@@ -13,11 +14,12 @@ interface navBarProps {
     picture: string;
   };
   logOut: () => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const NavBar: React.FC<navBarProps> = ({ profile, logOut, children }) => {
   const [location, setLocation] = useContext(LocationContext);
+  const navigate = useNavigate();
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -35,10 +37,13 @@ const NavBar: React.FC<navBarProps> = ({ profile, logOut, children }) => {
       <Box>
         <AppBar style={{ backgroundColor: '#FFC107' }}>
           <Toolbar style={{ justifyContent: 'space-between' }}>
-            <Typography variant="h6" component="div" className="typemenuicon">
-              <Link href="/" color="inherit" underline="none">
-                <MenuBookIcon className="menuicon" />
-              </Link>
+            <Typography
+              variant="h6"
+              component="div"
+              className="typmenuicon"
+              onClick={() => navigate('/')}
+            >
+              <MenuBookIcon className="menuicon" />
             </Typography>
             <Select
               className="location-box"

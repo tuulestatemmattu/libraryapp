@@ -1,6 +1,8 @@
 import ItemsSlider from '../ItemsSlider/ItemsSlider';
 import BookListItem from '../BookListItem/BookListItem';
 import { FetchedBook } from '../../interfaces/Book';
+import { Card, CardContent } from '@mui/material';
+import './YourBooks.css';
 
 interface props {
   title: string;
@@ -11,9 +13,13 @@ const ScrollableList = ({ title, books }: props) => {
     <div>
       {title}
       <ItemsSlider>
-        {books.map((book: FetchedBook) => (
-          <BookListItem key={book.id} book={book} />
-        ))}
+        {books.length
+          ? books.map((book: FetchedBook) => <BookListItem key={book.id} book={book} />)
+          : [...Array(1).keys()].map((i) => (
+              <Card className="book-card book-card-placeholdre" key={i}>
+                <CardContent>You haven't borrowed any books.</CardContent>
+              </Card>
+            ))}
       </ItemsSlider>
     </div>
   );

@@ -5,7 +5,7 @@ import bookValidator from '../util/validation';
 const bookRouter = express.Router();
 
 bookRouter.get('/', async (req, res) => {
-  const books = await Book.findAll();
+  const books = await Book.findAll({ attributes: { exclude: ['createdAt', 'updatedAt'] } });
 
   if (req.UserId) {
     const userId = req.UserId.toString();
@@ -50,7 +50,7 @@ bookRouter.post('/', bookValidator, async (req, res) => {
             description,
             publishedDate,
             location,
-            lastBorrowedDate: null,
+            lastBorrowedDate: new Date(),
             available: true,
             userGoogleId: req.UserId.toString(),
           },
@@ -72,7 +72,6 @@ bookRouter.put('/borrow/:id', async (req, res) => {
   const bookId = req.params.id;
 
   const book = await Book.findOne({ where: { id: bookId } });
-
   if (req.UserId) {
     if (book) {
       if (book.available) {
@@ -116,6 +115,11 @@ bookRouter.put('/return/:id', async (req, res) => {
   } else {
     res.status(401).send({ message: 'must be logged in to return books' });
   }
+});
+
+bookRouter.get('/:id', async (req, res) => {
+  console.log(req.params.id);
+  res.json('details');
 });
 
 export default bookRouter;
