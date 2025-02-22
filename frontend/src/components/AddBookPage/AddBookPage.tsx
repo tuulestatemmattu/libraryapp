@@ -76,18 +76,22 @@ const AddBooksPage = () => {
 
   return (
     <article>
-      <ButtonGroup variant="contained">
-        <Button variant="contained" onClick={() => setView('form')}>
-          <TextFieldsIcon className="icon" /> form
-        </Button>
-        <Button variant="contained" onClick={() => setView('isbn')}>
-          <TagIcon className="icon" /> isbn
-        </Button>
-        <Button variant="contained" onClick={() => setView('scan')}>
-          <QrCodeScannerIcon className="icon" /> scan
-        </Button>
-      </ButtonGroup>
-      <Content />
+      <div className="center">
+        <ButtonGroup variant="contained" className="piupau">
+          <Button className="button" variant="contained" onClick={() => setView('form')}>
+            <TextFieldsIcon className="icon" /> form
+          </Button>
+          <Button className="button" variant="contained" onClick={() => setView('isbn')}>
+            <TagIcon className="icon" /> isbn
+          </Button>
+          <Button className="button" variant="contained" onClick={() => setView('scan')}>
+            <QrCodeScannerIcon className="icon" /> scan
+          </Button>
+        </ButtonGroup>
+      </div>
+      <section className="baba">
+        <Content />
+      </section>
     </article>
   );
 };

@@ -25,7 +25,7 @@ const BookList = ({ books }: props) => {
 
   return (
     <>
-      Books in office
+      <h2>Books in office</h2>
       <Box className="filter-box">
         <Input
           disableUnderline={true}
@@ -35,11 +35,13 @@ const BookList = ({ books }: props) => {
           onChange={(e) => setFilter(e.target.value)}
         />
       </Box>
-      <Grid2 container spacing={1} wrap="wrap" className="grid-container">
-        {filteredBooks.map((book) => (
-          <BookListItem key={book.id} book={book} />
-        ))}
-      </Grid2>
+      <section className="books-container">
+        <Grid2 container spacing={1} wrap="wrap" className="grid-container">
+          {filteredBooks.map((book) => (
+            <BookListItem key={book.id} book={book} />
+          ))}
+        </Grid2>
+      </section>
     </>
   );
 };

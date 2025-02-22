@@ -3,25 +3,29 @@
   font-family: 'Roboto', serif;
 }
 
+h2 {
+  font-family: inherit;
+  font-size: medium;
+}
+
 body {
-  background-color: lightgrey;
+  background-color: #f0f0ec;
 }
 
 article {
+  justify-content: flex;
   margin-top: 10px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: blue;
   font-family: inherit;
 }
 
 section {
-  background-color: brown;
-  text-align: left;
+  /* background-color: blueviolet; */
 }
 .page-content {
-  margin-top: 70px; /*margin for navbar*/
+  margin-top: 80px; /*margin for navbar*/
   /* container: w3; */
   margin-left: auto;
   margin-right: auto;

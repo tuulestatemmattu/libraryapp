@@ -3,6 +3,7 @@ import { getBooks } from '../services/book';
 import { useEffect, useState } from 'react';
 import { FetchedBook } from '../interfaces/Book';
 import ScrollableList from './ScrollableList/ScrollableList';
+import '../style.css';
 
 const HomePage = () => {
   const [books, setBooks] = useState<FetchedBook[]>([]);
@@ -13,18 +14,21 @@ const HomePage = () => {
 
   return (
     <article>
-      <ScrollableList
-        title="Your books"
-        books={books
-          /* .filter((book) => book.borrowedByMe) */
-          .sort((b1, b2) =>
-            b1.lastBorrowedDate === b2.lastBorrowedDate
-              ? 0
-              : b1.lastBorrowedDate < b2.lastBorrowedDate
-                ? -1
-                : 1,
-          )}
-      />
+      <h2>
+        <ScrollableList
+          title="Your books"
+          books={books
+            /* .filter((book) => book.borrowedByMe) */
+            .sort((b1, b2) =>
+              b1.lastBorrowedDate === b2.lastBorrowedDate
+                ? 0
+                : b1.lastBorrowedDate < b2.lastBorrowedDate
+                  ? -1
+                  : 1,
+            )}
+        />
+      </h2>
+
       <BookList
         books={books.sort(
           (b1, b2) =>

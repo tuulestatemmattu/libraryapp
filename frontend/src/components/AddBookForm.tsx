@@ -6,6 +6,8 @@ import { TextField, Button } from '@mui/material';
 import './StyledInput/StyledInput.css';
 import { useNotification } from '../context/NotificationsProvider/NotificationProvider';
 
+import '../style.css';
+
 interface BookFormProps {
   onSubmit: (book: CreatedBook) => Promise<{ status: number }>;
   initialValues: CreatedBook | null;
@@ -66,39 +68,41 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <StyledInput label="title" value={title} setValue={setTitle} />
-      </div>
-      <div>
-        <StyledInput label="Author" value={authors} setValue={setAuthors} />
-      </div>
-      <div>
-        <StyledInput label="ISBN" value={isbn} setValue={setIsbn} />
-      </div>
-      <div>
-        <TextField
-          className="styled-input"
-          label="Description"
-          multiline
-          type="text"
-          variant="standard"
-          value={description}
-          name="description"
-          onChange={({ target }) => setDescription(target.value)}
-        />
-      </div>
-      <div>
-        <StyledInput label="publishYear" value={publishedDate} setValue={setPublishedDate} />
-      </div>
-      <div className="location-select-div">
-        <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
-      </div>
-      <Button type="submit">Add</Button>
-      <Button type="button" onClick={handleClear}>
-        Clear
-      </Button>
-    </form>
+    <article>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <StyledInput label="title" value={title} setValue={setTitle} />
+        </div>
+        <div>
+          <StyledInput label="Author" value={authors} setValue={setAuthors} />
+        </div>
+        <div>
+          <StyledInput label="ISBN" value={isbn} setValue={setIsbn} />
+        </div>
+        <div>
+          <TextField
+            className="styled-input"
+            label="Description"
+            multiline
+            type="text"
+            variant="standard"
+            value={description}
+            name="description"
+            onChange={({ target }) => setDescription(target.value)}
+          />
+        </div>
+        <div>
+          <StyledInput label="publishYear" value={publishedDate} setValue={setPublishedDate} />
+        </div>
+        <div className="location-select-div">
+          <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
+        </div>
+        <Button type="submit">Add</Button>
+        <Button type="button" onClick={handleClear}>
+          Clear
+        </Button>
+      </form>
+    </article>
   );
 };
 
