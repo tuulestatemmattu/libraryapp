@@ -35,7 +35,7 @@ const NavBar: React.FC<navBarProps> = ({ profile, logOut, children }) => {
   return (
     <div>
       <Box>
-        <AppBar>
+        <AppBar style={{ backgroundColor: '#FFC107' }}>
           <Toolbar style={{ justifyContent: 'space-between' }}>
             <Typography
               variant="h6"
@@ -43,10 +43,10 @@ const NavBar: React.FC<navBarProps> = ({ profile, logOut, children }) => {
               className="typmenuicon"
               onClick={() => navigate('/')}
             >
-              <MenuBookIcon className="menuicon" />
+              <MenuBookIcon className="typemenuicon" />
             </Typography>
             <Select
-              className="loction-box"
+              className="location-box"
               value={location}
               onChange={({ target }) => setLocation(target.value)}
               sx={{
