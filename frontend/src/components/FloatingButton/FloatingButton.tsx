@@ -11,7 +11,7 @@ interface FloatingButtonProps {
 const FloatingButton = ({ type }: FloatingButtonProps) => {
   const navigate = useNavigate();
 
-  const url = type === 'scan' ? '/addBook?view=scan' : '/addBook';
+  const url = type === 'scan' ? '/scan' : '/addBook?view=scan';
   const marginRight = type === 'scan' ? 70 : 0;
   const icon =
     type === 'scan' ? <LocalSee className="floatingIcon" /> : <AddIcon className="floatingIcon" />;
