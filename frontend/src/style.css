@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
 * {
   font-family: 'Roboto', serif;
 }
@@ -13,21 +14,80 @@ body {
 }
 
 article {
-  justify-content: flex;
   margin-top: 10px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-family: inherit;
-}
-
-section {
-  /* background-color: blueviolet; */
-}
-.page-content {
-  margin-top: 80px; /*margin for navbar*/
-  /* container: w3; */
+  width: 95%;
+  max-width: 800px;
   margin-left: auto;
   margin-right: auto;
-  display: flexbox;
+}
+
+@media (max-width: 599px) {
+  article {
+    width: 98%;
+    max-width: 95%;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 899px) {
+  article {
+    width: 90%;
+    max-width: 700px;
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1199px) {
+  article {
+    width: 85%;
+    max-width: 900px;
+  }
+}
+
+@media (min-width: 1200px) {
+  article {
+    width: 80%;
+    max-width: 1000px;
+  }
+}
+
+.page-content {
+  margin-top: 60px; /* Margin for navbar */
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 95%;
+  max-width: 1200px;
+}
+
+@media (max-width: 599px) {
+  .page-content {
+    width: 98%;
+    max-width: 95%;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 899px) {
+  .page-content {
+    width: 90%;
+    max-width: 800px;
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1199px) {
+  .page-content {
+    width: 85%;
+    max-width: 1000px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .page-content {
+    width: 80%;
+    max-width: 1200px;
+  }
 }

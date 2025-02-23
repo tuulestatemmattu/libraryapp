@@ -46,7 +46,7 @@ const ScanPage = ({ books }: ScanPageProps) => {
   };
 
   return (
-    <div>
+    <section>
       <h2>Borrow books by scanning</h2>
       <BarcodeScanner isbnHandler={isbnHandler} />
       <Backdrop
@@ -63,7 +63,7 @@ const ScanPage = ({ books }: ScanPageProps) => {
       >
         <BookCard book={scannedBook} setOpen={setOpen} />
       </Backdrop>
-    </div>
+    </section>
   );
 };
 

@@ -2,6 +2,10 @@
   margin-right: 10px;
 }
 
+.button-group {
+  margin-top: 20px;
+}
+
 .button {
   background-color: #d7d2cb !important;
   display: flex;
@@ -14,7 +18,7 @@
   align-items: center;
 }
 
-.baba {
+.book-content {
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -43,7 +43,7 @@ const NavBar: React.FC<navBarProps> = ({ profile, logOut, children }) => {
               className="typmenuicon"
               onClick={() => navigate('/')}
             >
-              <MenuBookIcon className="menuicon" />
+              <MenuBookIcon className="typemenuicon" />
             </Typography>
             <Select
               className="location-box"

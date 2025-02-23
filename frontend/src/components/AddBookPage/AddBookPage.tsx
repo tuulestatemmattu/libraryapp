@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import AddBookForm from '../AddBookForm';
+import AddBookForm from '../../AddBookForm/AddBookForm';
 import IsbnPage from '../IsbnPage';
 import BarcodeScanner from '../BarcodeScanner';
 import getBookFromIsbn from '../../services/isbn';
@@ -77,7 +77,7 @@ const AddBooksPage = () => {
   return (
     <article>
       <div className="center">
-        <ButtonGroup variant="contained" className="piupau">
+        <ButtonGroup variant="contained" className="button-group">
           <Button className="button" variant="contained" onClick={() => setView('form')}>
             <TextFieldsIcon className="icon" /> form
           </Button>
@@ -89,9 +89,9 @@ const AddBooksPage = () => {
           </Button>
         </ButtonGroup>
       </div>
-      <section className="baba">
+      <div className="book-content">
         <Content />
-      </section>
+      </div>
     </article>
   );
 };

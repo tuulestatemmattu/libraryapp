@@ -35,13 +35,13 @@ const BookList = ({ books }: props) => {
           onChange={(e) => setFilter(e.target.value)}
         />
       </Box>
-      <section className="books-container">
+      <div className="books-container">
         <Grid2 container spacing={1} wrap="wrap" className="grid-container">
           {filteredBooks.map((book) => (
             <BookListItem key={book.id} book={book} />
           ))}
         </Grid2>
-      </section>
+      </div>
     </>
   );
 };
