@@ -1,6 +1,6 @@
 @media (min-width: 600px) {
   article {
-    margin-top: 50px; /* Move content down on tablets */
+    margin-top: 50px;
   }
 }
 

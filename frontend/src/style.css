@@ -19,37 +19,37 @@ article {
   align-items: center;
   justify-content: center;
   font-family: inherit;
-  width: 95%;
-  max-width: 800px;
+  width: 100%;
+  max-width: 900px;
   margin-left: auto;
   margin-right: auto;
 }
 
 @media (max-width: 599px) {
   article {
-    width: 98%;
-    max-width: 95%;
+    width: 100%;
+    max-width: 98%;
   }
 }
 
 @media (min-width: 600px) and (max-width: 899px) {
   article {
-    width: 90%;
-    max-width: 700px;
+    width: 95%;
+    max-width: 750px;
   }
 }
 
 @media (min-width: 900px) and (max-width: 1199px) {
   article {
-    width: 85%;
-    max-width: 900px;
+    width: 90%;
+    max-width: 950px;
   }
 }
 
 @media (min-width: 1200px) {
   article {
-    width: 80%;
-    max-width: 1000px;
+    width: 90%;
+    max-width: 1700px;
   }
 }
 
@@ -60,7 +60,7 @@ article {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 95%;
+  width: 98%;
   max-width: 1200px;
 }
 
@@ -73,21 +73,21 @@ article {
 
 @media (min-width: 600px) and (max-width: 899px) {
   .page-content {
-    width: 90%;
-    max-width: 800px;
+    width: 95%;
+    max-width: 900px;
   }
 }
 
 @media (min-width: 900px) and (max-width: 1199px) {
   .page-content {
-    width: 85%;
-    max-width: 1000px;
+    width: 90%;
+    max-width: 1200px;
   }
 }
 
 @media (min-width: 1200px) {
   .page-content {
-    width: 80%;
-    max-width: 1200px;
+    width: 90%;
+    max-width: 1800px;
   }
 }

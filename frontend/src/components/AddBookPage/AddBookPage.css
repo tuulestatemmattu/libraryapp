@@ -23,3 +23,24 @@
   flex-direction: column;
   align-items: center;
 }
+
+.book-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Specific for the scan (camera) view */
+.book-content.scan {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  overflow: hidden;
+}
+
+.book-content.scan video {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  object-fit: contain;
+}

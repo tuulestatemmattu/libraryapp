@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import AddBookForm from '../../AddBookForm/AddBookForm';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import AddBookForm from '../AddBookForm/AddBookForm';
 import IsbnPage from '../IsbnPage';
 import BarcodeScanner from '../BarcodeScanner';
 import getBookFromIsbn from '../../services/isbn';
@@ -17,18 +18,37 @@ type ViewOpt = 'form' | 'scan' | 'isbn';
 type initialValues = CreatedBook | null;
 
 const AddBooksPage = () => {
-  const [view, setView] = useState<ViewOpt>('form');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const viewParam = queryParams.get('view') as ViewOpt;
+
+  const [view, setView] = useState<ViewOpt>(viewParam || 'form');
   const [book, setBook] = useState<initialValues>(null);
   const [isbn, _] = useState<string>('');
   const { showNotification } = useNotification();
+
+  const changeView = (newView: ViewOpt) => {
+    setView(newView);
+    navigate(`/addBook?view=${newView}`, { replace: true });
+  };
+
+  useEffect(() => {
+    if (viewParam) {
+      setView(viewParam);
+    }
+  }, [viewParam]);
 
   const handleIsbnSubmit = async (isbn: string) => {
     const book = await getBookFromIsbn(isbn);
     if (book) {
       setBook(book);
-      setView('form');
+      changeView('form'); // Update view
     } else {
-      showNotification('The given ISBN not found in the database. Please check the input', 'info');
+      showNotification(
+        'The given ISBN was not found in the database. Please check the input.',
+        'info',
+      );
     }
   };
 
@@ -58,8 +78,8 @@ const AddBooksPage = () => {
         location: 'Helsinki',
       });
     }
-    setView('form');
-    return false; // tels the scanner to not restart
+    changeView('form'); // Switch back to form after scanning
+    return false; // Prevent scanner restart
   };
 
   const Content = () => {
@@ -78,18 +98,18 @@ const AddBooksPage = () => {
     <article>
       <div className="center">
         <ButtonGroup variant="contained" className="button-group">
-          <Button className="button" variant="contained" onClick={() => setView('form')}>
-            <TextFieldsIcon className="icon" /> form
+          <Button className="button" variant="contained" onClick={() => changeView('form')}>
+            <TextFieldsIcon className="icon" /> Form
           </Button>
-          <Button className="button" variant="contained" onClick={() => setView('isbn')}>
-            <TagIcon className="icon" /> isbn
+          <Button className="button" variant="contained" onClick={() => changeView('isbn')}>
+            <TagIcon className="icon" /> ISBN
           </Button>
-          <Button className="button" variant="contained" onClick={() => setView('scan')}>
-            <QrCodeScannerIcon className="icon" /> scan
+          <Button className="button" variant="contained" onClick={() => changeView('scan')}>
+            <QrCodeScannerIcon className="icon" /> Scan
           </Button>
         </ButtonGroup>
       </div>
-      <div className="book-content">
+      <div className={`book-content ${view === 'scan' ? 'scan' : ''}`}>
         <Content />
       </div>
     </article>

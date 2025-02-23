@@ -1,12 +1,12 @@
 import React, { useState, SyntheticEvent } from 'react';
-import { CreatedBook } from '../interfaces/Book';
-import StyledInput from '../components/StyledInput/StyledInput';
-import LocationSelect from '../components/LocationSelect/LocationSelect';
+import { CreatedBook } from '../../interfaces/Book';
+import StyledInput from '../StyledInput/StyledInput';
+import LocationSelect from '../LocationSelect/LocationSelect';
 import { TextField, Button } from '@mui/material';
-import '../components/StyledInput/StyledInput';
-import { useNotification } from '../context/NotificationsProvider/NotificationProvider';
+import '../StyledInput/StyledInput';
+import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 
-import '../style.css';
+import '../../style.css';
 import './AddBookForm.css';
 
 interface BookFormProps {

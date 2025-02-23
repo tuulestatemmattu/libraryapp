@@ -5,6 +5,8 @@ import BookCard from './BookCard/BookCard';
 import { FetchedBook } from '../interfaces/Book';
 import { useNotification } from '../context/NotificationsProvider/NotificationProvider';
 
+import '../style.css';
+
 interface ScanPageProps {
   books: FetchedBook[];
 }
@@ -46,7 +48,7 @@ const ScanPage = ({ books }: ScanPageProps) => {
   };
 
   return (
-    <section>
+    <section className=".book-content.scan">
       <h2>Borrow books by scanning</h2>
       <BarcodeScanner isbnHandler={isbnHandler} />
       <Backdrop
