@@ -2,7 +2,6 @@ import Book from './book';
 import User from './user';
 import Tag from './tag';
 import ConnectionBookTag from './connection_book_tag';
-import TestAgent from 'supertest/lib/agent';
 
 User.hasMany(Book);
 Book.belongsTo(User);
@@ -24,4 +23,4 @@ const resetTables = async () => {
   await ConnectionBookTag.destroy({ where: {} });
 };
 
-export { syncModels, resetTables, Book, User, TestAgent, ConnectionBookTag };
+export { syncModels, resetTables, Book, User, Tag, ConnectionBookTag };
