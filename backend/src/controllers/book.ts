@@ -32,8 +32,10 @@ bookRouter.get('/', async (req, res) => {
 bookRouter.post('/', bookValidator, async (req, res) => {
   const { title, authors, isbn, description, publishedDate, location } = req.body;
 
+  console.log(Object.keys(req.body.imageLinks));
+
   const imageLink = req.body.imageLinks
-    ? req.body.imageLinks[Object.keys(req.body.imageLinks)[0]]
+    ? req.body.imageLinks[Object.keys(req.body.imageLinks).slice(-1)[0]]
     : undefined;
 
   try {
