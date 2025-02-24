@@ -5,6 +5,7 @@
       ```
          sudo apt install docker-compose-plugin
       ```
+      or you can install docker compose plugin manually by following instructions from [here](https://docs.docker.com/compose/install/linux/#install-the-plugin-manually)
    * For Ubuntu, [this guide](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository) seems to work well. After installation, add your user to docker group:
      
       ```
