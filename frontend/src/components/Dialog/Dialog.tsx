@@ -10,7 +10,7 @@ const Dialog = forwardRef<HTMLDialogElement, Props>(({ children, toggleDialog },
   useEffect(() => {
     const timeout = setTimeout(() => {
       toggleDialog();
-    }, 20000);
+    }, 2000);
 
     return () => clearTimeout(timeout);
   }, [toggleDialog]);
