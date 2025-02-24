@@ -44,10 +44,5 @@
 .scroll-list-item-container {
   width: 30vw;
   max-width: 250px;
-  margin: 0 8px;
-}
-
-.scroll-list-item-container > .book-card {
-  width: 30vw;
-  max-width: 250px;
+  margin: 0 4px;
 }

@@ -2,15 +2,13 @@ import './BookListItem.css';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
 import { Backdrop } from '@mui/material';
 import { useState } from 'react';
 import BookCard from '../BookCard/BookCard';
 import { FetchedBook } from '../../interfaces/Book';
-//import { getDetails } from '../../services/book';
-import { Box, Chip } from '@mui/material';
-import { Cancel, CheckCircle } from '@mui/icons-material';
+import { Box } from '@mui/material';
+import { Cancel, CheckCircle, BlindsClosed, Bookmark } from '@mui/icons-material';
 
 interface BookListItemProps {
   book: FetchedBook;
@@ -19,13 +17,10 @@ interface BookListItemProps {
 const BookListItem = ({ book }: BookListItemProps) => {
   const [open, setOpen] = useState(false);
 
-  const isAvailable = book.available;
-  const BorrowedByMe = book.borrowedByMe;
-
   return (
     <Card variant="outlined" className="book-card">
       <CardActionArea className="book-card-action" onClick={() => setOpen(true)}>
-        <Box sx={{ position: 'relative' }}>
+        <Box>
           <CardMedia
             component="img"
             src={
@@ -36,30 +31,26 @@ const BookListItem = ({ book }: BookListItemProps) => {
             alt="image"
             className="book-card-image"
           />
-          <Chip
-            label={isAvailable ? 'Avaible' : BorrowedByMe ? 'Your book' : 'Unavaible'}
-            icon={isAvailable ? <CheckCircle /> : BorrowedByMe ? <CheckCircle /> : <Cancel />}
-            className="card-chip"
-            sx={{
-              position: 'absolute',
-              bottom: 8,
-              right: 8,
-              fontWeight: 'bold',
-              backgroundColor: isAvailable ? 'green' : BorrowedByMe ? 'blue' : 'red',
-              color: 'white',
-              '.MuiChip-icon': {
-                color: 'white',
-              },
-            }}
-          />
+          <div className="card-chip-positioner">
+            <div className="card-chip-container">
+              <Bookmark
+                className={`card-chip base ${book.available ? 'available' : book.borrowedByMe ? 'mine' : 'unavailable'}`}
+              />
+              <div className="card-chip-icon-container">
+                {book.available ? (
+                  <CheckCircle className="card-chip icon" />
+                ) : book.borrowedByMe ? (
+                  <BlindsClosed className="card-chip icon" />
+                ) : (
+                  <Cancel className="card-chip icon" />
+                )}
+              </div>
+            </div>
+          </div>
         </Box>
-        <CardContent className="book-card-content">
-          <Typography variant="h5" component="div" className="book-title">
-            {book.title}
-          </Typography>
-          <Typography gutterBottom variant="body2" component="div" className="book-authors">
-            {book.authors}
-          </Typography>
+        <CardContent className="book-card-content" component="div">
+          <div className="book-title">{book.title}</div>
+          <div className="book-authors">{book.authors}</div>
         </CardContent>
       </CardActionArea>
       <Backdrop
