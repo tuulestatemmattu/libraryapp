@@ -18,6 +18,14 @@ interface CreatedBook {
   publishedDate: string;
   description: string;
   location: string;
+  imageLinks?: {
+    smallThumbnail?: string;
+    thumbnail?: string;
+    small?: string;
+    medium?: string;
+    large?: string;
+    extraLarge?: string;
+  };
 }
 
 export type { CreatedBook, FetchedBook };
