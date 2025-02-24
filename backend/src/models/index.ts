@@ -6,8 +6,8 @@ import ConnectionBookTag from './connection_book_tag';
 User.hasMany(Book);
 Book.belongsTo(User);
 
-Book.belongsToMany(Tag, { through: ConnectionBookTag })
-Tag.belongsToMany(Book, { through: ConnectionBookTag })
+Book.belongsToMany(Tag, { through: ConnectionBookTag });
+Tag.belongsToMany(Book, { through: ConnectionBookTag });
 
 User.sync({ alter: true });
 Book.sync({ alter: true });
