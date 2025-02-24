@@ -7,11 +7,10 @@
 
 .book-card-image {
   width: 100% !important;
-  aspect-ratio: 3/4 !important;
+  aspect-ratio: 75/100 !important;
   object-fit: cover !important;
   object-position: center !important;
 }
-
 
 .book-card-content {
   text-align: left;
