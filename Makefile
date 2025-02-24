@@ -1,12 +1,12 @@
 up:
-	docker compose up
+	docker compose up --no-attach frontend-e2e --no-attach backend-e2e
 
 down:
 	docker compose down
 
 rebuild:
 	docker compose down
-	docker compose up --build
+	docker compose up --build --no-attach frontend-e2e --no-attach backend-e2e
 
 fixmodules:
 	sudo chown $(USER) frontend/node_modules backend/node_modules e2e/node_modules

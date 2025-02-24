@@ -23,13 +23,41 @@ services:
       PORT: 3001
       NODE_ENV: development
       DATABASE_URL: postgres://libraryapp:salainen@db/libraryapp
-      TEST_DATABASE_URL: postgres://libraryapp:salainen@test-db/libraryapp_test
+      TEST_DATABASE_URL: postgres://libraryapp:salainen@test-db/libraryapp
       FRONTEND_URL: http://localhost:5173
       JWT_SECRET: salainen
     depends_on:
       db:
         condition: service_healthy
     container_name: backend-dev
+  
+  frontend-e2e:
+    build:
+      context: ./frontend
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      VITE_API_BASE_URL: http://backend-e2e:3001/api
+    container_name: frontend-e2e
+  
+  backend-e2e:
+    build:
+      context: ./backend
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: test
+      TEST_DATABASE_URL: postgres://libraryapp:salainen@test-db/libraryapp
+      FRONTEND_URL: http://frontend-e2e:5173
+      JWT_SECRET: salainen
+    depends_on:
+      test-db:
+        condition: service_healthy
+    container_name: backend-e2e
 
   e2e:
     build:
@@ -39,8 +67,8 @@ services:
       - ./e2e:/app
       - /app/node_modules
     environment:
-      FRONTEND_URL: http://frontend-dev:5173
-      BACKEND_URL: http://backend-dev:3001
+      FRONTEND_URL: http://frontend-e2e:5173
+      BACKEND_URL: http://backend-e2e:3001
     container_name: e2e
 
   db:
@@ -64,7 +92,12 @@ services:
     environment:
       POSTGRES_USER: libraryapp
       POSTGRES_PASSWORD: salainen
-      POSTGRES_DB: libraryapp_test
+      POSTGRES_DB: libraryapp
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U libraryapp']
+      interval: 5s
+      timeout: 5s
+      retries: 5
     container_name: test-db
 
   adminer:
