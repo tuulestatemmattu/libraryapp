@@ -4,7 +4,6 @@
   height: 32vw;
   max-width: 200px;
   max-height: 296px;
-  
 }
 
 .book-card-action {
@@ -12,7 +11,7 @@
 }
 
 .book-card-image {
-  z-index: 0 !important; 
+  z-index: 0 !important;
   position: absolute;
   top: 0;
 }
@@ -85,4 +84,3 @@
   width: 100%;
   height: 50%;
 }
-
