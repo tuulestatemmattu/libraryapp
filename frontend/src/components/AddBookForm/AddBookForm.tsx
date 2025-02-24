@@ -34,6 +34,9 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
       location,
     };
 
+    if (initialValues?.imageLinks) {
+      book.imageLinks = initialValues.imageLinks;
+    }
     try {
       const response = await onSubmit(book);
 

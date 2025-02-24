@@ -29,6 +29,10 @@ bookRouter.get('/', async (req, res) => {
 bookRouter.post('/', bookValidator, async (req, res) => {
   const { title, authors, isbn, description, publishedDate, location } = req.body;
 
+  const imageLink = req.body.imageLinks
+    ? req.body.imageLinks[Object.keys(req.body.imageLinks).slice(-1)[0]]
+    : undefined;
+
   try {
     const existingBook = await Book.findOne({ where: { isbn } });
 
@@ -39,7 +43,7 @@ bookRouter.post('/', bookValidator, async (req, res) => {
 
     if (existingBook) {
       await Book.update(
-        { title, authors, description, publishedDate, location },
+        { title, authors, description, publishedDate, location, imageLink },
         { where: { isbn }, validate: true },
       );
       const updatedBook = await Book.findOne({ where: { isbn } });
@@ -56,6 +60,7 @@ bookRouter.post('/', bookValidator, async (req, res) => {
           lastBorrowedDate: null,
           available: true,
           userGoogleId: req.UserId.toString(),
+          imageLink,
         },
         { validate: true },
       );

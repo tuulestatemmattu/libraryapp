@@ -9,7 +9,14 @@ interface googleApiResponse {
       authors: string[];
       publishedDate: string;
       description: string;
-      imageLinks: { smallThumbnail: string; thumbnail: string };
+      imageLinks?: {
+        smallThumbnail?: string;
+        thumbnail?: string;
+        small?: string;
+        medium?: string;
+        large?: string;
+        extraLarge?: string;
+      };
     };
   }[];
 }
@@ -32,7 +39,7 @@ isbnRouter.post('/', async (req, res) => {
       publishedDate: volumeInfo.publishedDate,
       isbn,
       description: volumeInfo.description,
-      images: volumeInfo.imageLinks,
+      imageLinks: volumeInfo.imageLinks,
     };
 
     res.send(book);

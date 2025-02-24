@@ -41,6 +41,6 @@ describe('ISBN API', () => {
     expect(response.body).toHaveProperty('publishedDate');
     expect(response.body).toHaveProperty('isbn', '9780143127550');
     expect(response.body).toHaveProperty('description');
-    expect(response.body).toHaveProperty('images');
+    expect(response.body).toHaveProperty('imageLinks');
   });
 });
