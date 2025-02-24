@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import { FetchedBook } from '../../interfaces/Book';
 import ClearIcon from '@mui/icons-material/Clear';
 import { borrowBook, returnBook } from '../../services/book';
+import useMainStore from '../../hooks/useMainStore';
 
 interface props {
   book: FetchedBook;
@@ -15,15 +16,16 @@ interface props {
 }
 
 const BookCard = ({ book, setOpen }: props) => {
+  const updateBook = useMainStore((state) => state.updateBook);
+
   const handleClose = () => {
     setOpen(false);
   };
 
   const handleBorrow = async (id: number) => {
     try {
-      const response = await borrowBook(id);
-      console.log(response);
-      window.location.reload();
+      const newBook = await borrowBook(id);
+      updateBook(newBook);
     } catch (error) {
       console.error('Failed to borrow the book:', error);
     }
@@ -31,9 +33,8 @@ const BookCard = ({ book, setOpen }: props) => {
 
   const handleReturn = async (id: number) => {
     try {
-      const response = await returnBook(id);
-      console.log(response);
-      window.location.reload();
+      const newBook = await returnBook(id);
+      updateBook(newBook);
     } catch (error) {
       console.error('Failed to borrow the book:', error);
     }

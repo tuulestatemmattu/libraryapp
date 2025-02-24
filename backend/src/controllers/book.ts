@@ -4,22 +4,22 @@ import bookValidator from '../util/validation';
 
 const bookRouter = express.Router();
 
+const mapBook = (book: Book, userId: string) => {
+  const bookData = book.dataValues;
+  const { userGoogleId, ...bookWithoutId } = bookData;
+  if (userGoogleId === userId && !bookData.available) {
+    return { ...bookWithoutId, borrowedByMe: true };
+  } else {
+    return { ...bookWithoutId, borrowedByMe: false };
+  }
+};
+
 bookRouter.get('/', async (req, res) => {
   const books = await Book.findAll({ attributes: { exclude: ['createdAt', 'updatedAt'] } });
 
   if (req.UserId) {
     const userId = req.UserId.toString();
-
-    const mapBooks = (book: Book, id: string) => {
-      const bookData = book.dataValues;
-      const { userGoogleId, ...bookWithoutId } = bookData;
-      if (userGoogleId === id && !bookData.available) {
-        return { ...bookWithoutId, borrowedByMe: true };
-      } else {
-        return { ...bookWithoutId, borrowedByMe: false };
-      }
-    };
-    const booksWithBorrowInfo = books.map((book) => mapBooks(book, userId));
+    const booksWithBorrowInfo = books.map((book) => mapBook(book, userId));
     res.send(booksWithBorrowInfo);
   } else {
     res.status(401).send({ message: 'must be logged in to get books' });
@@ -56,7 +56,7 @@ bookRouter.post('/', bookValidator, async (req, res) => {
           },
           { validate: true },
         );
-        res.status(201).send(newBook);
+        res.status(201).send(mapBook(newBook, req.UserId.toString()));
       } else {
         res.status(401).send({ message: 'must be logged in to add books' });
       }
@@ -82,7 +82,7 @@ bookRouter.put('/borrow/:id', async (req, res) => {
 
         await book.save();
 
-        res.json(book);
+        res.json(mapBook(book, req.UserId.toString()));
       } else {
         res.status(403).send({ message: 'book is not available' });
       }
@@ -105,7 +105,7 @@ bookRouter.put('/return/:id', async (req, res) => {
 
         await book.save();
 
-        res.json(book);
+        res.json(mapBook(book, req.UserId.toString()));
       } else {
         res.status(403).send({ message: 'no permission to return this book' });
       }
