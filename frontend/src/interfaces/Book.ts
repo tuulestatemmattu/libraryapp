@@ -9,6 +9,7 @@ interface FetchedBook {
   borrowedByMe: boolean;
   available: boolean;
   lastBorrowedDate: Date;
+  imageLink?: string;
 }
 
 interface CreatedBook {

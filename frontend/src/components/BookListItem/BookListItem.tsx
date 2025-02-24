@@ -26,12 +26,7 @@ const BookListItem = ({ book }: BookListItemProps) => {
     <Card variant="outlined" className="book-card">
       <CardActionArea className="book-card-action" onClick={() => setOpen(true)}>
         <Box sx={{ position: 'relative' }}>
-          <CardMedia
-            component="img"
-            src="https://m.media-amazon.com/images/I/91VvijsCGIL._AC_UF894,1000_QL80_.jpg"
-            alt="image"
-            className="book-card-image"
-          />
+          <CardMedia component="img" src={book.imageLink} alt="image" className="book-card-image" />
           <Chip
             label={isAvailable ? 'Avaible' : BorrowedByMe ? 'Your book' : 'Unavaible'}
             icon={isAvailable ? <CheckCircle /> : BorrowedByMe ? <CheckCircle /> : <Cancel />}
