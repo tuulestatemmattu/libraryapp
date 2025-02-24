@@ -1,11 +1,12 @@
-import BarcodeScanner from './BarcodeScanner';
+import BarcodeScanner from '../BarcodeScanner';
 import { Backdrop } from '@mui/material';
 import { useEffect, useState } from 'react';
-import BookCard from './BookCard/BookCard';
-import { FetchedBook } from '../interfaces/Book';
-import { useNotification } from '../context/NotificationsProvider/NotificationProvider';
+import BookCard from '../BookCard/BookCard';
+import { FetchedBook } from '../../interfaces/Book';
+import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 
-import '../style.css';
+import '../../style.css';
+import './ScanPage.css';
 
 interface ScanPageProps {
   books: FetchedBook[];
@@ -48,24 +49,30 @@ const ScanPage = ({ books }: ScanPageProps) => {
   };
 
   return (
-    <section className=".book-content.scan">
-      <h2>Borrow books by scanning</h2>
-      <BarcodeScanner isbnHandler={isbnHandler} />
-      <Backdrop
-        open={open}
-        onClick={(e) => {
-          if (e.currentTarget === e.target) {
-            setOpen(false);
-            setIsbn(null);
-          }
-        }}
-        sx={{
-          zIndex: 1500,
-        }}
-      >
-        <BookCard book={scannedBook} setOpen={setOpen} />
-      </Backdrop>
-    </section>
+    <article>
+      <div className="center">
+        <h2>Borrow books by scanning</h2>
+        <div className="scan-content">
+          <BarcodeScanner isbnHandler={isbnHandler} />
+        </div>
+        <div>
+          <Backdrop
+            open={open}
+            onClick={(e) => {
+              if (e.currentTarget === e.target) {
+                setOpen(false);
+                setIsbn(null);
+              }
+            }}
+            sx={{
+              zIndex: 1500,
+            }}
+          >
+            <BookCard book={scannedBook} setOpen={setOpen} />
+          </Backdrop>
+        </div>
+      </div>
+    </article>
   );
 };
 
