@@ -49,8 +49,55 @@ const BookListItem = ({ book }: BookListItemProps) => {
   };
 
   return (
-    <Card className="book-card">
-      <CardActionArea className="book-card-action" onClick={() => setOpen(true)}>
+    <Card
+      sx={{
+        width: '85%',
+        height: '85vh',
+        margin: 'auto',
+        my: 4,
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      {/* Top: Book Cover */}
+      <Box
+        sx={{
+          flexDirection: 'row',
+          display: 'flex',
+          height: '60%',
+        }}
+      >
+        <Button sx={{ alignSelf: 'flex-start', minWidth: 0 }} onClick={handleClose}>
+          <ClearIcon fontSize="small" />
+        </Button>
+        <CardMedia
+          component="img"
+          sx={{
+            height: '100%',
+            objectFit: 'contain',
+            paddingTop: 2,
+            justifySelf: 'center',
+            paddingRight: 5,
+          }}
+          image={
+            book.imageLink
+              ? book.imageLink
+              : 'https://m.media-amazon.com/images/I/91VvijsCGIL._AC_UF894,1000_QL80_.jpg'
+          }
+          alt="book cover"
+        />
+      </Box>
+
+      {/* Middle: Book Information */}
+      <CardContent
+        sx={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          alignItems: 'center',
+        }}
+      >
         <Box
           sx={{
             position: 'relative',
