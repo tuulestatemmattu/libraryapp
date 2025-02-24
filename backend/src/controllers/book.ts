@@ -5,33 +5,37 @@ import bookValidator from '../util/validation';
 const bookRouter = express.Router();
 
 bookRouter.get('/', async (req, res) => {
-  const books = await Book.findAll({ attributes: { exclude: ['createdAt', 'updatedAt'] } });
-
-  if (req.UserId) {
-    const userId = req.UserId.toString();
-
-    const mapBooks = (book: Book, id: string) => {
-      const bookData = book.dataValues;
-      const { userGoogleId, ...bookWithoutId } = bookData;
-      if (userGoogleId === id && !bookData.available) {
-        return { ...bookWithoutId, borrowedByMe: true };
-      } else {
-        return { ...bookWithoutId, borrowedByMe: false };
-      }
-    };
-    const booksWithBorrowInfo = books.map((book) => mapBooks(book, userId));
-    res.send(booksWithBorrowInfo);
-  } else {
+  if (!req.UserId) {
     res.status(401).send({ message: 'must be logged in to get books' });
+    return;
   }
+
+  const books = await Book.findAll();
+  const userId = req.UserId.toString();
+
+  const mapBooks = (book: Book, id: string) => {
+    const bookData = book.dataValues;
+    const { userGoogleId, ...bookWithoutId } = bookData;
+    if (userGoogleId === id && !bookData.available) {
+      return { ...bookWithoutId, borrowedByMe: true };
+    } else {
+      return { ...bookWithoutId, borrowedByMe: false };
+    }
+  };
+  const booksWithBorrowInfo = books.map((book) => mapBooks(book, userId));
+  res.send(booksWithBorrowInfo);
 });
 
 bookRouter.post('/', bookValidator, async (req, res) => {
-  console.log('User ID', req.UserId);
   const { title, authors, isbn, description, publishedDate, location } = req.body;
 
   try {
     const existingBook = await Book.findOne({ where: { isbn } });
+
+    if (!req.UserId) {
+      res.status(401).send({ message: 'must be logged in to add books' });
+      return;
+    }
 
     if (existingBook) {
       await Book.update(
@@ -41,25 +45,21 @@ bookRouter.post('/', bookValidator, async (req, res) => {
       const updatedBook = await Book.findOne({ where: { isbn } });
       res.status(200).send(updatedBook);
     } else {
-      if (req.UserId) {
-        const newBook = await Book.create(
-          {
-            title,
-            authors,
-            isbn,
-            description,
-            publishedDate,
-            location,
-            lastBorrowedDate: new Date(),
-            available: true,
-            userGoogleId: req.UserId.toString(),
-          },
-          { validate: true },
-        );
-        res.status(201).send(newBook);
-      } else {
-        res.status(401).send({ message: 'must be logged in to add books' });
-      }
+      const newBook = await Book.create(
+        {
+          title,
+          authors,
+          isbn,
+          description,
+          publishedDate,
+          location,
+          lastBorrowedDate: null,
+          available: true,
+          userGoogleId: req.UserId.toString(),
+        },
+        { validate: true },
+      );
+      res.status(201).send(newBook);
     }
   } catch (error: unknown) {
     if (error instanceof Error) {

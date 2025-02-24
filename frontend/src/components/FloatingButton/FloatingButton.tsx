@@ -15,6 +15,7 @@ const FloatingButton = ({ type }: FloatingButtonProps) => {
   const marginRight = type === 'scan' ? 70 : 0;
   const icon =
     type === 'scan' ? <LocalSee className="floatingIcon" /> : <AddIcon className="floatingIcon" />;
+  const label = type === 'scan' ? 'Scan book' : 'Add book';
 
   const handleClick = () => {
     navigate(url);
@@ -24,7 +25,7 @@ const FloatingButton = ({ type }: FloatingButtonProps) => {
     <Fab
       onClick={handleClick}
       color="primary"
-      aria-label="Add book"
+      aria-label={label}
       className="floatingbutton"
       style={{ marginRight }}
     >
