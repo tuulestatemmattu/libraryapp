@@ -5,9 +5,13 @@
   height: auto;
 }
 
-.book-card-action {
-  height: 100%;
+.book-card-image {
+  width: 100% !important;
+  aspect-ratio: 3/4 !important;
+  object-fit: cover !important;
+  object-position: center !important;
 }
+
 
 .book-card-content {
   text-align: left;

@@ -23,7 +23,7 @@ const BookListItem = ({ book }: BookListItemProps) => {
   const BorrowedByMe = book.borrowedByMe;
 
   return (
-    <Card variant="outlined" className="book-card">
+    <Card className="book-card">
       <CardActionArea className="book-card-action" onClick={() => setOpen(true)}>
         <Box sx={{ position: 'relative' }}>
           <CardMedia
