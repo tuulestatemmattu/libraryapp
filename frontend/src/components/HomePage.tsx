@@ -12,6 +12,7 @@ const HomePage = () => {
         <ScrollableList
           title="Your books"
           books={books
+            /* Filter my books then sort first books that youve had the longest */
             .filter((book) => book.borrowedByMe)
             .sort((b1, b2) =>
               b1.lastBorrowedDate === b2.lastBorrowedDate
@@ -24,6 +25,7 @@ const HomePage = () => {
       </h2>
 
       <BookList
+        /* Sort books 'Available, not available, borrow by me' all categorys alphabetically */
         books={books.sort(
           (b1, b2) =>
             (b1.available === b2.available ? 0 : b1.available ? -1 : 1) ||

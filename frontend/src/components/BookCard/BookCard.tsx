@@ -71,7 +71,11 @@ const BookCard = ({ book, setOpen }: props) => {
             justifySelf: 'center',
             paddingRight: 5,
           }}
-          image="https://m.media-amazon.com/images/I/91VvijsCGIL._AC_UF894,1000_QL80_.jpg"
+          image={
+            book.imageLink
+              ? book.imageLink
+              : 'https://m.media-amazon.com/images/I/91VvijsCGIL._AC_UF894,1000_QL80_.jpg'
+          }
           alt="book cover"
         />
       </Box>

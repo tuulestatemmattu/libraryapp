@@ -9,7 +9,14 @@ interface googleApiResponse {
       authors: string[];
       publishedDate: string;
       description: string;
-      imageLinks: { smallThumbnail: string; thumbnail: string };
+      imageLinks?: {
+        smallThumbnail?: string;
+        thumbnail?: string;
+        small?: string;
+        medium?: string;
+        large?: string;
+        extraLarge?: string;
+      };
     };
   }[];
 }
@@ -21,7 +28,6 @@ isbnRouter.post('/', async (req, res) => {
   const apiUrl = 'https://www.googleapis.com/books/v1/volumes?q=isbn:' + isbn;
 
   // Get the book data from the google api
-  console.log('requesting data from:', apiUrl);
   const responseData = (await axios.get<googleApiResponse>(apiUrl)).data;
   if (responseData.totalItems == '0') {
     res.status(400).send({ message: 'Did not find any works relating to this isbn.' }).end();
@@ -33,7 +39,7 @@ isbnRouter.post('/', async (req, res) => {
       publishedDate: volumeInfo.publishedDate,
       isbn,
       description: volumeInfo.description,
-      images: volumeInfo.imageLinks,
+      imageLinks: volumeInfo.imageLinks,
     };
 
     res.send(book);

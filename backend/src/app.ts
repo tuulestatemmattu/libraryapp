@@ -6,6 +6,7 @@ import { NODE_ENV } from './util/config';
 import loginRouter from './controllers/login';
 import isbnRouter from './controllers/isbn_api';
 import bookRouter from './controllers/book';
+import testingRouter from './controllers/testing';
 import { tokenExtractor } from './util/middleware';
 
 declare global {
@@ -30,6 +31,10 @@ app.use('/api/books', bookRouter);
 app.get('/api/ping', (_req, res) => {
   res.send('pong');
 });
+
+if (NODE_ENV == 'development' || NODE_ENV == 'test') {
+  app.use('/api/testing', testingRouter);
+}
 
 if (NODE_ENV == 'production') {
   app.use(express.static(path.join(__dirname, 'public')));

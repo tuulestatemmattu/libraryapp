@@ -18,8 +18,9 @@ class Book extends Model<InferAttributes<Book>, InferCreationAttributes<Book>> {
   declare description: string | null;
   declare publishedDate: string | null;
   declare location: string | null;
-  declare lastBorrowedDate: Date;
+  declare lastBorrowedDate: Date | null;
   declare available: boolean;
+  declare imageLink: string | null;
   declare userGoogleId: ForeignKey<User['google_id']>;
 }
 
@@ -67,6 +68,9 @@ Book.init(
     },
     available: {
       type: DataTypes.BOOLEAN,
+    },
+    imageLink: {
+      type: DataTypes.STRING,
     },
   },
   {
