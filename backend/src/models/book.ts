@@ -83,12 +83,6 @@ Book.init(
     sequelize,
     underscored: true,
     modelName: 'book',
-    indexes: [
-      {
-        unique: true,
-        fields: ['isbn', 'location'],
-      },
-    ],
   },
 );
 
