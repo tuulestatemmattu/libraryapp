@@ -2,7 +2,18 @@
   display: flex;
   align-items: center;
   margin-bottom: 5px;
-  border-radius: 100px;
+  margin-top: 10px;
+  margin: 2%;
+  border-radius: 5px;
+}
+
+.filter-input {
+  background-color: #d7d2cb;
+  color: rgb(50, 50, 50);
+  border-radius: 10px;
+  padding: 3px 10px;
+  width: 100%;
+  margin-bottom: 5px;
 }
 
 .filter-select {
@@ -10,16 +21,43 @@
   width: 15%;
 }
 
-@media (min-width: 600px) {
-  .filter-select {
-    min-width: 170px;
-  }
+.books-container {
+  display: block;
+  justify-content: center;
+  margin: 2%;
 }
 
 .grid-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: flex-start;
-  margin-left: 1%;
+  margin-top: 20px;
+  padding-top: 2%;
+  border-radius: 10px;
+  background-color: #d7d2cb;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  justify-content: center;
+}
+
+@media (max-width: 599px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+  }
+}
+
+@media (min-width: 600px) and (max-width: 899px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1199px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
 }

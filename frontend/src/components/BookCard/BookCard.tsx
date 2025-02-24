@@ -81,7 +81,7 @@ const BookCard = ({ book, setOpen }: props) => {
           flex: 1,
           display: 'flex',
           flexDirection: 'column',
-          overflow: 'hidden', // prevents overflowing content
+          overflow: 'hidden',
           alignItems: 'center',
         }}
       >

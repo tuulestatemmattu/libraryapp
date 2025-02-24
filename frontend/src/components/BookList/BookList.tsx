@@ -25,27 +25,23 @@ const BookList = ({ books }: props) => {
 
   return (
     <>
-      Books in office
+      <h2>Books in office</h2>
       <Box className="filter-box">
         <Input
           disableUnderline={true}
           placeholder="Search books in office"
-          style={{
-            backgroundColor: 'rgba(230, 230, 230, 1)',
-            color: 'rgb(50, 50, 50)',
-            borderRadius: '100px',
-            padding: '3px 10px',
-            width: '100%',
-          }}
+          className="filter-input"
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
         />
       </Box>
-      <Grid2 container spacing={1} wrap="wrap" className="grid-container">
-        {filteredBooks.map((book) => (
-          <BookListItem key={book.id} book={book} />
-        ))}
-      </Grid2>
+      <div className="books-container">
+        <Grid2 container spacing={1} wrap="wrap" className="grid-container">
+          {filteredBooks.map((book) => (
+            <BookListItem key={book.id} book={book} />
+          ))}
+        </Grid2>
+      </div>
     </>
   );
 };
