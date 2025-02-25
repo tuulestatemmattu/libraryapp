@@ -1,5 +1,6 @@
 import express from 'express';
 import { Book } from '../models';
+import { Tag } from '../models';
 import bookValidator from '../util/validation';
 
 const bookRouter = express.Router();
@@ -10,7 +11,17 @@ bookRouter.get('/', async (req, res) => {
     return;
   }
 
-  const books = await Book.findAll();
+  const books = await Book.findAll({
+    include: [
+      {
+        model: Tag,
+        attributes: ['name', 'id'],
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+  });
   const userId = req.UserId.toString();
 
   const mapBooks = (book: Book, id: string) => {
