@@ -63,11 +63,17 @@ Book.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1,
+      validate: {
+        min: 0,
+      },
     },
     copiesAvailable: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1,
+      validate: {
+        min: 0,
+      },
     },
     imageLink: {
       type: DataTypes.STRING,
