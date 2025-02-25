@@ -75,7 +75,7 @@ const BookCard = ({ book, setOpen }: props) => {
     <Card className="book-overview-card">
       {/* Top: Book Cover */}
       <IconButton onClick={handleClose} className="overview-close-button">
-        <ClearIcon fontSize="small" />
+        <ClearIcon fontSize="large" />
       </IconButton>
       <div className="overview-content-container">
         <div className="overview-tophalf-container">
@@ -114,7 +114,6 @@ const BookCard = ({ book, setOpen }: props) => {
               <CardActions sx={{ padding: 0 }}>
                 {book.borrowedByMe ? (
                   <Button
-                    size="small"
                     variant="contained"
                     className="book-overview-action-button"
                     onClick={() => handleReturn(book.id)}
@@ -123,7 +122,6 @@ const BookCard = ({ book, setOpen }: props) => {
                   </Button>
                 ) : book.available ? (
                   <Button
-                    size="small"
                     variant="contained"
                     className="book-overview-action-button"
                     onClick={() => handleBorrow(book.id)}
