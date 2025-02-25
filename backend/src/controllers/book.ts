@@ -52,15 +52,12 @@ bookRouter.post('/', bookValidator, async (req, res) => {
     }
 
     if (existingBook) {
-      await Book.update(
-        { title, authors, description, publishedDate, location, imageLink },
-        { where: { isbn }, validate: true },
-      );
+      await existingBook.increment(['copies', 'copiesAvailable']);
       const updatedBook = await Book.findOne({ where: { isbn } });
       res.status(200).send(updatedBook);
     } else {
       if (req.UserId) {
-        const newBook = await Book.create(
+      await Book.create(
           {
             title,
             authors,
@@ -68,14 +65,12 @@ bookRouter.post('/', bookValidator, async (req, res) => {
             description,
             publishedDate,
             location,
-            lastBorrowedDate: new Date(),
-            available: true,
-            userGoogleId: req.UserId.toString(),
+          copies: 1,
+          copiesAvailable: 1,
             imageLink,
           },
           { validate: true },
         );
-        res.status(201).send(mapBook(newBook, req.UserId.toString()));
       } else {
         res.status(401).send({ message: 'must be logged in to add books' });
       }
