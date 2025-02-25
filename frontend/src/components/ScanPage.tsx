@@ -2,14 +2,11 @@ import BarcodeScanner from './BarcodeScanner';
 import { Backdrop } from '@mui/material';
 import { useEffect, useState } from 'react';
 import BookCard from './BookCard/BookCard';
-import { FetchedBook } from '../interfaces/Book';
 import { useNotification } from '../context/NotificationsProvider/NotificationProvider';
 
 import '../style.css';
-
-interface ScanPageProps {
-  books: FetchedBook[];
-}
+import useMainStore from '../hooks/useMainStore';
+import { FetchedBook } from '../interfaces/Book';
 
 const placeholderBook: FetchedBook = {
   id: 1,
@@ -24,7 +21,8 @@ const placeholderBook: FetchedBook = {
   lastBorrowedDate: new Date(),
 };
 
-const ScanPage = ({ books }: ScanPageProps) => {
+const ScanPage = () => {
+  const books = useMainStore((state) => state.books);
   const [open, setOpen] = useState(false);
   const [scannedBook, setScannedBook] = useState<FetchedBook>(placeholderBook);
   const [isbn, setIsbn] = useState<string | null>(null);

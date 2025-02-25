@@ -13,6 +13,7 @@ import TextFieldsIcon from '@mui/icons-material/TextFields';
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import '../../style.css';
 import './AddBookPage.css';
+import useMainStore from '../../hooks/useMainStore';
 
 type ViewOpt = 'form' | 'scan' | 'isbn';
 type initialValues = CreatedBook | null;
@@ -20,6 +21,8 @@ type initialValues = CreatedBook | null;
 const AddBooksPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const addBookToStore = useMainStore((state) => state.addBook);
+
   const queryParams = new URLSearchParams(location.search);
   const viewParam = queryParams.get('view') as ViewOpt;
 
@@ -54,7 +57,8 @@ const AddBooksPage = () => {
 
   const handleManualSubmit = async (book: CreatedBook) => {
     try {
-      await addBook(book);
+      const addedBook = await addBook(book);
+      addBookToStore(addedBook);
       setBook(null);
       return { status: 201 };
     } catch (error) {
