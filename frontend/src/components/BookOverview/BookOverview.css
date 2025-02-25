@@ -1,85 +1,90 @@
 .book-overview-card {
-    position: relative;
-    width: 80vw;
-    max-width: 800px !important;
-    max-height: 75vh;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
+  position: relative;
+  width: 80vw;
+  max-width: 800px !important;
+  max-height: 75vh;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
 
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 
-    border-radius: 25px !important;
+  border-radius: 25px !important;
 }
 
 .overview-close-button {
-    position: absolute !important;
-    font-size: large !important;
-    right: 3%;
-    top: 2%;
+  position: absolute !important;
+  font-size: large !important;
+  right: 3%;
+  top: 2%;
 }
 
 .overview-content-container {
-    margin: 7% 5%;
+  margin: 7% 5%;
 }
 
 .overview-tophalf-container {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 5% ;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 5%;
 }
 
 .book-overview-image-container {
-    margin-left: 5% !important;
-    border-radius: 5% !important;
-    width: 20vw !important;
-    max-width: 200px !important;
-    height: fit-content;
+  margin-left: 5% !important;
+  border-radius: 5% !important;
+  width: 20vw !important;
+  max-width: 200px !important;
+  height: fit-content;
 }
 
 .book-overview-image {
-    width: 20vw !important;
-    max-width: 200px !important;
-    aspect-ratio: 75/100 !important;
-    object-fit: cover !important;
-    object-position: center !important;
-    border-radius: 5%;
-  }
+  width: 20vw !important;
+  max-width: 200px !important;
+  aspect-ratio: 75/100 !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: 5%;
+}
 
 .book-overview-info-container {
-    position: relative;
-    top:  0;
-    margin: auto;
+  position: relative;
+  top: 0;
+  margin: auto;
 }
 
 .overview-text {
-    margin: 0 !important;
+  margin: 0 !important;
 }
 
-.overview-title { font-size: 200% !important;}
+.overview-title {
+  font-size: 200% !important;
+}
 
-.overview-authors { font-size: 1.5em  !important;}
+.overview-authors {
+  font-size: 1.5em !important;
+}
 
-.overview-published { font-size: 1.5em !important;}
+.overview-published {
+  font-size: 1.5em !important;
+}
 
 .book-overview-action-button {
-    position: relative;
-    bottom: 0;
-    font-size: 120% !important;
+  position: relative;
+  bottom: 0;
+  font-size: 120% !important;
 }
 
 .overview-description-container {
-    overflow-y: scroll !important;
-    max-height: 25vh;
+  overflow-y: scroll !important;
+  max-height: 25vh;
 }
 
 .overview-description-title {
-    font-size: 3vw !important;
-
+  font-size: 3vw !important;
 }
 
 .overview-description {
-    font-size: 2.5vw !important;
+  font-size: 2.5vw !important;
 }
