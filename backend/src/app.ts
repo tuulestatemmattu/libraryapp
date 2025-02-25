@@ -6,6 +6,7 @@ import { NODE_ENV } from './util/config';
 import loginRouter from './controllers/login';
 import isbnRouter from './controllers/isbn_api';
 import bookRouter from './controllers/book';
+import tagRouter from './controllers/tag';
 import testingRouter from './controllers/testing';
 import { tokenExtractor } from './util/middleware';
 
@@ -27,6 +28,7 @@ app.use('/api/login', loginRouter);
 app.use('/api/books', bookRouter);
 app.use('/api/isbn', isbnRouter);
 app.use('/api/books', bookRouter);
+app.use('/api/tags', tagRouter);
 
 app.get('/api/ping', (_req, res) => {
   res.send('pong');
