@@ -1,11 +1,11 @@
-import React, { useState, useContext, SyntheticEvent } from 'react';
+import React, { useState, SyntheticEvent } from 'react';
 import { CreatedBook } from '../../interfaces/Book';
 import StyledInput from '../StyledInput/StyledInput';
 import LocationSelect from '../LocationSelect/LocationSelect';
 import { TextField, Button } from '@mui/material';
 import '../StyledInput/StyledInput';
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
-import { LocationContext } from '../../context/LocationProvider/LocationProvider';
+import useMainStore from '../../hooks/useMainStore';
 
 import '../../style.css';
 import './AddBookForm.css';
@@ -16,7 +16,7 @@ interface BookFormProps {
 }
 
 const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
-  const [defaultLocation, _setLocation] = useContext(LocationContext);
+  const defaultLocation = useMainStore((state) => state.location);
 
   const [title, setTitle] = useState(initialValues?.title || '');
   const [authors, setAuthors] = useState(initialValues?.authors || '');
