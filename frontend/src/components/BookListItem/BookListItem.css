@@ -51,8 +51,8 @@
 
 .card-chip-positioner {
   position: absolute;
-  top: 0%;
-  right: 0%;
+  top: 4%;
+  right: 3%;
 }
 
 .card-chip-container {
@@ -65,7 +65,7 @@
 
 .card-chip.base {
   position: relative;
-  font-size: 250% !important;
+  font-size: 300% !important;
 }
 
 .card-chip.base.available {
