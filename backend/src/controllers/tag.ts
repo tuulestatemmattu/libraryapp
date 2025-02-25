@@ -4,10 +4,10 @@ import { Tag } from '../models';
 const tagRouter = express.Router();
 
 tagRouter.get('/', async (req, res) => {
-    const tags = await Tag.findAll();
-    const tagsData = tags.map((tag) => tag.dataValues);
+  const tags = await Tag.findAll();
+  const tagsData = tags.map((tag) => tag.dataValues);
 
-    res.send(tagsData);
+  res.send(tagsData);
 });
 
 tagRouter.post('/', async (req, res) => {
