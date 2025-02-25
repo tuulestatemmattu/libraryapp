@@ -1,7 +1,7 @@
 import BarcodeScanner from './BarcodeScanner';
 import { Backdrop } from '@mui/material';
 import { useEffect, useState } from 'react';
-import BookCard from './BookCard/BookCard';
+import BookCard from './BookOverview/BookOverview';
 import { useNotification } from '../context/NotificationsProvider/NotificationProvider';
 
 import '../style.css';

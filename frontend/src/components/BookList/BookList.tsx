@@ -1,5 +1,5 @@
 import './BookList.css';
-import BookListItem from '../BookListItem/BookListItem';
+import BookListItem from '../BookCard/BookCard';
 import { useState } from 'react';
 import { Input, Box, Grid2 } from '@mui/material';
 import { FetchedBook } from '../../interfaces/Book';
