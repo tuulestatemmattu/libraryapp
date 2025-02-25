@@ -40,6 +40,36 @@ const BookCard = ({ book, setOpen }: props) => {
     }
   };
 
+  const getPlaceholderSVG = (book: FetchedBook) => {
+    const firstLetter = book.title ? book.title.charAt(0).toUpperCase() : '?';
+
+    const generateColorFromISBN = (isbn: string) => {
+      let hash = 0;
+      for (let i = 0; i < isbn.length; i++) {
+        hash = isbn.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      const hue = Math.abs(hash % 360);
+      return hue;
+    };
+
+    return `data:image/svg+xml;utf8,
+      <svg xmlns="http://www.w3.org/2000/svg" width="200" height="300" viewBox="0 -20 200 300">
+        <rect width="200" height="260" fill="hsl(${generateColorFromISBN(book.isbn)}, 80%, 75%)" stroke="white" stroke-width="15"/>
+        <rect x="8" y="8" width="30" height="245" fill="hsl(${generateColorFromISBN(book.isbn)}, 60%, 55%)"/>
+
+        <defs>
+          <filter id="textShadow">
+            <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="black" flood-opacity="0.5"/>
+          </filter>
+        </defs>
+
+
+        <text x="115" y="135" font-size="110" fill="white" font-family="Arial" font-weight="bold" text-anchor="middle" dominant-baseline="middle" filter="url(%23textShadow)">
+          ${firstLetter}
+        </text>
+      </svg>`;
+  };
+
   return (
     <Card
       sx={{
@@ -71,11 +101,7 @@ const BookCard = ({ book, setOpen }: props) => {
             justifySelf: 'center',
             paddingRight: 5,
           }}
-          image={
-            book.imageLink
-              ? book.imageLink
-              : 'https://m.media-amazon.com/images/I/91VvijsCGIL._AC_UF894,1000_QL80_.jpg'
-          }
+          image={book.imageLink ? book.imageLink : getPlaceholderSVG(book)}
           alt="book cover"
         />
       </Box>
