@@ -6,6 +6,7 @@
 }
 
 .book-card-image {
+  margin-top: 0 !important;
   width: 100% !important;
   aspect-ratio: 75/100 !important;
   object-fit: cover !important;

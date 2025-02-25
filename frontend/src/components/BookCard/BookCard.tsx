@@ -4,7 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
-import { Backdrop } from '@mui/material';
+import { Modal } from '@mui/material';
 import { useState } from 'react';
 import BookCard from '../BookOverview/BookOverview';
 import { FetchedBook } from '../../interfaces/Book';
@@ -91,19 +91,15 @@ const BookListItem = ({ book }: BookListItemProps) => {
           </Typography>
         </CardContent>
       </CardActionArea>
-      <Backdrop
+      <Modal
         open={open}
-        onClick={(e) => {
-          if (e.currentTarget === e.target) {
-            setOpen(false);
-          }
-        }}
+        onClose={() => setOpen(false)}
         sx={{
           zIndex: 1500,
         }}
       >
         <BookCard book={book} setOpen={setOpen} />
-      </Backdrop>
+      </Modal>
     </Card>
   );
 };

@@ -4,12 +4,12 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 import { FetchedBook } from '../../interfaces/Book';
 import ClearIcon from '@mui/icons-material/Clear';
 import { borrowBook, returnBook } from '../../services/book';
 import useMainStore from '../../hooks/useMainStore';
 import './BookOverview.css';
+import { IconButton, Paper } from '@mui/material';
 
 interface props {
   book: FetchedBook;
@@ -72,103 +72,79 @@ const BookCard = ({ book, setOpen }: props) => {
   };
 
   return (
-    <Card
-      sx={{
-        width: '85%',
-        height: '85vh',
-        margin: 'auto',
-        my: 4,
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
+    <Card className="book-overview-card">
       {/* Top: Book Cover */}
-      <Box
-        sx={{
-          flexDirection: 'row',
-          display: 'flex',
-          height: '60%',
-        }}
-      >
-        <Button sx={{ alignSelf: 'flex-start', minWidth: 0 }} onClick={handleClose}>
-          <ClearIcon fontSize="small" />
-        </Button>
-        <CardMedia
-          component="img"
-          sx={{
-            height: '100%',
-            objectFit: 'contain',
-            paddingTop: 2,
-            justifySelf: 'center',
-            paddingRight: 5,
-          }}
-          image={book.imageLink ? book.imageLink : getPlaceholderSVG(book)}
-          alt="book cover"
-        />
-      </Box>
-
-      {/* Middle: Book Information */}
-      <CardContent
-        sx={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-          alignItems: 'center',
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-
-            marginBottom: '10',
-          }}
-        >
-          <Typography gutterBottom variant="h4" component="div" fontSize={15}>
-            {book.title}
-          </Typography>
-          <CardActions sx={{ padding: 0, alignSelf: 'start' }}>
-            {book.borrowedByMe ? (
-              <Button
-                size="small"
-                variant="contained"
-                sx={{ fontSize: 10, marginBottom: 1, marginLeft: 1 }}
-                onClick={() => handleReturn(book.id)}
+      <IconButton onClick={handleClose} className="overview-close-button">
+        <ClearIcon fontSize="small" />
+      </IconButton>
+      <div className="overview-content-container">
+        <div className="overview-tophalf-container">
+          <Paper className="book-overview-image-container" elevation={5}>
+            <CardMedia
+              component="img"
+              className="book-overview-image"
+              image={book.imageLink ? book.imageLink : getPlaceholderSVG(book)}
+              alt="book cover"
+            />
+          </Paper>
+          <CardContent>
+            <div className="book-overview-info-container">
+              <Typography
+                gutterBottom
+                variant="h4"
+                component="div"
+                className="overview-title overview-text"
               >
-                Return
-              </Button>
-            ) : (
-              <Button
-                size="small"
-                variant="contained"
-                sx={{ fontSize: 10, marginBottom: 1, marginLeft: 1 }}
-                onClick={() => handleBorrow(book.id)}
+                {book.title}
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                color="text.secondary"
+                className="overview-authors overview-text"
               >
-                Borrow
-              </Button>
-            )}
-          </CardActions>
-        </Box>
-        <Typography variant="subtitle1" color="text.secondary" fontSize={10}>
-          <strong>Author:</strong> {book.authors}
-        </Typography>
-        <Typography variant="subtitle1" color="text.secondary" fontSize={10}>
-          <strong>Published:</strong> {book.publishedDate}
-        </Typography>
-        <Box
-          sx={{
-            mt: 2,
-            flex: 1,
-            overflowY: 'auto',
-            pr: 1, // space for scrollbar
-          }}
-        >
-          <Typography variant="body1" fontSize={10}>
+                <strong>Authors:</strong> {book.authors}
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                color="text.secondary"
+                className="overview-published overview-text"
+              >
+                <strong>Published:</strong> {book.publishedDate}
+              </Typography>
+              <CardActions sx={{ padding: 0 }}>
+                {book.borrowedByMe ? (
+                  <Button
+                    size="small"
+                    variant="contained"
+                    className="book-overview-action-button"
+                    onClick={() => handleReturn(book.id)}
+                  >
+                    Return
+                  </Button>
+                ) : book.available ? (
+                  <Button
+                    size="small"
+                    variant="contained"
+                    className="book-overview-action-button"
+                    onClick={() => handleBorrow(book.id)}
+                  >
+                    Borrow
+                  </Button>
+                ) : (
+                  <div></div>
+                )}
+              </CardActions>
+            </div>
+          </CardContent>
+        </div>
+
+        {/* Middle: Book Information */}
+        <CardContent className="overview-description-container">
+          <Typography variant="body1" className="overview-description overview-text">
             {book.description}
           </Typography>
-        </Box>
-      </CardContent>
+        </CardContent>
+      </div>
 
       {/* Bottom: Action Buttons */}
     </Card>
