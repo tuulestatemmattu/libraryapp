@@ -8,16 +8,15 @@ import AddBooksPage from './components/AddBookPage/AddBookPage';
 import NavBar from './components/NavBar/NavBar';
 import FloatingButton from './components/FloatingButton/FloatingButton';
 import { NotificationProvider } from './context/NotificationsProvider/NotificationProvider';
-import { LocationProvider } from './context/LocationProvider/LocationProvider';
 
 import './style.css';
-import { FetchedBook } from './interfaces/Book';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { getBooks } from './services/book';
+import useMainStore from './hooks/useMainStore';
 
 const App = () => {
   const { profile, login, logOut } = useGoogleAuth();
-  const [books, setBooks] = useState<FetchedBook[]>([]);
+  const setBooks = useMainStore((state) => state.setBooks);
 
   useEffect(() => {
     getBooks().then((result) => setBooks(result));
@@ -29,20 +28,18 @@ const App = () => {
 
   return (
     <NotificationProvider>
-      <LocationProvider>
-        <BrowserRouter>
-          <NavBar profile={profile} logOut={logOut} />
-          <main className="page-content">
-            <Routes>
-              <Route path="/" element={<HomePage books={books} />} />
-              <Route path="/scan" element={<ScanPage books={books} />} />
-              <Route path="/addBook" element={<AddBooksPage />} />
-            </Routes>
-          </main>
-          <FloatingButton type="scan" />
-          <FloatingButton type="add" />
-        </BrowserRouter>
-      </LocationProvider>
+      <BrowserRouter>
+        <NavBar profile={profile} logOut={logOut} />
+        <main className="page-content">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/scan" element={<ScanPage />} />
+            <Route path="/addBook" element={<AddBooksPage />} />
+          </Routes>
+        </main>
+        <FloatingButton type="scan" />
+        <FloatingButton type="add" />
+      </BrowserRouter>
     </NotificationProvider>
   );
 };

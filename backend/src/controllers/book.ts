@@ -4,6 +4,16 @@ import bookValidator from '../util/validation';
 
 const bookRouter = express.Router();
 
+const mapBook = (book: Book, userId: string) => {
+  const bookData = book.dataValues;
+  const { userGoogleId, ...bookWithoutId } = bookData;
+  if (userGoogleId === userId && !bookData.available) {
+    return { ...bookWithoutId, borrowedByMe: true };
+  } else {
+    return { ...bookWithoutId, borrowedByMe: false };
+  }
+};
+
 bookRouter.get('/', async (req, res) => {
   if (!req.UserId) {
     res.status(401).send({ message: 'must be logged in to get books' });
@@ -49,22 +59,26 @@ bookRouter.post('/', bookValidator, async (req, res) => {
       const updatedBook = await Book.findOne({ where: { isbn } });
       res.status(200).send(updatedBook);
     } else {
-      const newBook = await Book.create(
-        {
-          title,
-          authors,
-          isbn,
-          description,
-          publishedDate,
-          location,
-          lastBorrowedDate: null,
-          available: true,
-          userGoogleId: req.UserId.toString(),
-          imageLink,
-        },
-        { validate: true },
-      );
-      res.status(201).send(newBook);
+      if (req.UserId) {
+        const newBook = await Book.create(
+          {
+            title,
+            authors,
+            isbn,
+            description,
+            publishedDate,
+            location,
+            lastBorrowedDate: new Date(),
+            available: true,
+            userGoogleId: req.UserId.toString(),
+            imageLink,
+          },
+          { validate: true },
+        );
+        res.status(201).send(mapBook(newBook, req.UserId.toString()));
+      } else {
+        res.status(401).send({ message: 'must be logged in to add books' });
+      }
     }
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -87,7 +101,7 @@ bookRouter.put('/borrow/:id', async (req, res) => {
 
         await book.save();
 
-        res.json(book);
+        res.json(mapBook(book, req.UserId.toString()));
       } else {
         res.status(403).send({ message: 'book is not available' });
       }
@@ -110,7 +124,7 @@ bookRouter.put('/return/:id', async (req, res) => {
 
         await book.save();
 
-        res.json(book);
+        res.json(mapBook(book, req.UserId.toString()));
       } else {
         res.status(403).send({ message: 'no permission to return this book' });
       }

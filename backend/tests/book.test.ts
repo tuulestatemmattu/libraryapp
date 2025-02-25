@@ -104,9 +104,8 @@ describe('POST /api/books', () => {
     expect(response.body.description).toBe(sampleBook.description);
     expect(response.body.publishedDate).toBe(sampleBook.publishedDate);
     expect(response.body.location).toBe(sampleBook.location);
-    expect(response.body.lastBorrowedDate).toBe(null);
     expect(response.body.available).toBe(true);
-    expect(response.body.userGoogleId).toBe('sample_google_id');
+    expect(response.body).not.toContain('userGoogleId');
   });
 
   it('should update an existing book and return correct book', async () => {
@@ -125,9 +124,8 @@ describe('POST /api/books', () => {
     expect(response.body.description).toBe(sampleBook.description);
     expect(response.body.publishedDate).toBe(sampleBook.publishedDate);
     expect(response.body.location).toBe(sampleBook.location);
-    expect(response.body.lastBorrowedDate).toBe(null);
     expect(response.body.available).toBe(true);
-    expect(response.body.userGoogleId).toBe('sample_google_id');
+    expect(response.body).not.toContain('userGoogleId');
   });
 
   it('should return 400 if ISBN is invalid', async () => {
