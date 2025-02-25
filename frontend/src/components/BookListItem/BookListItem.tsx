@@ -8,8 +8,8 @@ import { Backdrop } from '@mui/material';
 import { useState } from 'react';
 import BookCard from '../BookCard/BookCard';
 import { FetchedBook } from '../../interfaces/Book';
-import { Box, Chip } from '@mui/material';
-import { Cancel, CheckCircle } from '@mui/icons-material';
+import { Box } from '@mui/material';
+import { BlindsClosed, Bookmark, Cancel, CheckCircle } from '@mui/icons-material';
 
 interface BookListItemProps {
   book: FetchedBook;
@@ -17,9 +17,6 @@ interface BookListItemProps {
 
 const BookListItem = ({ book }: BookListItemProps) => {
   const [open, setOpen] = useState(false);
-
-  const isAvailable = book.available;
-  const BorrowedByMe = book.borrowedByMe;
 
   const getPlaceholderSVG = ({ book }: BookListItemProps) => {
     const firstLetter = book.title ? book.title.charAt(0).toUpperCase() : '?';
@@ -68,22 +65,22 @@ const BookListItem = ({ book }: BookListItemProps) => {
             alt="image"
             className="book-card-image"
           />
-          <Chip
-            label={isAvailable ? 'Avaible' : BorrowedByMe ? 'Your book' : 'Unavaible'}
-            icon={isAvailable ? <CheckCircle /> : BorrowedByMe ? <CheckCircle /> : <Cancel />}
-            className="card-chip"
-            sx={{
-              position: 'absolute',
-              bottom: 8,
-              right: 8,
-              fontWeight: 'bold',
-              backgroundColor: isAvailable ? 'green' : BorrowedByMe ? 'blue' : 'red',
-              color: 'white',
-              '.MuiChip-icon': {
-                color: 'white',
-              },
-            }}
-          />
+          <div className="card-chip-positioner">
+            <div className="card-chip-container">
+              <Bookmark
+                className={`card-chip base ${book.available ? 'available' : book.borrowedByMe ? 'mine' : 'unavailable'}`}
+              />
+              <div className="card-chip-icon-container">
+                {book.available ? (
+                  <CheckCircle className="card-chip icon" />
+                ) : book.borrowedByMe ? (
+                  <BlindsClosed className="card-chip icon" />
+                ) : (
+                  <Cancel className="card-chip icon" />
+                )}
+              </div>
+            </div>
+          </div>
         </Box>
         <CardContent className="book-card-content">
           <Typography variant="h5" component="div" className="book-title">

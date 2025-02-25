@@ -1,6 +1,6 @@
 .book-card {
   border: 1px solid rgba(0, 0, 0, 0.12);
-  width: 30%;
+  width: 25vw;
   max-width: 225px;
   height: auto;
 }
@@ -49,15 +49,46 @@
   }
 }
 
-@media (max-width: 600px) {
-  .card-chip {
-    font-size: 2.2vw !important;
-    height: auto !important;
-    padding-top: 4px !important;
-    padding-bottom: 4px !important;
-  }
+.card-chip-positioner {
+  position: absolute;
+  top: 0%;
+  right: 0%;
+}
 
-  .card-chip .MuiChip-icon {
-    font-size: 3.7vw;
-  }
+.card-chip-container {
+  position: relative;
+
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+
+.card-chip.base {
+  position: relative;
+  font-size: 250% !important;
+}
+
+.card-chip.base.available {
+  color: lightgreen;
+}
+
+.card-chip.base.mine {
+  color: lightblue;
+}
+
+.card-chip.base.unavailable {
+  color: salmon;
+}
+
+.card-chip-icon-container {
+  position: absolute;
+  z-index: 1;
+  top: 17%;
+  width: 100%;
+  height: 100%;
+}
+
+.card-chip.icon {
+  width: 100%;
+  height: 50%;
 }
