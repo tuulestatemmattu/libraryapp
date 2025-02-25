@@ -34,7 +34,7 @@ const BookListItem = ({ book }: BookListItemProps) => {
     };
 
     return `data:image/svg+xml;utf8,
-      <svg xmlns="http://www.w3.org/2000/svg" width="200" height="300" viewBox="0 -20 200 300">
+      <svg xmlns="http://www.w3.org/2000/svg" width="200" height="300" viewBox="0 0 200 300">
         <rect width="100%" height="100%" fill="hsl(${generateColorFromISBN(book.isbn)}, 80%, 75%)"/>
         <rect x="0" y="0" width="30" height="100%" fill="hsl(${generateColorFromISBN(book.isbn)}, 60%, 55%)"/>
 
@@ -45,7 +45,7 @@ const BookListItem = ({ book }: BookListItemProps) => {
         </defs>
 
 
-        <text x="115" y="135" font-size="110" fill="white" font-family="Arial" font-weight="bold" text-anchor="middle" dominant-baseline="middle" filter="url(%23textShadow)">
+        <text x="115" y="150" font-size="110" fill="white" font-family="Arial" font-weight="bold" text-anchor="middle" dominant-baseline="middle" filter="url(%23textShadow)">
           ${firstLetter}
         </text>
       </svg>`;
