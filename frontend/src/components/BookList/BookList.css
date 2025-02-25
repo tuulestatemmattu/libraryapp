@@ -29,7 +29,7 @@
 
 .grid-container {
   margin-top: 20px;
-  padding-top: 2%;
+  padding: 2% 0;
   border-radius: 10px;
   background-color: #d7d2cb;
   display: grid;
