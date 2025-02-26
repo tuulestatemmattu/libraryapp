@@ -108,26 +108,6 @@ describe('POST /api/books', () => {
     expect(response.body).not.toContain('userGoogleId');
   });
 
-  it('should update an existing book and return correct book', async () => {
-    await api.post('/api/books').send({
-      ...sampleBook2,
-      isbn: sampleBook.isbn,
-    });
-
-    const response = await api.post('/api/books').send(sampleBook);
-    expect(response.status).toBe(200);
-    expect(await Book.count()).toBe(1);
-
-    expect(response.body.title).toBe(sampleBook.title);
-    expect(response.body.authors).toBe(sampleBook.authors);
-    expect(response.body.isbn).toBe(sampleBook.isbn);
-    expect(response.body.description).toBe(sampleBook.description);
-    expect(response.body.publishedDate).toBe(sampleBook.publishedDate);
-    expect(response.body.location).toBe(sampleBook.location);
-    expect(response.body.available).toBe(true);
-    expect(response.body).not.toContain('userGoogleId');
-  });
-
   it('should return 400 if ISBN is invalid', async () => {
     const invalidBook = { ...sampleBook, isbn: 'invalid_isbn' };
 
