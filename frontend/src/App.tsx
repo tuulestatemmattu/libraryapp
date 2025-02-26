@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useGoogleAuth } from './hooks/useGoogleAuth';
 
-import ScanPage from './components/ScanPage';
+import ScanPage from './components/ScanPage/ScanPage';
 import HomePage from './components/HomePage';
 import SignInPage from './components/SingInPage/SignInPage';
 import AddBooksPage from './components/AddBookPage/AddBookPage';

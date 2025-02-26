@@ -5,6 +5,10 @@
 
 .location-box {
   margin: '0 auto';
+  overflow-y: 'visible';
+  font-weight: 600 !important;
+  letter-spacing: 3px !important;
+  font-size: 20px;
 }
 
 .profile {
