@@ -1,8 +1,10 @@
 import express from 'express';
 import { Book } from '../models';
 import bookValidator from '../util/validation';
+import { requireLogin } from '../util/middleware';
 
 const bookRouter = express.Router();
+bookRouter.use(requireLogin);
 
 const mapBook = (book: Book, userId: string) => {
   const bookData = book.dataValues;

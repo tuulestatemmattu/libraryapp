@@ -10,12 +10,20 @@ const tokenExtractor: RequestHandler = (req: Request, res: Response, next: NextF
       const { id, admin } = jwt.verify(authorization.substring(7), JWT_SECRET) as JwtPayload;
       req.userId = id;
       req.admin = admin;
-      return next();
     } catch (error) {
       console.log(error);
     }
   }
-  //res.status(401).json({ error: 'token missing or invalid' });
+  next();
 };
 
-export { tokenExtractor };
+// Must be used after tokenExtractor
+const requireLogin: RequestHandler = (req: Request, res: Response, next: NextFunction) => {
+  if (!req.admin) {
+    res.status(401).json({ error: 'Unauthorized' });
+    return;
+  }
+  next();
+};
+
+export { tokenExtractor, requireLogin };
