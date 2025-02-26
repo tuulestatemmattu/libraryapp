@@ -84,19 +84,24 @@ router.get('/oauth', async (req: Request, res: Response) => {
       name: googleUser.name,
       email: googleUser.email,
       picture: googleUser.picture,
+      admin: false,
     };
-    res.cookie('user', JSON.stringify(user));
-    const token = jwt.sign({ id: googleUser.id }, JWT_SECRET);
 
-    res.cookie('token', token);
+    // Check if the user already exists in the database & admin status
+    const foundUser = await User.findOne({ where: { google_id: googleUser.id } });
+    user.admin = foundUser ? foundUser.admin : false;
 
-    // Save / update user in the database
-    if (await User.findOne({ where: { google_id: googleUser.id } })) {
+    // If the user exists, update the user information. If not, create a new user.
+    if (foundUser) {
       await User.update(user, { where: { google_id: googleUser.id } });
     } else {
       await User.create({ ...user, google_id: googleUser.id });
     }
 
+    // Set JWT token and user cookies and redirect to frontend
+    const token = jwt.sign({ id: googleUser.id, admin: user.admin }, JWT_SECRET);
+    res.cookie('token', token);
+    res.cookie('user', JSON.stringify(user));
     res.redirect(FRONTEND_URL + '/');
   } catch (error) {
     console.error('OAUTH error:', error);

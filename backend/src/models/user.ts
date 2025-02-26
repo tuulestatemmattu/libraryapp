@@ -1,11 +1,22 @@
-import { Model, DataTypes, InferAttributes } from 'sequelize';
+import { Model, DataTypes, InferAttributes, Optional } from 'sequelize';
 import { sequelize } from '../util/db';
 
-class User extends Model<InferAttributes<User>> {
+type UserAttributes = {
+  google_id: string;
+  email: string;
+  picture: string;
+  name: string;
+  admin: boolean;
+};
+
+type UserCreationAttributes = Optional<UserAttributes, 'admin'>;
+
+class User extends Model<UserAttributes, UserCreationAttributes> {
   declare google_id: string;
   declare email: string;
   declare picture: string;
   declare name: string;
+  declare admin: boolean;
 }
 
 User.init(
@@ -29,6 +40,11 @@ User.init(
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    admin: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     },
   },
   {
