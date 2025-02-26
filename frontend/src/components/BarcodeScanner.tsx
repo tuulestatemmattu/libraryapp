@@ -90,11 +90,11 @@ const BarcodeScanner = ({ isbnHandler }: ScannerProps) => {
   }, []);
 
   return (
-    <section>
+    <div>
       {showWarning && <p>Warning: Many different codes have been scanned.</p>}
       <h3>Scan barcode with camera</h3>
       <video ref={videoRef} autoPlay></video>
-    </section>
+    </div>
   );
 };
 

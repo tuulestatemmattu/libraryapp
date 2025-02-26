@@ -4,6 +4,14 @@ import app from '../src/app';
 
 const api = supertest(app);
 
+jest.mock('../src/util/middleware/tokenExtractor', () => ({
+  tokenExtractor: jest.fn((req, _res, next) => {
+    req.userId = 'sample_google_id';
+    req.admin = true;
+    next();
+  }),
+}));
+
 describe('GET /api/ping', () => {
   it('should return 200 OK', async () => {
     const response = await api.get('/api/ping');

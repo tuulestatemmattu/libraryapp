@@ -24,9 +24,10 @@ const sampleBook2 = {
   location: 'Helsinki',
 };
 
-jest.mock('../src/util/middleware', () => ({
+jest.mock('../src/util/middleware/tokenExtractor', () => ({
   tokenExtractor: jest.fn((req, _res, next) => {
-    req.UserId = 'sample_google_id';
+    req.userId = 'sample_google_id';
+    req.admin = true;
     next();
   }),
 }));
