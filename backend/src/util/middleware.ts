@@ -15,7 +15,7 @@ const tokenExtractor: RequestHandler = (req: Request, res: Response, next: NextF
       console.log(error);
     }
   }
-  res.status(401).json({ error: 'token missing or invalid' });
+  //res.status(401).json({ error: 'token missing or invalid' });
 };
 
 export { tokenExtractor };
