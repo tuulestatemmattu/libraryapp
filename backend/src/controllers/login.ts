@@ -101,7 +101,7 @@ router.get('/oauth', async (req: Request, res: Response) => {
     // Set JWT token and user cookies and redirect to frontend
     const token = jwt.sign({ id: googleUser.id, admin: user.admin }, JWT_SECRET);
     res.cookie('token', token);
-    res.cookie('user', JSON.stringify(user));
+    res.cookie('profile', JSON.stringify(user));
     res.redirect(FRONTEND_URL + '/');
   } catch (error) {
     console.error('OAUTH error:', error);

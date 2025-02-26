@@ -26,7 +26,8 @@ const sampleBook2 = {
 
 jest.mock('../src/util/middleware', () => ({
   tokenExtractor: jest.fn((req, _res, next) => {
-    req.UserId = 'sample_google_id';
+    req.userId = 'sample_google_id';
+    req.admin = true;
     next();
   }),
 }));

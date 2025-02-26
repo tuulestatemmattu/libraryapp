@@ -24,6 +24,14 @@ const mockResponse = {
   },
 };
 
+jest.mock('../src/util/middleware', () => ({
+  tokenExtractor: jest.fn((req, _res, next) => {
+    req.userId = 'sample_google_id';
+    req.admin = true;
+    next();
+  }),
+}));
+
 jest.mock('axios', () => ({
   get: jest.fn(() => Promise.resolve(mockResponse)),
 }));

@@ -58,7 +58,7 @@ bookRouter.post('/', bookValidator, async (req, res) => {
       res.status(200).send(mapBook(updatedBook, userId));
     } else {
       const newBook = await Book.create(
-      {
+        {
           title,
           authors,
           isbn,
