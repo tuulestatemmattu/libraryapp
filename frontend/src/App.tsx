@@ -15,7 +15,8 @@ import { getBooks } from './services/book';
 import useMainStore from './hooks/useMainStore';
 
 const App = () => {
-  const { profile, login, logOut } = useGoogleAuth();
+  const { login, logOut } = useGoogleAuth();
+  const profile = useMainStore((state) => state.profile);
   const setBooks = useMainStore((state) => state.setBooks);
 
   useEffect(() => {
