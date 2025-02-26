@@ -34,26 +34,28 @@
   align-items: center;
 }
 
-.book-overview-image-container {
-  margin-left: 5% !important;
-  border-radius: 5% !important;
+.overview-topleft-container {
   width: 20vw !important;
   max-width: 200px !important;
+  margin-left: 5%;
+}
+
+.book-overview-image-container {
+  border-radius: 5% !important;
   height: fit-content;
-  align-items: center;
-  justify-content: center;
 }
 
 .book-overview-action-button {
   width: 100% !important;
+  height: 7vw !important;
+  max-height: 56px;
   font-size: 3vw !important;
-  border-top-left-radius: 0 !important;
-  border-top-right-radius: 0 !important;
+
+  margin-top: 5px !important;
 }
 
 .book-overview-image {
-  width: 20vw !important;
-  max-width: 200px !important;
+  width: 100% !important;
   aspect-ratio: 75/100 !important;
 }
 
@@ -95,6 +97,9 @@
 
   .overview-description {
     font-size: 20px !important;
+  }
+  .book-overview-action-button {
+    font-size: 24px !important;
   }
   .book-overview-action-button {
     font-size: 24px !important;

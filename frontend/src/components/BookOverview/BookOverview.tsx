@@ -81,13 +81,15 @@ const BookCard = ({ book, setOpen }: props) => {
       </IconButton>
       <div className="overview-content-container">
         <div className="overview-tophalf-container">
-          <Paper className="book-overview-image-container" elevation={5}>
-            <CardMedia
-              component="img"
-              className="book-overview-image"
-              image={book.imageLink ? book.imageLink : getPlaceholderSVG(book)}
-              alt="book cover"
-            />
+          <div className="overview-topleft-container">
+            <Paper className="book-overview-image-container" elevation={5}>
+              <CardMedia
+                component="img"
+                className="book-overview-image"
+                image={book.imageLink ? book.imageLink : getPlaceholderSVG(book)}
+                alt="book cover"
+              />
+            </Paper>
             <CardActions sx={{ padding: 0 }}>
               {book.borrowedByMe ? (
                 <Button
@@ -109,7 +111,7 @@ const BookCard = ({ book, setOpen }: props) => {
                 <div></div>
               )}
             </CardActions>
-          </Paper>
+          </div>
           <CardContent>
             <div className="book-overview-info-container">
               <Typography
