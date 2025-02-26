@@ -9,6 +9,7 @@ import {
   GOOGLE_CLIENT_SECRET,
   GOOGLE_OAUTH_REDIRECT_URI,
   JWT_SECRET,
+  NODE_ENV,
 } from '../util/config';
 
 interface TokenResponse {
@@ -95,7 +96,8 @@ router.get('/oauth', async (req: Request, res: Response) => {
     if (foundUser) {
       await User.update(user, { where: { google_id: googleUser.id } });
     } else {
-      await User.create({ ...user, google_id: googleUser.id });
+      const admin = NODE_ENV === 'development';
+      await User.create({ ...user, admin, google_id: googleUser.id });
     }
 
     // Set JWT token and user cookies and redirect to frontend
