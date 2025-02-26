@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { useGoogleAuth } from './hooks/useGoogleAuth';
+import { useAuthCheck } from './hooks/useAuthCheck';
 
 import ScanPage from './components/ScanPage/ScanPage';
 import HomePage from './components/HomePage';
@@ -15,7 +15,7 @@ import { getBooks } from './services/book';
 import useMainStore from './hooks/useMainStore';
 
 const App = () => {
-  const { login, logOut } = useGoogleAuth();
+  useAuthCheck();
   const profile = useMainStore((state) => state.profile);
   const setBooks = useMainStore((state) => state.setBooks);
 
@@ -24,13 +24,13 @@ const App = () => {
   }, []);
 
   if (!profile) {
-    return <SignInPage login={login} />;
+    return <SignInPage />;
   }
 
   return (
     <NotificationProvider>
       <BrowserRouter>
-        <NavBar profile={profile} logOut={logOut} />
+        <NavBar />
         <main className="page-content">
           <Routes>
             <Route path="/" element={<HomePage />} />

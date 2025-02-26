@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
 import axios from 'axios';
-import { apiBaseUrl } from '../constants';
 import useMainStore from './useMainStore';
 import Profile from '../interfaces/Profile';
 
-export const useGoogleAuth = () => {
+export const useAuthCheck = () => {
   const setUser = useMainStore((state) => state.setUser);
   const removeUser = useMainStore((state) => state.removeUser);
 
@@ -19,20 +18,7 @@ export const useGoogleAuth = () => {
       axios.defaults.headers.common.Authorization = `Bearer ${token}`;
       setUser(token, profile);
     } else {
-      console.log('User cookie not found');
+      removeUser();
     }
   }, []);
-
-  const login = async () => {
-    const url = (await axios.get(`${apiBaseUrl}/login`)).data;
-    window.location.href = url;
-  };
-
-  const logOut = () => {
-    document.cookie = 'user=; Max-Age=0;secure;path=/;';
-    axios.defaults.headers.common.Authorization = '';
-    removeUser();
-  };
-
-  return { login, logOut };
 };
