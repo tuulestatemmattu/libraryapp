@@ -5,6 +5,7 @@ import LocationSelect from '../LocationSelect/LocationSelect';
 import { TextField, Button } from '@mui/material';
 import '../StyledInput/StyledInput';
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
+import useMainStore from '../../hooks/useMainStore';
 
 import '../../style.css';
 import './AddBookForm.css';
@@ -15,12 +16,14 @@ interface BookFormProps {
 }
 
 const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
+  const defaultLocation = useMainStore((state) => state.location);
+
   const [title, setTitle] = useState(initialValues?.title || '');
   const [authors, setAuthors] = useState(initialValues?.authors || '');
   const [isbn, setIsbn] = useState(initialValues?.isbn || '');
   const [description, setDescription] = useState(initialValues?.description || '');
   const [publishedDate, setPublishedDate] = useState(initialValues?.publishedDate || '');
-  const [location, setLocation] = useState(initialValues?.location || 'Helsinki');
+  const [location, setLocation] = useState(initialValues?.location || defaultLocation);
   const { showNotification } = useNotification();
 
   const handleSubmit = async (e: SyntheticEvent) => {
