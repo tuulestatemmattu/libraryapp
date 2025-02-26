@@ -2,7 +2,7 @@
 import supertest from 'supertest';
 import app from '../src/app';
 import { connectToDatabase, disconnectDatabase } from '../src/util/db';
-import { Book, User } from '../src/models';
+import { Book, User, Tag, ConnectionBookTag } from '../src/models';
 
 const api = supertest(app);
 
@@ -24,6 +24,10 @@ const sampleBook2 = {
   location: 'Helsinki',
 };
 
+const sampleTag = {
+  name: 'Agile',
+};
+
 jest.mock('../src/util/middleware', () => ({
   tokenExtractor: jest.fn((req, _res, next) => {
     req.UserId = 'sample_google_id';
@@ -43,6 +47,8 @@ beforeAll(async () => {
     name: 'Sample Name',
   });
   await Book.sync();
+  await Tag.sync();
+  await ConnectionBookTag.sync();
 });
 
 afterAll(async () => {
@@ -52,6 +58,8 @@ afterAll(async () => {
 describe('GET /api/books', () => {
   beforeAll(async () => {
     await Book.destroy({ where: {} });
+    await Tag.destroy({ where: {} });
+    await ConnectionBookTag.destroy({ where: {} });
     await Book.create({
       ...sampleBook,
       lastBorrowedDate: null,
@@ -63,6 +71,19 @@ describe('GET /api/books', () => {
       lastBorrowedDate: null,
       available: false,
       userGoogleId: 'sample_google_id',
+    });
+    await Tag.create({
+      ...sampleTag,
+    });
+    const sampleBookFromDb = await Book.findOne({ where: { title: sampleBook.title } });
+    const sampleBookId = sampleBookFromDb ? sampleBookFromDb.id : 0;
+
+    const sampleTagFromDb = await Tag.findOne({ where: { name: sampleTag.name } });
+    const sampleTagId = sampleTagFromDb ? sampleTagFromDb.id : 0;
+
+    await ConnectionBookTag.create({
+      bookId: sampleBookId,
+      tagId: sampleTagId,
     });
   });
 
@@ -85,6 +106,17 @@ describe('GET /api/books', () => {
     const states = [books[0].borrowedByMe, books[1].borrowedByMe];
     expect(states).toContain(false);
     expect(states).toContain(true);
+  });
+
+  it('should return correct books with correct tags', async () => {
+    const response = await api.get('/api/books');
+    expect(response.status).toBe(200);
+    expect(response.body.length).toBe(2);
+
+    const books = response.body;
+    expect(books[0].tags.length).toBe(1);
+    expect(books[0].tags[0]).toMatchObject({ name: sampleTag.name });
+    expect(books[1].tags.length).toBe(0);
   });
 });
 
