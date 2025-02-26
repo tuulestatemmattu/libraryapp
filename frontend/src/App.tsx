@@ -39,7 +39,7 @@ const App = () => {
           </Routes>
         </main>
         <FloatingButton type="scan" />
-        <FloatingButton type="add" />
+        {profile.admin && <FloatingButton type="add" />}
       </BrowserRouter>
     </NotificationProvider>
   );
