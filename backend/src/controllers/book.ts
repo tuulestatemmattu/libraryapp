@@ -22,17 +22,7 @@ bookRouter.get('/', async (req, res) => {
 
   const books = await Book.findAll();
   const userId = req.UserId.toString();
-
-  const mapBooks = (book: Book, id: string) => {
-    const bookData = book.dataValues;
-    const { userGoogleId, ...bookWithoutId } = bookData;
-    if (userGoogleId === id && !bookData.available) {
-      return { ...bookWithoutId, borrowedByMe: true };
-    } else {
-      return { ...bookWithoutId, borrowedByMe: false };
-    }
-  };
-  const booksWithBorrowInfo = books.map((book) => mapBooks(book, userId));
+  const booksWithBorrowInfo = books.map((book) => mapBook(book, userId));
   res.send(booksWithBorrowInfo);
 });
 
