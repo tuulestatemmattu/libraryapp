@@ -16,7 +16,7 @@ const FloatingButton = ({ type }: FloatingButtonProps) => {
   const icon =
     type === 'scan' ? <LocalSee className="floatingIcon" /> : <AddIcon className="floatingIcon" />;
   const label = type === 'scan' ? 'Scan book' : 'Add book';
-
+  <FloatingButton type="add" />;
   const handleClick = () => {
     navigate(url);
   };

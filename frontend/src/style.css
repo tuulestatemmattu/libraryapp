@@ -9,6 +9,11 @@ h2 {
   font-size: medium;
 }
 
+h3 {
+  font-family: inherit;
+  font-size: small;
+}
+
 body {
   background-color: #f0f0ec;
 }

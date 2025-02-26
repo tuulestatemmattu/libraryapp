@@ -14,11 +14,13 @@ import { useNotification } from '../../context/NotificationsProvider/Notificatio
 import '../../style.css';
 import './AddBookPage.css';
 import useMainStore from '../../hooks/useMainStore';
+import useRequireAdmin from '../../hooks/useRequireAdmin';
 
 type ViewOpt = 'form' | 'scan' | 'isbn';
 type initialValues = CreatedBook | null;
 
 const AddBooksPage = () => {
+  useRequireAdmin();
   const navigate = useNavigate();
   const location = useLocation();
   const addBookToStore = useMainStore((state) => state.addBook);
