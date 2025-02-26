@@ -1,16 +1,13 @@
 import BarcodeScanner from '../BarcodeScanner';
 import { Backdrop } from '@mui/material';
 import { useEffect, useState } from 'react';
-import BookCard from '../BookCard/BookCard';
+import BookCard from '../BookOverview/BookOverview';
 import { FetchedBook } from '../../interfaces/Book';
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
+import useMainStore from '../../hooks/useMainStore';
 
 import '../../style.css';
 import './ScanPage.css';
-
-interface ScanPageProps {
-  books: FetchedBook[];
-}
 
 const placeholderBook: FetchedBook = {
   id: 1,
