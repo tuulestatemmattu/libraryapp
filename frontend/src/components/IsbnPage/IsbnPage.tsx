@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import Button from '@mui/material/Button';
-import StyledInput from './StyledInput/StyledInput';
+import StyledInput from '../StyledInput/StyledInput';
+
+import './IsbnPage.css';
 
 interface IsbnProps {
   isbnCallHandler: (_isbn: string) => void;
@@ -21,7 +23,9 @@ const IsbnPage = ({ isbnCallHandler, isbn_code }: IsbnProps) => {
       <form onSubmit={handleSubmitIsbn}>
         <StyledInput label="isbn" value={isbn} setValue={setIsbn} />
         <br />
-        <Button type="submit">Search</Button>
+        <Button type="submit" className="isbn-submit-button">
+          Search
+        </Button>
       </form>
     </div>
   );
