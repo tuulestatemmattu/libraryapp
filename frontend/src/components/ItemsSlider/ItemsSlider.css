@@ -1,11 +1,8 @@
 .scroll-item-container {
   position: relative;
-  margin: 6px;
   background-color: #d7d2cb;
   border-radius: 10px;
   margin: 2px;
-  padding-top: 2%;
-  padding-bottom: 2%;
   border-radius: 10px;
 }
 
@@ -26,8 +23,10 @@
 .scroll-button {
   margin: auto;
   padding: 3px;
-  background-color: rgba(255, 255, 255, 1);
+  background-color: rgba(255, 255, 255, 0.75);
   border-radius: 1000px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }
 
 .scroll-list-container {
@@ -35,6 +34,7 @@
   flex-direction: row;
   overflow-x: auto;
   scroll-behavior: smooth;
+  padding: 0 2%;
 }
 
 .scroll-list-container::-webkit-scrollbar {
@@ -42,12 +42,15 @@
 }
 
 .scroll-list-item-container {
-  width: 30vw;
   max-width: 250px;
-  margin: 0 8px;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  padding-right: 2%;
 }
 
-.scroll-list-item-container > .book-card {
-  width: 30vw;
-  max-width: 250px;
+@media (min-width: 400px) {
+  .scroll-list-item-container {
+    padding-right: 8px;
+  }
 }
+ 
