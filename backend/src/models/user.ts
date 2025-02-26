@@ -1,4 +1,4 @@
-import { Model, DataTypes, InferAttributes, Optional } from 'sequelize';
+import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../util/db';
 
 type UserAttributes = {
