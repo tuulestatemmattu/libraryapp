@@ -23,7 +23,9 @@ bookRouter.get('/', async (req, res) => {
 
   const books = await Book.findAll();
   const userId = req.UserId.toString();
-  const booksWithBorrowInfo = books.map((book) => toBookWithBorrowedByMe(book, userId));
+  const booksWithBorrowInfo = await Promise.all(
+    books.map((book) => toBookWithBorrowedByMe(book, userId)),
+  );
   res.send(booksWithBorrowInfo);
 });
 
@@ -62,7 +64,7 @@ bookRouter.post('/', bookValidator, async (req, res) => {
         },
         { validate: true },
       );
-      const newBookWithBorrowInfo = toBookWithBorrowedByMe(newBook, req.UserId.toString());
+        const newBookWithBorrowInfo = await toBookWithBorrowedByMe(newBook, req.UserId.toString());
       res.status(201).send(newBookWithBorrowInfo);
       } else {
         res.status(401).send({ message: 'must be logged in to add books' });
