@@ -3,6 +3,12 @@ import Borrow from './borrow';
 import User from './user';
 
 User.hasMany(Book);
+Book.belongsTo(User);
+
+Book.hasMany(Borrow);
+Borrow.belongsTo(Book);
+
+User.hasMany(Borrow);
 Borrow.belongsTo(User);
 
 const syncModels = async () => {
