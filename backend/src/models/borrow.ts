@@ -10,14 +10,14 @@ import {
   import Book from './book';
   import User from './user';
   
-  class BorrowedBooks extends Model<InferAttributes<BorrowedBooks>, InferCreationAttributes<BorrowedBooks>> {
+  class Borrow extends Model<InferAttributes<Borrow>, InferCreationAttributes<Borrow>> {
     declare id: CreationOptional<number>;
     declare bookId: ForeignKey<Book['id']>;
     declare borrowedDate: Date | null;
     declare userGoogleId: ForeignKey<User['google_id']>;
   }
   
-  BorrowedBooks.init(
+  Borrow.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -40,8 +40,8 @@ import {
     {
       sequelize,
       underscored: true,
-      modelName: 'borrowed_books',
+      modelName: 'borrow',
     },
   );
   
-  export default BorrowedBooks;
+  export default Borrow;

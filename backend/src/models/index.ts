@@ -1,20 +1,20 @@
 import Book from './book';
-import BorrowedBooks from './borrowed_books';
+import Borrow from './borrow';
 import User from './user';
 
 User.hasMany(Book);
-BorrowedBooks.belongsTo(User);
+Borrow.belongsTo(User);
 
 const syncModels = async () => {
   await User.sync({ alter: true });
   await Book.sync({ alter: true });
-  await BorrowedBooks.sync({ alter: true });
+  await Borrow.sync({ alter: true });
 };
 
 const resetTables = async () => {
   await Book.destroy({ where: {} });
   await User.destroy({ where: {} });
-  await BorrowedBooks.destroy({ where: {} });
+  await Borrow.destroy({ where: {} });
 };
 
-export { syncModels, resetTables, Book, User, BorrowedBooks };
+export { syncModels, resetTables, Book, User, Borrow };
