@@ -1,4 +1,4 @@
 .isbn-submit-button {
   position: relative;
-  margin-top: 7px;
+  margin-top: 7px !important;
 }
