@@ -14,7 +14,8 @@ const sampleBook = {
   publishedDate: '2009',
   location: 'Helsinki',
   copies: 1,
-  copiesAvailable: 1};
+  copiesAvailable: 1,
+};
 
 const sampleBook2 = {
   title: "Harry Potter and the Sorcerer's Stone",
@@ -24,7 +25,7 @@ const sampleBook2 = {
   publishedDate: '1998',
   location: 'Helsinki',
   copies: 1,
-  copiesAvailable: 1
+  copiesAvailable: 1,
 };
 
 jest.mock('../src/util/middleware', () => ({
@@ -67,7 +68,6 @@ describe('GET /api/books', () => {
     const response = await api.get('/api/books');
     expect(response.status).toBe(200);
     expect(response.body.length).toBe(2);
-
     const titles = response.body.map((book: Book) => book.title);
     expect(titles).toContain(sampleBook.title);
     expect(titles).toContain(sampleBook2.title);
@@ -147,7 +147,7 @@ describe('PUT /api/books/borrow/:id', () => {
   it('should return 403 if the book is not available', async () => {
     const book = await Book.create({
       ...sampleBook,
-      copiesAvailable: 0
+      copiesAvailable: 0,
     });
 
     const response = await api.put(`/api/books/borrow/${book?.id}`);
