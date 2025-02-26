@@ -2,6 +2,7 @@ import React, { useState, SyntheticEvent } from 'react';
 import { CreatedBook } from '../../interfaces/Book';
 import StyledInput from '../StyledInput/StyledInput';
 import LocationSelect from '../LocationSelect/LocationSelect';
+import TagSelect from '../TagSelect/TagSelect';
 import { TextField, Button } from '@mui/material';
 import '../StyledInput/StyledInput';
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
@@ -21,6 +22,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
   const [description, setDescription] = useState(initialValues?.description || '');
   const [publishedDate, setPublishedDate] = useState(initialValues?.publishedDate || '');
   const [location, setLocation] = useState(initialValues?.location || 'Helsinki');
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const { showNotification } = useNotification();
 
   const handleSubmit = async (e: SyntheticEvent) => {
@@ -67,6 +69,11 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
     setLocation(value);
   };
 
+  const handleTagSelection = (tag: string) => {
+    const newArray = selectedTags.concat(tag);
+    setSelectedTags(newArray);
+  };
+
   return (
     <article>
       <form onSubmit={handleSubmit}>
@@ -96,6 +103,9 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
         </div>
         <div className="location-select-div">
           <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
+        </div>
+        <div className="tag-select-div">
+          <TagSelect selectedTags={selectedTags} onSelectTag={handleTagSelection} />
         </div>
         <Button type="submit">Add</Button>
         <Button type="button" onClick={handleClear}>
