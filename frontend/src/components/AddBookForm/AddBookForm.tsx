@@ -10,6 +10,7 @@ import useMainStore from '../../hooks/useMainStore';
 
 import '../../style.css';
 import './AddBookForm.css';
+import { FetchedTag } from '../../interfaces/Tags';
 
 interface BookFormProps {
   onSubmit: (book: CreatedBook) => Promise<{ status: number }>;
@@ -18,6 +19,7 @@ interface BookFormProps {
 
 const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
   const defaultLocation = useMainStore((state) => state.location);
+  const tags = useMainStore((state) => state.tags);
 
   const [title, setTitle] = useState(initialValues?.title || '');
   const [authors, setAuthors] = useState(initialValues?.authors || '');
@@ -25,10 +27,11 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
   const [description, setDescription] = useState(initialValues?.description || '');
   const [publishedDate, setPublishedDate] = useState(initialValues?.publishedDate || '');
   const [location, setLocation] = useState(initialValues?.location || defaultLocation);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<FetchedTag[]>([]);
   const { showNotification } = useNotification();
 
   const handleSubmit = async (e: SyntheticEvent) => {
+    console.log(selectedTags);
     e.preventDefault();
     console.log(selectedTags);
     const book: CreatedBook = {
@@ -80,9 +83,12 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
     const {
       target: { value },
     } = event;
-    setSelectedTags(typeof value === 'string' ? value.split(',') : value);
 
-    setTimeout(() => {}, 1500);
+    if (typeof value !== 'string') {
+      const tagsToSelect = tags.filter((tag) => value.includes(tag.name));
+
+      setSelectedTags(tagsToSelect);
+    }
   };
 
   return (
@@ -116,7 +122,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
           <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
         </div>
         <div className="tag-select-div">
-          <TagSelect selectedTags={selectedTags} onSelectTag={handleTagSelection} />
+          <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
         </div>
         <Button type="submit">Add</Button>
         <Button type="button" onClick={handleClear}>

@@ -13,13 +13,16 @@ import './style.css';
 import { useEffect } from 'react';
 import { getBooks } from './services/book';
 import useMainStore from './hooks/useMainStore';
+import { getTags } from './services/tag';
 
 const App = () => {
   const { profile, login, logOut } = useGoogleAuth();
   const setBooks = useMainStore((state) => state.setBooks);
+  const setTags = useMainStore((state) => state.setTags);
 
   useEffect(() => {
     getBooks().then((result) => setBooks(result));
+    getTags().then((result) => setTags(result));
   }, []);
 
   if (!profile) {

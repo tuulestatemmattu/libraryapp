@@ -10,9 +10,11 @@ import {
   useTheme,
   Theme,
 } from '@mui/material';
+import { FetchedTag } from '../../interfaces/Tags';
 
 interface TagSelectProps {
-  selectedTags: string[];
+  tags: FetchedTag[];
+  selectedTags: FetchedTag[];
   onSelectTag: (event: SelectChangeEvent<string[]>) => void;
 }
 
@@ -27,34 +29,18 @@ const MenuProps = {
   },
 };
 
-const tags = [
-  'Helsinki',
-  'Tampere',
-  'Copenhagen',
-  'Aarhus',
-  'Munich',
-  'Berlin',
-  'Oslo',
-  'Łódź',
-  'Malmö',
-  'Stockholm',
-  'Gothenburg',
-  'Amsterdam',
-  'Zurich',
-  'London',
-  'Southampton',
-  'Philadelphia',
-];
-
-const getStyles = (tag: string, selectedTags: readonly string[], theme: Theme) => {
+const getStyles = (tag: string, selectedTagNames: readonly string[], theme: Theme) => {
   return {
-    fontWeight: selectedTags.includes(tag)
+    fontWeight: selectedTagNames.includes(tag)
       ? theme.typography.fontWeightMedium
       : theme.typography.fontWeightRegular,
   };
 };
 
-const TagSelect = ({ selectedTags, onSelectTag }: TagSelectProps) => {
+const TagSelect = ({ tags, selectedTags, onSelectTag }: TagSelectProps) => {
+  const tagNames = tags.map((tag) => tag.name);
+  const selectedTagNames = selectedTags.map((tag) => tag.name);
+
   const theme = useTheme();
   return (
     <FormControl sx={{ my: 1.5, maxWidth: 300, width: '90%' }}>
@@ -63,7 +49,7 @@ const TagSelect = ({ selectedTags, onSelectTag }: TagSelectProps) => {
         labelId="tags-label"
         id="tag-select"
         multiple
-        value={selectedTags}
+        value={selectedTagNames}
         onChange={(event) => onSelectTag(event)}
         input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
         renderValue={(selected) => (
@@ -75,8 +61,8 @@ const TagSelect = ({ selectedTags, onSelectTag }: TagSelectProps) => {
         )}
         MenuProps={MenuProps}
       >
-        {tags.map((tag) => (
-          <MenuItem key={tag} value={tag} style={getStyles(tag, selectedTags, theme)}>
+        {tagNames.map((tag) => (
+          <MenuItem key={tag} value={tag} style={getStyles(tag, selectedTagNames, theme)}>
             {tag}
           </MenuItem>
         ))}
