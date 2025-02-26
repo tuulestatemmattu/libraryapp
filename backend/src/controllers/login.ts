@@ -90,14 +90,13 @@ router.get('/oauth', async (req: Request, res: Response) => {
 
     // Check if the user already exists in the database & admin status
     const foundUser = await User.findOne({ where: { google_id: googleUser.id } });
-    user.admin = foundUser ? foundUser.admin : false;
+    user.admin = foundUser ? foundUser.admin : NODE_ENV === 'development';
 
     // If the user exists, update the user information. If not, create a new user.
     if (foundUser) {
       await User.update(user, { where: { google_id: googleUser.id } });
     } else {
-      const admin = NODE_ENV === 'development';
-      await User.create({ ...user, admin, google_id: googleUser.id });
+      await User.create({ ...user, google_id: googleUser.id });
     }
 
     // Set JWT token and user cookies and redirect to frontend
