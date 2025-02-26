@@ -1,16 +1,17 @@
 import express from 'express';
-import { Book } from '../models';
+import { Book, Borrow } from '../models';
 import bookValidator from '../util/validation';
 
 const bookRouter = express.Router();
 
-const mapBook = (book: Book, userId: string) => {
+const toBookWithBorrowedByMe = async (book: Book, userId: string) => {
   const bookData = book.dataValues;
-  const { userGoogleId, ...bookWithoutId } = bookData;
-  if (userGoogleId === userId && !bookData.available) {
-    return { ...bookWithoutId, borrowedByMe: true };
+  const myBorrow = await Borrow.findOne({ where: { bookId: book.id, userGoogleId: userId } });
+
+  if (myBorrow) {
+    return { ...bookData, borrowedByMe: true };
   } else {
-    return { ...bookWithoutId, borrowedByMe: false };
+    return { ...bookData, borrowedByMe: false };
   }
 };
 
@@ -22,17 +23,9 @@ bookRouter.get('/', async (req, res) => {
 
   const books = await Book.findAll();
   const userId = req.UserId.toString();
-
-  const mapBooks = (book: Book, id: string) => {
-    const bookData = book.dataValues;
-    const { userGoogleId, ...bookWithoutId } = bookData;
-    if (userGoogleId === id && !bookData.available) {
-      return { ...bookWithoutId, borrowedByMe: true };
-    } else {
-      return { ...bookWithoutId, borrowedByMe: false };
-    }
-  };
-  const booksWithBorrowInfo = books.map((book) => mapBooks(book, userId));
+  const booksWithBorrowInfo = await Promise.all(
+    books.map((book) => toBookWithBorrowedByMe(book, userId)),
+  );
   res.send(booksWithBorrowInfo);
 });
 
@@ -52,10 +45,7 @@ bookRouter.post('/', bookValidator, async (req, res) => {
     }
 
     if (existingBook) {
-      await Book.update(
-        { title, authors, description, publishedDate, location, imageLink },
-        { where: { isbn }, validate: true },
-      );
+      await existingBook.increment(['copies', 'copiesAvailable']);
       const updatedBook = await Book.findOne({ where: { isbn } });
       res.status(200).send(updatedBook);
     } else {
@@ -68,14 +58,14 @@ bookRouter.post('/', bookValidator, async (req, res) => {
             description,
             publishedDate,
             location,
-            lastBorrowedDate: new Date(),
-            available: true,
-            userGoogleId: req.UserId.toString(),
+            copies: 1,
+            copiesAvailable: 1,
             imageLink,
           },
           { validate: true },
         );
-        res.status(201).send(mapBook(newBook, req.UserId.toString()));
+        const newBookWithBorrowInfo = await toBookWithBorrowedByMe(newBook, req.UserId.toString());
+        res.status(201).send(newBookWithBorrowInfo);
       } else {
         res.status(401).send({ message: 'must be logged in to add books' });
       }
@@ -93,15 +83,14 @@ bookRouter.put('/borrow/:id', async (req, res) => {
   const book = await Book.findOne({ where: { id: bookId } });
   if (req.UserId) {
     if (book) {
-      if (book.available) {
+      if (book.copiesAvailable > 0) {
+        book.decrement('copiesAvailable');
         const timeNow = new Date();
-        book.lastBorrowedDate = timeNow;
-        book.available = false;
-        book.userGoogleId = req.UserId.toString();
-
+        const borrowedDate = timeNow;
+        await Borrow.create({ bookId: book.id, userGoogleId: req.UserId.toString(), borrowedDate });
         await book.save();
-
-        res.json(mapBook(book, req.UserId.toString()));
+        const borrowedBook = await toBookWithBorrowedByMe(book, req.UserId.toString());
+        res.json(borrowedBook);
       } else {
         res.status(403).send({ message: 'book is not available' });
       }
@@ -119,12 +108,15 @@ bookRouter.put('/return/:id', async (req, res) => {
 
   if (req.UserId) {
     if (book) {
-      if (req.UserId.toString() === book.userGoogleId) {
-        book.available = true;
-
+      const borrowed = await Borrow.findOne({
+        where: { bookId: book.id, userGoogleId: req.UserId.toString() },
+      });
+      if (borrowed) {
+        book.increment('copiesAvailable');
+        await borrowed.destroy();
         await book.save();
-
-        res.json(mapBook(book, req.UserId.toString()));
+        const returnedBook = await toBookWithBorrowedByMe(book, req.UserId.toString());
+        res.json(returnedBook);
       } else {
         res.status(403).send({ message: 'no permission to return this book' });
       }
