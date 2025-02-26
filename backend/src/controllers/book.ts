@@ -1,5 +1,5 @@
 import express from 'express';
-import { Book } from '../models';
+import { Book, BorrowedBooks } from '../models';
 import bookValidator from '../util/validation';
 
 const bookRouter = express.Router();
@@ -81,12 +81,11 @@ bookRouter.put('/borrow/:id', async (req, res) => {
   const book = await Book.findOne({ where: { id: bookId } });
   if (req.UserId) {
     if (book) {
-      if (book.available) {
+      if (book.copiesAvailable > 0) {
+        book.decrement('copiesAvailable');
         const timeNow = new Date();
-        book.lastBorrowedDate = timeNow;
-        book.available = false;
-        book.userGoogleId = req.UserId.toString();
-
+        const borrowedDate = timeNow;
+        await BorrowedBooks.create({ bookId: book.id, userGoogleId: req.UserId.toString(), borrowedDate });
         await book.save();
         const borrowedBook = await toBookWithBorrowedByMe(book, req.UserId.toString());
         res.json(borrowedBook);
@@ -107,9 +106,10 @@ bookRouter.put('/return/:id', async (req, res) => {
 
   if (req.UserId) {
     if (book) {
-      if (req.UserId.toString() === book.userGoogleId) {
-        book.available = true;
-
+      const borrowed = await BorrowedBooks.findOne({ where: { bookId: book.id, userGoogleId: req.UserId.toString() } });
+      if (borrowed) {
+        book.increment('copiesAvailable');
+        await borrowed.destroy();
         await book.save();
         const returnedBook = await toBookWithBorrowedByMe(book, req.UserId.toString());
         res.json(returnedBook);
