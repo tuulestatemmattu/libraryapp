@@ -100,17 +100,33 @@ const BookCard = ({ book, setOpen }: props) => {
               <Typography
                 variant="subtitle1"
                 color="text.secondary"
-                className="overview-authors overview-text"
+                className="overview-info-text overview-text"
               >
                 <strong>Authors:</strong> {book.authors}
               </Typography>
               <Typography
                 variant="subtitle1"
                 color="text.secondary"
-                className="overview-published overview-text"
+                className="overview-info-text overview-text"
               >
                 <strong>Published:</strong> {book.publishedDate}
               </Typography>
+              <Typography
+                variant="subtitle1"
+                color="text.secondary"
+                className="overview-info-text overview-text"
+              >
+                <strong>Copies available:</strong> 420
+              </Typography>
+              {/*
+              <Typography
+                variant="subtitle1"
+                color="text.secondary"
+                className="overview-info-text overview-text"
+              >
+                <strong>tags:</strong> scifi
+              </Typography>
+              */}
               <CardActions sx={{ padding: 0 }}>
                 {book.borrowedByMe ? (
                   <Button
