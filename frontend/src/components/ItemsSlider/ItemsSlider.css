@@ -31,6 +31,7 @@
 
 .scroll-list-container {
   display: flex;
+  max-height: 400px;
   flex-direction: row;
   overflow-x: auto;
   scroll-behavior: smooth;
@@ -42,7 +43,6 @@
 }
 
 .scroll-list-item-container {
-  max-width: 250px;
   margin-top: 2%;
   margin-bottom: 2%;
   padding-right: 2%;
@@ -53,4 +53,3 @@
     padding-right: 8px;
   }
 }
- 
