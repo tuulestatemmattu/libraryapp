@@ -7,6 +7,7 @@ BorrowedBooks.belongsTo(User);
 
 const syncModels = async () => {
   await User.sync({ alter: true });
+  await Book.sync({ alter: true });
   await BorrowedBooks.sync({ alter: true });
 };
 
