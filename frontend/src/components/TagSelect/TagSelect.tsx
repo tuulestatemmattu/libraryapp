@@ -1,10 +1,31 @@
-import { TextField, MenuItem } from '@mui/material';
-import './TagSelect.css';
+import {
+  MenuItem,
+  FormControl,
+  Box,
+  Chip,
+  InputLabel,
+  OutlinedInput,
+  Select,
+  SelectChangeEvent,
+  useTheme,
+  Theme,
+} from '@mui/material';
 
 interface TagSelectProps {
   selectedTags: string[];
-  onSelectTag: (tag: string) => void;
+  onSelectTag: (event: SelectChangeEvent<string[]>) => void;
 }
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 const tags = [
   'Helsinki',
@@ -25,33 +46,42 @@ const tags = [
   'Philadelphia',
 ];
 
+const getStyles = (tag: string, selectedTags: readonly string[], theme: Theme) => {
+  return {
+    fontWeight: selectedTags.includes(tag)
+      ? theme.typography.fontWeightMedium
+      : theme.typography.fontWeightRegular,
+  };
+};
+
 const TagSelect = ({ selectedTags, onSelectTag }: TagSelectProps) => {
+  const theme = useTheme();
   return (
-    <div>
-      <TextField
-        select
-        value=""
-        onChange={(event) => onSelectTag(event.target.value)}
-        label="select tags"
-        className="tag-select"
-        style={{ marginTop: '20px' }}
-        slotProps={{
-          input: { id: 'tag-select' },
-          inputLabel: { htmlFor: 'tag-select' },
-        }}
+    <FormControl sx={{ my: 1.5, maxWidth: 300, width: '90%' }}>
+      <InputLabel>Tags</InputLabel>
+      <Select
+        labelId="tags-label"
+        id="tag-select"
+        multiple
+        value={selectedTags}
+        onChange={(event) => onSelectTag(event)}
+        input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+        renderValue={(selected) => (
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+            {selected.map((tag: string) => (
+              <Chip key={tag} label={tag} />
+            ))}
+          </Box>
+        )}
+        MenuProps={MenuProps}
       >
         {tags.map((tag) => (
-          <MenuItem key={tag} value={tag}>
+          <MenuItem key={tag} value={tag} style={getStyles(tag, selectedTags, theme)}>
             {tag}
           </MenuItem>
         ))}
-      </TextField>
-      <div>
-        {selectedTags.map((tag) => (
-          <p key={tag}>{tag}</p>
-        ))}
-      </div>
-    </div>
+      </Select>
+    </FormControl>
   );
 };
 

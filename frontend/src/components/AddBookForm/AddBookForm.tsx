@@ -3,7 +3,7 @@ import { CreatedBook } from '../../interfaces/Book';
 import StyledInput from '../StyledInput/StyledInput';
 import LocationSelect from '../LocationSelect/LocationSelect';
 import TagSelect from '../TagSelect/TagSelect';
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, SelectChangeEvent } from '@mui/material';
 import '../StyledInput/StyledInput';
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';
@@ -30,6 +30,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
+    console.log(selectedTags);
     const book: CreatedBook = {
       title,
       authors,
@@ -75,9 +76,13 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
     setLocation(value);
   };
 
-  const handleTagSelection = (tag: string) => {
-    const newArray = selectedTags.concat(tag);
-    setSelectedTags(newArray);
+  const handleTagSelection = (event: SelectChangeEvent<string[]>) => {
+    const {
+      target: { value },
+    } = event;
+    setSelectedTags(typeof value === 'string' ? value.split(',') : value);
+
+    setTimeout(() => {}, 1500);
   };
 
   return (
