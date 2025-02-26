@@ -108,7 +108,9 @@ bookRouter.put('/return/:id', async (req, res) => {
 
   if (req.UserId) {
     if (book) {
-      const borrowed = await Borrow.findOne({ where: { bookId: book.id, userGoogleId: req.UserId.toString() } });
+      const borrowed = await Borrow.findOne({
+        where: { bookId: book.id, userGoogleId: req.UserId.toString() },
+      });
       if (borrowed) {
         book.increment('copiesAvailable');
         await borrowed.destroy();
