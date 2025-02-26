@@ -1,9 +1,13 @@
-import React from 'react';
 import { Avatar, Button, ButtonGroup } from '@mui/material';
 import './ProfileCard.css';
-import { ProfileProps } from '../../interfaces/ProfileProps';
+import Profile from '../../interfaces/Profile';
 
-const ProfileCard: React.FC<ProfileProps> = ({ profile, logOut }) => {
+interface ProfileCardProps {
+  profile: Profile;
+  logOut: () => void;
+}
+
+const ProfileCard = ({ profile, logOut }: ProfileCardProps) => {
   return (
     <div className="profilecard">
       <div className="profile-info-box">
@@ -12,6 +16,7 @@ const ProfileCard: React.FC<ProfileProps> = ({ profile, logOut }) => {
         <div className="profile-info">
           <h2 className="profile-card-name">{profile.name}</h2>
           <h3 className="profile-card-email">{profile.email}</h3>
+          {profile.admin && <h3 className="profile-card-email">Admin</h3>}
         </div>
       </div>
       <ButtonGroup className="profile-card-buttons">
