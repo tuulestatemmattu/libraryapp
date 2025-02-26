@@ -1,0 +1,32 @@
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.book-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.book-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Specific for the scan (camera) view */
+.scan-content {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  overflow: hidden;
+}
+
+.scan-content video {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  object-fit: contain;
+}
