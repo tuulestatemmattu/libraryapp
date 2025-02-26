@@ -7,7 +7,7 @@ import loginRouter from './controllers/login';
 import isbnRouter from './controllers/isbn_api';
 import bookRouter from './controllers/book';
 import testingRouter from './controllers/testing';
-import { tokenExtractor } from './util/middleware';
+import { tokenExtractor } from './util/middleware/tokenExtractor';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace

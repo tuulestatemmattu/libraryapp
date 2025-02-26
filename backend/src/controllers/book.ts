@@ -1,7 +1,7 @@
 import express from 'express';
 import { Book } from '../models';
 import bookValidator from '../util/validation';
-import { requireLogin } from '../util/middleware';
+import { requireLogin } from '../util/middleware/requireLogin';
 
 const bookRouter = express.Router();
 bookRouter.use(requireLogin);

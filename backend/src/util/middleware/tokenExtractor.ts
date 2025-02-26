@@ -1,9 +1,9 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { JWT_SECRET } from '../util/config';
+import { JWT_SECRET } from '../../util/config';
 
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 
-const tokenExtractor: RequestHandler = (req: Request, res: Response, next: NextFunction) => {
+export const tokenExtractor: RequestHandler = (req: Request, res: Response, next: NextFunction) => {
   const authorization = req.get('Authorization');
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     try {
@@ -16,14 +16,3 @@ const tokenExtractor: RequestHandler = (req: Request, res: Response, next: NextF
   }
   next();
 };
-
-// Must be used after tokenExtractor
-const requireLogin: RequestHandler = (req: Request, res: Response, next: NextFunction) => {
-  if (!req.admin) {
-    res.status(401).json({ error: 'Unauthorized' });
-    return;
-  }
-  next();
-};
-
-export { tokenExtractor, requireLogin };

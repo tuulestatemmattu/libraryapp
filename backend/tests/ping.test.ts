@@ -4,7 +4,7 @@ import app from '../src/app';
 
 const api = supertest(app);
 
-jest.mock('../src/util/middleware', () => ({
+jest.mock('../src/util/middleware/tokenExtractor', () => ({
   tokenExtractor: jest.fn((req, _res, next) => {
     req.userId = 'sample_google_id';
     req.admin = true;

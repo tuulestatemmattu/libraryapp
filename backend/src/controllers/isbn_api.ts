@@ -1,6 +1,6 @@
 import express from 'express';
 import axios from 'axios';
-import { requireLogin } from '../util/middleware';
+import { requireLogin } from '../util/middleware/requireLogin';
 
 interface googleApiResponse {
   totalItems: string;
