@@ -1,5 +1,5 @@
 import ItemsSlider from '../ItemsSlider/ItemsSlider';
-import BookListItem from '../BookListItem/BookListItem';
+import BookListItem from '../BookCard/BookCard';
 import { FetchedBook } from '../../interfaces/Book';
 import { Card, CardContent } from '@mui/material';
 import './YourBooks.css';
