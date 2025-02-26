@@ -50,22 +50,22 @@ bookRouter.post('/', bookValidator, async (req, res) => {
       res.status(200).send(updatedBook);
     } else {
       if (req.UserId) {
-      const newBook = await Book.create(
-        {
-          title,
-          authors,
-          isbn,
-          description,
-          publishedDate,
-          location,
-          copies: 1,
-          copiesAvailable: 1,
-          imageLink,
-        },
-        { validate: true },
-      );
+        const newBook = await Book.create(
+          {
+            title,
+            authors,
+            isbn,
+            description,
+            publishedDate,
+            location,
+            copies: 1,
+            copiesAvailable: 1,
+            imageLink,
+          },
+          { validate: true },
+        );
         const newBookWithBorrowInfo = await toBookWithBorrowedByMe(newBook, req.UserId.toString());
-      res.status(201).send(newBookWithBorrowInfo);
+        res.status(201).send(newBookWithBorrowInfo);
       } else {
         res.status(401).send({ message: 'must be logged in to add books' });
       }
