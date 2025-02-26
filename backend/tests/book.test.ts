@@ -2,7 +2,7 @@
 import supertest from 'supertest';
 import app from '../src/app';
 import { connectToDatabase, disconnectDatabase } from '../src/util/db';
-import { Book, User } from '../src/models';
+import { Book, Borrow, User } from '../src/models';
 
 const api = supertest(app);
 
@@ -13,7 +13,8 @@ const sampleBook = {
   description: 'A handbook of agile software craftsmanship.',
   publishedDate: '2009',
   location: 'Helsinki',
-};
+  copies: 1,
+  copiesAvailable: 1};
 
 const sampleBook2 = {
   title: "Harry Potter and the Sorcerer's Stone",
@@ -22,6 +23,8 @@ const sampleBook2 = {
   description: 'The book that started the magic.',
   publishedDate: '1998',
   location: 'Helsinki',
+  copies: 1,
+  copiesAvailable: 1
 };
 
 jest.mock('../src/util/middleware', () => ({
@@ -54,15 +57,9 @@ describe('GET /api/books', () => {
     await Book.destroy({ where: {} });
     await Book.create({
       ...sampleBook,
-      lastBorrowedDate: null,
-      available: true,
-      userGoogleId: 'sample_google_id',
     });
     await Book.create({
       ...sampleBook2,
-      lastBorrowedDate: null,
-      available: false,
-      userGoogleId: 'sample_google_id',
     });
   });
 
@@ -135,25 +132,22 @@ describe('PUT /api/books/borrow/:id', () => {
   it('should borrow a book and return the updated book', async () => {
     const book = await Book.create({
       ...sampleBook,
-      lastBorrowedDate: null,
-      available: true,
-      userGoogleId: 'sample_google_id',
     });
     const response = await api.put(`/api/books/borrow/${book?.id}`);
     expect(response.status).toBe(200);
 
     const updatedBook = await Book.findOne({ where: { id: book?.id } });
-    expect(updatedBook?.available).toBe(false);
-    expect(updatedBook?.userGoogleId).toBe('sample_google_id');
-    expect(updatedBook?.lastBorrowedDate).not.toBe(null);
+    expect(updatedBook?.copiesAvailable).toBe(0);
+
+    const borrow = await Borrow.findOne({ where: { bookId: book?.id } });
+    expect(borrow?.userGoogleId).toBe('sample_google_id');
+    expect(borrow?.borrowedDate).not.toBe(null);
   });
 
   it('should return 403 if the book is not available', async () => {
     const book = await Book.create({
       ...sampleBook,
-      lastBorrowedDate: null,
-      available: false,
-      userGoogleId: 'sample_google_id',
+      copiesAvailable: 0
     });
 
     const response = await api.put(`/api/books/borrow/${book?.id}`);
@@ -173,9 +167,6 @@ describe('PUT /api/books/return/:id', () => {
     await Book.destroy({ where: {} });
     await Book.create({
       ...sampleBook,
-      lastBorrowedDate: new Date(),
-      available: false,
-      userGoogleId: 'sample_google_id',
     });
   });
 
@@ -185,8 +176,7 @@ describe('PUT /api/books/return/:id', () => {
     expect(response.status).toBe(200);
 
     const updatedBook = await Book.findOne({ where: { id: book?.id } });
-    expect(updatedBook?.available).toBe(true);
-    expect(updatedBook?.userGoogleId).toBe('sample_google_id');
+    expect(updatedBook?.copiesAvailable).toBe(1);
   });
 
   it('should return 404 if the book does not exist', async () => {
