@@ -19,6 +19,7 @@
   font-size: large !important;
   right: 3%;
   top: 2%;
+  z-index: 10;
 }
 
 .overview-content-container {
