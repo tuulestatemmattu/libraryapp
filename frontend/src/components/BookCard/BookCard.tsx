@@ -9,7 +9,7 @@ import { useState } from 'react';
 import BookCard from '../BookOverview/BookOverview';
 import { FetchedBook } from '../../interfaces/Book';
 import { Box } from '@mui/material';
-import { BlindsClosed, Bookmark, Cancel, CheckCircle } from '@mui/icons-material';
+import { StarBorder, Bookmark, HighlightOff, CheckCircleOutline } from '@mui/icons-material';
 
 interface BookListItemProps {
   book: FetchedBook;
@@ -72,11 +72,11 @@ const BookListItem = ({ book }: BookListItemProps) => {
               />
               <div className="card-chip-icon-container">
                 {book.available ? (
-                  <CheckCircle className="card-chip icon" />
+                  <CheckCircleOutline className="card-chip icon available" />
                 ) : book.borrowedByMe ? (
-                  <BlindsClosed className="card-chip icon" />
+                  <StarBorder className="card-chip icon mine" />
                 ) : (
-                  <Cancel className="card-chip icon" />
+                  <HighlightOff className="card-chip icon unavailable" />
                 )}
               </div>
             </div>
