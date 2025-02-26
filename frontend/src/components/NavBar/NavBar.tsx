@@ -51,12 +51,14 @@ const NavBar: React.FC<navBarProps> = ({ profile, logOut, children }) => {
               value={location}
               onChange={({ target }) => setLocation(target.value)}
               sx={{
-                overflowY: 'visible',
-                maxHeight: '100px',
-                letterSpacing: '3px',
-                fontWeight: '666',
-                fontSize: '20px',
-                border: 'none',
+                boxShadow: 'none',
+                '.MuiOutlinedInput-notchedOutline': { border: 0 },
+                '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                  border: 0,
+                },
+                '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  border: 0,
+                },
               }}
               MenuProps={MenuProps}
             >
