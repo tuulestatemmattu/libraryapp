@@ -27,6 +27,7 @@ const BookCard = ({ book, setOpen }: props) => {
     try {
       const newBook = await borrowBook(id);
       updateBook(newBook);
+      handleClose();
     } catch (error) {
       console.error('Failed to borrow the book:', error);
     }
@@ -36,6 +37,7 @@ const BookCard = ({ book, setOpen }: props) => {
     try {
       const newBook = await returnBook(id);
       updateBook(newBook);
+      handleClose();
     } catch (error) {
       console.error('Failed to borrow the book:', error);
     }
@@ -75,7 +77,7 @@ const BookCard = ({ book, setOpen }: props) => {
     <Card className="book-overview-card">
       {/* Top: Book Cover */}
       <IconButton onClick={handleClose} className="overview-close-button">
-        <ClearIcon fontSize="large" />
+        <ClearIcon fontSize="medium" />
       </IconButton>
       <div className="overview-content-container">
         <div className="overview-tophalf-container">
@@ -86,6 +88,27 @@ const BookCard = ({ book, setOpen }: props) => {
               image={book.imageLink ? book.imageLink : getPlaceholderSVG(book)}
               alt="book cover"
             />
+            <CardActions sx={{ padding: 0 }}>
+              {book.borrowedByMe ? (
+                <Button
+                  variant="contained"
+                  className="book-overview-action-button"
+                  onClick={() => handleReturn(book.id)}
+                >
+                  Return
+                </Button>
+              ) : book.available ? (
+                <Button
+                  variant="contained"
+                  className="book-overview-action-button"
+                  onClick={() => handleBorrow(book.id)}
+                >
+                  Borrow
+                </Button>
+              ) : (
+                <div></div>
+              )}
+            </CardActions>
           </Paper>
           <CardContent>
             <div className="book-overview-info-container">
@@ -127,27 +150,6 @@ const BookCard = ({ book, setOpen }: props) => {
                 <strong>tags:</strong> scifi
               </Typography>
               */}
-              <CardActions sx={{ padding: 0 }}>
-                {book.borrowedByMe ? (
-                  <Button
-                    variant="contained"
-                    className="book-overview-action-button"
-                    onClick={() => handleReturn(book.id)}
-                  >
-                    Return
-                  </Button>
-                ) : book.available ? (
-                  <Button
-                    variant="contained"
-                    className="book-overview-action-button"
-                    onClick={() => handleBorrow(book.id)}
-                  >
-                    Borrow
-                  </Button>
-                ) : (
-                  <div></div>
-                )}
-              </CardActions>
             </div>
           </CardContent>
         </div>

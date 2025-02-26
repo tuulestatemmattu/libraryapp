@@ -40,6 +40,15 @@
   width: 20vw !important;
   max-width: 200px !important;
   height: fit-content;
+  align-items: center;
+  justify-content: center;
+}
+
+.book-overview-action-button {
+  width: 100% !important;
+  font-size: 3vw !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
 }
 
 .book-overview-image {
@@ -63,12 +72,6 @@
 }
 
 .overview-info-text {
-  font-size: 3vw !important;
-}
-
-.book-overview-action-button {
-  position: relative;
-  bottom: 0;
   font-size: 3vw !important;
 }
 
