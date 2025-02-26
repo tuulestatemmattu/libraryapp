@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import AddBookForm from '../AddBookForm/AddBookForm';
-import IsbnPage from '../IsbnPage';
+import IsbnPage from '../IsbnPage/IsbnPage';
 import BarcodeScanner from '../BarcodeScanner';
 import getBookFromIsbn from '../../services/isbn';
 import { addBook } from '../../services/book';

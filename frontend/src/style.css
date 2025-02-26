@@ -96,3 +96,13 @@ article {
     max-width: 1800px;
   }
 }
+
+.MuiButton-root {
+  background-color: #ffc107 !important;
+  color: #101820 !important;
+}
+
+.MuiFab-root {
+  background-color: #101820 !important;
+  color: #ffc107 !important;
+}

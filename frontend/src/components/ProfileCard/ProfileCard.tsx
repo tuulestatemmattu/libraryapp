@@ -20,7 +20,7 @@ const ProfileCard = ({ profile, logOut }: ProfileCardProps) => {
         </div>
       </div>
       <ButtonGroup className="profile-card-buttons">
-        <Button variant="text" color="inherit" onClick={logOut}>
+        <Button variant="text" color="inherit" onClick={logOut} className="logout-button">
           Logout
         </Button>
       </ButtonGroup>

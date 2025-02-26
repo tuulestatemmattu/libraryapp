@@ -4,7 +4,7 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  z-index: 1000;
+  font-weight: 6000 !important;
 }
 
 .floatingicon {
