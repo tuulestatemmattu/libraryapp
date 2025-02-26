@@ -3,9 +3,9 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import Profile from '../Profile';
 import './NavBar.css';
 import { officeLocations } from '../../constants';
-import { LocationContext } from '../../context/LocationProvider/LocationProvider';
-import React, { useContext } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import useMainStore from '../../hooks/useMainStore';
 
 interface navBarProps {
   profile: {
@@ -18,8 +18,9 @@ interface navBarProps {
 }
 
 const NavBar: React.FC<navBarProps> = ({ profile, logOut, children }) => {
-  const [location, setLocation] = useContext(LocationContext);
   const navigate = useNavigate();
+  const location = useMainStore((state) => state.location);
+  const setLocation = useMainStore((state) => state.setLocation);
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -50,12 +51,14 @@ const NavBar: React.FC<navBarProps> = ({ profile, logOut, children }) => {
               value={location}
               onChange={({ target }) => setLocation(target.value)}
               sx={{
-                overflowY: 'visible',
-                maxHeight: '100px',
-                letterSpacing: '3px',
-                fontWeight: '666',
-                fontSize: '20px',
-                border: 'none',
+                boxShadow: 'none',
+                '.MuiOutlinedInput-notchedOutline': { border: 0 },
+                '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                  border: 0,
+                },
+                '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  border: 0,
+                },
               }}
               MenuProps={MenuProps}
             >

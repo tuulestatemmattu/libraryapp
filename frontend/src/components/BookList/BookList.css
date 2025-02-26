@@ -3,7 +3,6 @@
   align-items: center;
   margin-bottom: 5px;
   margin-top: 10px;
-  margin: 2%;
   border-radius: 5px;
 }
 
@@ -24,12 +23,11 @@
 .books-container {
   display: block;
   justify-content: center;
-  margin: 2%;
 }
 
 .grid-container {
   margin-top: 20px;
-  padding-top: 2%;
+  padding: 2% 0;
   border-radius: 10px;
   background-color: #d7d2cb;
   display: grid;

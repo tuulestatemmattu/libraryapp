@@ -25,7 +25,8 @@ const placeholderBook: FetchedBook = {
   lastBorrowedDate: new Date(),
 };
 
-const ScanPage = ({ books }: ScanPageProps) => {
+const ScanPage = () => {
+  const books = useMainStore((state) => state.books);
   const [open, setOpen] = useState(false);
   const [scannedBook, setScannedBook] = useState<FetchedBook>(placeholderBook);
   const [isbn, setIsbn] = useState<string | null>(null);
