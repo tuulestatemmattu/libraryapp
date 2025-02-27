@@ -11,6 +11,7 @@ import useMainStore from '../../hooks/useMainStore';
 import '../../style.css';
 import './AddBookForm.css';
 import { FetchedTag } from '../../interfaces/Tags';
+import AddTag from '../AddTag/AddTag';
 
 interface BookFormProps {
   onSubmit: (book: CreatedBook) => Promise<{ status: number }>;
@@ -73,6 +74,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
     setDescription('');
     setPublishedDate('');
     setLocation('');
+    setSelectedTags([]);
   };
 
   const handleChangeLocation = (value: string) => {
@@ -129,6 +131,9 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
           Clear
         </Button>
       </form>
+      <div>
+        <AddTag />
+      </div>
     </article>
   );
 };
