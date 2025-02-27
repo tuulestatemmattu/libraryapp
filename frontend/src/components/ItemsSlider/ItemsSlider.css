@@ -54,3 +54,13 @@
     padding-right: 8px;
   }
 }
+
+/* Disable arrows on mobile aka. screens under 700px in width */
+@media (max-width: 700px) {
+  .scroll-button {
+    display: none;
+  }
+  .scroll-button-container {
+    display: none;
+  }
+}
