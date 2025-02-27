@@ -23,13 +23,13 @@
 .books-container {
   display: block;
   justify-content: center;
+  min-height: 90vh;
+  border-radius: 10px;
+  background-color: #ebe8e4;
 }
 
 .grid-container {
-  margin-top: 20px;
-  padding: 2% 0;
-  border-radius: 10px;
-  background-color: #ebe8e4;
+  padding: 2%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 10px;
