@@ -136,13 +136,13 @@ const BookCard = ({ book, setOpen }: props) => {
               >
                 <strong>Published:</strong> {book.publishedDate}
               </Typography>
-                <Typography
+              <Typography
                 variant="subtitle1"
                 color="text.secondary"
                 className="overview-info-text overview-text"
-                >
+              >
                 <strong>Copies available:</strong> {book.copiesAvailable}
-                </Typography>
+              </Typography>
               {/*
               <Typography
                 variant="subtitle1"
