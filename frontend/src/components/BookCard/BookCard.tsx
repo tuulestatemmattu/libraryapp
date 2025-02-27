@@ -68,13 +68,13 @@ const BookListItem = ({ book }: BookListItemProps) => {
           <div className="card-chip-positioner">
             <div className="card-chip-container">
               <Bookmark
-                className={`card-chip base ${book.available ? 'available' : book.borrowedByMe ? 'mine' : 'unavailable'}`}
+                className={`card-chip base ${book.copiesAvailable > 0 ? 'available' : book.borrowedByMe ? 'mine' : 'unavailable'}`}
               />
               <div className="card-chip-icon-container">
-                {book.available ? (
-                  <CheckCircleOutline className="card-chip icon available" />
-                ) : book.borrowedByMe ? (
+                {book.borrowedByMe ? (
                   <StarBorder className="card-chip icon mine" />
+                ) : book.copiesAvailable > 0 ? (
+                  <CheckCircleOutline className="card-chip icon available" />
                 ) : (
                   <HighlightOff className="card-chip icon unavailable" />
                 )}

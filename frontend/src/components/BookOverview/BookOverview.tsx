@@ -39,7 +39,7 @@ const BookCard = ({ book, setOpen }: props) => {
       updateBook(newBook);
       handleClose();
     } catch (error) {
-      console.error('Failed to borrow the book:', error);
+      console.error('Failed to return the book:', error);
     }
   };
 
@@ -99,7 +99,7 @@ const BookCard = ({ book, setOpen }: props) => {
                 >
                   Return
                 </Button>
-              ) : book.available ? (
+              ) : book.copiesAvailable > 0 ? (
                 <Button
                   variant="contained"
                   className="book-overview-action-button"
@@ -141,7 +141,7 @@ const BookCard = ({ book, setOpen }: props) => {
                 color="text.secondary"
                 className="overview-info-text overview-text"
               >
-                <strong>Copies available:</strong> 420
+                <strong>Copies available:</strong> {book.copiesAvailable}
               </Typography>
               {/*
               <Typography

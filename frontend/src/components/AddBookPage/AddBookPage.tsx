@@ -24,6 +24,7 @@ const AddBooksPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const addBookToStore = useMainStore((state) => state.addBook);
+  const updateBookInStore = useMainStore((state) => state.updateBook);
 
   const queryParams = new URLSearchParams(location.search);
   const viewParam = queryParams.get('view') as ViewOpt;
@@ -60,12 +61,18 @@ const AddBooksPage = () => {
   const handleManualSubmit = async (book: CreatedBook) => {
     try {
       const addedBook = await addBook(book);
-      addBookToStore(addedBook);
+      if (addedBook.isbn === book.isbn) {
+        updateBookInStore(addedBook);
+      } else {
+        addBookToStore(addedBook);
+      }
+      showNotification('Book added successfully', 'success');
       setBook(null);
       return { status: 201 };
     } catch (error) {
       console.error('Error adding book', error);
       setBook(book);
+      showNotification('Failed to add book', 'error');
       return { status: 400 };
     }
   };
