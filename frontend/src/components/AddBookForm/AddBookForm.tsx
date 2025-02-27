@@ -2,7 +2,7 @@ import React, { useState, SyntheticEvent } from 'react';
 import { CreatedBook } from '../../interfaces/Book';
 import StyledInput from '../StyledInput/StyledInput';
 import LocationSelect from '../LocationSelect/LocationSelect';
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, ButtonGroup } from '@mui/material';
 import '../StyledInput/StyledInput';
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';
@@ -100,13 +100,17 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
         <div>
           <StyledInput label="publishYear" value={publishedDate} setValue={setPublishedDate} />
         </div>
-        <div className="location-select-div">
+        <div className="addbookform-bottom-row">
           <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
+          <ButtonGroup variant="contained" className="addbookform-buttons">
+            <Button type="button" onClick={handleClear} variant="contained">
+              Clear
+            </Button>
+            <Button type="submit" variant="contained">
+              Add
+            </Button>
+          </ButtonGroup>
         </div>
-        <Button type="submit">Add</Button>
-        <Button type="button" onClick={handleClear}>
-          Clear
-        </Button>
       </form>
     </article>
   );

@@ -10,6 +10,11 @@ interface Props {
 const ItemsSlider = ({ children }: Props) => {
   const scrollref = useRef<HTMLDivElement | null>(null);
   const scrollAmount = 400;
+
+  if (children.length === 0) {
+    return null;
+  }
+
   return (
     <div>
       <div className="scroll-item-container">

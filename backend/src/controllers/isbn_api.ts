@@ -1,5 +1,6 @@
 import express from 'express';
 import axios from 'axios';
+import { requireLogin } from '../util/middleware/requireLogin';
 
 interface googleApiResponse {
   totalItems: string;
@@ -22,6 +23,7 @@ interface googleApiResponse {
 }
 
 const isbnRouter = express.Router();
+isbnRouter.use(requireLogin);
 
 isbnRouter.post('/', async (req, res) => {
   const { isbn } = req.body;

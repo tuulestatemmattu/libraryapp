@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import AddBookForm from '../AddBookForm/AddBookForm';
-import IsbnPage from '../IsbnPage';
+import IsbnPage from '../IsbnPage/IsbnPage';
 import BarcodeScanner from '../BarcodeScanner';
 import getBookFromIsbn from '../../services/isbn';
 import { addBook } from '../../services/book';
@@ -14,11 +14,13 @@ import { useNotification } from '../../context/NotificationsProvider/Notificatio
 import '../../style.css';
 import './AddBookPage.css';
 import useMainStore from '../../hooks/useMainStore';
+import useRequireAdmin from '../../hooks/useRequireAdmin';
 
 type ViewOpt = 'form' | 'scan' | 'isbn';
 type initialValues = CreatedBook | null;
 
 const AddBooksPage = () => {
+  useRequireAdmin();
   const navigate = useNavigate();
   const location = useLocation();
   const addBookToStore = useMainStore((state) => state.addBook);

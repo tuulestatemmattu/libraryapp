@@ -16,11 +16,11 @@ const toBookWithBorrowedByMe = async (book: Book, userId: string) => {
 };
 
 bookRouter.get('/', async (req, res) => {
-  if (!req.UserId) {
+  if(!req.UserId) {
     res.status(401).send({ message: 'must be logged in to get books' });
     return;
   }
-
+  
   const books = await Book.findAll();
   const userId = req.UserId.toString();
   const booksWithBorrowInfo = await Promise.all(
@@ -31,10 +31,6 @@ bookRouter.get('/', async (req, res) => {
 
 bookRouter.post('/', bookValidator, async (req, res) => {
   const { title, authors, isbn, description, publishedDate, location } = req.body;
-
-  const imageLink = req.body.imageLinks
-    ? req.body.imageLinks[Object.keys(req.body.imageLinks).slice(-1)[0]]
-    : undefined;
 
   try {
     const existingBook = await Book.findOne({ where: { isbn } });
@@ -81,6 +77,7 @@ bookRouter.put('/borrow/:id', async (req, res) => {
   const bookId = req.params.id;
 
   const book = await Book.findOne({ where: { id: bookId } });
+
   if (req.UserId) {
     if (book) {
       if (book.copiesAvailable > 0) {
@@ -126,11 +123,6 @@ bookRouter.put('/return/:id', async (req, res) => {
   } else {
     res.status(401).send({ message: 'must be logged in to return books' });
   }
-});
-
-bookRouter.get('/:id', async (req, res) => {
-  console.log(req.params.id);
-  res.json('details');
 });
 
 export default bookRouter;

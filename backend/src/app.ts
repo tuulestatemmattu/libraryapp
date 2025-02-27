@@ -7,13 +7,14 @@ import loginRouter from './controllers/login';
 import isbnRouter from './controllers/isbn_api';
 import bookRouter from './controllers/book';
 import testingRouter from './controllers/testing';
-import { tokenExtractor } from './util/middleware';
+import { tokenExtractor } from './util/middleware/tokenExtractor';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     export interface Request {
-      UserId?: number;
+      userId?: string;
+      admin?: boolean;
     }
   }
 }
@@ -21,9 +22,10 @@ declare global {
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use(tokenExtractor);
 
 app.use('/api/login', loginRouter);
+app.use(tokenExtractor);
+
 app.use('/api/books', bookRouter);
 app.use('/api/isbn', isbnRouter);
 app.use('/api/books', bookRouter);
