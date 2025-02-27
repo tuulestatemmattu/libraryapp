@@ -71,10 +71,10 @@ const BookListItem = ({ book }: BookListItemProps) => {
                 className={`card-chip base ${book.copiesAvailable > 0 ? 'available' : book.borrowedByMe ? 'mine' : 'unavailable'}`}
               />
               <div className="card-chip-icon-container">
-                {book.copiesAvailable > 0 ? (
-                  <CheckCircleOutline className="card-chip icon available" />
-                ) : book.borrowedByMe ? (
+                {book.borrowedByMe ? (
                   <StarBorder className="card-chip icon mine" />
+                ) : book.copiesAvailable > 0 ? (
+                  <CheckCircleOutline className="card-chip icon available" />
                 ) : (
                   <HighlightOff className="card-chip icon unavailable" />
                 )}
