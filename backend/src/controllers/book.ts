@@ -71,7 +71,7 @@ bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
   }
 });
 
-bookRouter.put('/borrow/:id', requireAdmin, async (req, res) => {
+bookRouter.put('/borrow/:id', async (req, res) => {
   const userId = req.userId as string;
   const bookId = req.params.id;
   const book = await Book.findOne({ where: { id: bookId } });
@@ -93,7 +93,7 @@ bookRouter.put('/borrow/:id', requireAdmin, async (req, res) => {
   }
 });
 
-bookRouter.put('/return/:id', requireAdmin, async (req, res) => {
+bookRouter.put('/return/:id', async (req, res) => {
   const userId = req.userId as string;
   const bookId = req.params.id;
   const book = await Book.findOne({ where: { id: bookId } });
