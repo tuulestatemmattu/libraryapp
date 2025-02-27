@@ -9,7 +9,7 @@ const toBookWithBorrowedByMe = async (book: Book, userId: string) => {
   const myBorrow = await Borrow.findOne({ where: { bookId: book.id, userGoogleId: userId } });
 
   if (myBorrow) {
-    return { ...bookData, borrowedByMe: true };
+    return { ...bookData, borrowedByMe: true, lastBorrowedDate: myBorrow.borrowedDate };
   } else {
     return { ...bookData, borrowedByMe: false };
   }

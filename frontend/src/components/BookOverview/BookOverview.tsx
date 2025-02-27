@@ -39,7 +39,7 @@ const BookCard = ({ book, setOpen }: props) => {
       updateBook(newBook);
       handleClose();
     } catch (error) {
-      console.error('Failed to borrow the book:', error);
+      console.error('Failed to return the book:', error);
     }
   };
 
