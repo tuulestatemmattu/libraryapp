@@ -16,6 +16,7 @@ h3 {
 
 body {
   background-color: #f0f0ec;
+  margin-bottom: 100px; /* This is a hotfix for floating buttons not overlapping page content */
 }
 
 article {
