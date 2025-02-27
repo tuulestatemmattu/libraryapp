@@ -7,7 +7,8 @@ interface FetchedBook {
   description: string;
   location: string;
   borrowedByMe: boolean;
-  available: boolean;
+  copies: number;
+  copiesAvailable: number;
   lastBorrowedDate: Date;
   imageLink?: string;
 }
