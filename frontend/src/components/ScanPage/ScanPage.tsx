@@ -1,5 +1,5 @@
 import BarcodeScanner from '../BarcodeScanner';
-import { Backdrop } from '@mui/material';
+import { Modal } from '@mui/material';
 import { useEffect, useState } from 'react';
 import BookCard from '../BookOverview/BookOverview';
 import { FetchedBook } from '../../interfaces/Book';
@@ -54,23 +54,16 @@ const ScanPage = () => {
         <div className="scan-content">
           <BarcodeScanner isbnHandler={isbnHandler} />
         </div>
-        <div>
-          <Backdrop
-            open={open}
-            onClick={(e) => {
-              if (e.currentTarget === e.target) {
-                setOpen(false);
-                setIsbn(null);
-              }
-            }}
-            sx={{
-              zIndex: 1500,
-            }}
-          >
-            <BookCard book={scannedBook} setOpen={setOpen} />
-          </Backdrop>
-        </div>
       </div>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        sx={{
+          zIndex: 1500,
+        }}
+      >
+        <BookCard book={scannedBook} setOpen={setOpen} />
+      </Modal>
     </article>
   );
 };
