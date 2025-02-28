@@ -57,7 +57,7 @@ afterAll(async () => {
 });
 
 describe('GET /api/books', () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
     await Book.destroy({ where: {} });
     await Book.create({
       ...sampleBook,
