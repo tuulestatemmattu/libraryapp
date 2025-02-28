@@ -1,151 +1,107 @@
+import './BookCard.css';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import CardActionArea from '@mui/material/CardActionArea';
+import { Modal } from '@mui/material';
+import { useState } from 'react';
+import BookCard from '../BookOverview/BookOverview';
 import { FetchedBook } from '../../interfaces/Book';
-import ClearIcon from '@mui/icons-material/Clear';
-import { borrowBook, returnBook } from '../../services/book';
-import useMainStore from '../../hooks/useMainStore';
+import { Box } from '@mui/material';
+import { StarBorder, Bookmark, HighlightOff, CheckCircleOutline } from '@mui/icons-material';
 
-interface props {
+interface BookListItemProps {
   book: FetchedBook;
-  setOpen: (open: boolean) => void;
 }
 
-const BookCard = ({ book, setOpen }: props) => {
-  const updateBook = useMainStore((state) => state.updateBook);
+const BookListItem = ({ book }: BookListItemProps) => {
+  const [open, setOpen] = useState(false);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const getPlaceholderSVG = ({ book }: BookListItemProps) => {
+    const firstLetter = book.title ? book.title.charAt(0).toUpperCase() : '?';
 
-  const handleBorrow = async (id: number) => {
-    try {
-      const newBook = await borrowBook(id);
-      updateBook(newBook);
-    } catch (error) {
-      console.error('Failed to borrow the book:', error);
-    }
-  };
+    const generateColorFromISBN = (isbn: string) => {
+      let hash = 0;
+      for (let i = 0; i < isbn.length; i++) {
+        hash = isbn.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      const hue = Math.abs(hash % 360);
+      return hue;
+    };
 
-  const handleReturn = async (id: number) => {
-    try {
-      const newBook = await returnBook(id);
-      updateBook(newBook);
-    } catch (error) {
-      console.error('Failed to borrow the book:', error);
-    }
+    return `data:image/svg+xml;utf8,
+      <svg xmlns="http://www.w3.org/2000/svg" width="200" height="300" viewBox="0 0 200 300">
+        <rect width="100%" height="100%" fill="hsl(${generateColorFromISBN(book.isbn)}, 80%, 75%)"/>
+        <rect x="0" y="0" width="30" height="100%" fill="hsl(${generateColorFromISBN(book.isbn)}, 60%, 55%)"/>
+
+        <defs>
+          <filter id="textShadow">
+            <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="black" flood-opacity="0.5"/>
+          </filter>
+        </defs>
+
+
+        <text x="115" y="150" font-size="110" fill="white" font-family="Arial" font-weight="bold" text-anchor="middle" dominant-baseline="middle" filter="url(%23textShadow)">
+          ${firstLetter}
+        </text>
+      </svg>`;
   };
 
   return (
-    <Card
-      sx={{
-        width: '85%',
-        height: '85vh',
-        margin: 'auto',
-        my: 4,
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      {/* Top: Book Cover */}
-      <Box
-        sx={{
-          flexDirection: 'row',
-          display: 'flex',
-          height: '60%',
-        }}
-      >
-        <Button sx={{ alignSelf: 'flex-start', minWidth: 0 }} onClick={handleClose}>
-          <ClearIcon fontSize="small" />
-        </Button>
-        <CardMedia
-          component="img"
-          sx={{
-            height: '100%',
-            objectFit: 'contain',
-            paddingTop: 2,
-            justifySelf: 'center',
-            paddingRight: 5,
-          }}
-          image={
-            book.imageLink
-              ? book.imageLink
-              : 'https://m.media-amazon.com/images/I/91VvijsCGIL._AC_UF894,1000_QL80_.jpg'
-          }
-          alt="book cover"
-        />
-      </Box>
-
-      {/* Middle: Book Information */}
-      <CardContent
-        sx={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-          alignItems: 'center',
-        }}
-      >
+    <Card className="book-card">
+      <CardActionArea className="book-card-action" onClick={() => setOpen(true)}>
         <Box
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-
-            marginBottom: '10',
+            position: 'relative',
+            paddingTop: '7.5%',
+            paddingLeft: '7.5%',
+            paddingRight: '7.5%',
           }}
         >
-          <Typography gutterBottom variant="h4" component="div" fontSize={15}>
+          <CardMedia
+            component="img"
+            src={book.imageLink ? book.imageLink : getPlaceholderSVG({ book })}
+            alt="image"
+            className="book-card-image"
+          />
+          <div className="card-chip-positioner">
+            <div className="card-chip-container">
+              <Bookmark
+                className={`card-chip base ${book.copiesAvailable > 0 ? 'available' : book.borrowedByMe ? 'mine' : 'unavailable'}`}
+              />
+              <div className="card-chip-icon-container">
+                {book.borrowedByMe ? (
+                  <StarBorder className="card-chip icon mine" />
+                ) : book.copiesAvailable > 0 ? (
+                  <CheckCircleOutline className="card-chip icon available" />
+                ) : (
+                  <HighlightOff className="card-chip icon unavailable" />
+                )}
+              </div>
+            </div>
+          </div>
+        </Box>
+        <CardContent className="book-card-content">
+          <Typography variant="h5" component="div" className="book-title">
             {book.title}
           </Typography>
-          <CardActions sx={{ padding: 0, alignSelf: 'start' }}>
-            {book.borrowedByMe ? (
-              <Button
-                size="small"
-                variant="contained"
-                sx={{ fontSize: 10, marginBottom: 1, marginLeft: 1 }}
-                onClick={() => handleReturn(book.id)}
-              >
-                Return
-              </Button>
-            ) : (
-              <Button
-                size="small"
-                variant="contained"
-                sx={{ fontSize: 10, marginBottom: 1, marginLeft: 1 }}
-                onClick={() => handleBorrow(book.id)}
-              >
-                Borrow
-              </Button>
-            )}
-          </CardActions>
-        </Box>
-        <Typography variant="subtitle1" color="text.secondary" fontSize={10}>
-          <strong>Author:</strong> {book.authors}
-        </Typography>
-        <Typography variant="subtitle1" color="text.secondary" fontSize={10}>
-          <strong>Published:</strong> {book.publishedDate}
-        </Typography>
-        <Box
-          sx={{
-            mt: 2,
-            flex: 1,
-            overflowY: 'auto',
-            pr: 1, // space for scrollbar
-          }}
-        >
-          <Typography variant="body1" fontSize={10}>
-            {book.description}
+          <Typography gutterBottom variant="body2" component="div" className="book-authors">
+            {book.authors}
           </Typography>
-        </Box>
-      </CardContent>
-
-      {/* Bottom: Action Buttons */}
+        </CardContent>
+      </CardActionArea>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        sx={{
+          zIndex: 1500,
+        }}
+      >
+        <BookCard book={book} setOpen={setOpen} />
+      </Modal>
     </Card>
   );
 };
 
-export default BookCard;
+export default BookListItem;

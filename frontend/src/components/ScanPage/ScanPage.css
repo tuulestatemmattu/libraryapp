@@ -1,16 +1,3 @@
-.icon {
-  margin-right: 10px;
-}
-
-.button-group {
-  margin-top: 20px;
-}
-
-.button {
-  display: flex;
-  justify-content: center;
-}
-
 .center {
   display: flex;
   flex-direction: column;
@@ -30,14 +17,14 @@
 }
 
 /* Specific for the scan (camera) view */
-.book-content.scan {
+.scan-content {
   max-width: 100%;
   width: auto;
   height: auto;
   overflow: hidden;
 }
 
-.book-content.scan video {
+.scan-content video {
   width: 100%;
   max-width: 600px;
   height: auto;

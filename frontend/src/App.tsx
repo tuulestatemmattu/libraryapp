@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { useGoogleAuth } from './hooks/useGoogleAuth';
+import { useAuthCheck } from './hooks/useAuthCheck';
 
-import ScanPage from './components/ScanPage';
+import ScanPage from './components/ScanPage/ScanPage';
 import HomePage from './components/HomePage';
 import SignInPage from './components/SingInPage/SignInPage';
 import AddBooksPage from './components/AddBookPage/AddBookPage';
@@ -15,7 +15,8 @@ import { getBooks } from './services/book';
 import useMainStore from './hooks/useMainStore';
 
 const App = () => {
-  const { profile, login, logOut } = useGoogleAuth();
+  useAuthCheck();
+  const profile = useMainStore((state) => state.profile);
   const setBooks = useMainStore((state) => state.setBooks);
 
   useEffect(() => {
@@ -23,13 +24,13 @@ const App = () => {
   }, []);
 
   if (!profile) {
-    return <SignInPage login={login} />;
+    return <SignInPage />;
   }
 
   return (
     <NotificationProvider>
       <BrowserRouter>
-        <NavBar profile={profile} logOut={logOut} />
+        <NavBar />
         <main className="page-content">
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -38,7 +39,7 @@ const App = () => {
           </Routes>
         </main>
         <FloatingButton type="scan" />
-        <FloatingButton type="add" />
+        {profile.admin && <FloatingButton type="add" />}
       </BrowserRouter>
     </NotificationProvider>
   );

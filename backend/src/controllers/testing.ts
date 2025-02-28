@@ -12,6 +12,7 @@ router.get('/resetdb', async (_req, res) => {
     email: 'sample_email@example.com',
     picture: 'sample_picture_url',
     name: 'Sample Name',
+    admin: true,
   });
 
   res.status(200).end();

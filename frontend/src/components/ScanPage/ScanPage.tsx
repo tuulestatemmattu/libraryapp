@@ -1,12 +1,13 @@
-import BarcodeScanner from './BarcodeScanner';
-import { Backdrop } from '@mui/material';
+import BarcodeScanner from '../BarcodeScanner';
+import { Modal } from '@mui/material';
 import { useEffect, useState } from 'react';
-import BookCard from './BookCard/BookCard';
-import { useNotification } from '../context/NotificationsProvider/NotificationProvider';
+import BookCard from '../BookOverview/BookOverview';
+import { FetchedBook } from '../../interfaces/Book';
+import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
+import useMainStore from '../../hooks/useMainStore';
 
-import '../style.css';
-import useMainStore from '../hooks/useMainStore';
-import { FetchedBook } from '../interfaces/Book';
+import '../../style.css';
+import './ScanPage.css';
 
 const placeholderBook: FetchedBook = {
   id: 1,
@@ -17,7 +18,8 @@ const placeholderBook: FetchedBook = {
   description: '',
   location: 'Helsinki',
   borrowedByMe: false,
-  available: false,
+  copies: 0,
+  copiesAvailable: 0,
   lastBorrowedDate: new Date(),
 };
 
@@ -46,24 +48,23 @@ const ScanPage = () => {
   };
 
   return (
-    <section className=".book-content.scan">
-      <h2>Borrow books by scanning</h2>
-      <BarcodeScanner isbnHandler={isbnHandler} />
-      <Backdrop
+    <article>
+      <div className="center">
+        <h2>Borrow books by scanning</h2>
+        <div className="scan-content">
+          <BarcodeScanner isbnHandler={isbnHandler} />
+        </div>
+      </div>
+      <Modal
         open={open}
-        onClick={(e) => {
-          if (e.currentTarget === e.target) {
-            setOpen(false);
-            setIsbn(null);
-          }
-        }}
+        onClose={() => setOpen(false)}
         sx={{
           zIndex: 1500,
         }}
       >
         <BookCard book={scannedBook} setOpen={setOpen} />
-      </Backdrop>
-    </section>
+      </Modal>
+    </article>
   );
 };
 

@@ -1,23 +1,12 @@
 import { Typography, Toolbar, Box, AppBar, Select, MenuItem } from '@mui/material';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import Profile from '../Profile';
 import './NavBar.css';
 import { officeLocations } from '../../constants';
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import useMainStore from '../../hooks/useMainStore';
+import ProfilePicture from '../ProfilePicture';
 
-interface navBarProps {
-  profile: {
-    name: string;
-    email: string;
-    picture: string;
-  };
-  logOut: () => void;
-  children?: React.ReactNode;
-}
-
-const NavBar: React.FC<navBarProps> = ({ profile, logOut, children }) => {
+const NavBar = () => {
   const navigate = useNavigate();
   const location = useMainStore((state) => state.location);
   const setLocation = useMainStore((state) => state.setLocation);
@@ -51,12 +40,14 @@ const NavBar: React.FC<navBarProps> = ({ profile, logOut, children }) => {
               value={location}
               onChange={({ target }) => setLocation(target.value)}
               sx={{
-                overflowY: 'visible',
-                maxHeight: '100px',
-                letterSpacing: '3px',
-                fontWeight: '666',
-                fontSize: '20px',
-                border: 'none',
+                boxShadow: 'none',
+                '.MuiOutlinedInput-notchedOutline': { border: 0 },
+                '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                  border: 0,
+                },
+                '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  border: 0,
+                },
               }}
               MenuProps={MenuProps}
             >
@@ -70,11 +61,10 @@ const NavBar: React.FC<navBarProps> = ({ profile, logOut, children }) => {
                 </MenuItem>
               ))}
             </Select>
-            <Profile profile={profile} logOut={logOut} />
+            <ProfilePicture />
           </Toolbar>
         </AppBar>
       </Box>
-      {children}
     </div>
   );
 };

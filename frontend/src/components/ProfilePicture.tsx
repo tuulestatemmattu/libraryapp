@@ -1,15 +1,22 @@
 import { Avatar, Backdrop } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ProfileCard from './ProfileCard/ProfileCard';
-import { ProfileProps } from '../interfaces/ProfileProps';
+import useMainStore from '../hooks/useMainStore';
+import axios from 'axios';
+import Profile from '../interfaces/Profile';
 
-const Profile: React.FC<ProfileProps> = ({ profile, logOut }) => {
+const ProfilePicture = () => {
+  const profile = useMainStore((state) => state.profile) as Profile;
+  const removeUser = useMainStore((state) => state.removeUser);
   const [open, setOpen] = useState(false);
 
   const logOutAndClose = () => {
-    logOut();
+    document.cookie = 'user=; Max-Age=0;secure;path=/;';
+    axios.defaults.headers.common.Authorization = '';
+    removeUser();
     setOpen(false);
   };
+
   return (
     <>
       <div onClick={() => setOpen(true)}>
@@ -29,4 +36,4 @@ const Profile: React.FC<ProfileProps> = ({ profile, logOut }) => {
   );
 };
 
-export default Profile;
+export default ProfilePicture;

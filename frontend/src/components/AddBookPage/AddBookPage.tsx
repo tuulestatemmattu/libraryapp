@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import AddBookForm from '../AddBookForm/AddBookForm';
-import IsbnPage from '../IsbnPage';
+import IsbnPage from '../IsbnPage/IsbnPage';
 import BarcodeScanner from '../BarcodeScanner';
 import getBookFromIsbn from '../../services/isbn';
 import { addBook } from '../../services/book';
@@ -14,14 +14,17 @@ import { useNotification } from '../../context/NotificationsProvider/Notificatio
 import '../../style.css';
 import './AddBookPage.css';
 import useMainStore from '../../hooks/useMainStore';
+import useRequireAdmin from '../../hooks/useRequireAdmin';
 
 type ViewOpt = 'form' | 'scan' | 'isbn';
 type initialValues = CreatedBook | null;
 
 const AddBooksPage = () => {
+  useRequireAdmin();
   const navigate = useNavigate();
   const location = useLocation();
   const addBookToStore = useMainStore((state) => state.addBook);
+  const updateBookInStore = useMainStore((state) => state.updateBook);
 
   const queryParams = new URLSearchParams(location.search);
   const viewParam = queryParams.get('view') as ViewOpt;
@@ -58,12 +61,18 @@ const AddBooksPage = () => {
   const handleManualSubmit = async (book: CreatedBook) => {
     try {
       const addedBook = await addBook(book);
-      addBookToStore(addedBook);
+      if (addedBook.isbn === book.isbn) {
+        updateBookInStore(addedBook);
+      } else {
+        addBookToStore(addedBook);
+      }
+      showNotification('Book added successfully', 'success');
       setBook(null);
       return { status: 201 };
     } catch (error) {
       console.error('Error adding book', error);
       setBook(book);
+      showNotification('Failed to add book', 'error');
       return { status: 400 };
     }
   };

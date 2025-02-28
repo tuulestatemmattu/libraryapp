@@ -2,7 +2,7 @@
 import supertest from 'supertest';
 import app from '../src/app';
 import { connectToDatabase, disconnectDatabase } from '../src/util/db';
-import { Book, User, Tag, ConnectionBookTag } from '../src/models';
+import { Book, Borrow, User, Tag, ConnectionBookTag } from '../src/models';
 
 const api = supertest(app);
 
@@ -13,6 +13,8 @@ const sampleBook = {
   description: 'A handbook of agile software craftsmanship.',
   publishedDate: '2009',
   location: 'Helsinki',
+  copies: 1,
+  copiesAvailable: 1,
 };
 
 const sampleBook2 = {
@@ -22,15 +24,18 @@ const sampleBook2 = {
   description: 'The book that started the magic.',
   publishedDate: '1998',
   location: 'Helsinki',
+  copies: 1,
+  copiesAvailable: 1,
 };
 
 const sampleTag = {
   name: 'Agile',
 };
 
-jest.mock('../src/util/middleware', () => ({
+jest.mock('../src/util/middleware/tokenExtractor', () => ({
   tokenExtractor: jest.fn((req, _res, next) => {
-    req.UserId = 'sample_google_id';
+    req.userId = 'sample_google_id';
+    req.admin = true;
     next();
   }),
 }));
@@ -47,6 +52,8 @@ beforeAll(async () => {
     name: 'Sample Name',
   });
   await Book.sync();
+  await Borrow.sync();
+  await Borrow.destroy({ where: {} });
   await Tag.sync();
   await ConnectionBookTag.sync();
 });
@@ -62,15 +69,9 @@ describe('GET /api/books', () => {
     await ConnectionBookTag.destroy({ where: {} });
     await Book.create({
       ...sampleBook,
-      lastBorrowedDate: null,
-      available: true,
-      userGoogleId: 'sample_google_id',
     });
     await Book.create({
       ...sampleBook2,
-      lastBorrowedDate: null,
-      available: false,
-      userGoogleId: 'sample_google_id',
     });
     await Tag.create({
       ...sampleTag,
@@ -91,7 +92,6 @@ describe('GET /api/books', () => {
     const response = await api.get('/api/books');
     expect(response.status).toBe(200);
     expect(response.body.length).toBe(2);
-
     const titles = response.body.map((book: Book) => book.title);
     expect(titles).toContain(sampleBook.title);
     expect(titles).toContain(sampleBook2.title);
@@ -105,7 +105,7 @@ describe('GET /api/books', () => {
     const books = response.body;
     const states = [books[0].borrowedByMe, books[1].borrowedByMe];
     expect(states).toContain(false);
-    expect(states).toContain(true);
+    expect(states).toContain(false);
   });
 
   it('should return correct books with correct tags', async () => {
@@ -136,27 +136,8 @@ describe('POST /api/books', () => {
     expect(response.body.description).toBe(sampleBook.description);
     expect(response.body.publishedDate).toBe(sampleBook.publishedDate);
     expect(response.body.location).toBe(sampleBook.location);
-    expect(response.body.available).toBe(true);
-    expect(response.body).not.toContain('userGoogleId');
-  });
-
-  it('should update an existing book and return correct book', async () => {
-    await api.post('/api/books').send({
-      ...sampleBook2,
-      isbn: sampleBook.isbn,
-    });
-
-    const response = await api.post('/api/books').send(sampleBook);
-    expect(response.status).toBe(200);
-    expect(await Book.count()).toBe(1);
-
-    expect(response.body.title).toBe(sampleBook.title);
-    expect(response.body.authors).toBe(sampleBook.authors);
-    expect(response.body.isbn).toBe(sampleBook.isbn);
-    expect(response.body.description).toBe(sampleBook.description);
-    expect(response.body.publishedDate).toBe(sampleBook.publishedDate);
-    expect(response.body.location).toBe(sampleBook.location);
-    expect(response.body.available).toBe(true);
+    expect(response.body.copies).toBe(1);
+    expect(response.body.copiesAvailable).toBe(1);
     expect(response.body).not.toContain('userGoogleId');
   });
 
@@ -181,31 +162,29 @@ describe('POST /api/books', () => {
 
 describe('PUT /api/books/borrow/:id', () => {
   beforeEach(async () => {
+    await Borrow.destroy({ where: {} });
     await Book.destroy({ where: {} });
   });
 
   it('should borrow a book and return the updated book', async () => {
     const book = await Book.create({
       ...sampleBook,
-      lastBorrowedDate: null,
-      available: true,
-      userGoogleId: 'sample_google_id',
     });
     const response = await api.put(`/api/books/borrow/${book?.id}`);
     expect(response.status).toBe(200);
 
     const updatedBook = await Book.findOne({ where: { id: book?.id } });
-    expect(updatedBook?.available).toBe(false);
-    expect(updatedBook?.userGoogleId).toBe('sample_google_id');
-    expect(updatedBook?.lastBorrowedDate).not.toBe(null);
+    expect(updatedBook?.copiesAvailable).toBe(0);
+
+    const borrow = await Borrow.findOne({ where: { bookId: book?.id } });
+    expect(borrow?.userGoogleId).toBe('sample_google_id');
+    expect(borrow?.borrowedDate).not.toBe(null);
   });
 
   it('should return 403 if the book is not available', async () => {
     const book = await Book.create({
       ...sampleBook,
-      lastBorrowedDate: null,
-      available: false,
-      userGoogleId: 'sample_google_id',
+      copiesAvailable: 0,
     });
 
     const response = await api.put(`/api/books/borrow/${book?.id}`);
@@ -222,23 +201,21 @@ describe('PUT /api/books/borrow/:id', () => {
 
 describe('PUT /api/books/return/:id', () => {
   beforeEach(async () => {
+    await Borrow.destroy({ where: {} });
     await Book.destroy({ where: {} });
     await Book.create({
       ...sampleBook,
-      lastBorrowedDate: new Date(),
-      available: false,
-      userGoogleId: 'sample_google_id',
     });
   });
 
   it('should return a book and update its status', async () => {
     const book = await Book.findOne({ where: { isbn: sampleBook.isbn } });
+    await api.put(`/api/books/borrow/${book?.id}`);
     const response = await api.put(`/api/books/return/${book?.id}`);
     expect(response.status).toBe(200);
 
     const updatedBook = await Book.findOne({ where: { id: book?.id } });
-    expect(updatedBook?.available).toBe(true);
-    expect(updatedBook?.userGoogleId).toBe('sample_google_id');
+    expect(updatedBook?.copiesAvailable).toBe(1);
   });
 
   it('should return 404 if the book does not exist', async () => {

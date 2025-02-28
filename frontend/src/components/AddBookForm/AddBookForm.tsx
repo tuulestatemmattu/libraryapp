@@ -2,9 +2,10 @@ import React, { useState, SyntheticEvent } from 'react';
 import { CreatedBook } from '../../interfaces/Book';
 import StyledInput from '../StyledInput/StyledInput';
 import LocationSelect from '../LocationSelect/LocationSelect';
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, ButtonGroup } from '@mui/material';
 import '../StyledInput/StyledInput';
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
+import useMainStore from '../../hooks/useMainStore';
 
 import '../../style.css';
 import './AddBookForm.css';
@@ -15,12 +16,14 @@ interface BookFormProps {
 }
 
 const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
+  const defaultLocation = useMainStore((state) => state.location);
+
   const [title, setTitle] = useState(initialValues?.title || '');
   const [authors, setAuthors] = useState(initialValues?.authors || '');
   const [isbn, setIsbn] = useState(initialValues?.isbn || '');
   const [description, setDescription] = useState(initialValues?.description || '');
   const [publishedDate, setPublishedDate] = useState(initialValues?.publishedDate || '');
-  const [location, setLocation] = useState(initialValues?.location || 'Helsinki');
+  const [location, setLocation] = useState(initialValues?.location || defaultLocation);
   const { showNotification } = useNotification();
 
   const handleSubmit = async (e: SyntheticEvent) => {
@@ -97,13 +100,17 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
         <div>
           <StyledInput label="publishYear" value={publishedDate} setValue={setPublishedDate} />
         </div>
-        <div className="location-select-div">
+        <div className="addbookform-bottom-row">
           <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
+          <ButtonGroup variant="contained" className="addbookform-buttons">
+            <Button type="button" onClick={handleClear} variant="contained">
+              Clear
+            </Button>
+            <Button type="submit" variant="contained">
+              Add
+            </Button>
+          </ButtonGroup>
         </div>
-        <Button type="submit">Add</Button>
-        <Button type="button" onClick={handleClear}>
-          Clear
-        </Button>
       </form>
     </article>
   );

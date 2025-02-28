@@ -1,22 +1,25 @@
 import express from 'express';
-import { Book } from '../models';
-import { Tag } from '../models';
+import { Book, Borrow, Tag } from '../models';
 import bookValidator from '../util/validation';
+import { requireLogin } from '../util/middleware/requireLogin';
+import { requireAdmin } from '../util/middleware/requireAdmin';
 
 const bookRouter = express.Router();
+bookRouter.use(requireLogin);
 
-const mapBook = (book: Book, userId: string) => {
+const toBookWithBorrowedByMe = async (book: Book, userId: string) => {
   const bookData = book.dataValues;
-  const { userGoogleId, ...bookWithoutId } = bookData;
-  if (userGoogleId === userId && !bookData.available) {
-    return { ...bookWithoutId, borrowedByMe: true };
+  const myBorrow = await Borrow.findOne({ where: { bookId: book.id, userGoogleId: userId } });
+
+  if (myBorrow) {
+    return { ...bookData, borrowedByMe: true, lastBorrowedDate: myBorrow.borrowedDate };
   } else {
-    return { ...bookWithoutId, borrowedByMe: false };
+    return { ...bookData, borrowedByMe: false };
   }
 };
 
 bookRouter.get('/', async (req, res) => {
-  if (!req.UserId) {
+  if (!req.userId) {
     res.status(401).send({ message: 'must be logged in to get books' });
     return;
   }
@@ -32,22 +35,15 @@ bookRouter.get('/', async (req, res) => {
       },
     ],
   });
-  const userId = req.UserId.toString();
-
-  const mapBooks = (book: Book, id: string) => {
-    const bookData = book.dataValues;
-    const { userGoogleId, ...bookWithoutId } = bookData;
-    if (userGoogleId === id && !bookData.available) {
-      return { ...bookWithoutId, borrowedByMe: true };
-    } else {
-      return { ...bookWithoutId, borrowedByMe: false };
-    }
-  };
-  const booksWithBorrowInfo = books.map((book) => mapBooks(book, userId));
+  const userId = req.userId.toString();
+  const booksWithBorrowInfo = await Promise.all(
+    books.map((book) => toBookWithBorrowedByMe(book, userId)),
+  );
   res.send(booksWithBorrowInfo);
 });
 
-bookRouter.post('/', bookValidator, async (req, res) => {
+bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
+  const userId = req.userId as string;
   const { title, authors, isbn, description, publishedDate, location } = req.body;
 
   const imageLink = req.body.imageLinks
@@ -57,39 +53,26 @@ bookRouter.post('/', bookValidator, async (req, res) => {
   try {
     const existingBook = await Book.findOne({ where: { isbn } });
 
-    if (!req.UserId) {
-      res.status(401).send({ message: 'must be logged in to add books' });
-      return;
-    }
-
     if (existingBook) {
-      await Book.update(
-        { title, authors, description, publishedDate, location, imageLink },
-        { where: { isbn }, validate: true },
-      );
-      const updatedBook = await Book.findOne({ where: { isbn } });
+      const updatedBook = await existingBook.increment(['copies', 'copiesAvailable']);
       res.status(200).send(updatedBook);
     } else {
-      if (req.UserId) {
-        const newBook = await Book.create(
-          {
-            title,
-            authors,
-            isbn,
-            description,
-            publishedDate,
-            location,
-            lastBorrowedDate: new Date(),
-            available: true,
-            userGoogleId: req.UserId.toString(),
-            imageLink,
-          },
-          { validate: true },
-        );
-        res.status(201).send(mapBook(newBook, req.UserId.toString()));
-      } else {
-        res.status(401).send({ message: 'must be logged in to add books' });
-      }
+      const newBook = await Book.create(
+        {
+          title,
+          authors,
+          isbn,
+          description,
+          publishedDate,
+          location,
+          copies: 1,
+          copiesAvailable: 1,
+          imageLink,
+        },
+        { validate: true },
+      );
+      const newBookWithBorrowInfo = await toBookWithBorrowedByMe(newBook, userId);
+      res.status(201).send(newBookWithBorrowInfo);
     }
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -99,57 +82,48 @@ bookRouter.post('/', bookValidator, async (req, res) => {
 });
 
 bookRouter.put('/borrow/:id', async (req, res) => {
+  const userId = req.userId as string;
   const bookId = req.params.id;
-
   const book = await Book.findOne({ where: { id: bookId } });
-  if (req.UserId) {
-    if (book) {
-      if (book.available) {
-        const timeNow = new Date();
-        book.lastBorrowedDate = timeNow;
-        book.available = false;
-        book.userGoogleId = req.UserId.toString();
 
-        await book.save();
-
-        res.json(mapBook(book, req.UserId.toString()));
-      } else {
-        res.status(403).send({ message: 'book is not available' });
-      }
+  if (book) {
+    if (book.copiesAvailable > 0) {
+      book.decrement('copiesAvailable');
+      const timeNow = new Date();
+      const borrowedDate = timeNow;
+      await Borrow.create({ bookId: book.id, userGoogleId: userId, borrowedDate });
+      await book.save();
+      const borrowedBook = await toBookWithBorrowedByMe(book, userId);
+      res.json(borrowedBook);
     } else {
-      res.status(404).send({ message: 'book does not exist' });
+      res.status(403).send({ message: 'book is not available' });
     }
   } else {
-    res.status(401).send({ message: 'must be logged in to borrow books' });
+    res.status(404).send({ message: 'book does not exist' });
   }
 });
 
 bookRouter.put('/return/:id', async (req, res) => {
+  const userId = req.userId as string;
   const bookId = req.params.id;
   const book = await Book.findOne({ where: { id: bookId } });
 
-  if (req.UserId) {
-    if (book) {
-      if (req.UserId.toString() === book.userGoogleId) {
-        book.available = true;
-
-        await book.save();
-
-        res.json(mapBook(book, req.UserId.toString()));
-      } else {
-        res.status(403).send({ message: 'no permission to return this book' });
-      }
+  if (book) {
+    const borrowed = await Borrow.findOne({
+      where: { bookId: book.id, userGoogleId: userId },
+    });
+    if (borrowed) {
+      book.increment('copiesAvailable');
+      await borrowed.destroy();
+      await book.save();
+      const returnedBook = await toBookWithBorrowedByMe(book, userId);
+      res.json(returnedBook);
     } else {
-      res.status(404).send({ message: 'book does not exist' });
+      res.status(403).send({ message: 'no permission to return this book' });
     }
   } else {
-    res.status(401).send({ message: 'must be logged in to return books' });
+    res.status(404).send({ message: 'book does not exist' });
   }
-});
-
-bookRouter.get('/:id', async (req, res) => {
-  console.log(req.params.id);
-  res.json('details');
 });
 
 export default bookRouter;

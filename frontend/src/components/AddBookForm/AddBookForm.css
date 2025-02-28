@@ -7,3 +7,17 @@
 form {
   margin-left: 30px;
 }
+
+.addbookform-bottom-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 90%;
+  max-width: 700px;
+}
+
+.addbookform-buttons {
+  position: relative;
+  top: 25px !important;
+  height: 40px !important;
+}
