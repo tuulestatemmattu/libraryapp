@@ -24,6 +24,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
   const [description, setDescription] = useState(initialValues?.description || '');
   const [publishedDate, setPublishedDate] = useState(initialValues?.publishedDate || '');
   const [location, setLocation] = useState(initialValues?.location || defaultLocation);
+  const [copies, setCopies] = useState(initialValues?.copies || 1);
   const { showNotification } = useNotification();
 
   const handleSubmit = async (e: SyntheticEvent) => {
@@ -35,6 +36,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
       description,
       publishedDate,
       location,
+      copies,
     };
 
     if (initialValues?.imageLinks) {
@@ -51,6 +53,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
         setDescription('');
         setPublishedDate('');
         setLocation('');
+        setCopies(1);
       } else {
         showNotification('Failed to add the book. Please try again!', 'error');
       }
@@ -67,6 +70,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
     setDescription('');
     setPublishedDate('');
     setLocation('');
+    setCopies(1);
   };
 
   const handleChangeLocation = (value: string) => {
@@ -99,6 +103,18 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
         </div>
         <div>
           <StyledInput label="publishYear" value={publishedDate} setValue={setPublishedDate} />
+        </div>
+        <div>
+          <TextField
+            className="styled-input"
+            label="Copies"
+            type="number"
+            variant="standard"
+            value={copies}
+            name="copies"
+            onChange={({ target }) => setCopies(Number(target.value))}
+            slotProps={{ htmlInput: { min: 1 } }}
+          />
         </div>
         <div className="addbookform-bottom-row">
           <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
