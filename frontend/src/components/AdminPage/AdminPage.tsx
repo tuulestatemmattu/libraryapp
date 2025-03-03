@@ -19,6 +19,7 @@ const AdminPage = () => {
   useRequireAdmin();
   const [rows, setRows] = useState([]);
   const [selected, setSelected] = useState<string[]>([]);
+
   useEffect(() => {
     getUsers().then((result) =>
       setRows(
@@ -41,7 +42,6 @@ const AdminPage = () => {
         console.error(`Failed to promote ${user}`);
       }
     }
-
     const result = await getUsers();
     setRows(
       result.map((u: Profile) => ({
@@ -51,6 +51,7 @@ const AdminPage = () => {
         admin: u.admin,
       })),
     );
+    setSelected([]);
   };
 
   const columns: GridColDef[] = [
@@ -84,6 +85,7 @@ const AdminPage = () => {
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[5, 10]}
           checkboxSelection
+          rowSelectionModel={selected}
           onRowSelectionModelChange={(ids) => setSelected(ids.map((id) => id.toString()))}
           sx={{ border: 1 }}
           slots={{
