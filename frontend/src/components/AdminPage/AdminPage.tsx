@@ -14,11 +14,13 @@ import {
 import Paper from '@mui/material/Paper';
 import { Button } from '@mui/material';
 import useRequireAdmin from '../../hooks/useRequireAdmin';
+import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 
 const AdminPage = () => {
   useRequireAdmin();
   const [rows, setRows] = useState([]);
   const [selected, setSelected] = useState<string[]>([]);
+  const { showNotification } = useNotification();
 
   useEffect(() => {
     getUsers().then((result) =>
@@ -38,8 +40,9 @@ const AdminPage = () => {
       try {
         const result = await promoteUsers(user);
         console.log(result);
+        showNotification('User promoted successfully!', 'success');
       } catch {
-        console.error(`Failed to promote ${user}`);
+        showNotification(`Failed to promote ${user}`, 'error');
       }
     }
     const result = await getUsers();
@@ -77,7 +80,9 @@ const AdminPage = () => {
 
   return (
     <div>
-      <h1>users</h1>
+      <Box sx={{ textAlign: 'center' }}>
+        <h1>users</h1>
+      </Box>
       <Paper sx={{ height: 400, width: '100%' }}>
         <DataGrid
           rows={rows}
