@@ -8,6 +8,7 @@ import isbnRouter from './controllers/isbn_api';
 import bookRouter from './controllers/book';
 import testingRouter from './controllers/testing';
 import adminRouter from './controllers/admin';
+import userRouter from './controllers/users';
 import { tokenExtractor } from './util/middleware/tokenExtractor';
 
 declare global {
@@ -31,6 +32,7 @@ app.use('/api/books', bookRouter);
 app.use('/api/isbn', isbnRouter);
 app.use('/api/books', bookRouter);
 app.use('/api/admin', adminRouter);
+app.use('/api/users', userRouter);
 
 app.get('/api/ping', (_req, res) => {
   res.send('pong');
