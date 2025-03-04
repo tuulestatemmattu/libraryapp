@@ -13,6 +13,7 @@ import './style.css';
 import { useEffect } from 'react';
 import { getBooks } from './services/book';
 import useMainStore from './hooks/useMainStore';
+import AdminPage from './components/AdminPage/AdminPage';
 
 const App = () => {
   useAuthCheck();
@@ -36,6 +37,7 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/scan" element={<ScanPage />} />
             <Route path="/addBook" element={<AddBooksPage />} />
+            <Route path="/admin" element={<AdminPage />} />
           </Routes>
         </main>
         <FloatingButton type="scan" />
