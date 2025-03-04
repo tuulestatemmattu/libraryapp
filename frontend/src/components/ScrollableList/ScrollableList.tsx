@@ -12,7 +12,7 @@ const ScrollableList = ({ title, books }: props) => {
   return (
     <div>
       {title}
-      <ItemsSlider>
+      <ItemsSlider renderButtons={true}>
         {books.map((book: FetchedBook) => (
           <BookListItem key={book.id} book={book} />
         ))}
