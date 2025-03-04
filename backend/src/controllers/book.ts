@@ -1,5 +1,5 @@
 import express from 'express';
-import { Book, Borrow, Tag } from '../models';
+import { Book, Borrow, Tag, ConnectionBookTag } from '../models';
 import bookValidator from '../util/validation';
 import { requireLogin } from '../util/middleware/requireLogin';
 import { requireAdmin } from '../util/middleware/requireAdmin';
@@ -44,7 +44,7 @@ bookRouter.get('/', async (req, res) => {
 
 bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
   const userId = req.userId as string;
-  const { title, authors, isbn, description, publishedDate, location } = req.body;
+  const { title, authors, isbn, description, publishedDate, location, tags } = req.body;
 
   const imageLink = req.body.imageLinks
     ? req.body.imageLinks[Object.keys(req.body.imageLinks).slice(-1)[0]]
@@ -72,6 +72,22 @@ bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
         { validate: true },
       );
       const newBookWithBorrowInfo = await toBookWithBorrowedByMe(newBook, userId);
+
+      const book_current_connections = await ConnectionBookTag.findAll({
+        where: {
+          bookId: newBookWithBorrowInfo.id,
+        }
+      })
+
+      tags.forEach(async (tag: Tag) => {
+        if (!book_current_connections.some(connection => connection.tagId === tag.id)) {
+          const new_connection = await ConnectionBookTag.create({
+            bookId: newBookWithBorrowInfo.id,
+            tagId: tag.id,
+          })
+        }
+      });
+
       res.status(201).send(newBookWithBorrowInfo);
     }
   } catch (error: unknown) {
