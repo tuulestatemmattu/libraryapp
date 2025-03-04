@@ -76,15 +76,15 @@ bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
       const book_current_connections = await ConnectionBookTag.findAll({
         where: {
           bookId: newBookWithBorrowInfo.id,
-        }
-      })
+        },
+      });
 
       tags.forEach(async (tag: Tag) => {
-        if (!book_current_connections.some(connection => connection.tagId === tag.id)) {
-          const new_connection = await ConnectionBookTag.create({
+        if (!book_current_connections.some((connection) => connection.tagId === tag.id)) {
+          await ConnectionBookTag.create({
             bookId: newBookWithBorrowInfo.id,
             tagId: tag.id,
-          })
+          });
         }
       });
 
