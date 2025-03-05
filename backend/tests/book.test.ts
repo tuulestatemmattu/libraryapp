@@ -123,10 +123,12 @@ describe('GET /api/books', () => {
 describe('POST /api/books', () => {
   beforeEach(async () => {
     await Book.destroy({ where: {} });
+    await Tag.destroy({ where: {} });
+    await ConnectionBookTag.destroy({ where: {} });
   });
 
   it('should create a new book and return correct book', async () => {
-    const response = await api.post('/api/books').send(sampleBook);
+    const response = await api.post('/api/books').send({ ...sampleBook, tags: [] });
     expect(response.status).toBe(201);
     expect(await Book.count()).toBe(1);
 
