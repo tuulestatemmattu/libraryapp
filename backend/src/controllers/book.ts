@@ -55,6 +55,10 @@ bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
 
     if (existingBook) {
       const updatedBook = await existingBook.increment(['copies', 'copiesAvailable']);
+
+      const tag_ids = tags.map((tag: Tag) => tag.id);
+      await updatedBook.setTags(tag_ids);
+
       res.status(200).send(updatedBook);
     } else {
       const newBook = await Book.create(
@@ -71,24 +75,12 @@ bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
         },
         { validate: true },
       );
+
+      const tag_ids = tags.map((tag: Tag) => tag.id);
+      await newBook.setTags(tag_ids);
+
       const newBookWithBorrowInfo = await toBookWithBorrowedByMe(newBook, userId);
-
-      const book_current_connections = await ConnectionBookTag.findAll({
-        where: {
-          bookId: newBookWithBorrowInfo.id,
-        },
-      });
-
-      tags.forEach(async (tag: Tag) => {
-        if (!book_current_connections.some((connection) => connection.tagId === tag.id)) {
-          await ConnectionBookTag.create({
-            bookId: newBookWithBorrowInfo.id,
-            tagId: tag.id,
-          });
-        }
-      });
-
-      res.status(201).send(newBookWithBorrowInfo);
+      res.status(201).send({...newBookWithBorrowInfo, tags});
     }
   } catch (error: unknown) {
     if (error instanceof Error) {
