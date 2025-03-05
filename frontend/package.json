@@ -17,6 +17,7 @@
     "@ericblade/quagga2": "^1.8.4",
     "@mui/icons-material": "^6.4.2",
     "@mui/material": "^6.4.2",
+    "@mui/x-data-grid": "^7.27.2",
     "@react-oauth/google": "^0.12.1",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
