@@ -1,7 +1,10 @@
 import express from 'express';
 import { Tag } from '../models';
+import { requireLogin } from '../util/middleware/requireLogin';
+import { requireAdmin } from '../util/middleware/requireAdmin';
 
 const tagRouter = express.Router();
+tagRouter.use(requireLogin);
 
 tagRouter.get('/', async (req, res) => {
   const tags = await Tag.findAll();
@@ -10,7 +13,7 @@ tagRouter.get('/', async (req, res) => {
   res.send(tagsData);
 });
 
-tagRouter.post('/', async (req, res) => {
+tagRouter.post('/', requireAdmin, async (req, res) => {
   const { name } = req.body;
 
   try {
