@@ -1,5 +1,5 @@
 import express from 'express';
-import { Book, Borrow, Tag, ConnectionBookTag } from '../models';
+import { Book, Borrow, Tag } from '../models';
 import bookValidator from '../util/validation';
 import { requireLogin } from '../util/middleware/requireLogin';
 import { requireAdmin } from '../util/middleware/requireAdmin';
@@ -59,7 +59,8 @@ bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
       const tag_ids = tags.map((tag: Tag) => tag.id);
       await updatedBook.setTags(tag_ids);
 
-      res.status(200).send(updatedBook);
+      const updatedBookWithBorrowInfo = await toBookWithBorrowedByMe(updatedBook, userId);
+      res.status(200).send({ ...updatedBookWithBorrowInfo, tags });
     } else {
       const newBook = await Book.create(
         {
@@ -80,7 +81,7 @@ bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
       await newBook.setTags(tag_ids);
 
       const newBookWithBorrowInfo = await toBookWithBorrowedByMe(newBook, userId);
-      res.status(201).send({...newBookWithBorrowInfo, tags});
+      res.status(201).send({ ...newBookWithBorrowInfo, tags });
     }
   } catch (error: unknown) {
     if (error instanceof Error) {
