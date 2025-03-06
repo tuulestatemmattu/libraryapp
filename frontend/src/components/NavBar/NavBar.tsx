@@ -1,4 +1,4 @@
-import { Typography, Toolbar, Box, AppBar, Select, MenuItem } from '@mui/material';
+import { Typography, Toolbar, Box, AppBar, Select, MenuItem, Button } from '@mui/material';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import './NavBar.css';
 import { officeLocations } from '../../constants';
@@ -10,6 +10,7 @@ const NavBar = () => {
   const navigate = useNavigate();
   const location = useMainStore((state) => state.location);
   const setLocation = useMainStore((state) => state.setLocation);
+  const profile = useMainStore((state) => state.profile);
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -22,19 +23,34 @@ const NavBar = () => {
     },
   };
 
+  const handleAdminClick = () => {
+    navigate('/admin');
+  };
+
+  if (!profile) {
+    return null;
+  }
+
   return (
     <div>
       <Box>
         <AppBar style={{ backgroundColor: '#FFC107' }}>
           <Toolbar style={{ justifyContent: 'space-between' }}>
-            <Typography
-              variant="h6"
-              component="div"
-              className="typmenuicon"
-              onClick={() => navigate('/')}
-            >
-              <MenuBookIcon className="typemenuicon" />
-            </Typography>
+            <Box className="leftside-items">
+              <Typography
+                variant="h6"
+                component="div"
+                className="typmenuicon"
+                onClick={() => navigate('/')}
+              >
+                <MenuBookIcon className="typemenuicon" />
+              </Typography>
+              {profile.admin && (
+                <Button color="inherit" onClick={handleAdminClick} className="admin-button">
+                  Admin Panel
+                </Button>
+              )}
+            </Box>
             <Select
               className="location-box"
               value={location}
