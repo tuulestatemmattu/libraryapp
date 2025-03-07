@@ -1,6 +1,6 @@
 .location-select {
-  width: 90%;
-  max-width: 300px;
+  width: fit-content;
+  max-width: 70%px;
 }
 
 .location-select-div {

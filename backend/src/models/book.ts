@@ -4,11 +4,11 @@ import {
   InferAttributes,
   InferCreationAttributes,
   CreationOptional,
-  ForeignKey,
+  BelongsToManySetAssociationsMixin,
 } from 'sequelize';
-import User from './user';
 import { sequelize } from '../util/db';
 import isIsbn from 'validator/lib/isISBN';
+import Tag from './tag';
 
 class Book extends Model<InferAttributes<Book>, InferCreationAttributes<Book>> {
   declare id: CreationOptional<number>;
@@ -18,10 +18,11 @@ class Book extends Model<InferAttributes<Book>, InferCreationAttributes<Book>> {
   declare description: string | null;
   declare publishedDate: string | null;
   declare location: string | null;
-  declare lastBorrowedDate: Date | null;
-  declare available: boolean;
+  declare copies: number;
+  declare copiesAvailable: number;
   declare imageLink: string | null;
-  declare userGoogleId: ForeignKey<User['google_id']>;
+
+  declare setTags: BelongsToManySetAssociationsMixin<Tag, number>;
 }
 
 Book.init(
@@ -62,12 +63,21 @@ Book.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    lastBorrowedDate: {
-      type: DataTypes.DATE,
-      allowNull: true,
+    copies: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1,
+      validate: {
+        min: 0,
+      },
     },
-    available: {
-      type: DataTypes.BOOLEAN,
+    copiesAvailable: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1,
+      validate: {
+        min: 0,
+      },
     },
     imageLink: {
       type: DataTypes.STRING,

@@ -3,7 +3,7 @@ import { CreatedBook } from '../../interfaces/Book';
 import StyledInput from '../StyledInput/StyledInput';
 import LocationSelect from '../LocationSelect/LocationSelect';
 import TagSelect from '../TagSelect/TagSelect';
-import { TextField, Button, SelectChangeEvent } from '@mui/material';
+import { TextField, Button, SelectChangeEvent, ButtonGroup } from '@mui/material';
 import '../StyledInput/StyledInput';
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';
@@ -120,16 +120,20 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
         <div>
           <StyledInput label="publishYear" value={publishedDate} setValue={setPublishedDate} />
         </div>
-        <div className="location-select-div">
+        <div className="addbookform-bottom-row">
           <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
+          <div className="tag-select-div">
+            <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
+          </div>
+          <ButtonGroup variant="contained" className="addbookform-buttons">
+            <Button type="button" onClick={handleClear} variant="contained">
+              Clear
+            </Button>
+            <Button type="submit" variant="contained">
+              Add
+            </Button>
+          </ButtonGroup>
         </div>
-        <div className="tag-select-div">
-          <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
-        </div>
-        <Button type="submit">Add</Button>
-        <Button type="button" onClick={handleClear}>
-          Clear
-        </Button>
       </form>
       <div>
         <AddTag />

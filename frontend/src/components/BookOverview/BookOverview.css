@@ -19,6 +19,7 @@
   font-size: large !important;
   right: 3%;
   top: 2%;
+  z-index: 10;
 }
 
 .overview-content-container {
@@ -26,22 +27,35 @@
 }
 
 .overview-tophalf-container {
+  position: relative;
   display: flex;
   flex-direction: row;
   margin-bottom: 5%;
+  align-items: center;
+}
+
+.overview-topleft-container {
+  width: 20vw !important;
+  max-width: 200px !important;
+  margin-left: 5%;
 }
 
 .book-overview-image-container {
-  margin-left: 5% !important;
   border-radius: 5% !important;
-  width: 20vw !important;
-  max-width: 200px !important;
   height: fit-content;
 }
 
+.book-overview-action-button {
+  width: 100% !important;
+  height: 7vw !important;
+  max-height: 56px;
+  font-size: 3vw !important;
+
+  margin-top: 5px !important;
+}
+
 .book-overview-image {
-  width: 20vw !important;
-  max-width: 200px !important;
+  width: 100% !important;
   aspect-ratio: 75/100 !important;
 }
 
@@ -57,19 +71,10 @@
 
 .overview-title {
   font-size: 4vw !important;
+  font-weight: 500 !important;
 }
 
-.overview-authors {
-  font-size: 3vw !important;
-}
-
-.overview-published {
-  font-size: 3vw !important;
-}
-
-.book-overview-action-button {
-  position: relative;
-  bottom: 0;
+.overview-info-text {
   font-size: 3vw !important;
 }
 
@@ -82,22 +87,22 @@
   font-size: 2.5vw !important;
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 800px) {
   .overview-title {
-    font-size: 40px !important;
+    font-size: 32px !important;
   }
 
-  .overview-authors {
-    font-size: 30px !important;
+  .overview-info-text {
+    font-size: 24px !important;
   }
 
-  .overview-published {
-    font-size: 30px !important;
-  }
   .overview-description {
-    font-size: 25px !important;
+    font-size: 20px !important;
   }
   .book-overview-action-button {
-    font-size: 30px !important;
+    font-size: 24px !important;
+  }
+  .book-overview-action-button {
+    font-size: 24px !important;
   }
 }

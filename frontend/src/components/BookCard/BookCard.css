@@ -93,3 +93,15 @@
   width: 100%;
   height: 50%;
 }
+
+.card-chip.icon.available {
+  color: green;
+}
+
+.card-chip.icon.mine {
+  color: blue;
+}
+
+.card-chip.icon.unavailable {
+  color: red;
+}
