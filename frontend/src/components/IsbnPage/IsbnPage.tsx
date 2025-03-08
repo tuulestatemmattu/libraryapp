@@ -1,23 +1,23 @@
 import { useState } from 'react';
 import Button from '@mui/material/Button';
 import StyledInput from '../StyledInput/StyledInput';
+import React from 'react';
 
 import './IsbnPage.css';
 
 interface IsbnProps {
-  isbnCallHandler: (_isbn: string) => void;
-  isbn_code: string;
+  isbnHandler: (_isbn: string) => void;
 }
 
-const IsbnPage = ({ isbnCallHandler, isbn_code }: IsbnProps) => {
-  const [isbn, setIsbn] = useState<string>(isbn_code);
-  // eslint-disable-next-line no-undef
+const IsbnPage = ({ isbnHandler }: IsbnProps) => {
+  const [isbn, setIsbn] = useState<string>('');
+
   const handleSubmitIsbn = (event: React.SyntheticEvent) => {
     event.preventDefault();
-
-    isbnCallHandler(isbn);
+    isbnHandler(isbn);
     setIsbn('');
   };
+
   return (
     <div>
       <form onSubmit={handleSubmitIsbn}>
