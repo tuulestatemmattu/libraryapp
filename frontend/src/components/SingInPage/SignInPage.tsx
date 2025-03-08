@@ -1,17 +1,14 @@
-import axios from 'axios';
-
 import LoginIcon from '@mui/icons-material/Login';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 
-import { apiBaseUrl } from '../../constants';
+import { getLoginUrl } from '../../services/login';
 
 import './SignInPage.css';
 
 const SignInPage = () => {
   const redirectToLogin = async () => {
-    const url = (await axios.get(`${apiBaseUrl}/login`)).data;
-    window.location.href = url;
+    window.location.assign(await getLoginUrl());
   };
 
   return (

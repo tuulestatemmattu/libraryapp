@@ -1,6 +1,7 @@
-import { describe, test, expect, vi } from 'vitest';
 import '@testing-library/jest-dom';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, expect, test, vi } from 'vitest';
+
 import StyledInput from './StyledInput';
 
 describe('StyledInput', () => {
