@@ -5,21 +5,9 @@ import { describe, expect, test, vi } from 'vitest';
 import IsbnPage from './IsbnPage';
 
 describe('IsbnPage Component', () => {
-  test('renders correctly with initial props', () => {
-    const mockIsbnCallHandler = vi.fn();
-    render(<IsbnPage isbnCallHandler={mockIsbnCallHandler} isbn_code="1234567890" />);
-
-    const inputElement = screen.getByLabelText(/isbn/i);
-    const buttonElement = screen.getByRole('button', { name: /search/i });
-
-    expect(inputElement).toBeInTheDocument();
-    expect(inputElement).toHaveValue('1234567890');
-    expect(buttonElement).toBeInTheDocument();
-  });
-
-  test('calls isbnCallHandler with the correct value on form submit', () => {
-    const mockIsbnCallHandler = vi.fn();
-    render(<IsbnPage isbnCallHandler={mockIsbnCallHandler} isbn_code="1234567890" />);
+  test('calls isbnHandler with the correct value on form submit', () => {
+    const mockIsbnHandler = vi.fn();
+    render(<IsbnPage isbnHandler={mockIsbnHandler} />);
 
     const inputElement = screen.getByLabelText(/isbn/i);
     const buttonElement = screen.getByRole('button', { name: /search/i });
@@ -27,7 +15,7 @@ describe('IsbnPage Component', () => {
     fireEvent.change(inputElement, { target: { value: '0987654321' } });
     fireEvent.click(buttonElement);
 
-    expect(mockIsbnCallHandler).toHaveBeenCalledWith('0987654321');
+    expect(mockIsbnHandler).toHaveBeenCalledWith('0987654321');
     expect(inputElement).toHaveValue('');
   });
 });
