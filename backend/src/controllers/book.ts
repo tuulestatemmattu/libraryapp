@@ -93,7 +93,18 @@ bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
 bookRouter.put('/borrow/:id', async (req, res) => {
   const userId = req.userId as string;
   const bookId = req.params.id;
-  const book = await Book.findOne({ where: { id: bookId } });
+  const book = await Book.findOne({
+    include: [
+      {
+        model: Tag,
+        attributes: ['name', 'id'],
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+    where: { id: bookId },
+  });
 
   if (book) {
     if (book.copiesAvailable > 0) {
@@ -115,7 +126,18 @@ bookRouter.put('/borrow/:id', async (req, res) => {
 bookRouter.put('/return/:id', async (req, res) => {
   const userId = req.userId as string;
   const bookId = req.params.id;
-  const book = await Book.findOne({ where: { id: bookId } });
+  const book = await Book.findOne({
+    include: [
+      {
+        model: Tag,
+        attributes: ['name', 'id'],
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+    where: { id: bookId },
+  });
 
   if (book) {
     const borrowed = await Borrow.findOne({
