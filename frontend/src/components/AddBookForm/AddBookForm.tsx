@@ -42,6 +42,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
       description,
       publishedDate,
       location,
+      tags: selectedTags,
     };
 
     if (initialValues?.imageLinks) {
@@ -120,11 +121,11 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
         <div>
           <StyledInput label="publishYear" value={publishedDate} setValue={setPublishedDate} />
         </div>
+        <div className="tag-select-div">
+          <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
+        </div>
         <div className="addbookform-bottom-row">
           <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
-          <div className="tag-select-div">
-            <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
-          </div>
           <ButtonGroup variant="contained" className="addbookform-buttons">
             <Button type="button" onClick={handleClear} variant="contained">
               Clear

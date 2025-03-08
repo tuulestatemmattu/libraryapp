@@ -21,3 +21,8 @@ form {
   top: 25px !important;
   height: 40px !important;
 }
+
+.tag-select-div {
+  width: 90%;
+  max-width: 700px;
+}

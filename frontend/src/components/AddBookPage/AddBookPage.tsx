@@ -89,6 +89,7 @@ const AddBooksPage = () => {
         publishedDate: '',
         description: '',
         location: 'Helsinki',
+        tags: [],
       });
     }
     changeView('form'); // Switch back to form after scanning

@@ -2,7 +2,6 @@ import BookList from './BookList/BookList';
 import ScrollableList from './ScrollableList/ScrollableList';
 import '../style.css';
 import useMainStore from '../hooks/useMainStore';
-import FilterWithTags from './FilterWithTags/FilterWithTags';
 
 const HomePage = () => {
   const books = useMainStore((state) => state.books);
@@ -24,7 +23,6 @@ const HomePage = () => {
             )}
         />
       </h2>
-      <FilterWithTags />
       <BookList
         /* Sort books 'Available, not available, borrow by me' all categorys alphabetically */
         books={books.sort(
