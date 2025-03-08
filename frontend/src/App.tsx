@@ -9,11 +9,14 @@ import NavBar from './components/NavBar/NavBar';
 import FloatingButton from './components/FloatingButton/FloatingButton';
 import { NotificationProvider } from './context/NotificationsProvider/NotificationProvider';
 
+import { ThemeProvider, CssBaseline } from '@mui/material';
+import theme from './theme';
+
 import './style.css';
 import { useEffect } from 'react';
 import { getBooks } from './services/book';
 import useMainStore from './hooks/useMainStore';
-import AdminPage from './components/AdminPage/AdminPage';
+import AdminPage from './components/AdminPage';
 
 const App = () => {
   useAuthCheck();
@@ -29,21 +32,34 @@ const App = () => {
   }
 
   return (
-    <NotificationProvider>
-      <BrowserRouter>
-        <NavBar />
-        <main className="page-content">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/scan" element={<ScanPage />} />
-            <Route path="/addBook" element={<AddBooksPage />} />
-            <Route path="/admin" element={<AdminPage />} />
-          </Routes>
-        </main>
-        <FloatingButton type="scan" />
-        {profile.admin && <FloatingButton type="add" />}
-      </BrowserRouter>
-    </NotificationProvider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <NotificationProvider>
+        <BrowserRouter>
+          <NavBar />
+          <main
+            style={{
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              width: '98%',
+              maxWidth: '1200px',
+            }}
+          >
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/scan" element={<ScanPage />} />
+              <Route path="/addBook" element={<AddBooksPage />} />
+              <Route path="/admin" element={<AdminPage />} />
+            </Routes>
+          </main>
+          <FloatingButton type="scan" />
+          {profile.admin && <FloatingButton type="add" />}
+        </BrowserRouter>
+      </NotificationProvider>
+    </ThemeProvider>
   );
 };
 

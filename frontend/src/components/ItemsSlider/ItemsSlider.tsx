@@ -2,6 +2,7 @@ import { ReactElement, useRef } from 'react';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import './ItemsSlider.css';
+import { Stack } from '@mui/material';
 
 interface Props {
   children: ReactElement[];
@@ -17,7 +18,7 @@ const ItemsSlider = ({ renderButtons, children }: Props) => {
   }
 
   return (
-    <div>
+    <Stack style={{ width: '100%' }}>
       <div className="scroll-item-container">
         {renderButtons && (
           <div>
@@ -47,7 +48,7 @@ const ItemsSlider = ({ renderButtons, children }: Props) => {
           ))}
         </div>
       </div>
-    </div>
+    </Stack>
   );
 };
 

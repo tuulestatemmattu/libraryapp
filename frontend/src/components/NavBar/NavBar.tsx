@@ -5,6 +5,7 @@ import { officeLocations } from '../../constants';
 import { useNavigate } from 'react-router-dom';
 import useMainStore from '../../hooks/useMainStore';
 import ProfilePicture from '../ProfilePicture';
+import { Stack } from '@mui/material';
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -32,20 +33,21 @@ const NavBar = () => {
   }
 
   return (
-    <div>
-      <Box>
-        <AppBar style={{ backgroundColor: '#FFC107' }}>
-          <Toolbar style={{ justifyContent: 'space-between' }}>
-            <Box className="leftside-items">
+    <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar sx={{ justifyContent: 'space-between' }}>
+            <Box className="leftside-items" sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography
                 variant="h6"
                 component="div"
-                className="typmenuicon"
+                className="typemenuicon"
                 onClick={() => navigate('/')}
+                sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
               >
-                <MenuBookIcon className="typemenuicon" />
+                <MenuBookIcon sx={{ mr: 1, color: '#101820' }} />
               </Typography>
-              {profile.admin && (
+              {profile?.admin && (
                 <Button color="inherit" onClick={handleAdminClick} className="admin-button">
                   Admin Panel
                 </Button>
@@ -71,7 +73,7 @@ const NavBar = () => {
                 <MenuItem
                   key={officeLocation}
                   value={officeLocation}
-                  style={{ letterSpacing: '3px', fontWeight: '666' }}
+                  sx={{ letterSpacing: '3px', fontWeight: 600 }}
                 >
                   {officeLocation}
                 </MenuItem>
@@ -81,7 +83,7 @@ const NavBar = () => {
           </Toolbar>
         </AppBar>
       </Box>
-    </div>
+    </Stack>
   );
 };
 

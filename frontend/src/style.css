@@ -7,28 +7,7 @@
 h2 {
   font-family: inherit;
   font-size: medium;
-}
-
-h3 {
-  font-family: inherit;
-  font-size: small;
-}
-
-body {
-  background-color: #f0f0ec;
-  margin-bottom: 100px; /* This is a hotfix for floating buttons not overlapping page content */
-}
-
-article {
-  margin-top: 10px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-family: inherit;
-  width: 100%;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
+  font-weight: 400;
 }
 
 @media (max-width: 599px) {
@@ -59,17 +38,6 @@ article {
   }
 }
 
-.page-content {
-  margin-top: 60px; /* Margin for navbar */
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 98%;
-  max-width: 1200px;
-}
-
 @media (max-width: 599px) {
   .page-content {
     width: 98%;
@@ -96,14 +64,4 @@ article {
     width: 90%;
     max-width: 1800px;
   }
-}
-
-.MuiButton-root {
-  background-color: #ffc107 !important;
-  color: #101820 !important;
-}
-
-.MuiFab-root {
-  background-color: #101820 !important;
-  color: #ffc107 !important;
 }
