@@ -16,9 +16,11 @@ const FilterWithTags = ({ selectedTags, setSelectedTags }: FilterWithTagsProps) 
 
   const handleClick = (tag: FetchedTag) => {
     if (!selectedTags.includes(tag)) {
-      setSelectedTags([...selectedTags, tag]);
+      const newSelectedTags = selectedTags.concat(tag);
+      setSelectedTags(newSelectedTags);
     } else {
-      setSelectedTags(selectedTags.filter((selectedTag) => selectedTag.id !== tag.id));
+      const newSelectedTags = selectedTags.filter((selectedTag) => selectedTag.id != tag.id);
+      setSelectedTags(newSelectedTags);
     }
   };
 

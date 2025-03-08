@@ -30,4 +30,5 @@ const ScrollableList = ({ title, books }: props) => {
     </div>
   );
 };
+
 export default ScrollableList;
