@@ -3,6 +3,8 @@ import useMainStore from '../../hooks/useMainStore';
 import { FetchedTag } from '../../interfaces/Tags';
 import ItemsSlider from '../ItemsSlider/ItemsSlider';
 
+import './FilterWithTags.css';
+
 interface FilterWithTagsProps {
   selectedTags: FetchedTag[];
   setSelectedTags: (val: FetchedTag[]) => void;
