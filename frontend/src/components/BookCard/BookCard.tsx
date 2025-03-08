@@ -4,18 +4,18 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
-import { Modal } from '@mui/material';
+import { Modal, Skeleton, Box } from '@mui/material';
 import { useState } from 'react';
 import BookCard from '../BookOverview/BookOverview';
 import { FetchedBook } from '../../interfaces/Book';
-import { Box } from '@mui/material';
 import { StarBorder, Bookmark, HighlightOff, CheckCircleOutline } from '@mui/icons-material';
 
 interface BookListItemProps {
   book: FetchedBook;
+  loading?: boolean;
 }
 
-const BookListItem = ({ book }: BookListItemProps) => {
+const BookListItem = ({ book, loading }: BookListItemProps) => {
   const [open, setOpen] = useState(false);
 
   const getPlaceholderSVG = ({ book }: BookListItemProps) => {
@@ -59,12 +59,16 @@ const BookListItem = ({ book }: BookListItemProps) => {
             paddingRight: '7.5%',
           }}
         >
-          <CardMedia
-            component="img"
-            src={book.imageLink ? book.imageLink : getPlaceholderSVG({ book })}
-            alt="image"
-            className="book-card-image"
-          />
+          {loading ? (
+            <Skeleton className="book-card-skeleton" />
+          ) : (
+            <CardMedia
+              component="img"
+              src={book.imageLink ? book.imageLink : getPlaceholderSVG({ book })}
+              alt="image"
+              className="book-card-image"
+            />
+          )}
           <div className="card-chip-positioner">
             <div className="card-chip-container">
               <Bookmark
@@ -83,12 +87,21 @@ const BookListItem = ({ book }: BookListItemProps) => {
           </div>
         </Box>
         <CardContent className="book-card-content">
-          <Typography variant="h5" component="div" className="book-title">
-            {book.title}
-          </Typography>
-          <Typography gutterBottom variant="body2" component="div" className="book-authors">
-            {book.authors}
-          </Typography>
+          {loading ? (
+            <>
+              <Skeleton variant="text" sx={{ fontSize: '1.25rem', width: '80%', height: '100%' }} />
+              <Skeleton variant="text" sx={{ fontSize: '1rem', width: '60%' }} />
+            </>
+          ) : (
+            <>
+              <Typography variant="h5" component="div" className="book-title">
+                {book.title}
+              </Typography>
+              <Typography gutterBottom variant="body2" component="div" className="book-authors">
+                {book.authors}
+              </Typography>
+            </>
+          )}
         </CardContent>
       </CardActionArea>
       <Modal

@@ -18,6 +18,14 @@
   padding: 1vw !important;
 }
 
+.book-card-skeleton {
+  margin-top: 0 !important;
+  width: 100% !important;
+  aspect-ratio: 75/100 !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
 @media (min-width: 700px) {
   .book-card-content {
     padding: 7px !important;
