@@ -23,6 +23,7 @@ interface CreatedBook {
   publishedDate: string;
   description: string;
   location: string;
+  copies: number;
   imageLinks?: {
     smallThumbnail?: string;
     thumbnail?: string;

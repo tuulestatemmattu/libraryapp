@@ -44,7 +44,7 @@ bookRouter.get('/', async (req, res) => {
 
 bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
   const userId = req.userId as string;
-  const { title, authors, isbn, description, publishedDate, location, tags } = req.body;
+  const { title, authors, isbn, description, publishedDate, location, copies, tags } = req.body;
 
   const imageLink = req.body.imageLinks
     ? req.body.imageLinks[Object.keys(req.body.imageLinks).slice(-1)[0]]
@@ -54,7 +54,9 @@ bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
     const existingBook = await Book.findOne({ where: { isbn } });
 
     if (existingBook) {
-      const updatedBook = await existingBook.increment(['copies', 'copiesAvailable']);
+      const updatedBook = await existingBook.increment(['copies', 'copiesAvailable'], {
+        by: copies,
+      });
 
       const tag_ids = tags.map((tag: Tag) => tag.id);
       await updatedBook.setTags(tag_ids);
@@ -70,8 +72,8 @@ bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
           description,
           publishedDate,
           location,
-          copies: 1,
-          copiesAvailable: 1,
+          copies,
+          copiesAvailable: copies,
           imageLink,
         },
         { validate: true },
