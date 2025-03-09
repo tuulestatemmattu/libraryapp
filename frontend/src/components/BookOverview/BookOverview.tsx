@@ -22,7 +22,7 @@ interface props {
 }
 
 const BookCard = ({ book, setOpen }: props) => {
-  const updateBook = useMainStore((state) => state.updateBook);
+  const addOrUpdateBook = useMainStore((state) => state.addOrUpdateBook);
 
   const handleClose = () => {
     setOpen(false);
@@ -31,7 +31,7 @@ const BookCard = ({ book, setOpen }: props) => {
   const handleBorrow = async (id: number) => {
     try {
       const newBook = await borrowBook(id);
-      updateBook(newBook);
+      addOrUpdateBook(newBook);
       handleClose();
     } catch (error) {
       console.error('Failed to borrow the book:', error);
@@ -41,7 +41,7 @@ const BookCard = ({ book, setOpen }: props) => {
   const handleReturn = async (id: number) => {
     try {
       const newBook = await returnBook(id);
-      updateBook(newBook);
+      addOrUpdateBook(newBook);
       handleClose();
     } catch (error) {
       console.error('Failed to return the book:', error);

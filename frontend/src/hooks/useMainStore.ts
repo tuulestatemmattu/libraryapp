@@ -39,8 +39,8 @@ const useMainStore = create<StoreState>((set) => ({
   setBooks: (books: FetchedBook[]) => set((state) => ({ ...state, books })),
   addOrUpdateBook: (book: FetchedBook) =>
     set((state) => ({
-      ...state.books.filter((b) => b.id !== book.id),
-      books: [...state.books, book],
+      ...state,
+      books: [...state.books.filter((b) => b.id !== book.id), book],
     })),
 }));
 
