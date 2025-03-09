@@ -9,6 +9,7 @@ import useMainStore from '../../hooks/useMainStore';
 
 import '../../style.css';
 import './AddBookForm.css';
+import CopiesInput from '../CopiesInput/CopiesInput';
 
 interface BookFormProps {
   onSubmit: (book: CreatedBook) => Promise<{ status: number }>;
@@ -24,6 +25,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
   const [description, setDescription] = useState(initialValues?.description || '');
   const [publishedDate, setPublishedDate] = useState(initialValues?.publishedDate || '');
   const [location, setLocation] = useState(initialValues?.location || defaultLocation);
+  const [copies, setCopies] = useState(1);
   const { showNotification } = useNotification();
 
   const handleSubmit = async (e: SyntheticEvent) => {
@@ -35,6 +37,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
       description,
       publishedDate,
       location,
+      copies,
     };
 
     if (initialValues?.imageLinks) {
@@ -51,6 +54,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
         setDescription('');
         setPublishedDate('');
         setLocation('');
+        setCopies(1);
       } else {
         showNotification('Failed to add the book. Please try again!', 'error');
       }
@@ -67,6 +71,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
     setDescription('');
     setPublishedDate('');
     setLocation('');
+    setCopies(1);
   };
 
   const handleChangeLocation = (value: string) => {
@@ -100,6 +105,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
         <div>
           <StyledInput label="publishYear" value={publishedDate} setValue={setPublishedDate} />
         </div>
+        <CopiesInput copies={copies} setCopies={setCopies} />
         <div className="addbookform-bottom-row">
           <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
           <ButtonGroup variant="contained" className="addbookform-buttons">
