@@ -1,5 +1,8 @@
 import React, { useCallback } from 'react';
-import { Button, ButtonGroup, debounce } from '@mui/material';
+
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import { debounce } from '@mui/material/utils';
 
 interface CopiesInputProps {
   copies: number;

@@ -1,14 +1,22 @@
-import './BookCard.css';
+import { useState } from 'react';
+
+import Bookmark from '@mui/icons-material/Bookmark';
+import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
+import HighlightOff from '@mui/icons-material/HighlightOff';
+import StarBorder from '@mui/icons-material/StarBorder';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import Modal from '@mui/material/Modal';
+import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
-import CardActionArea from '@mui/material/CardActionArea';
-import { Modal, Skeleton, Box } from '@mui/material';
-import { useState } from 'react';
-import BookCard from '../BookOverview/BookOverview';
+
 import { FetchedBook } from '../../interfaces/Book';
-import { StarBorder, Bookmark, HighlightOff, CheckCircleOutline } from '@mui/icons-material';
+import BookCard from '../BookOverview/BookOverview';
+
+import './BookCard.css';
 
 interface BookListItemProps {
   book: FetchedBook;

@@ -1,16 +1,20 @@
+import ClearIcon from '@mui/icons-material/Clear';
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { FetchedBook } from '../../interfaces/Book';
-import ClearIcon from '@mui/icons-material/Clear';
-import { borrowBook, returnBook } from '../../services/book';
+
 import useMainStore from '../../hooks/useMainStore';
-import './BookOverview.css';
-import { Chip, IconButton, Paper } from '@mui/material';
+import { FetchedBook } from '../../interfaces/Book';
+import { borrowBook, returnBook } from '../../services/book';
 import ItemsSlider from '../ItemsSlider/ItemsSlider';
+
+import './BookOverview.css';
 
 interface props {
   book: FetchedBook;

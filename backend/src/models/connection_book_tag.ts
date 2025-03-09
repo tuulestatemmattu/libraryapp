@@ -1,14 +1,15 @@
 import {
-  Model,
+  CreationOptional,
   DataTypes,
+  ForeignKey,
   InferAttributes,
   InferCreationAttributes,
-  CreationOptional,
-  ForeignKey,
+  Model,
 } from 'sequelize';
+
+import { sequelize } from '../util/db';
 import Book from './book';
 import Tag from './tag';
-import { sequelize } from '../util/db';
 
 class ConnectionBookTag extends Model<
   InferAttributes<ConnectionBookTag>,

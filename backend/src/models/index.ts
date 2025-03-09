@@ -1,8 +1,8 @@
 import Book from './book';
 import Borrow from './borrow';
-import User from './user';
-import Tag from './tag';
 import ConnectionBookTag from './connection_book_tag';
+import Tag from './tag';
+import User from './user';
 
 User.hasMany(Book);
 Book.belongsTo(User);

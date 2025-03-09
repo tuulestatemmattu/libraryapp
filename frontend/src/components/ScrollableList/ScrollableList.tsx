@@ -1,8 +1,10 @@
-import ItemsSlider from '../ItemsSlider/ItemsSlider';
-import BookListItem from '../BookCard/BookCard';
+import AutoStories from '@mui/icons-material/AutoStories';
+
 import { FetchedBook } from '../../interfaces/Book';
+import BookListItem from '../BookCard/BookCard';
+import ItemsSlider from '../ItemsSlider/ItemsSlider';
+
 import './YourBooks.css';
-import { AutoStories } from '@mui/icons-material';
 
 interface props {
   title: string;

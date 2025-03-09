@@ -1,8 +1,9 @@
 import express from 'express';
+
 import { Book, Borrow, Tag } from '../models';
-import bookValidator from '../util/validation';
-import { requireLogin } from '../util/middleware/requireLogin';
 import { requireAdmin } from '../util/middleware/requireAdmin';
+import { requireLogin } from '../util/middleware/requireLogin';
+import bookValidator from '../util/validation';
 
 const bookRouter = express.Router();
 bookRouter.use(requireLogin);

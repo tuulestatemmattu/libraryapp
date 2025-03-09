@@ -1,8 +1,11 @@
-import React, { createContext, useContext, useState, useRef, useEffect } from 'react';
-import Dialog from '../../components/Dialog/Dialog';
-import './NotificationProvider.css';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
+
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
+
+import Dialog from '../../components/Dialog/Dialog';
+
+import './NotificationProvider.css';
 
 type NotificationType = 'success' | 'error' | 'info';
 

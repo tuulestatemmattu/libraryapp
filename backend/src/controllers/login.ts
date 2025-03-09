@@ -1,5 +1,5 @@
-import { Request, Response, Router } from 'express';
 import axios from 'axios';
+import { Request, Response, Router } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { User } from '../models';

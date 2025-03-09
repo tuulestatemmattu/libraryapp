@@ -1,20 +1,24 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import AddBookForm from '../AddBookForm/AddBookForm';
-import IsbnPage from '../IsbnPage/IsbnPage';
-import BarcodeScanner from '../BarcodeScanner';
-import getBookFromIsbn from '../../services/isbn';
-import { addBook } from '../../services/book';
-import { CreatedBook } from '../../interfaces/Book';
-import { Button, ButtonGroup } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import TagIcon from '@mui/icons-material/Tag';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
-import '../../style.css';
-import './AddBookPage.css';
 import useMainStore from '../../hooks/useMainStore';
 import useRequireAdmin from '../../hooks/useRequireAdmin';
+import { CreatedBook } from '../../interfaces/Book';
+import { addBook } from '../../services/book';
+import getBookFromIsbn from '../../services/isbn';
+import AddBookForm from '../AddBookForm/AddBookForm';
+import BarcodeScanner from '../BarcodeScanner';
+import IsbnPage from '../IsbnPage/IsbnPage';
+
+import '../../style.css';
+import './AddBookPage.css';
 
 type ViewOpt = 'form' | 'scan' | 'isbn';
 type initialValues = CreatedBook | null;
@@ -31,7 +35,6 @@ const AddBooksPage = () => {
 
   const [view, setView] = useState<ViewOpt>(viewParam || 'form');
   const [book, setBook] = useState<initialValues>(null);
-  const [isbn, _] = useState<string>('');
   const { showNotification } = useNotification();
 
   const changeView = (newView: ViewOpt) => {
@@ -102,7 +105,7 @@ const AddBooksPage = () => {
       return <AddBookForm onSubmit={handleManualSubmit} initialValues={book} />;
     }
     if (view === 'isbn') {
-      return <IsbnPage isbnCallHandler={handleIsbnSubmit} isbn_code={isbn} />;
+      return <IsbnPage isbnHandler={handleIsbnSubmit} />;
     }
     if (view === 'scan') {
       return <BarcodeScanner isbnHandler={handleScannerSubmit} />;

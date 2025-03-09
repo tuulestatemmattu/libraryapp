@@ -1,11 +1,12 @@
 import {
-  Model,
+  CreationOptional,
   DataTypes,
+  ForeignKey,
   InferAttributes,
   InferCreationAttributes,
-  CreationOptional,
-  ForeignKey,
+  Model,
 } from 'sequelize';
+
 import { sequelize } from '../util/db';
 import Book from './book';
 import User from './user';

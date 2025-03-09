@@ -7,5 +7,13 @@
   "trailingComma": "all",
   "bracketSpacing": true,
   "arrowParens": "always",
-  "endOfLine": "lf"
+  "endOfLine": "lf",
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "importOrder": [
+    "^@mui/(.*)$",
+    "^[./].*(?<!\\.(c|le|sc)ss)$",
+    "\\.(c|le|sc)ss$"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }

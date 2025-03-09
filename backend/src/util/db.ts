@@ -1,5 +1,6 @@
 import { Sequelize } from 'sequelize';
-import { TEST_DATABASE_URL, DATABASE_URL, NODE_ENV } from './config';
+
+import { DATABASE_URL, NODE_ENV, TEST_DATABASE_URL } from './config';
 
 const dialectOptions =
   NODE_ENV === 'production'

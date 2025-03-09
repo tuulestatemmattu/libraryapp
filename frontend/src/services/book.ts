@@ -1,8 +1,10 @@
 import axios from 'axios';
+
 import { apiBaseUrl } from '../constants';
-const baseUrl = apiBaseUrl + '/books';
 import { CreatedBook, FetchedBook } from '../interfaces/Book';
 import { getToken } from '../util/getToken';
+
+const baseUrl = apiBaseUrl + '/books';
 
 const addBook = async (book: CreatedBook): Promise<FetchedBook> => {
   const token = getToken();

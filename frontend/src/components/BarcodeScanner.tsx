@@ -1,5 +1,6 @@
-import { useRef, useEffect } from 'react';
 import Quagga, { QuaggaJSResultObject } from '@ericblade/quagga2';
+import { useEffect, useRef } from 'react';
+
 import { eanToIsbn, validateIsbn } from '../util/isbnUtils';
 
 interface ScannerProps {

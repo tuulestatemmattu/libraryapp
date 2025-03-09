@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction, RequestHandler } from 'express';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 
 // Must be used after tokenExtractor
 export const requireLogin: RequestHandler = (req: Request, res: Response, next: NextFunction) => {

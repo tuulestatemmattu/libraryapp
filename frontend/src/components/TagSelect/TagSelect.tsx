@@ -1,15 +1,12 @@
-import {
-  MenuItem,
-  FormControl,
-  Box,
-  Chip,
-  InputLabel,
-  OutlinedInput,
-  Select,
-  SelectChangeEvent,
-  useTheme,
-  Theme,
-} from '@mui/material';
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { Theme, useTheme } from '@mui/material/styles';
+
 import { FetchedTag } from '../../interfaces/Tags';
 
 interface TagSelectProps {

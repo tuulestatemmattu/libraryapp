@@ -1,19 +1,20 @@
-import { Avatar, Backdrop } from '@mui/material';
 import { useState } from 'react';
-import ProfileCard from './ProfileCard/ProfileCard';
+
+import Avatar from '@mui/material/Avatar';
+import Backdrop from '@mui/material/Backdrop';
+
+import { useLogOut } from '../hooks/useLogOut';
 import useMainStore from '../hooks/useMainStore';
-import axios from 'axios';
 import Profile from '../interfaces/Profile';
+import ProfileCard from './ProfileCard/ProfileCard';
 
 const ProfilePicture = () => {
   const profile = useMainStore((state) => state.profile) as Profile;
-  const removeUser = useMainStore((state) => state.removeUser);
   const [open, setOpen] = useState(false);
+  const logOut = useLogOut();
 
   const logOutAndClose = () => {
-    document.cookie = 'user=; Max-Age=0;secure;path=/;';
-    axios.defaults.headers.common.Authorization = '';
-    removeUser();
+    logOut();
     setOpen(false);
   };
 
