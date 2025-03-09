@@ -2,13 +2,17 @@ import React, { useState, SyntheticEvent } from 'react';
 import { CreatedBook } from '../../interfaces/Book';
 import StyledInput from '../StyledInput/StyledInput';
 import LocationSelect from '../LocationSelect/LocationSelect';
-import { TextField, Button, ButtonGroup } from '@mui/material';
+import TagSelect from '../TagSelect/TagSelect';
+import { TextField, Button, SelectChangeEvent, ButtonGroup } from '@mui/material';
 import '../StyledInput/StyledInput';
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';
 
 import '../../style.css';
 import './AddBookForm.css';
+import { FetchedTag } from '../../interfaces/Tags';
+import AddTag from '../AddTag/AddTag';
+import CopiesInput from '../CopiesInput/CopiesInput';
 
 interface BookFormProps {
   onSubmit: (book: CreatedBook) => Promise<{ status: number }>;
@@ -17,6 +21,7 @@ interface BookFormProps {
 
 const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
   const defaultLocation = useMainStore((state) => state.location);
+  const tags = useMainStore((state) => state.tags);
 
   const [title, setTitle] = useState(initialValues?.title || '');
   const [authors, setAuthors] = useState(initialValues?.authors || '');
@@ -24,6 +29,8 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
   const [description, setDescription] = useState(initialValues?.description || '');
   const [publishedDate, setPublishedDate] = useState(initialValues?.publishedDate || '');
   const [location, setLocation] = useState(initialValues?.location || defaultLocation);
+  const [selectedTags, setSelectedTags] = useState<FetchedTag[]>([]);
+  const [copies, setCopies] = useState(1);
   const { showNotification } = useNotification();
 
   const handleSubmit = async (e: SyntheticEvent) => {
@@ -35,6 +42,8 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
       description,
       publishedDate,
       location,
+      tags: selectedTags,
+      copies,
     };
 
     if (initialValues?.imageLinks) {
@@ -51,6 +60,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
         setDescription('');
         setPublishedDate('');
         setLocation('');
+        setCopies(1);
       } else {
         showNotification('Failed to add the book. Please try again!', 'error');
       }
@@ -67,10 +77,24 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
     setDescription('');
     setPublishedDate('');
     setLocation('');
+    setSelectedTags([]);
+    setCopies(1);
   };
 
   const handleChangeLocation = (value: string) => {
     setLocation(value);
+  };
+
+  const handleTagSelection = (event: SelectChangeEvent<string[]>) => {
+    const {
+      target: { value },
+    } = event;
+
+    if (typeof value !== 'string') {
+      const tagsToSelect = tags.filter((tag) => value.includes(tag.name));
+
+      setSelectedTags(tagsToSelect);
+    }
   };
 
   return (
@@ -100,18 +124,27 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
         <div>
           <StyledInput label="publishYear" value={publishedDate} setValue={setPublishedDate} />
         </div>
+        <div className="tag-select-div">
+          <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
+        </div>
         <div className="addbookform-bottom-row">
           <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
-          <ButtonGroup variant="contained" className="addbookform-buttons">
-            <Button type="button" onClick={handleClear} variant="contained">
-              Clear
-            </Button>
-            <Button type="submit" variant="contained">
-              Add
-            </Button>
-          </ButtonGroup>
+          <div className="copies-input">
+            <CopiesInput copies={copies} setCopies={setCopies} />
+          </div>
         </div>
+        <ButtonGroup variant="contained" className="addbookform-buttons">
+          <Button type="button" onClick={handleClear} variant="contained">
+            Clear
+          </Button>
+          <Button type="submit" variant="contained">
+            Add
+          </Button>
+        </ButtonGroup>
       </form>
+      <div className="add-tag">
+        <AddTag />
+      </div>
     </article>
   );
 };

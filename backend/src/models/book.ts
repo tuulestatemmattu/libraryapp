@@ -4,9 +4,11 @@ import {
   InferAttributes,
   InferCreationAttributes,
   CreationOptional,
+  BelongsToManySetAssociationsMixin,
 } from 'sequelize';
 import { sequelize } from '../util/db';
 import isIsbn from 'validator/lib/isISBN';
+import Tag from './tag';
 
 class Book extends Model<InferAttributes<Book>, InferCreationAttributes<Book>> {
   declare id: CreationOptional<number>;
@@ -19,6 +21,8 @@ class Book extends Model<InferAttributes<Book>, InferCreationAttributes<Book>> {
   declare copies: number;
   declare copiesAvailable: number;
   declare imageLink: string | null;
+
+  declare setTags: BelongsToManySetAssociationsMixin<Tag, number>;
 }
 
 Book.init(

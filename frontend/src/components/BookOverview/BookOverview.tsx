@@ -9,7 +9,8 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { borrowBook, returnBook } from '../../services/book';
 import useMainStore from '../../hooks/useMainStore';
 import './BookOverview.css';
-import { IconButton, Paper } from '@mui/material';
+import { Chip, IconButton, Paper } from '@mui/material';
+import ItemsSlider from '../ItemsSlider/ItemsSlider';
 
 interface props {
   book: FetchedBook;
@@ -155,6 +156,14 @@ const BookCard = ({ book, setOpen }: props) => {
             </div>
           </CardContent>
         </div>
+        {/* ItemSlider containing tags associated with the book */}
+        <CardContent sx={{ pt: 0, pb: 0 }} className="book-tags-slider">
+          <ItemsSlider renderButtons={false}>
+            {book.tags.map((tag) => (
+              <Chip key={tag.id} label={tag.name} size="small" />
+            ))}
+          </ItemsSlider>
+        </CardContent>
 
         {/* Middle: Book Information */}
         <CardContent className="overview-description-container">

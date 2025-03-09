@@ -14,14 +14,17 @@ import { useEffect } from 'react';
 import { getBooks } from './services/book';
 import useMainStore from './hooks/useMainStore';
 import AdminPage from './components/AdminPage/AdminPage';
+import { getTags } from './services/tag';
 
 const App = () => {
   useAuthCheck();
   const profile = useMainStore((state) => state.profile);
   const setBooks = useMainStore((state) => state.setBooks);
+  const setTags = useMainStore((state) => state.setTags);
 
   useEffect(() => {
     getBooks().then((result) => setBooks(result));
+    getTags().then((result) => setTags(result));
   }, []);
 
   if (!profile) {

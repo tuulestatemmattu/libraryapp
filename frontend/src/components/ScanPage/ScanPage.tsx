@@ -21,6 +21,7 @@ const placeholderBook: FetchedBook = {
   copies: 0,
   copiesAvailable: 0,
   lastBorrowedDate: new Date(),
+  tags: [],
 };
 
 const ScanPage = () => {
