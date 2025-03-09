@@ -1,4 +1,6 @@
-import { Avatar, Button, ButtonGroup } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 
 import Profile from '../../interfaces/Profile';
 

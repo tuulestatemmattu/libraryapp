@@ -1,6 +1,9 @@
 import React, { SyntheticEvent, useState } from 'react';
 
-import { Button, ButtonGroup, SelectChangeEvent, TextField } from '@mui/material';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import { SelectChangeEvent } from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
 
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';

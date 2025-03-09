@@ -1,6 +1,6 @@
 import { SyntheticEvent, useState } from 'react';
 
-import { Button } from '@mui/material';
+import Button from '@mui/material/Button';
 
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';
