@@ -44,7 +44,9 @@ bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
     const existingBook = await Book.findOne({ where: { isbn } });
 
     if (existingBook) {
-      const updatedBook = await existingBook.increment(['copies', 'copiesAvailable'], {by: copies});
+      const updatedBook = await existingBook.increment(['copies', 'copiesAvailable'], {
+        by: copies,
+      });
       res.status(200).send(updatedBook);
     } else {
       const newBook = await Book.create(
