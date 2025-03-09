@@ -19,8 +19,7 @@ interface StoreState {
 
   books: FetchedBook[];
   setBooks: (books: FetchedBook[]) => void;
-  addBook: (book: FetchedBook) => void;
-  updateBook: (book: FetchedBook) => void;
+  addOrUpdateBook: (book: FetchedBook) => void;
 }
 
 const useMainStore = create<StoreState>((set) => ({
@@ -38,11 +37,10 @@ const useMainStore = create<StoreState>((set) => ({
 
   books: [],
   setBooks: (books: FetchedBook[]) => set((state) => ({ ...state, books })),
-  addBook: (book: FetchedBook) => set((state) => ({ ...state, books: [...state.books, book] })),
-  updateBook: (book: FetchedBook) =>
+  addOrUpdateBook: (book: FetchedBook) =>
     set((state) => ({
       ...state,
-      books: state.books.map((b) => (b.id === book.id ? book : b)),
+      books: [...state.books.filter((b) => b.id !== book.id), book],
     })),
 }));
 
