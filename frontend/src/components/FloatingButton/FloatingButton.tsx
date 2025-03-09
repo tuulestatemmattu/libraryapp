@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
-import { LocalSee } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
+import LocalSee from '@mui/icons-material/LocalSee';
 import Fab from '@mui/material/Fab';
 
 import './FloatingButton.css';

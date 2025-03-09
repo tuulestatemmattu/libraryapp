@@ -1,11 +1,16 @@
 import { useState } from 'react';
 
-import { Bookmark, CheckCircleOutline, HighlightOff, StarBorder } from '@mui/icons-material';
-import { Box, Modal, Skeleton } from '@mui/material';
+import Bookmark from '@mui/icons-material/Bookmark';
+import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
+import HighlightOff from '@mui/icons-material/HighlightOff';
+import StarBorder from '@mui/icons-material/StarBorder';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import Modal from '@mui/material/Modal';
+import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 
 import { FetchedBook } from '../../interfaces/Book';

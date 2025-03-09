@@ -1,6 +1,8 @@
 import { useState } from 'react';
 
-import { Box, Grid2, Input } from '@mui/material';
+import Box from '@mui/material/Box';
+import Grid2 from '@mui/material/Grid';
+import Input from '@mui/material/Input';
 
 import useMainStore from '../../hooks/useMainStore';
 import { FetchedBook } from '../../interfaces/Book';

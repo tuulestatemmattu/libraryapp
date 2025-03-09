@@ -1,4 +1,4 @@
-import { AutoStories } from '@mui/icons-material';
+import AutoStories from '@mui/icons-material/AutoStories';
 
 import { FetchedBook } from '../../interfaces/Book';
 import BookListItem from '../BookCard/BookCard';

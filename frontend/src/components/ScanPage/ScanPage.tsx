@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Modal } from '@mui/material';
+import Modal from '@mui/material/Modal';
 
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';

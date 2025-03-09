@@ -4,7 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import TagIcon from '@mui/icons-material/Tag';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
-import { Button, ButtonGroup } from '@mui/material';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';

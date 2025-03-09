@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 import LoginIcon from '@mui/icons-material/Login';
-import { Button, Paper } from '@mui/material';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
 
 import { apiBaseUrl } from '../../constants';
 

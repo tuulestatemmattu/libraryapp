@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { useState } from 'react';
 
-import { Avatar, Backdrop } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Backdrop from '@mui/material/Backdrop';
 
 import useMainStore from '../hooks/useMainStore';
 import Profile from '../interfaces/Profile';
