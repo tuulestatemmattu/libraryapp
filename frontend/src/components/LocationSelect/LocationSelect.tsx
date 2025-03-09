@@ -1,5 +1,7 @@
-import { TextField, MenuItem } from '@mui/material';
+import { MenuItem, TextField } from '@mui/material';
+
 import { officeLocations } from '../../constants';
+
 import './LocationSelect.css';
 
 interface InputProps {

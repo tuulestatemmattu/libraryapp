@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import isIsbn from 'validator/lib/isISBN';
 
 const bookValidator = (req: Request, res: Response, next: NextFunction) => {

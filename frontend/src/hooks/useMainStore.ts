@@ -1,7 +1,8 @@
 import { create } from 'zustand';
+
 import { FetchedBook } from '../interfaces/Book';
-import { FetchedTag } from '../interfaces/Tags';
 import Profile from '../interfaces/Profile';
+import { FetchedTag } from '../interfaces/Tags';
 
 interface StoreState {
   token: string | null;

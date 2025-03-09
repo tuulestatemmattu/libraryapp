@@ -1,20 +1,20 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { useAuthCheck } from './hooks/useAuthCheck';
 
-import ScanPage from './components/ScanPage/ScanPage';
-import HomePage from './components/HomePage';
-import SignInPage from './components/SingInPage/SignInPage';
 import AddBooksPage from './components/AddBookPage/AddBookPage';
-import NavBar from './components/NavBar/NavBar';
+import AdminPage from './components/AdminPage/AdminPage';
 import FloatingButton from './components/FloatingButton/FloatingButton';
+import HomePage from './components/HomePage';
+import NavBar from './components/NavBar/NavBar';
+import ScanPage from './components/ScanPage/ScanPage';
+import SignInPage from './components/SingInPage/SignInPage';
 import { NotificationProvider } from './context/NotificationsProvider/NotificationProvider';
+import { useAuthCheck } from './hooks/useAuthCheck';
+import useMainStore from './hooks/useMainStore';
+import { getBooks } from './services/book';
+import { getTags } from './services/tag';
 
 import './style.css';
-import { useEffect } from 'react';
-import { getBooks } from './services/book';
-import useMainStore from './hooks/useMainStore';
-import AdminPage from './components/AdminPage/AdminPage';
-import { getTags } from './services/tag';
 
 const App = () => {
   useAuthCheck();

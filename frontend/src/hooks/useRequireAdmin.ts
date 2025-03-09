@@ -1,6 +1,7 @@
-import { useNavigate } from 'react-router-dom';
-import useMainStore from './useMainStore';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import useMainStore from './useMainStore';
 
 const useRequireAdmin = () => {
   const navigate = useNavigate();

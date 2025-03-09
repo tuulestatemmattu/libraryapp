@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
 import axios from 'axios';
-import useMainStore from './useMainStore';
+import { useEffect } from 'react';
+
 import Profile from '../interfaces/Profile';
+import useMainStore from './useMainStore';
 
 export const useAuthCheck = () => {
   const setUser = useMainStore((state) => state.setUser);

@@ -1,5 +1,5 @@
-import { describe, test, expect } from 'vitest';
 import '@testing-library/jest-dom';
+import { describe, expect, test } from 'vitest';
 
 describe('Basic math', () => {
   test('1 + 1 equals 2', () => {

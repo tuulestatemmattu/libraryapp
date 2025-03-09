@@ -1,13 +1,14 @@
 import {
-  Model,
+  BelongsToManySetAssociationsMixin,
+  CreationOptional,
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
-  CreationOptional,
-  BelongsToManySetAssociationsMixin,
+  Model,
 } from 'sequelize';
-import { sequelize } from '../util/db';
 import isIsbn from 'validator/lib/isISBN';
+
+import { sequelize } from '../util/db';
 import Tag from './tag';
 
 class Book extends Model<InferAttributes<Book>, InferCreationAttributes<Book>> {

@@ -1,8 +1,9 @@
 /* eslint-disable no-undef */
 import supertest from 'supertest';
+
 import app from '../src/app';
+import { Book, Borrow, ConnectionBookTag, Tag, User } from '../src/models';
 import { connectToDatabase, disconnectDatabase } from '../src/util/db';
-import { Book, Borrow, User, Tag, ConnectionBookTag } from '../src/models';
 
 const api = supertest(app);
 

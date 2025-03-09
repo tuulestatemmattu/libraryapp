@@ -1,10 +1,12 @@
-import BarcodeScanner from '../BarcodeScanner';
-import { Modal } from '@mui/material';
 import { useEffect, useState } from 'react';
-import BookCard from '../BookOverview/BookOverview';
-import { FetchedBook } from '../../interfaces/Book';
+
+import { Modal } from '@mui/material';
+
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';
+import { FetchedBook } from '../../interfaces/Book';
+import BarcodeScanner from '../BarcodeScanner';
+import BookCard from '../BookOverview/BookOverview';
 
 import '../../style.css';
 import './ScanPage.css';

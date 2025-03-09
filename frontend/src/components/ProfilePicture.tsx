@@ -1,9 +1,11 @@
-import { Avatar, Backdrop } from '@mui/material';
-import { useState } from 'react';
-import ProfileCard from './ProfileCard/ProfileCard';
-import useMainStore from '../hooks/useMainStore';
 import axios from 'axios';
+import { useState } from 'react';
+
+import { Avatar, Backdrop } from '@mui/material';
+
+import useMainStore from '../hooks/useMainStore';
 import Profile from '../interfaces/Profile';
+import ProfileCard from './ProfileCard/ProfileCard';
 
 const ProfilePicture = () => {
   const profile = useMainStore((state) => state.profile) as Profile;

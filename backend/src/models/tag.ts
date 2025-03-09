@@ -1,10 +1,11 @@
 import {
-  Model,
+  CreationOptional,
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
-  CreationOptional,
+  Model,
 } from 'sequelize';
+
 import { sequelize } from '../util/db';
 
 class Tag extends Model<InferAttributes<Tag>, InferCreationAttributes<Tag>> {

@@ -1,7 +1,8 @@
 import express from 'express';
+
 import { Tag } from '../models';
-import { requireLogin } from '../util/middleware/requireLogin';
 import { requireAdmin } from '../util/middleware/requireAdmin';
+import { requireLogin } from '../util/middleware/requireLogin';
 
 const tagRouter = express.Router();
 tagRouter.use(requireLogin);

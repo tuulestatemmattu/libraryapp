@@ -1,8 +1,10 @@
 import axios from 'axios';
+
 import { apiBaseUrl } from '../constants';
-const baseUrl = apiBaseUrl + '/tags';
-import { getToken } from '../util/getToken';
 import { CreatedTag } from '../interfaces/Tags';
+import { getToken } from '../util/getToken';
+
+const baseUrl = apiBaseUrl + '/tags';
 
 const getTags = async () => {
   const token = getToken();

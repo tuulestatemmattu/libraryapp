@@ -1,4 +1,5 @@
 import { Chip } from '@mui/material';
+
 import useMainStore from '../../hooks/useMainStore';
 import { FetchedTag } from '../../interfaces/Tags';
 import ItemsSlider from '../ItemsSlider/ItemsSlider';

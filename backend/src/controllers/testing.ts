@@ -1,6 +1,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import { resetTables, User } from '../models';
+
+import { User, resetTables } from '../models';
 import { JWT_SECRET } from '../util/config';
 
 const router = express.Router();

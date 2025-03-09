@@ -1,8 +1,11 @@
-import { Button, Paper } from '@mui/material';
-import LoginIcon from '@mui/icons-material/Login';
-import './SignInPage.css';
 import axios from 'axios';
+
+import LoginIcon from '@mui/icons-material/Login';
+import { Button, Paper } from '@mui/material';
+
 import { apiBaseUrl } from '../../constants';
+
+import './SignInPage.css';
 
 const SignInPage = () => {
   const redirectToLogin = async () => {

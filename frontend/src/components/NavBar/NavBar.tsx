@@ -1,10 +1,13 @@
-import { Typography, Toolbar, Box, AppBar, Select, MenuItem, Button } from '@mui/material';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import './NavBar.css';
-import { officeLocations } from '../../constants';
 import { useNavigate } from 'react-router-dom';
+
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import { AppBar, Box, Button, MenuItem, Select, Toolbar, Typography } from '@mui/material';
+
+import { officeLocations } from '../../constants';
 import useMainStore from '../../hooks/useMainStore';
 import ProfilePicture from '../ProfilePicture';
+
+import './NavBar.css';
 
 const NavBar = () => {
   const navigate = useNavigate();

@@ -1,8 +1,9 @@
 /* eslint-disable no-undef */
 import supertest from 'supertest';
-import { connectToDatabase, disconnectDatabase } from '../src/util/db';
-import { User } from '../src/models';
+
 import app from '../src/app';
+import { User } from '../src/models';
+import { connectToDatabase, disconnectDatabase } from '../src/util/db';
 
 const api = supertest(app);
 

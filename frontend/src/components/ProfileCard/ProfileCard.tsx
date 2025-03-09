@@ -1,6 +1,8 @@
 import { Avatar, Button, ButtonGroup } from '@mui/material';
-import './ProfileCard.css';
+
 import Profile from '../../interfaces/Profile';
+
+import './ProfileCard.css';
 
 interface ProfileCardProps {
   profile: Profile;

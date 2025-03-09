@@ -1,6 +1,8 @@
 import { ReactElement, useRef } from 'react';
+
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+
 import './ItemsSlider.css';
 
 interface Props {

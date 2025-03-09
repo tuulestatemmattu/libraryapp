@@ -1,7 +1,8 @@
+import useMainStore from '../hooks/useMainStore';
 import BookList from './BookList/BookList';
 import ScrollableList from './ScrollableList/ScrollableList';
+
 import '../style.css';
-import useMainStore from '../hooks/useMainStore';
 
 const HomePage = () => {
   const books = useMainStore((state) => state.books);

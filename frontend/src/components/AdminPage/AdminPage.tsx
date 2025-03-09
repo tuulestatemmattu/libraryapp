@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { getUsers, promoteUsers } from '../../services/admin';
-import Profile from '../../interfaces/Profile';
+
+import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
 import {
   DataGrid,
-  GridColDef,
   GRID_CHECKBOX_SELECTION_COL_DEF,
-  GridToolbarContainer,
+  GridColDef,
   GridToolbarColumnsButton,
+  GridToolbarContainer,
   GridToolbarDensitySelector,
   GridToolbarQuickFilter,
 } from '@mui/x-data-grid';
-import Paper from '@mui/material/Paper';
-import { Button } from '@mui/material';
-import useRequireAdmin from '../../hooks/useRequireAdmin';
+
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
+import useRequireAdmin from '../../hooks/useRequireAdmin';
+import Profile from '../../interfaces/Profile';
+import { getUsers, promoteUsers } from '../../services/admin';
 
 const AdminPage = () => {
   useRequireAdmin();

@@ -1,7 +1,7 @@
-import { PORT } from './util/config';
-import { connectToDatabase } from './util/db';
 import app from './app';
 import { syncModels } from './models';
+import { PORT } from './util/config';
+import { connectToDatabase } from './util/db';
 
 const start = async () => {
   await connectToDatabase();
