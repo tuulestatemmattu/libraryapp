@@ -34,9 +34,7 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
   const { showNotification } = useNotification();
 
   const handleSubmit = async (e: SyntheticEvent) => {
-    console.log(selectedTags);
     e.preventDefault();
-    console.log(selectedTags);
     const book: CreatedBook = {
       title,
       authors,
@@ -126,23 +124,25 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
         <div>
           <StyledInput label="publishYear" value={publishedDate} setValue={setPublishedDate} />
         </div>
-        <CopiesInput copies={copies} setCopies={setCopies} />
         <div className="tag-select-div">
           <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
         </div>
         <div className="addbookform-bottom-row">
           <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
-          <ButtonGroup variant="contained" className="addbookform-buttons">
-            <Button type="button" onClick={handleClear} variant="contained">
-              Clear
-            </Button>
-            <Button type="submit" variant="contained">
-              Add
-            </Button>
-          </ButtonGroup>
+          <div className="copies-input">
+            <CopiesInput copies={copies} setCopies={setCopies} />
+          </div>
         </div>
+        <ButtonGroup variant="contained" className="addbookform-buttons">
+          <Button type="button" onClick={handleClear} variant="contained">
+            Clear
+          </Button>
+          <Button type="submit" variant="contained">
+            Add
+          </Button>
+        </ButtonGroup>
       </form>
-      <div>
+      <div className="add-tag">
         <AddTag />
       </div>
     </article>
