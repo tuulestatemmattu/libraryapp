@@ -35,7 +35,6 @@ const AddBooksPage = () => {
 
   const [view, setView] = useState<ViewOpt>(viewParam || 'form');
   const [book, setBook] = useState<initialValues>(null);
-  const [isbn, _] = useState<string>('');
   const { showNotification } = useNotification();
 
   const changeView = (newView: ViewOpt) => {
@@ -106,7 +105,7 @@ const AddBooksPage = () => {
       return <AddBookForm onSubmit={handleManualSubmit} initialValues={book} />;
     }
     if (view === 'isbn') {
-      return <IsbnPage isbnCallHandler={handleIsbnSubmit} isbn_code={isbn} />;
+      return <IsbnPage isbnHandler={handleIsbnSubmit} />;
     }
     if (view === 'scan') {
       return <BarcodeScanner isbnHandler={handleScannerSubmit} />;
