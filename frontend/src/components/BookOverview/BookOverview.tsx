@@ -156,6 +156,7 @@ const BookCard = ({ book, setOpen }: props) => {
             </div>
           </CardContent>
         </div>
+        {/* ItemSlider containing tags associated with the book */}
         <CardContent sx={{ pt: 0, pb: 0 }} className="book-tags-slider">
           <ItemsSlider renderButtons={false}>
             {book.tags.map((tag) => (

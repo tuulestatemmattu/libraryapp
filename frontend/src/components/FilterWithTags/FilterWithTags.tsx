@@ -7,7 +7,7 @@ import './FilterWithTags.css';
 
 interface FilterWithTagsProps {
   selectedTags: FetchedTag[];
-  setSelectedTags: (val: FetchedTag[]) => void;
+  setSelectedTags: (selectedTags: FetchedTag[]) => void;
 }
 const FilterWithTags = ({ selectedTags, setSelectedTags }: FilterWithTagsProps) => {
   const tags = useMainStore((state) => state.tags);

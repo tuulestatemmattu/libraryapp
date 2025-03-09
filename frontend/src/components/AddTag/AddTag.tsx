@@ -3,10 +3,12 @@ import useMainStore from '../../hooks/useMainStore';
 import { addTag } from '../../services/tag';
 import StyledInput from '../StyledInput/StyledInput';
 import { Button } from '@mui/material';
+import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 
 const AddTag = () => {
   const tags = useMainStore((state) => state.tags);
   const addTagtoStore = useMainStore((state) => state.addTag);
+  const { showNotification } = useNotification();
 
   const [tag, setTag] = useState('');
 
@@ -20,7 +22,7 @@ const AddTag = () => {
       addTagtoStore(createdTag);
       setTag('');
     } else {
-      console.log('tag already exists');
+      showNotification(`Tag '${tag}' already exists`, 'error');
     }
   };
 
