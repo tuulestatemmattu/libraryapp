@@ -1,5 +1,5 @@
 import express from 'express';
-import { Book, Borrow } from '../models';
+import { Book, Borrow, Tag } from '../models';
 import bookValidator from '../util/validation';
 import { requireLogin } from '../util/middleware/requireLogin';
 import { requireAdmin } from '../util/middleware/requireAdmin';
@@ -24,7 +24,17 @@ bookRouter.get('/', async (req, res) => {
     return;
   }
 
-  const books = await Book.findAll();
+  const books = await Book.findAll({
+    include: [
+      {
+        model: Tag,
+        attributes: ['name', 'id'],
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+  });
   const userId = req.userId.toString();
   const booksWithBorrowInfo = await Promise.all(
     books.map((book) => toBookWithBorrowedByMe(book, userId)),
@@ -34,7 +44,7 @@ bookRouter.get('/', async (req, res) => {
 
 bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
   const userId = req.userId as string;
-  const { title, authors, isbn, description, publishedDate, location, copies } = req.body;
+  const { title, authors, isbn, description, publishedDate, location, copies, tags } = req.body;
 
   const imageLink = req.body.imageLinks
     ? req.body.imageLinks[Object.keys(req.body.imageLinks).slice(-1)[0]]
@@ -47,7 +57,12 @@ bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
       const updatedBook = await existingBook.increment(['copies', 'copiesAvailable'], {
         by: copies,
       });
-      res.status(200).send(updatedBook);
+
+      const tag_ids = tags.map((tag: Tag) => tag.id);
+      await updatedBook.setTags(tag_ids);
+
+      const updatedBookWithBorrowInfo = await toBookWithBorrowedByMe(updatedBook, userId);
+      res.status(200).send({ ...updatedBookWithBorrowInfo, tags });
     } else {
       const newBook = await Book.create(
         {
@@ -63,8 +78,12 @@ bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
         },
         { validate: true },
       );
+
+      const tag_ids = tags.map((tag: Tag) => tag.id);
+      await newBook.setTags(tag_ids);
+
       const newBookWithBorrowInfo = await toBookWithBorrowedByMe(newBook, userId);
-      res.status(201).send(newBookWithBorrowInfo);
+      res.status(201).send({ ...newBookWithBorrowInfo, tags });
     }
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -76,7 +95,18 @@ bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
 bookRouter.put('/borrow/:id', async (req, res) => {
   const userId = req.userId as string;
   const bookId = req.params.id;
-  const book = await Book.findOne({ where: { id: bookId } });
+  const book = await Book.findOne({
+    include: [
+      {
+        model: Tag,
+        attributes: ['name', 'id'],
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+    where: { id: bookId },
+  });
 
   if (book) {
     if (book.copiesAvailable > 0) {
@@ -98,7 +128,18 @@ bookRouter.put('/borrow/:id', async (req, res) => {
 bookRouter.put('/return/:id', async (req, res) => {
   const userId = req.userId as string;
   const bookId = req.params.id;
-  const book = await Book.findOne({ where: { id: bookId } });
+  const book = await Book.findOne({
+    include: [
+      {
+        model: Tag,
+        attributes: ['name', 'id'],
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+    where: { id: bookId },
+  });
 
   if (book) {
     const borrowed = await Borrow.findOne({

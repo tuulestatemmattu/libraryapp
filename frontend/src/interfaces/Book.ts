@@ -1,3 +1,5 @@
+import { FetchedTag } from './Tags';
+
 interface FetchedBook {
   id: number;
   authors: string;
@@ -11,6 +13,7 @@ interface FetchedBook {
   copiesAvailable: number;
   lastBorrowedDate: Date;
   imageLink?: string;
+  tags: FetchedTag[];
 }
 
 interface CreatedBook {
@@ -29,6 +32,7 @@ interface CreatedBook {
     large?: string;
     extraLarge?: string;
   };
+  tags: FetchedTag[];
 }
 
 export type { CreatedBook, FetchedBook };

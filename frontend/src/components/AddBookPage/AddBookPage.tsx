@@ -89,6 +89,7 @@ const AddBooksPage = () => {
         publishedDate: '',
         description: '',
         location: 'Helsinki',
+        tags: [],
         copies: 1,
       });
     }

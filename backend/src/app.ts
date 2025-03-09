@@ -6,6 +6,7 @@ import { NODE_ENV } from './util/config';
 import loginRouter from './controllers/login';
 import isbnRouter from './controllers/isbn_api';
 import bookRouter from './controllers/book';
+import tagRouter from './controllers/tag';
 import testingRouter from './controllers/testing';
 import adminRouter from './controllers/admin';
 import userRouter from './controllers/users';
@@ -31,6 +32,7 @@ app.use(tokenExtractor);
 app.use('/api/books', bookRouter);
 app.use('/api/isbn', isbnRouter);
 app.use('/api/books', bookRouter);
+app.use('/api/tags', tagRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/users', userRouter);
 

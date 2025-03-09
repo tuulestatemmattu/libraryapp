@@ -2,7 +2,7 @@
 import supertest from 'supertest';
 import app from '../src/app';
 import { connectToDatabase, disconnectDatabase } from '../src/util/db';
-import { Book, Borrow, User } from '../src/models';
+import { Book, Borrow, User, Tag, ConnectionBookTag } from '../src/models';
 
 const api = supertest(app);
 
@@ -28,6 +28,10 @@ const sampleBook2 = {
   copiesAvailable: 1,
 };
 
+const sampleTag = {
+  name: 'Agile',
+};
+
 jest.mock('../src/util/middleware/tokenExtractor', () => ({
   tokenExtractor: jest.fn((req, _res, next) => {
     req.userId = 'sample_google_id';
@@ -50,6 +54,8 @@ beforeAll(async () => {
   await Book.sync();
   await Borrow.sync();
   await Borrow.destroy({ where: {} });
+  await Tag.sync();
+  await ConnectionBookTag.sync();
 });
 
 afterAll(async () => {
@@ -59,11 +65,26 @@ afterAll(async () => {
 describe('GET /api/books', () => {
   beforeEach(async () => {
     await Book.destroy({ where: {} });
+    await Tag.destroy({ where: {} });
+    await ConnectionBookTag.destroy({ where: {} });
     await Book.create({
       ...sampleBook,
     });
     await Book.create({
       ...sampleBook2,
+    });
+    await Tag.create({
+      ...sampleTag,
+    });
+    const sampleBookFromDb = await Book.findOne({ where: { title: sampleBook.title } });
+    const sampleBookId = sampleBookFromDb ? sampleBookFromDb.id : 0;
+
+    const sampleTagFromDb = await Tag.findOne({ where: { name: sampleTag.name } });
+    const sampleTagId = sampleTagFromDb ? sampleTagFromDb.id : 0;
+
+    await ConnectionBookTag.create({
+      bookId: sampleBookId,
+      tagId: sampleTagId,
     });
   });
 
@@ -86,15 +107,28 @@ describe('GET /api/books', () => {
     expect(states).toContain(false);
     expect(states).toContain(false);
   });
+
+  it('should return correct books with correct tags', async () => {
+    const response = await api.get('/api/books');
+    expect(response.status).toBe(200);
+    expect(response.body.length).toBe(2);
+
+    const books = response.body;
+    expect(books[0].tags.length).toBe(1);
+    expect(books[0].tags[0]).toMatchObject({ name: sampleTag.name });
+    expect(books[1].tags.length).toBe(0);
+  });
 });
 
 describe('POST /api/books', () => {
   beforeEach(async () => {
     await Book.destroy({ where: {} });
+    await Tag.destroy({ where: {} });
+    await ConnectionBookTag.destroy({ where: {} });
   });
 
   it('should create a new book and return correct book', async () => {
-    const response = await api.post('/api/books').send(sampleBook);
+    const response = await api.post('/api/books').send({ ...sampleBook, tags: [] });
     expect(response.status).toBe(201);
     expect(await Book.count()).toBe(1);
 

@@ -23,7 +23,6 @@ const HomePage = () => {
             )}
         />
       </h2>
-
       <BookList
         /* Sort books 'Available, not available, borrow by me' all categorys alphabetically */
         books={books.sort(
