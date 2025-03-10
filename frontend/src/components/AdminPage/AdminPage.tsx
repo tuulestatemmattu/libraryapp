@@ -4,10 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { Button, ButtonGroup } from '@mui/material';
 
 import useRequireAdmin from '../../hooks/useRequireAdmin';
+import BookTable from './tables/BookTable';
 import TagTable from './tables/TagTable';
 import UserTable from './tables/UserTable';
 
-type ViewOpt = 'users' | 'tags';
+type ViewOpt = 'users' | 'tags' | 'books';
 
 const AdminPage = () => {
   useRequireAdmin();
@@ -35,6 +36,9 @@ const AdminPage = () => {
     if (view === 'tags') {
       return <TagTable />;
     }
+    if (view === 'books') {
+      return <BookTable />;
+    }
   };
 
   return (
@@ -46,6 +50,9 @@ const AdminPage = () => {
           </Button>
           <Button className="button" variant="contained" onClick={() => changeView('tags')}>
             Tags
+          </Button>
+          <Button className="button" variant="contained" onClick={() => changeView('books')}>
+            Books
           </Button>
         </ButtonGroup>
       </div>
