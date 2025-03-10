@@ -16,6 +16,7 @@ class Borrow extends Model<InferAttributes<Borrow>, InferCreationAttributes<Borr
   declare bookId: ForeignKey<Book['id']>;
   declare borrowedDate: Date | null;
   declare userGoogleId: ForeignKey<User['google_id']>;
+  declare active: boolean
 }
 
 Borrow.init(
@@ -37,6 +38,10 @@ Borrow.init(
       type: DataTypes.DATE,
       allowNull: true,
     },
+    active: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true
+    }
   },
   {
     sequelize,
