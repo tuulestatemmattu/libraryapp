@@ -19,7 +19,6 @@ const addBook = async (book: CreatedBook): Promise<FetchedBook> => {
 const getBooks = async () => {
   const token = getToken();
   const response = await axios.get(baseUrl, { headers: { Authorization: `Bearer ${token}` } });
-  console.log(response.data);
   return response.data;
 };
 
