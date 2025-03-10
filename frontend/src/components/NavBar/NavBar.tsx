@@ -44,8 +44,8 @@ const NavBar = () => {
     <div>
       <Box>
         <AppBar style={{ backgroundColor: '#FFC107' }}>
-          <Toolbar style={{ justifyContent: 'space-between' }}>
-            <Box className="leftside-items">
+          <Toolbar>
+            <Box display="flex" justifyContent="flex-start" width={'20%'} className="leftside-items">
               <Typography
                 variant="h6"
                 component="div"
@@ -60,6 +60,7 @@ const NavBar = () => {
                 </Button>
               )}
             </Box>
+            <Box display="flex" alignItems="center" justifyContent="center" flexGrow={1}>
             <Select
               className="location-box"
               value={location}
@@ -86,7 +87,10 @@ const NavBar = () => {
                 </MenuItem>
               ))}
             </Select>
+            </Box>
+            <Box display="flex" alignItems="center" justifyContent="flex-end" width={'20%'}>
             <ProfilePicture />
+            </Box>
           </Toolbar>
         </AppBar>
       </Box>
