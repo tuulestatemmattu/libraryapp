@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { Button, ButtonGroup } from '@mui/material';
+
 import useRequireAdmin from '../../hooks/useRequireAdmin';
 import TagTable from './tables/TagTable';
 import UserTable from './tables/UserTable';
-import { useNavigate } from 'react-router-dom';
-import { Button, ButtonGroup } from '@mui/material';
 
 type ViewOpt = 'users' | 'tags';
 
@@ -34,7 +36,6 @@ const AdminPage = () => {
       return <TagTable />;
     }
   };
-
 
   return (
     <article>
