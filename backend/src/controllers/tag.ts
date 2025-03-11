@@ -28,4 +28,29 @@ tagRouter.post('/', requireAdmin, async (req, res) => {
   }
 });
 
+tagRouter.put('/:id', requireAdmin, async (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body;
+
+  try {
+    const tagToEdit = await Tag.findOne({ where: { id } });
+
+    if (tagToEdit) {
+      tagToEdit.set({
+        name: name,
+      });
+
+      await tagToEdit.save();
+
+      res.status(200).send(tagToEdit);
+    } else {
+      res.status(404).send({ message: `Tag with id ${id} does not exist` });
+    }
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).send({ message: error.message });
+    }
+  }
+});
+
 export default tagRouter;

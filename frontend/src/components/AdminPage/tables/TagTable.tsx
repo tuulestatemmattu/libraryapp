@@ -1,53 +1,153 @@
 import { useEffect, useState } from 'react';
-
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Close';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
 import {
   DataGrid,
-  GRID_CHECKBOX_SELECTION_COL_DEF,
   GridColDef,
-  GridToolbarColumnsButton,
   GridToolbarContainer,
-  GridToolbarDensitySelector,
+  GridActionsCellItem,
+  GridRowModes,
+  GridRowModesModel,
+  GridEventListener,
+  GridRowId,
+  GridRowModel,
+  GridRowEditStopReasons,
   GridToolbarQuickFilter,
+  GridToolbarColumnsButton,
+  GridToolbarDensitySelector,
 } from '@mui/x-data-grid';
-
 import useRequireAdmin from '../../../hooks/useRequireAdmin';
+import { getTags, addTag, updateTag } from '../../../services/tag';
 import { FetchedTag } from '../../../interfaces/Tags';
-import { getTags } from '../../../services/tag';
 
 const TagTable = () => {
   useRequireAdmin();
-  const [rows, setRows] = useState([]);
-  const [selected, setSelected] = useState<string[]>([]);
+  const [rows, setRows] = useState<FetchedTag[]>([]);
+  const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
+  const [open, setOpen] = useState(false);
+  const [newTagName, setNewTagName] = useState('');
 
   useEffect(() => {
     getTags().then((result) =>
       setRows(
-        result.map((t: FetchedTag) => {
-          return { id: t.name, name: t.name };
-        }),
-      ),
+        result
+          .map((t: FetchedTag) => ({
+            id: t.id,
+            name: t.name,
+          }))
+          .sort((a: FetchedTag, b: FetchedTag) => a.id - b.id)
+      )
     );
   }, []);
 
-  const columns: GridColDef[] = [
-    { field: 'name', headerName: 'Name', width: 200 },
-    { ...GRID_CHECKBOX_SELECTION_COL_DEF },
-  ];
-
-  const paginationModel = { page: 0, pageSize: 5 };
-
-  const CustomToolBar = () => {
-    return (
-      <GridToolbarContainer>
-        <GridToolbarQuickFilter />
-        <GridToolbarColumnsButton />
-        <GridToolbarDensitySelector slotProps={{ tooltip: { title: 'Change density' } }} />
-        <Box sx={{ flexGrow: 1 }} />
-      </GridToolbarContainer>
-    );
+  const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
+    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+      event.defaultMuiPrevented = true;
+    }
   };
+
+  const handleEditClick = (id: GridRowId) => () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+  };
+
+  const handleSaveClick = (id: GridRowId) => async () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+  };
+
+  const handleDeleteClick = (id: GridRowId) => () => {
+    setRows(rows.filter((row) => row.id !== id));
+  };
+
+  const handleCancelClick = (id: GridRowId) => () => {
+    setRowModesModel({
+      ...rowModesModel,
+      [id]: { mode: GridRowModes.View, ignoreModifications: true },
+    });
+  };
+
+  const processRowUpdate = async (newRow: GridRowModel) => {
+    try {
+      const updatedRow = await updateTag(newRow as FetchedTag);
+      setRows(
+        rows
+          .map((row) => (row.id === newRow.id ? updatedRow : row))
+          .sort((a, b) => a.id - b.id)
+      );
+      return updatedRow;
+    } catch (error) {
+      console.error('Update failed:', error);
+      return newRow;
+    }
+  };
+
+  const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
+    setRowModesModel(newRowModesModel);
+  };
+
+  const handleAddTag = async () => {
+    const newTag = { name: newTagName };
+    const createdTag = await addTag(newTag);
+    setRows(
+      [...rows, { id: createdTag.id, name: createdTag.name }].sort((a, b) =>
+        a.id - b.id
+      )
+    );
+    setOpen(false);
+    setNewTagName('');
+  };
+
+  const columns: GridColDef[] = [
+    { field: 'name', headerName: 'Name', width: 200, editable: true },
+    {
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Actions',
+      width: 100,
+      cellClassName: 'actions',
+      getActions: ({ id }) => {
+        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+
+        if (isInEditMode) {
+          return [
+            <GridActionsCellItem
+              icon={<SaveIcon />}
+              label="Save"
+              onClick={handleSaveClick(id)}
+            />,
+            <GridActionsCellItem
+              icon={<CancelIcon />}
+              label="Cancel"
+              onClick={handleCancelClick(id)}
+            />,
+          ];
+        }
+
+        return [
+          <GridActionsCellItem
+            icon={<EditIcon />}
+            label="Edit"
+            onClick={handleEditClick(id)}
+          />,
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            onClick={handleDeleteClick(id)}
+          />,
+        ];
+      },
+    },
+  ];
 
   return (
     <div>
@@ -58,17 +158,50 @@ const TagTable = () => {
         <DataGrid
           rows={rows}
           columns={columns}
-          initialState={{ pagination: { paginationModel } }}
-          pageSizeOptions={[5, 10]}
-          checkboxSelection
-          rowSelectionModel={selected}
-          onRowSelectionModelChange={(ids) => setSelected(ids.map((id) => id.toString()))}
-          sx={{ border: 1 }}
+          editMode="row"
+          rowModesModel={rowModesModel}
+          onRowModesModelChange={handleRowModesModelChange}
+          onRowEditStop={handleRowEditStop}
+          processRowUpdate={processRowUpdate}
           slots={{
-            toolbar: CustomToolBar,
+            toolbar: () => (
+              <GridToolbarContainer>
+                <GridToolbarQuickFilter />
+                <GridToolbarColumnsButton />
+                <GridToolbarDensitySelector
+                  slotProps={{ tooltip: { title: 'Change density' } }}
+                />
+                <Box sx={{ flexGrow: 1 }} />
+                <Button color="primary" startIcon={<AddIcon />} onClick={() => setOpen(true)}>
+                  Add Tag
+                </Button>
+              </GridToolbarContainer>
+            ),
           }}
         />
       </Paper>
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>Add New Tag</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Tag Name"
+            type="text"
+            fullWidth
+            value={newTagName}
+            onChange={(e) => setNewTagName(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleAddTag} color="primary">
+            Add
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
