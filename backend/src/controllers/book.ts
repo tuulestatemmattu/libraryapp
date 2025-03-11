@@ -199,15 +199,15 @@ bookRouter.get('/borrows', async (req, res) => {
     include: [
       {
         model: User,
-        attributes: ['name', 'email']
+        attributes: ['name', 'email'],
       },
       {
         model: Book,
-        attributes: ['title']
-      }
+        attributes: ['title'],
+      },
     ],
-  })
-  res.json(borrows)
-})
+  });
+  res.json(borrows);
+});
 
 export default bookRouter;
