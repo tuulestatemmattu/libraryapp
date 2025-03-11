@@ -28,4 +28,23 @@ tagRouter.post('/', requireAdmin, async (req, res) => {
   }
 });
 
+tagRouter.delete('/:id', requireAdmin, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const tag = await Tag.findByPk(id);
+    if (!tag) {
+      res.status(404).send({ message: 'Tag not found' });
+      return;
+    }
+
+    await tag.destroy();
+    res.status(204).send();
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).send({ message: error.message });
+    }
+  }
+});
+
 export default tagRouter;
