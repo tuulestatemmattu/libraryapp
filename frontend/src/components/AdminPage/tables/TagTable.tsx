@@ -1,35 +1,37 @@
 import { useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
+
 import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import {
   DataGrid,
-  GridColDef,
-  GridToolbarContainer,
   GridActionsCellItem,
-  GridRowModes,
-  GridRowModesModel,
+  GridColDef,
   GridEventListener,
+  GridRowEditStopReasons,
   GridRowId,
   GridRowModel,
-  GridRowEditStopReasons,
-  GridToolbarQuickFilter,
+  GridRowModes,
+  GridRowModesModel,
   GridToolbarColumnsButton,
+  GridToolbarContainer,
   GridToolbarDensitySelector,
+  GridToolbarQuickFilter,
 } from '@mui/x-data-grid';
+
 import useRequireAdmin from '../../../hooks/useRequireAdmin';
-import { getTags, addTag, updateTag } from '../../../services/tag';
 import { FetchedTag } from '../../../interfaces/Tags';
+import { addTag, deleteTag, getTags, updateTag } from '../../../services/tag';
 
 const TagTable = () => {
   useRequireAdmin();
@@ -37,6 +39,8 @@ const TagTable = () => {
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [open, setOpen] = useState(false);
   const [newTagName, setNewTagName] = useState('');
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState<GridRowId | null>(null);
 
   useEffect(() => {
     getTags().then((result) =>
@@ -46,8 +50,8 @@ const TagTable = () => {
             id: t.id,
             name: t.name,
           }))
-          .sort((a: FetchedTag, b: FetchedTag) => a.id - b.id)
-      )
+          .sort((a: FetchedTag, b: FetchedTag) => a.id - b.id),
+      ),
     );
   }, []);
 
@@ -66,7 +70,22 @@ const TagTable = () => {
   };
 
   const handleDeleteClick = (id: GridRowId) => () => {
-    setRows(rows.filter((row) => row.id !== id));
+    setDeleteId(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (deleteId !== null) {
+      await deleteTag(Number(deleteId));
+      setRows(rows.filter((row) => row.id !== deleteId));
+      setDeleteDialogOpen(false);
+      setDeleteId(null);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteDialogOpen(false);
+    setDeleteId(null);
   };
 
   const handleCancelClick = (id: GridRowId) => () => {
@@ -80,9 +99,7 @@ const TagTable = () => {
     try {
       const updatedRow = await updateTag(newRow as FetchedTag);
       setRows(
-        rows
-          .map((row) => (row.id === newRow.id ? updatedRow : row))
-          .sort((a, b) => a.id - b.id)
+        rows.map((row) => (row.id === newRow.id ? updatedRow : row)).sort((a, b) => a.id - b.id),
       );
       return updatedRow;
     } catch (error) {
@@ -98,17 +115,13 @@ const TagTable = () => {
   const handleAddTag = async () => {
     const newTag = { name: newTagName };
     const createdTag = await addTag(newTag);
-    setRows(
-      [...rows, { id: createdTag.id, name: createdTag.name }].sort((a, b) =>
-        a.id - b.id
-      )
-    );
+    setRows([...rows, { id: createdTag.id, name: createdTag.name }].sort((a, b) => a.id - b.id));
     setOpen(false);
     setNewTagName('');
   };
 
   const columns: GridColDef[] = [
-    { field: 'name', headerName: 'Name', width: 200, editable: true },
+    { field: 'name', headerName: 'Name', width: 200, editable: true, flex: 1 },
     {
       field: 'actions',
       type: 'actions',
@@ -120,11 +133,7 @@ const TagTable = () => {
 
         if (isInEditMode) {
           return [
-            <GridActionsCellItem
-              icon={<SaveIcon />}
-              label="Save"
-              onClick={handleSaveClick(id)}
-            />,
+            <GridActionsCellItem icon={<SaveIcon />} label="Save" onClick={handleSaveClick(id)} />,
             <GridActionsCellItem
               icon={<CancelIcon />}
               label="Cancel"
@@ -134,11 +143,7 @@ const TagTable = () => {
         }
 
         return [
-          <GridActionsCellItem
-            icon={<EditIcon />}
-            label="Edit"
-            onClick={handleEditClick(id)}
-          />,
+          <GridActionsCellItem icon={<EditIcon />} label="Edit" onClick={handleEditClick(id)} />,
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
@@ -168,9 +173,7 @@ const TagTable = () => {
               <GridToolbarContainer>
                 <GridToolbarQuickFilter />
                 <GridToolbarColumnsButton />
-                <GridToolbarDensitySelector
-                  slotProps={{ tooltip: { title: 'Change density' } }}
-                />
+                <GridToolbarDensitySelector slotProps={{ tooltip: { title: 'Change density' } }} />
                 <Box sx={{ flexGrow: 1 }} />
                 <Button color="primary" startIcon={<AddIcon />} onClick={() => setOpen(true)}>
                   Add Tag
@@ -199,6 +202,18 @@ const TagTable = () => {
           </Button>
           <Button onClick={handleAddTag} color="primary">
             Add
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={deleteDialogOpen} onClose={handleCancelDelete}>
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>Are you sure you want to delete this tag?</DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelDelete} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmDelete} color="primary">
+            Delete
           </Button>
         </DialogActions>
       </Dialog>

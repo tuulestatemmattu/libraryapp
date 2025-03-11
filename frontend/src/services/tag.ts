@@ -32,4 +32,11 @@ const updateTag = async (tag: FetchedTag) => {
   return response.data;
 };
 
-export { getTags, addTag, updateTag };
+const deleteTag = async (id: number) => {
+  const token = getToken();
+  await axios.delete(`${baseUrl}/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
+export { getTags, addTag, updateTag, deleteTag };
