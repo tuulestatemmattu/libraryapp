@@ -85,7 +85,7 @@ const UserTable = () => {
       <Box sx={{ textAlign: 'center' }}>
         <h1>Users</h1>
       </Box>
-      <Paper sx={{ height: 400, width: '100%' }}>
+      <Paper sx={{ height: 'auto', width: '100%' }}>
         <DataGrid
           rows={rows}
           columns={columns}
