@@ -154,16 +154,20 @@ const TagTable = () => {
     },
   ];
 
+  const paginationModel = { page: 0, pageSize: 5 };
+
   return (
     <div>
       <Box sx={{ textAlign: 'center' }}>
         <h1>Tags</h1>
       </Box>
-      <Paper sx={{ height: 400, width: '100%' }}>
+      <Paper sx={{ height: 'auto', width: '100%' }}>
         <DataGrid
           rows={rows}
           columns={columns}
           editMode="row"
+          initialState={{ pagination: { paginationModel } }}
+          pageSizeOptions={[5, 10]}
           rowModesModel={rowModesModel}
           onRowModesModelChange={handleRowModesModelChange}
           onRowEditStop={handleRowEditStop}
