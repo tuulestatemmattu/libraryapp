@@ -10,13 +10,9 @@ bookRouter.use(requireLogin);
 
 const toBookWithBorrowedByMe = async (book: Book, userId: string) => {
   const bookData = book.dataValues;
-<<<<<<< HEAD
-  const myBorrow = await Borrow.findOne({ where: { bookId: book.id, userGoogleId: userId, active: true } });
-=======
   const myBorrow = await Borrow.findOne({
     where: { bookId: book.id, userGoogleId: userId, active: true },
   });
->>>>>>> staging
 
   if (myBorrow) {
     return { ...bookData, borrowedByMe: true, lastBorrowedDate: myBorrow.borrowedDate };
@@ -184,13 +180,8 @@ bookRouter.put('/return/:id', async (req, res) => {
     });
     if (borrowed) {
       book.increment('copiesAvailable');
-<<<<<<< HEAD
-      borrowed.set({...borrowed, active: false})
-      await borrowed.save()
-=======
       borrowed.set({ ...borrowed, active: false });
       await borrowed.save();
->>>>>>> staging
       await book.save();
       const returnedBook = await toBookWithBorrowedByMe(book, userId);
       res.json(returnedBook);
