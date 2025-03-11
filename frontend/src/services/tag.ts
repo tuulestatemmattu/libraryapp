@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { apiBaseUrl } from '../constants';
-import { CreatedTag } from '../interfaces/Tags';
+import { CreatedTag, FetchedTag } from '../interfaces/Tags';
 import { getToken } from '../util/getToken';
 
 const baseUrl = apiBaseUrl + '/tags';
@@ -23,4 +23,20 @@ const addTag = async (tag: CreatedTag) => {
   return response.data;
 };
 
-export { getTags, addTag };
+const updateTag = async (tag: FetchedTag) => {
+  const token = getToken();
+  const response = await axios.put(`${baseUrl}/${tag.id}`, tag, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return response.data;
+};
+
+const deleteTag = async (id: number) => {
+  const token = getToken();
+  await axios.delete(`${baseUrl}/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
+export { getTags, addTag, updateTag, deleteTag };
