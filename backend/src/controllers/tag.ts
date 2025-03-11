@@ -28,43 +28,18 @@ tagRouter.post('/', requireAdmin, async (req, res) => {
   }
 });
 
-tagRouter.put('/:id', requireAdmin, async (req, res) => {
-  const { id } = req.params;
-  const { name } = req.body;
-
-  try {
-    const tagToEdit = await Tag.findOne({ where: { id } });
-
-    if (tagToEdit) {
-      tagToEdit.set({
-        name: name,
-      });
-
-      await tagToEdit.save();
-
-      res.status(200).send(tagToEdit);
-    } else {
-      res.status(404).send({ message: `Tag with id ${id} does not exist` });
-    }
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      res.status(500).send({ message: error.message });
-    }
-  }
-});
-
 tagRouter.delete('/:id', requireAdmin, async (req, res) => {
   const { id } = req.params;
 
   try {
-    const tagToDelete = await Tag.findOne({ where: { id } });
-
-    if (tagToDelete) {
-      await tagToDelete.destroy();
-      res.status(204).send();
-    } else {
-      res.status(404).send({ message: `Tag with id ${id} does not exist` });
+    const tag = await Tag.findByPk(id);
+    if (!tag) {
+      res.status(404).send({ message: 'Tag not found' });
+      return;
     }
+
+    await tag.destroy();
+    res.status(204).send();
   } catch (error: unknown) {
     if (error instanceof Error) {
       res.status(500).send({ message: error.message });
