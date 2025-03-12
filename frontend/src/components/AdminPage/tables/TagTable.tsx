@@ -42,7 +42,7 @@ const TagTable = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<GridRowId | null>(null);
   const [duplicateDialogOpen, setDuplicateDialogOpen] = useState(false);
-  
+
   const tags = useMainStore((state) => state.tags);
   const storeAddOrUpdateTag = useMainStore((state) => state.addOrUpdateTag);
   const storeDeleteTag = useMainStore((state) => state.deleteTag);
@@ -164,6 +164,7 @@ const TagTable = () => {
       </Box>
       <Paper sx={{ height: 'auto', width: '100%' }}>
         <DataGrid
+          disableVirtualization
           rows={rows}
           columns={columns}
           editMode="row"
