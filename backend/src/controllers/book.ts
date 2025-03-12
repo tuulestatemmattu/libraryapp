@@ -98,7 +98,8 @@ bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
 bookRouter.put('/edit/:id', bookValidator, requireAdmin, async (req, res) => {
   const bookId = req.params.id;
   const userId = req.userId as string;
-  const { title, authors, isbn, description, publishedDate, location, copies, tags } = req.body;
+  const { title, authors, isbn, description, publishedDate, location, copies, imageLink, tags } =
+    req.body;
 
   const bookToEdit = await Book.findOne({ where: { id: bookId } });
 
@@ -111,6 +112,7 @@ bookRouter.put('/edit/:id', bookValidator, requireAdmin, async (req, res) => {
       publishedDate: publishedDate,
       location: location,
       copies: copies,
+      imageLink: imageLink,
     });
 
     const tag_ids = tags.map((tag: Tag) => tag.id);
