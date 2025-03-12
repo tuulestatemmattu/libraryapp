@@ -146,7 +146,7 @@ const BorrowTable = () => {
       </GridToolbarContainer>
     );
   };
-
+  const paginationModel = { page: 0, pageSize: 20 };
   return (
     <div>
       <Box sx={{ textAlign: 'center' }}>
@@ -157,11 +157,12 @@ const BorrowTable = () => {
           rows={rows}
           columns={columns}
           initialState={{
+            pagination: { paginationModel },
             sorting: {
               sortModel: [{ field: 'active', sort: 'desc' }],
             },
           }}
-          pageSizeOptions={[5, 10, 20, 50]}
+          pageSizeOptions={[5, 10, 20, 50, 100]}
           sx={{ border: 1 }}
           slots={{
             toolbar: CustomToolBar,
