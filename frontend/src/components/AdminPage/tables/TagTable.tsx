@@ -41,7 +41,8 @@ const TagTable = () => {
   const [newTagName, setNewTagName] = useState('');
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<GridRowId | null>(null);
-
+  const [duplicateDialogOpen, setDuplicateDialogOpen] = useState(false);
+  
   const tags = useMainStore((state) => state.tags);
   const storeAddOrUpdateTag = useMainStore((state) => state.addOrUpdateTag);
   const storeDeleteTag = useMainStore((state) => state.deleteTag);
@@ -109,6 +110,10 @@ const TagTable = () => {
   };
 
   const handleAddTag = async () => {
+    if (tags.some((tag) => tag.name === newTagName)) {
+      setDuplicateDialogOpen(true);
+      return;
+    }
     const newTag = { name: newTagName };
     const createdTag = await addTag(newTag);
     storeAddOrUpdateTag(createdTag);
@@ -214,6 +219,15 @@ const TagTable = () => {
           </Button>
           <Button onClick={handleConfirmDelete} color="primary">
             Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={duplicateDialogOpen} onClose={() => setDuplicateDialogOpen(false)}>
+        <DialogTitle>Duplicate Tag</DialogTitle>
+        <DialogContent>This tag already exists. Please enter a different name.</DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDuplicateDialogOpen(false)} color="primary">
+            OK
           </Button>
         </DialogActions>
       </Dialog>
