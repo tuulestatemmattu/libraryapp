@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
+import { Stack } from '@mui/material';
 import Box from '@mui/material/Box';
-import Grid2 from '@mui/material/Grid';
+import Grid2 from '@mui/material/Grid2';
 import Input from '@mui/material/Input';
 
 import useMainStore from '../../hooks/useMainStore';
@@ -36,26 +37,28 @@ const BookList = ({ books }: props) => {
   });
 
   return (
-    <>
-      <h2>Books in office</h2>
-      <Box className="filter-box">
-        <Input
-          disableUnderline={true}
-          placeholder="Search books in office"
-          className="filter-input"
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-        />
-      </Box>
-      <FilterWithTags selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
-      <div className="books-container">
-        <Grid2 container spacing={1} wrap="wrap" className="grid-container">
-          {filteredBooks.map((book) => (
-            <BookListItem key={book.id} book={book} />
-          ))}
-        </Grid2>
-      </div>
-    </>
+    <article>
+      <Stack style={{ width: '95vw' }}>
+        <h2>Books in office</h2>
+        <Box className="filter-box">
+          <Input
+            disableUnderline={true}
+            placeholder="Search books in office"
+            className="filter-input"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+        </Box>
+        <FilterWithTags selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+        <div className="books-container">
+          <Grid2 container spacing={1} wrap="wrap" className="grid-container">
+            {filteredBooks.map((book) => (
+              <BookListItem key={book.id} book={book} />
+            ))}
+          </Grid2>
+        </div>
+      </Stack>
+    </article>
   );
 };
 

@@ -1,3 +1,5 @@
+import { Stack } from '@mui/material';
+
 import useMainStore from '../hooks/useMainStore';
 import BookList from './BookList/BookList';
 import ScrollableList from './ScrollableList/ScrollableList';
@@ -10,19 +12,21 @@ const HomePage = () => {
   return (
     <article>
       <h2>
-        <ScrollableList
-          title="Your books"
-          books={books
-            /* Filter my books then sort first books that youve had the longest */
-            .filter((book) => book.borrowedByMe)
-            .sort((b1, b2) =>
-              b1.lastBorrowedDate === b2.lastBorrowedDate
-                ? 0
-                : b1.lastBorrowedDate < b2.lastBorrowedDate
-                  ? -1
-                  : 1,
-            )}
-        />
+        <Stack>
+          <ScrollableList
+            title="Your books"
+            books={books
+              /* Filter my books then sort first books that youve had the longest */
+              .filter((book) => book.borrowedByMe)
+              .sort((b1, b2) =>
+                b1.lastBorrowedDate === b2.lastBorrowedDate
+                  ? 0
+                  : b1.lastBorrowedDate < b2.lastBorrowedDate
+                    ? -1
+                    : 1,
+              )}
+          />
+        </Stack>
       </h2>
       <BookList
         /* Sort books 'Available, not available, borrow by me' all categorys alphabetically */

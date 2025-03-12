@@ -18,6 +18,8 @@ import useRequireAdmin from '../../hooks/useRequireAdmin';
 import Profile from '../../interfaces/Profile';
 import { getUsers, promoteUsers } from '../../services/admin';
 
+import '../../style.css';
+
 const AdminPage = () => {
   useRequireAdmin();
   const [rows, setRows] = useState([]);
@@ -61,8 +63,8 @@ const AdminPage = () => {
 
   const columns: GridColDef[] = [
     { field: 'name', headerName: 'name', width: 200 },
-    { field: 'email', headerName: 'Email', width: 250 },
-    { field: 'admin', headerName: 'Admin', width: 130 },
+    { field: 'email', headerName: 'Email', width: 220 },
+    { field: 'admin', headerName: 'Admin', width: 120 },
     { ...GRID_CHECKBOX_SELECTION_COL_DEF },
   ];
 
@@ -81,7 +83,7 @@ const AdminPage = () => {
   };
 
   return (
-    <div>
+    <article>
       <Box sx={{ textAlign: 'center' }}>
         <h1>users</h1>
       </Box>
@@ -94,13 +96,12 @@ const AdminPage = () => {
           checkboxSelection
           rowSelectionModel={selected}
           onRowSelectionModelChange={(ids) => setSelected(ids.map((id) => id.toString()))}
-          sx={{ border: 1 }}
           slots={{
             toolbar: CustomToolBar,
           }}
         />
       </Paper>
-    </div>
+    </article>
   );
 };
 

@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+import { CssBaseline, ThemeProvider } from '@mui/material';
+
 import AddBooksPage from './components/AddBookPage/AddBookPage';
 import AdminPage from './components/AdminPage/AdminPage';
 import FloatingButton from './components/FloatingButton/FloatingButton';
@@ -13,6 +15,7 @@ import { useAuthCheck } from './hooks/useAuthCheck';
 import useMainStore from './hooks/useMainStore';
 import { getBooks } from './services/book';
 import { getTags } from './services/tag';
+import theme from './theme';
 
 import './style.css';
 
@@ -32,21 +35,24 @@ const App = () => {
   }
 
   return (
-    <NotificationProvider>
-      <BrowserRouter>
-        <NavBar />
-        <main className="page-content">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/scan" element={<ScanPage />} />
-            <Route path="/addBook" element={<AddBooksPage />} />
-            <Route path="/admin" element={<AdminPage />} />
-          </Routes>
-        </main>
-        <FloatingButton type="scan" />
-        {profile.admin && <FloatingButton type="add" />}
-      </BrowserRouter>
-    </NotificationProvider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <NotificationProvider>
+        <BrowserRouter>
+          <NavBar />
+          <main className="page-content">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/scan" element={<ScanPage />} />
+              <Route path="/addBook" element={<AddBooksPage />} />
+              <Route path="/admin" element={<AdminPage />} />
+            </Routes>
+          </main>
+          <FloatingButton type="scan" />
+          {profile.admin && <FloatingButton type="add" />}
+        </BrowserRouter>
+      </NotificationProvider>
+    </ThemeProvider>
   );
 };
 
