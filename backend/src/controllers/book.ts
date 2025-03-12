@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { Book, Borrow, Tag } from '../models';
+import { Book, Borrow, Tag, User } from '../models';
 import { requireAdmin } from '../util/middleware/requireAdmin';
 import { requireLogin } from '../util/middleware/requireLogin';
 import bookValidator from '../util/validation';
@@ -191,6 +191,23 @@ bookRouter.put('/return/:id', async (req, res) => {
   } else {
     res.status(404).send({ message: 'book does not exist' });
   }
+});
+
+bookRouter.get('/borrows', async (req, res) => {
+  const borrows = await Borrow.findAll({
+    attributes: ['id', 'borrowedDate'],
+    include: [
+      {
+        model: User,
+        attributes: ['name', 'email'],
+      },
+      {
+        model: Book,
+        attributes: ['title'],
+      },
+    ],
+  });
+  res.json(borrows);
 });
 
 export default bookRouter;

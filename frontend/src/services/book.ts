@@ -54,4 +54,11 @@ const returnBook = async (id: number) => {
   return response.data;
 };
 
-export { addBook, getBooks, getDetails, borrowBook, returnBook };
+const getBorrows = async () => {
+  const token = getToken();
+  const response = await axios.get(`${baseUrl}/borrows`, {
+    headers: { authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+export { addBook, getBooks, getDetails, borrowBook, returnBook, getBorrows };
