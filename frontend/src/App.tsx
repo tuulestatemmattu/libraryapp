@@ -31,7 +31,12 @@ const App = () => {
   }, []);
 
   if (!profile) {
-    return <SignInPage />;
+    return (
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <SignInPage />
+      </ThemeProvider>
+    );
   }
 
   return (
