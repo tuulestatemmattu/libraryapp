@@ -15,7 +15,8 @@ interface StoreState {
 
   tags: FetchedTag[];
   setTags: (tags: FetchedTag[]) => void;
-  addTag: (tag: FetchedTag) => void;
+  addOrUpdateTag: (tag: FetchedTag) => void;
+  deleteTag: (id: number) => void;
 
   books: FetchedBook[];
   setBooks: (books: FetchedBook[]) => void;
@@ -34,6 +35,26 @@ const useMainStore = create<StoreState>((set) => ({
   tags: [],
   setTags: (tags: FetchedTag[]) => set((state) => ({ ...state, tags })),
   addTag: (tag: FetchedTag) => set((state) => ({ ...state, tags: [...state.tags, tag] })),
+  deleteTag: (id: number) => {
+    const mapBook = (book: FetchedBook) => {
+      return { ...book, tags: book.tags.filter((t) => t.id !== id) };
+    };
+    set((state) => ({
+      ...state,
+      tags: state.tags.filter((t) => t.id !== id),
+      books: state.books.map(mapBook),
+    }));
+  },
+  addOrUpdateTag: (tag: FetchedTag) => {
+    const mapBook = (book: FetchedBook) => {
+      return { ...book, tags: book.tags.map((t) => (t.id === tag.id ? tag : t)) };
+    };
+    set((state) => ({
+      ...state,
+      tags: [...state.tags.filter((t) => t.id !== tag.id), tag],
+      books: state.books.map(mapBook),
+    }));
+  },
 
   books: [],
   setBooks: (books: FetchedBook[]) => set((state) => ({ ...state, books })),

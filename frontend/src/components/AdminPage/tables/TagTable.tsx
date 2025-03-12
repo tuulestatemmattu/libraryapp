@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Close';
@@ -29,31 +29,29 @@ import {
   GridToolbarQuickFilter,
 } from '@mui/x-data-grid';
 
+import useMainStore from '../../../hooks/useMainStore';
 import useRequireAdmin from '../../../hooks/useRequireAdmin';
 import { FetchedTag } from '../../../interfaces/Tags';
-import { addTag, deleteTag, getTags, updateTag } from '../../../services/tag';
+import { addTag, deleteTag, updateTag } from '../../../services/tag';
 
 const TagTable = () => {
   useRequireAdmin();
-  const [rows, setRows] = useState<FetchedTag[]>([]);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [open, setOpen] = useState(false);
   const [newTagName, setNewTagName] = useState('');
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<GridRowId | null>(null);
 
-  useEffect(() => {
-    getTags().then((result) =>
-      setRows(
-        result
-          .map((t: FetchedTag) => ({
-            id: t.id,
-            name: t.name,
-          }))
-          .sort((a: FetchedTag, b: FetchedTag) => a.id - b.id),
-      ),
-    );
-  }, []);
+  const tags = useMainStore((state) => state.tags);
+  const storeAddOrUpdateTag = useMainStore((state) => state.addOrUpdateTag);
+  const storeDeleteTag = useMainStore((state) => state.deleteTag);
+
+  const rows = tags
+    .map((t: FetchedTag) => ({
+      id: t.id,
+      name: t.name,
+    }))
+    .sort((a: FetchedTag, b: FetchedTag) => a.id - b.id);
 
   const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -77,7 +75,7 @@ const TagTable = () => {
   const handleConfirmDelete = async () => {
     if (deleteId !== null) {
       await deleteTag(Number(deleteId));
-      setRows(rows.filter((row) => row.id !== deleteId));
+      storeDeleteTag(Number(deleteId));
       setDeleteDialogOpen(false);
       setDeleteId(null);
     }
@@ -98,9 +96,7 @@ const TagTable = () => {
   const processRowUpdate = async (newRow: GridRowModel) => {
     try {
       const updatedRow = await updateTag(newRow as FetchedTag);
-      setRows(
-        rows.map((row) => (row.id === newRow.id ? updatedRow : row)).sort((a, b) => a.id - b.id),
-      );
+      storeAddOrUpdateTag(updatedRow);
       return updatedRow;
     } catch (error) {
       console.error('Update failed:', error);
@@ -115,7 +111,7 @@ const TagTable = () => {
   const handleAddTag = async () => {
     const newTag = { name: newTagName };
     const createdTag = await addTag(newTag);
-    setRows([...rows, { id: createdTag.id, name: createdTag.name }].sort((a, b) => a.id - b.id));
+    storeAddOrUpdateTag(createdTag);
     setOpen(false);
     setNewTagName('');
   };
