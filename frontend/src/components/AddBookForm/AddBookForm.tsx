@@ -9,7 +9,6 @@ import { useNotification } from '../../context/NotificationsProvider/Notificatio
 import useMainStore from '../../hooks/useMainStore';
 import { CreatedBook } from '../../interfaces/Book';
 import { FetchedTag } from '../../interfaces/Tags';
-import AddTag from '../AddTag/AddTag';
 import CopiesInput from '../CopiesInput/CopiesInput';
 import LocationSelect from '../LocationSelect/LocationSelect';
 import StyledInput from '../StyledInput/StyledInput';
@@ -147,9 +146,6 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
           </Button>
         </ButtonGroup>
       </form>
-      <div className="add-tag">
-        <AddTag />
-      </div>
     </article>
   );
 };
