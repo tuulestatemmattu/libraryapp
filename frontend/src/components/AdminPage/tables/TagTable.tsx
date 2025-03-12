@@ -61,7 +61,7 @@ const TagTable = () => {
   };
 
   const handleEditClick = (id: GridRowId) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' } });
   };
 
   const handleSaveClick = (id: GridRowId) => async () => {
@@ -165,6 +165,7 @@ const TagTable = () => {
       <Paper sx={{ height: 'auto', width: '100%' }}>
         <DataGrid
           disableVirtualization
+          disableRowSelectionOnClick
           rows={rows}
           columns={columns}
           editMode="row"
@@ -174,6 +175,13 @@ const TagTable = () => {
           onRowModesModelChange={handleRowModesModelChange}
           onRowEditStop={handleRowEditStop}
           processRowUpdate={processRowUpdate}
+          sx={{
+            '& .MuiDataGrid-row.MuiDataGrid-row--editing': {
+              '& .MuiDataGrid-cell': {
+                backgroundColor: 'rgba(255, 235, 60, 0.5) !important',
+              },
+            },
+          }}
           slots={{
             toolbar: () => (
               <GridToolbarContainer>
