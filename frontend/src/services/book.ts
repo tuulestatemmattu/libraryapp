@@ -22,6 +22,15 @@ const getBooks = async () => {
   return response.data;
 };
 
+const updateBook = async (book: FetchedBook) => {
+  const token = getToken();
+
+  const response = await axios.put(`${baseUrl}/edit/${book.id}`, book, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
 const getDetails = async (id: number) => {
   const token = getToken();
   const response = await axios.get(`${baseUrl}/${id}`, {
@@ -61,4 +70,4 @@ const getBorrows = async () => {
   });
   return response.data;
 };
-export { addBook, getBooks, getDetails, borrowBook, returnBook, getBorrows };
+export { addBook, getBooks, updateBook, getDetails, borrowBook, returnBook, getBorrows };

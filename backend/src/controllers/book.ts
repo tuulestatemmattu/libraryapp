@@ -104,24 +104,31 @@ bookRouter.put('/edit/:id', bookValidator, requireAdmin, async (req, res) => {
   const bookToEdit = await Book.findOne({ where: { id: bookId } });
 
   if (bookToEdit) {
-    bookToEdit.set({
-      title: title,
-      authors: authors,
-      isbn: isbn,
-      description: description,
-      publishedDate: publishedDate,
-      location: location,
-      copies: copies,
-      imageLink: imageLink,
-    });
+    const copiesAvailable = (bookToEdit.copies += copies - bookToEdit.copies);
 
-    const tag_ids = tags.map((tag: Tag) => tag.id);
-    await bookToEdit.setTags(tag_ids);
+    if (copiesAvailable < 0) {
+      res.status(400).send({ message: 'Copies available cannot be less than 0' });
+    } else {
+      bookToEdit.set({
+        title: title,
+        authors: authors,
+        isbn: isbn,
+        description: description,
+        publishedDate: publishedDate,
+        location: location,
+        copies: copies,
+        copiesAvailable: copiesAvailable,
+        imageLink: imageLink,
+      });
 
-    await bookToEdit.save();
+      const tag_ids = tags.map((tag: Tag) => tag.id);
+      await bookToEdit.setTags(tag_ids);
 
-    const editedBook = await toBookWithBorrowedByMe(bookToEdit, userId);
-    res.status(201).send({ ...editedBook, tags });
+      await bookToEdit.save();
+
+      const editedBook = await toBookWithBorrowedByMe(bookToEdit, userId);
+      res.status(201).send({ ...editedBook, tags });
+    }
   } else {
     res.status(404).send({ message: `Book with id ${bookId} does not exist` });
   }

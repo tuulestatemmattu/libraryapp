@@ -22,6 +22,7 @@ import {
 
 import useMainStore from '../../../hooks/useMainStore';
 import { FetchedBook } from '../../../interfaces/Book';
+import { updateBook } from '../../../services/book';
 
 interface BookTableRow {
   id: number;
