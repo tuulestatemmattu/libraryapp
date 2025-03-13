@@ -91,9 +91,9 @@ jobs:
         stack: "container"
         branch: "staging"
       env:
-        HD_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-        HD_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-        HD_GOOGLE_OAUTH_REDIRECT_URI: ${{ secrets.GOOGLE_OAUTH_REDIRECT_URI }}
+        HD_GOOGLE_CLIENT_ID: ${{ secrets.STAGING_GOOGLE_CLIENT_ID }}
+        HD_GOOGLE_CLIENT_SECRET: ${{ secrets.STAGING_GOOGLE_CLIENT_SECRET }}
+        HD_GOOGLE_OAUTH_REDIRECT_URI: ${{ secrets.STAGING_GOOGLE_OAUTH_REDIRECT_URI }}
         HD_JWT_SECRET: ${{ secrets.JWT_SECRET }}
   
   deploy-production:
