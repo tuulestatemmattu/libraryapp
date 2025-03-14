@@ -1,5 +1,4 @@
 .book-card {
-  border: 1px solid rgba(0, 0, 0, 0.12);
   width: 25vw;
   max-width: 225px;
   height: auto;
@@ -77,18 +76,6 @@
   font-size: 300% !important;
 }
 
-.card-chip.base.available {
-  color: lightgreen;
-}
-
-.card-chip.base.mine {
-  color: lightblue;
-}
-
-.card-chip.base.unavailable {
-  color: salmon;
-}
-
 .card-chip-icon-container {
   position: absolute;
   z-index: 1;
@@ -100,16 +87,4 @@
 .card-chip.icon {
   width: 100%;
   height: 50%;
-}
-
-.card-chip.icon.available {
-  color: green;
-}
-
-.card-chip.icon.mine {
-  color: blue;
-}
-
-.card-chip.icon.unavailable {
-  color: red;
 }

@@ -3,17 +3,21 @@ import { ReactElement, useRef } from 'react';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { Stack } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 import './ItemsSlider.css';
 
 interface Props {
   children: ReactElement[];
   renderButtons: boolean;
+  backgroundColor?: string;
+  borderColor?: string;
 }
 
-const ItemsSlider = ({ renderButtons, children }: Props) => {
+const ItemsSlider = ({ renderButtons, children, backgroundColor, borderColor }: Props) => {
   const scrollref = useRef<HTMLDivElement | null>(null);
   const scrollAmount = 400;
+  const theme = useTheme();
 
   if (children.length === 0) {
     return null;
@@ -21,7 +25,12 @@ const ItemsSlider = ({ renderButtons, children }: Props) => {
 
   return (
     <Stack style={{ width: '100%' }}>
-      <div className="scroll-item-container">
+      <div
+        className="scroll-item-container"
+        style={{
+          backgroundColor: backgroundColor || theme.palette.componentBack?.main,
+        }}
+      >
         {renderButtons && (
           <div>
             <div
@@ -30,7 +39,18 @@ const ItemsSlider = ({ renderButtons, children }: Props) => {
                 if (scrollref.current) scrollref.current.scrollLeft -= scrollAmount;
               }}
             >
-              <KeyboardArrowLeftIcon fontSize="large" className="scroll-button" />
+              <KeyboardArrowLeftIcon
+                fontSize="large"
+                style={{
+                  backgroundColor: backgroundColor || theme.palette.componentBack?.light,
+                  margin: 'auto',
+                  padding: '3px',
+                  borderRadius: '1000px',
+                  border: '1px solid',
+                  borderColor: borderColor || theme.palette.componentBack?.dark,
+                }}
+                className="scroll-button"
+              />
             </div>
             <div
               className="scroll-button-container right"
@@ -38,7 +58,18 @@ const ItemsSlider = ({ renderButtons, children }: Props) => {
                 if (scrollref.current) scrollref.current.scrollLeft += scrollAmount;
               }}
             >
-              <KeyboardArrowRightIcon fontSize="large" className="scroll-button" />
+              <KeyboardArrowRightIcon
+                fontSize="large"
+                className="scroll-button"
+                style={{
+                  backgroundColor: backgroundColor || theme.palette.componentBack?.light,
+                  margin: 'auto',
+                  padding: '3px',
+                  borderRadius: '1000px',
+                  border: '1px solid',
+                  borderColor: borderColor || theme.palette.componentBack?.dark,
+                }}
+              />
             </div>
           </div>
         )}
