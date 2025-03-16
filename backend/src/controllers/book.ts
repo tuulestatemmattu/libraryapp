@@ -104,10 +104,15 @@ bookRouter.put('/edit/:id', bookValidator, requireAdmin, async (req, res) => {
   const bookToEdit = await Book.findOne({ where: { id: bookId } });
 
   if (bookToEdit) {
-    const copiesAvailable = (bookToEdit.copies += copies - bookToEdit.copies);
+    const copiesAvailable = bookToEdit.copiesAvailable + Number(copies) - bookToEdit.copies;
+
+    if (Number(copies) < copiesAvailable) {
+      res.status(400).json({ error: 'Copies cannot be less than Copies Available' });
+      return;
+    }
 
     if (copiesAvailable < 0) {
-      res.status(400).send({ message: 'Copies available cannot be less than 0' });
+      res.status(400).json({ error: 'Copies available cannot be less than 0' });
     } else {
       bookToEdit.set({
         title: title,

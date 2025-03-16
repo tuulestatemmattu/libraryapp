@@ -20,6 +20,7 @@ import {
   GridToolbarQuickFilter,
 } from '@mui/x-data-grid';
 
+//import { useNotification } from '../../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../../hooks/useMainStore';
 import { AdminViewBook, FetchedBook } from '../../../interfaces/Book';
 import { FetchedTag } from '../../../interfaces/Tags';
@@ -32,6 +33,7 @@ const BookTable = () => {
 
   const books = useMainStore((state) => state.books);
   const storeAddOrUpdateBook = useMainStore((state) => state.addOrUpdateBook);
+  //const { showNotification } = useNotification();
 
   const toAdminViewBook = (book: FetchedBook): AdminViewBook => {
     return {
@@ -68,14 +70,13 @@ const BookTable = () => {
   };
 
   const processRowUpdate = async (newRow: GridRowModel) => {
-    try {
-      const updatedRow = await updateBook(newRow as AdminViewBook);
-      storeAddOrUpdateBook(updatedRow);
-      return toAdminViewBook(updatedRow);
-    } catch (error) {
-      console.error('Update failed:', error);
-      return newRow;
-    }
+    const updatedRow = await updateBook(newRow as AdminViewBook);
+    storeAddOrUpdateBook(updatedRow);
+    return toAdminViewBook(updatedRow);
+  };
+
+  const processRowError = (error: Error) => {
+    console.error(error);
   };
 
   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
@@ -179,6 +180,7 @@ const BookTable = () => {
           onRowModesModelChange={handleRowModesModelChange}
           onRowEditStop={handleRowEditStop}
           processRowUpdate={processRowUpdate}
+          onProcessRowUpdateError={processRowError}
           sx={{ border: 1 }}
           slots={{
             toolbar: CustomToolBar,
