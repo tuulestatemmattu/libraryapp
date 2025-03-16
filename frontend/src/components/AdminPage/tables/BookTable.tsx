@@ -3,7 +3,7 @@ import React from 'react';
 
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
-import { Box, Paper, Tooltip } from '@mui/material';
+import { Box, Chip, Paper, Tooltip } from '@mui/material';
 import {
   DataGrid,
   GridActionsCellItem,
@@ -21,44 +21,36 @@ import {
 } from '@mui/x-data-grid';
 
 import useMainStore from '../../../hooks/useMainStore';
-import { FetchedBook } from '../../../interfaces/Book';
+import { AdminViewBook, FetchedBook } from '../../../interfaces/Book';
+import { FetchedTag } from '../../../interfaces/Tags';
 import { updateBook } from '../../../services/book';
+import SelectTags from './SelectTags';
 
-interface BookTableRow {
-  id: number;
-  title: string;
-  authors: string;
-  isbn: string;
-  publishedDate: string;
-  description: string;
-  location: string;
-  copies: number;
-  imageLink?: string;
-  tags: string[];
-}
 const BookTable = () => {
-  const [rows, setRows] = useState<BookTableRow[]>([]);
+  const [rows, setRows] = useState<AdminViewBook[]>([]);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
+
   const books = useMainStore((state) => state.books);
-  const tags = useMainStore((state) => state.tags);
+  const storeAddOrUpdateBook = useMainStore((state) => state.addOrUpdateBook);
+
+  const toAdminViewBook = (book: FetchedBook): AdminViewBook => {
+    return {
+      id: book.id,
+      title: book.title,
+      authors: book.authors,
+      isbn: book.isbn,
+      publishedDate: book.publishedDate,
+      description: book.description,
+      location: book.location,
+      copies: book.copies,
+      copiesAvailable: book.copiesAvailable,
+      imageLink: book.imageLink,
+      tags: book.tags,
+    };
+  };
 
   useEffect(() => {
-    setRows(
-      books.map((b: FetchedBook) => {
-        return {
-          id: b.id,
-          title: b.title,
-          authors: b.authors,
-          isbn: b.isbn,
-          publishedDate: b.publishedDate,
-          description: b.description,
-          location: b.location,
-          copies: b.copies,
-          imageLink: b.imageLink,
-          tags: b.tags.map((tag) => tag.name),
-        };
-      }),
-    );
+    setRows(books.map((book: FetchedBook) => toAdminViewBook(book)));
   }, []);
 
   const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
@@ -77,9 +69,9 @@ const BookTable = () => {
 
   const processRowUpdate = async (newRow: GridRowModel) => {
     try {
-      const updatedRow = await updateBook(newRow as FetchedBook);
-      storeUpdateBook(updatedRow);
-      return updatedRow;
+      const updatedRow = await updateBook(newRow as AdminViewBook);
+      storeAddOrUpdateBook(updatedRow);
+      return toAdminViewBook(updatedRow);
     } catch (error) {
       console.error('Update failed:', error);
       return newRow;
@@ -119,14 +111,22 @@ const BookTable = () => {
     },
     { field: 'location', headerName: 'Location', width: 150, editable: true },
     { field: 'copies', headerName: 'Copies', width: 150, editable: true },
+    { field: 'copiesAvailable', headerName: 'Copies Available', width: 150, editable: false },
     { field: 'imageLink', headerName: 'Image Link', width: 150, editable: true },
     {
       field: 'tags',
       headerName: 'Tags',
-      width: 150,
+      display: 'flex',
+      width: 200,
       editable: true,
-      type: 'singleSelect',
-      valueOptions: tags.map((tag) => tag.name),
+      renderCell: (params) => (
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, padding: 0.5 }}>
+          {params.row.tags.map((tag: FetchedTag) => (
+            <Chip key={tag.id} label={tag.name} size="small" />
+          ))}
+        </Box>
+      ),
+      renderEditCell: (params) => <SelectTags {...params} />,
     },
     {
       field: 'actions',
@@ -172,6 +172,7 @@ const BookTable = () => {
         <DataGrid
           rows={rows}
           columns={columns}
+          getRowHeight={() => 'auto'}
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[5, 10]}
           rowModesModel={rowModesModel}

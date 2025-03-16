@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { apiBaseUrl } from '../constants';
-import { CreatedBook, FetchedBook } from '../interfaces/Book';
+import { AdminViewBook, CreatedBook, FetchedBook } from '../interfaces/Book';
 import { getToken } from '../util/getToken';
 
 const baseUrl = apiBaseUrl + '/books';
@@ -22,7 +22,7 @@ const getBooks = async () => {
   return response.data;
 };
 
-const updateBook = async (book: FetchedBook) => {
+const updateBook = async (book: AdminViewBook) => {
   const token = getToken();
 
   const response = await axios.put(`${baseUrl}/edit/${book.id}`, book, {
