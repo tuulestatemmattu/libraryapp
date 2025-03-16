@@ -20,7 +20,6 @@ import {
   GridToolbarQuickFilter,
 } from '@mui/x-data-grid';
 
-//import { useNotification } from '../../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../../hooks/useMainStore';
 import { AdminViewBook, FetchedBook } from '../../../interfaces/Book';
 import { FetchedTag } from '../../../interfaces/Tags';
@@ -33,7 +32,6 @@ const BookTable = () => {
 
   const books = useMainStore((state) => state.books);
   const storeAddOrUpdateBook = useMainStore((state) => state.addOrUpdateBook);
-  //const { showNotification } = useNotification();
 
   const toAdminViewBook = (book: FetchedBook): AdminViewBook => {
     return {
