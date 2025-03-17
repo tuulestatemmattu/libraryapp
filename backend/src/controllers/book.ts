@@ -98,28 +98,42 @@ bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
 bookRouter.put('/edit/:id', bookValidator, requireAdmin, async (req, res) => {
   const bookId = req.params.id;
   const userId = req.userId as string;
-  const { title, authors, isbn, description, publishedDate, location, copies, tags } = req.body;
+  const { title, authors, isbn, description, publishedDate, location, copies, imageLink, tags } =
+    req.body;
 
   const bookToEdit = await Book.findOne({ where: { id: bookId } });
 
   if (bookToEdit) {
-    bookToEdit.set({
-      title: title,
-      authors: authors,
-      isbn: isbn,
-      description: description,
-      publishedDate: publishedDate,
-      location: location,
-      copies: copies,
-    });
+    const copiesAvailable = bookToEdit.copiesAvailable + Number(copies) - bookToEdit.copies;
 
-    const tag_ids = tags.map((tag: Tag) => tag.id);
-    await bookToEdit.setTags(tag_ids);
+    if (Number(copies) < copiesAvailable) {
+      res.status(400).json({ message: 'Copies cannot be less than Copies Available' });
+      return;
+    }
 
-    await bookToEdit.save();
+    if (copiesAvailable < 0) {
+      res.status(400).json({ message: 'Copies available cannot be less than 0' });
+    } else {
+      bookToEdit.set({
+        title: title,
+        authors: authors,
+        isbn: isbn,
+        description: description,
+        publishedDate: publishedDate,
+        location: location,
+        copies: copies,
+        copiesAvailable: copiesAvailable,
+        imageLink: imageLink,
+      });
 
-    const editedBook = await toBookWithBorrowedByMe(bookToEdit, userId);
-    res.status(201).send({ ...editedBook, tags });
+      const tag_ids = tags.map((tag: Tag) => tag.id);
+      await bookToEdit.setTags(tag_ids);
+
+      await bookToEdit.save();
+
+      const editedBook = await toBookWithBorrowedByMe(bookToEdit, userId);
+      res.status(201).send({ ...editedBook, tags });
+    }
   } else {
     res.status(404).send({ message: `Book with id ${bookId} does not exist` });
   }
@@ -199,7 +213,7 @@ bookRouter.put('/return/:id', async (req, res) => {
 
 bookRouter.get('/borrows', async (req, res) => {
   const borrows = await Borrow.findAll({
-    attributes: ['id', 'borrowedDate', 'active'],
+    attributes: ['id', 'borrowedDate'],
     include: [
       {
         model: User,
@@ -207,7 +221,7 @@ bookRouter.get('/borrows', async (req, res) => {
       },
       {
         model: Book,
-        attributes: ['title', 'id'],
+        attributes: ['title'],
       },
     ],
   });

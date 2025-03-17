@@ -1,0 +1,19 @@
+PUT http://localhost:3001/api/books/edit/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjExNjgwOTMzMTIyMzA5NDY0NTM0OCIsImFkbWluIjp0cnVlLCJpYXQiOjE3NDE3NzM3MzZ9.ymCrp3KhcuXGuMt0DqqcIOEOfHorXUkZFIG8DVorybg
+
+{
+   "title": "Harry Potter and the Sorcerer's Stone (Harry Potter, Book 1)",
+   "authors": "J. K. Rowling",
+   "isbn": "9781338878929",
+    "description": "testing",
+    "publishedDate": "2023-05-02",
+    "location": "Helsinki",
+    "copies": 1,
+   "imageLink": "http://books.google.com/books/content?id=ZiJMzwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+   "tags": [            {
+                "name": "asd",
+                "id": 1
+            }]
+
+}

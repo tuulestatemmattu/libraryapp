@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { apiBaseUrl } from '../constants';
-import { CreatedBook, FetchedBook } from '../interfaces/Book';
+import { AdminViewBook, CreatedBook, FetchedBook } from '../interfaces/Book';
 import { getToken } from '../util/getToken';
 
 const baseUrl = apiBaseUrl + '/books';
@@ -19,6 +19,15 @@ const addBook = async (book: CreatedBook): Promise<FetchedBook> => {
 const getBooks = async () => {
   const token = getToken();
   const response = await axios.get(baseUrl, { headers: { Authorization: `Bearer ${token}` } });
+  return response.data;
+};
+
+const updateBook = async (book: AdminViewBook) => {
+  const token = getToken();
+
+  const response = await axios.put(`${baseUrl}/edit/${book.id}`, book, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
   return response.data;
 };
 
@@ -61,4 +70,4 @@ const getBorrows = async () => {
   });
   return response.data;
 };
-export { addBook, getBooks, getDetails, borrowBook, returnBook, getBorrows };
+export { addBook, getBooks, updateBook, getDetails, borrowBook, returnBook, getBorrows };

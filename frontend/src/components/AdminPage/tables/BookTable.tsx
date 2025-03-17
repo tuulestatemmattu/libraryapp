@@ -1,9 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import { Box, Button, Paper, SelectChangeEvent, Stack, TextField, Tooltip } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
+import { Box, Chip, Paper, Tooltip } from '@mui/material';
 import {
   DataGrid,
+  GridActionsCellItem,
   GridColDef,
+  GridEventListener,
+  GridRowEditStopReasons,
+  GridRowId,
+  GridRowModel,
+  GridRowModes,
+  GridRowModesModel,
   GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarDensitySelector,
@@ -11,96 +20,74 @@ import {
 } from '@mui/x-data-grid';
 
 import useMainStore from '../../../hooks/useMainStore';
-import { FetchedBook } from '../../../interfaces/Book';
+import { AdminViewBook, FetchedBook } from '../../../interfaces/Book';
 import { FetchedTag } from '../../../interfaces/Tags';
-import { addBook, getBooks } from '../../../services/book';
-import LocationSelect from '../../LocationSelect/LocationSelect';
-import TagSelect from '../../TagSelect/TagSelect';
+import { updateBook } from '../../../services/book';
+import SelectTags from './SelectTags';
 
 const BookTable = () => {
-  const [rows, setRows] = useState<FetchedBook[]>([]);
-  const tags = useMainStore((state) => state.tags);
-  const addOrUpdateBook = useMainStore((state) => state.addOrUpdateBook);
-  const [selectedTags, setSelectedTags] = useState<FetchedTag[]>([]);
-  const [newBook, setNewBook] = useState({
-    title: '',
-    authors: '',
-    isbn: '',
-    publishedDate: '',
-    description: '',
-    location: 'Helsinki',
-    copies: 1,
-    tags: selectedTags,
-  });
+  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
 
-  useEffect(() => {
-    getBooks().then((result) =>
-      setRows(
-        result.map((b: FetchedBook) => {
-          return {
-            id: b.id,
-            title: b.title,
-            authors: b.authors,
-            isbn: b.isbn,
-            publishedDate: b.publishedDate,
-            description: b.description,
-            location: b.location,
-            copies: b.copies,
-          };
-        }),
-      ),
-    );
-  }, []);
+  const books = useMainStore((state) => state.books);
+  const storeAddOrUpdateBook = useMainStore((state) => state.addOrUpdateBook);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setNewBook({ ...newBook, [name]: value });
+  const toAdminViewBook = (book: FetchedBook): AdminViewBook => {
+    return {
+      id: book.id,
+      title: book.title,
+      authors: book.authors,
+      isbn: book.isbn,
+      publishedDate: book.publishedDate,
+      description: book.description,
+      location: book.location,
+      copies: book.copies,
+      copiesAvailable: book.copiesAvailable,
+      imageLink: book.imageLink,
+      tags: book.tags,
+    };
   };
 
-  const handleLocationChange = (location: string) => {
-    setNewBook({ ...newBook, location });
-  };
+  const rows = books.map((book) => toAdminViewBook(book));
 
-  const handleTagSelection = (event: SelectChangeEvent<string[]>) => {
-    const {
-      target: { value },
-    } = event;
-
-    if (typeof value !== 'string') {
-      const tagsToSelect = tags.filter((tag) => value.includes(tag.name));
-
-      setSelectedTags(tagsToSelect);
+  const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
+    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+      event.defaultMuiPrevented = true;
     }
   };
 
-  const handleAddBook = () => {
-    console.log(newBook);
-    addBook(newBook).then((result) => {
-      setRows([...rows, result]);
-      addOrUpdateBook(result);
-      setNewBook({
-        title: '',
-        authors: '',
-        isbn: '',
-        publishedDate: '',
-        description: '',
-        location: 'Helsinki',
-        copies: 0,
-        tags: selectedTags,
-      });
-    });
+  const handleEditClick = (id: GridRowId) => () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+  };
+
+  const handleSaveClick = (id: GridRowId) => () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+  };
+
+  const processRowUpdate = async (newRow: GridRowModel) => {
+    const updatedRow = await updateBook(newRow as AdminViewBook);
+    storeAddOrUpdateBook(updatedRow);
+    return toAdminViewBook(updatedRow);
+  };
+
+  const processRowError = (error: Error) => {
+    console.error(error);
+  };
+
+  const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
+    setRowModesModel(newRowModesModel);
   };
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 100 },
-    { field: 'title', headerName: 'Title', width: 250 },
-    { field: 'authors', headerName: 'Authors', width: 200 },
-    { field: 'isbn', headerName: 'ISBN', width: 180 },
-    { field: 'publishedDate', headerName: 'Published Date', width: 150 },
+    { field: 'title', headerName: 'Title', width: 250, editable: true },
+    { field: 'authors', headerName: 'Authors', width: 200, editable: true },
+    { field: 'isbn', headerName: 'ISBN', width: 180, editable: true },
+    { field: 'publishedDate', headerName: 'Published Date', width: 150, editable: true },
     {
       field: 'description',
       headerName: 'Description',
       width: 300,
+      editable: true,
       renderCell: (params) => (
         <Tooltip title={params.value} arrow>
           <span
@@ -117,8 +104,45 @@ const BookTable = () => {
         </Tooltip>
       ),
     },
-    { field: 'location', headerName: 'Location', width: 150 },
-    { field: 'copies', headerName: 'Copies', width: 150 },
+    { field: 'location', headerName: 'Location', width: 150, editable: true },
+    { field: 'copies', headerName: 'Copies', width: 150, editable: true },
+    { field: 'copiesAvailable', headerName: 'Copies Available', width: 150, editable: false },
+    { field: 'imageLink', headerName: 'Image Link', width: 150, editable: true },
+    {
+      field: 'tags',
+      headerName: 'Tags',
+      display: 'flex',
+      width: 200,
+      editable: true,
+      renderCell: (params) => (
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, padding: 0.5 }}>
+          {params.row.tags.map((tag: FetchedTag) => (
+            <Chip key={tag.id} label={tag.name} size="small" />
+          ))}
+        </Box>
+      ),
+      renderEditCell: (params) => <SelectTags {...params} />,
+    },
+    {
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Actions',
+      width: 100,
+      cellClassName: 'actions',
+      getActions: ({ id }) => {
+        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+
+        if (isInEditMode) {
+          return [
+            <GridActionsCellItem icon={<SaveIcon />} label="Save" onClick={handleSaveClick(id)} />,
+          ];
+        }
+
+        return [
+          <GridActionsCellItem icon={<EditIcon />} label="Edit" onClick={handleEditClick(id)} />,
+        ];
+      },
+    },
   ];
 
   const paginationModel = { page: 0, pageSize: 5 };
@@ -141,59 +165,21 @@ const BookTable = () => {
       </Box>
       <Paper sx={{ height: 'auto', width: '100%' }}>
         <DataGrid
-          rows={[...rows, ...(newBook.title ? [{ ...newBook, id: '-' }] : [])]}
+          rows={rows}
           columns={columns}
+          getRowHeight={() => 'auto'}
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[5, 10]}
+          rowModesModel={rowModesModel}
+          onRowModesModelChange={handleRowModesModelChange}
+          onRowEditStop={handleRowEditStop}
+          processRowUpdate={processRowUpdate}
+          onProcessRowUpdateError={processRowError}
           sx={{ border: 1 }}
           slots={{
             toolbar: CustomToolBar,
           }}
         />
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1, mr: 1, ml: 1 }}>
-          <Stack direction="row" spacing={1} alignItems={'center'} mb={1}>
-            <TextField
-              label="Title"
-              name="title"
-              value={newBook.title}
-              onChange={handleInputChange}
-            />
-            <TextField
-              label="Authors"
-              name="authors"
-              value={newBook.authors}
-              onChange={handleInputChange}
-            />
-            <TextField label="ISBN" name="isbn" value={newBook.isbn} onChange={handleInputChange} />
-            <TextField
-              label="Published Date"
-              name="publishedDate"
-              value={newBook.publishedDate}
-              onChange={handleInputChange}
-            />
-            <TextField
-              label="Description"
-              name="description"
-              value={newBook.description}
-              onChange={handleInputChange}
-            />
-
-            <LocationSelect value={newBook.location} onChangeLocation={handleLocationChange} />
-            <TextField
-              label="Copies"
-              name="copies"
-              value={newBook.copies}
-              onChange={handleInputChange}
-            />
-            <Box sx={{ width: 200 }}>
-              <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
-            </Box>
-
-            <Button variant="contained" onClick={handleAddBook}>
-              Add Book
-            </Button>
-          </Stack>
-        </Box>
       </Paper>
     </div>
   );
