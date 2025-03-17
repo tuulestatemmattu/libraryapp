@@ -7,9 +7,7 @@
 }
 
 .filter-input {
-  margin-bottom: 5px;
   border-radius: 10px;
-  background-color: #ebe8e4;
   padding: 3px 10px;
   width: 100%;
   color: rgb(50, 50, 50);
@@ -24,8 +22,6 @@
   display: block;
   justify-content: center;
   border-radius: 10px;
-  background-color: #ebe8e4;
-  min-height: 90vh;
 }
 
 .grid-container {

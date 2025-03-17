@@ -81,11 +81,11 @@ const UserTable = () => {
   };
 
   return (
-    <div>
+    <article>
       <Box sx={{ textAlign: 'center' }}>
-        <h1>Users</h1>
+        <h1>users</h1>
       </Box>
-      <Paper sx={{ height: 'auto', width: '100%' }}>
+      <Paper sx={{ height: 400, width: '100%' }}>
         <DataGrid
           rows={rows}
           columns={columns}
@@ -100,7 +100,7 @@ const UserTable = () => {
           }}
         />
       </Paper>
-    </div>
+    </article>
   );
 };
 

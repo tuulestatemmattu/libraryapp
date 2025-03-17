@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
@@ -42,30 +43,25 @@ const NavBar = () => {
 
   return (
     <div>
-      <Box>
-        <AppBar style={{ backgroundColor: '#FFC107' }}>
-          <Toolbar>
-            <Box
-              display="flex"
-              justifyContent="flex-start"
-              width={'20%'}
-              className="leftside-items"
-            >
-              <Typography
-                variant="h6"
-                component="div"
-                className="typmenuicon"
-                onClick={() => navigate('/')}
-              >
-                <MenuBookIcon className="typemenuicon" />
-              </Typography>
-              {profile.admin && (
-                <Button color="inherit" onClick={handleAdminClick} className="admin-button">
-                  Admin Panel
-                </Button>
-              )}
-            </Box>
-            <Box display="flex" alignItems="center" justifyContent="center" flexGrow={1}>
+      <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
+        <Box>
+          <AppBar>
+            <Toolbar style={{ justifyContent: 'space-between' }}>
+              <Box className="leftside-items">
+                <Typography
+                  variant="h6"
+                  component="div"
+                  className="typmenuicon"
+                  onClick={() => navigate('/')}
+                >
+                  <MenuBookIcon className="typemenuicon" />
+                </Typography>
+                {profile.admin && (
+                  <Button color="inherit" onClick={handleAdminClick} className="admin-button">
+                    Admin Panel
+                  </Button>
+                )}
+              </Box>
               <Select
                 className="location-box"
                 value={location}
@@ -92,13 +88,11 @@ const NavBar = () => {
                   </MenuItem>
                 ))}
               </Select>
-            </Box>
-            <Box display="flex" alignItems="center" justifyContent="flex-end" width={'20%'}>
               <ProfilePicture />
-            </Box>
-          </Toolbar>
-        </AppBar>
-      </Box>
+            </Toolbar>
+          </AppBar>
+        </Box>
+      </Stack>
     </div>
   );
 };

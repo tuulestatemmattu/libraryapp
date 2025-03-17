@@ -1,4 +1,5 @@
 import ClearIcon from '@mui/icons-material/Clear';
+import { useTheme } from '@mui/material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -23,7 +24,7 @@ interface props {
 
 const BookCard = ({ book, setOpen }: props) => {
   const addOrUpdateBook = useMainStore((state) => state.addOrUpdateBook);
-
+  const theme = useTheme();
   const handleClose = () => {
     setOpen(false);
   };
@@ -162,7 +163,7 @@ const BookCard = ({ book, setOpen }: props) => {
         </div>
         {/* ItemSlider containing tags associated with the book */}
         <CardContent sx={{ pt: 0, pb: 0 }} className="book-tags-slider">
-          <ItemsSlider renderButtons={false}>
+          <ItemsSlider renderButtons={false} backgroundColor={theme.palette.componentBack.light}>
             {book.tags.map((tag) => (
               <Chip key={tag.id} label={tag.name} size="small" />
             ))}
