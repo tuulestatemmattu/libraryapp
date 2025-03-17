@@ -18,7 +18,7 @@ const LocationSelect = ({ value, onChangeLocation }: InputProps) => {
       onChange={(event) => onChangeLocation(event.target.value)}
       label="Office"
       className="location-select"
-      style={{ marginTop: '20px' }}
+      //style={{ marginTop: '20px' }}
       slotProps={{
         input: { id: 'location-select' },
         inputLabel: { htmlFor: 'location-select' },

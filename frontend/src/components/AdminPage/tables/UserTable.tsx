@@ -60,7 +60,7 @@ const UserTable = () => {
   };
 
   const columns: GridColDef[] = [
-    { field: 'name', headerName: 'name', width: 200 },
+    { field: 'name', headerName: 'Name', width: 200 },
     { field: 'email', headerName: 'Email', width: 250 },
     { field: 'admin', headerName: 'Admin', width: 130 },
     { ...GRID_CHECKBOX_SELECTION_COL_DEF },

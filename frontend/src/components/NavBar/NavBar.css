@@ -1,7 +1,6 @@
 .typemenuicon {
   left: 5px;
   margin-top: 40%;
-  color: #101820 !important;
 }
 
 .location-box {
@@ -13,7 +12,6 @@
 }
 
 .leftside-items {
-  display: flex !important;
   gap: 10px !important;
 }
 
