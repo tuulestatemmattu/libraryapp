@@ -2,7 +2,7 @@
 import supertest from 'supertest';
 
 import app from '../src/app';
-import { Book, Borrow, ConnectionBookTag, Tag, User } from '../src/models';
+import { Book, Borrow, ConnectionBookTag, QueueEntry, Tag, User } from '../src/models';
 import { connectToDatabase, disconnectDatabase } from '../src/util/db';
 
 const api = supertest(app);
@@ -57,6 +57,7 @@ beforeAll(async () => {
   await Borrow.destroy({ where: {} });
   await Tag.sync();
   await ConnectionBookTag.sync();
+  await QueueEntry.sync();
 });
 
 afterAll(async () => {

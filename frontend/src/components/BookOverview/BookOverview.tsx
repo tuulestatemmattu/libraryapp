@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 
 import useMainStore from '../../hooks/useMainStore';
 import { FetchedBook } from '../../interfaces/Book';
-import { borrowBook, returnBook } from '../../services/book';
+import { addBookToQueue, borrowBook, returnBook } from '../../services/book';
 import ItemsSlider from '../ItemsSlider/ItemsSlider';
 
 import './BookOverview.css';
@@ -46,6 +46,15 @@ const BookCard = ({ book, setOpen }: props) => {
       handleClose();
     } catch (error) {
       console.error('Failed to return the book:', error);
+    }
+  };
+
+  const handleAddToQueue = async (id: number) => {
+    try {
+      const newBook = await addBookToQueue(id);
+      addOrUpdateBook(newBook);
+    } catch (error) {
+      console.error('Failed to add the book to the queue:', error);
     }
   };
 
@@ -113,8 +122,17 @@ const BookCard = ({ book, setOpen }: props) => {
                 >
                   Borrow
                 </Button>
+              ) : !book.queuedByMe ? (
+                <Button
+                  variant="contained"
+                  className="book-overview-action-button"
+                  sx={{ fontSize: '1.3rem !important' }}
+                  onClick={() => handleAddToQueue(book.id)}
+                >
+                  Add To Queue
+                </Button>
               ) : (
-                <div></div>
+                <div>In your queue. Leevi keksii paremman tähän.</div>
               )}
             </CardActions>
           </div>

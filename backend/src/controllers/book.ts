@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { Book, Borrow, Tag, User } from '../models';
+import { Book, Borrow, QueueEntry, Tag, User } from '../models';
 import { requireAdmin } from '../util/middleware/requireAdmin';
 import { requireLogin } from '../util/middleware/requireLogin';
 import bookValidator from '../util/validation';
@@ -13,9 +13,19 @@ const toBookWithBorrowedByMe = async (book: Book, userId: string) => {
   const myBorrow = await Borrow.findOne({
     where: { bookId: book.id, userGoogleId: userId, active: true },
   });
+  const myQueue = await QueueEntry.findOne({
+    where: { bookId: book.id, userGoogleId: userId },
+  });
 
   if (myBorrow) {
-    return { ...bookData, borrowedByMe: true, lastBorrowedDate: myBorrow.borrowedDate };
+    return {
+      ...bookData,
+      borrowedByMe: true,
+      lastBorrowedDate: myBorrow.borrowedDate,
+      queuedByMe: false,
+    };
+  } else if (myQueue) {
+    return { ...bookData, borrowedByMe: false, queuedByMe: true };
   } else {
     return { ...bookData, borrowedByMe: false };
   }
@@ -211,7 +221,7 @@ bookRouter.put('/return/:id', async (req, res) => {
   }
 });
 
-bookRouter.get('/borrows', async (req, res) => {
+bookRouter.get('/borrows', requireAdmin, async (req, res) => {
   const borrows = await Borrow.findAll({
     attributes: ['id', 'borrowedDate'],
     include: [
@@ -226,6 +236,42 @@ bookRouter.get('/borrows', async (req, res) => {
     ],
   });
   res.json(borrows);
+});
+
+bookRouter.put('/queue/:id', async (req, res) => {
+  const userId = req.userId as string;
+  const bookId = parseInt(req.params.id);
+
+  const queueEntry = await QueueEntry.findOne({
+    where: { bookId, userGoogleId: userId },
+  });
+  if (queueEntry) {
+    res.status(403).send({ message: 'Book is already in queue' });
+    return;
+  }
+
+  await QueueEntry.create({
+    bookId: bookId,
+    userGoogleId: userId,
+  });
+
+  const book = await Book.findOne({
+    include: [
+      {
+        model: Tag,
+        attributes: ['name', 'id'],
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+    where: { id: bookId },
+  });
+  if (!book) {
+    res.status(404).send({ message: 'Book not found... This shouldnt be possible.' });
+    return;
+  }
+  res.json(await toBookWithBorrowedByMe(book, userId));
 });
 
 export default bookRouter;

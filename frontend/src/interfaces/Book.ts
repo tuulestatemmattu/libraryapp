@@ -9,6 +9,7 @@ interface FetchedBook {
   description: string;
   location: string;
   borrowedByMe: boolean;
+  queuedByMe: boolean;
   copies: number;
   copiesAvailable: number;
   lastBorrowedDate: Date;

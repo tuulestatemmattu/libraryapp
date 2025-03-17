@@ -20,6 +20,7 @@ const placeholderBook: FetchedBook = {
   description: '',
   location: 'Helsinki',
   borrowedByMe: false,
+  queuedByMe: false,
   copies: 0,
   copiesAvailable: 0,
   lastBorrowedDate: new Date(),

@@ -70,4 +70,22 @@ const getBorrows = async () => {
   });
   return response.data;
 };
-export { addBook, getBooks, updateBook, getDetails, borrowBook, returnBook, getBorrows };
+
+const addBookToQueue = async (id: number) => {
+  const token = getToken();
+  const response = await axios.put(`${baseUrl}/queue/${id}`, {
+    headers: { authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+export {
+  addBook,
+  getBooks,
+  updateBook,
+  getDetails,
+  borrowBook,
+  returnBook,
+  getBorrows,
+  addBookToQueue,
+};
