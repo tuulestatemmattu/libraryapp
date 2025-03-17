@@ -1,9 +1,9 @@
 .profilecard {
-  width: 300px;
   display: flex;
   flex-direction: column;
   justify-content: baseline;
   border-radius: 15px;
+  width: 300px;
 }
 .profile-info-box {
   display: flex;
@@ -14,11 +14,11 @@
   height: 120px;
 }
 .profile-card-header {
-  font-size: 12px;
   position: absolute;
   right: 0px;
   margin: 7px;
   color: grey;
+  font-size: 12px;
   font-size: 12px;
 }
 .avatar-picture {

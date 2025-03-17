@@ -1,4 +1,5 @@
 import ClearIcon from '@mui/icons-material/Clear';
+import { useTheme } from '@mui/material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -8,7 +9,6 @@ import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { useTheme } from '@mui/material';
 
 import useMainStore from '../../hooks/useMainStore';
 import { FetchedBook } from '../../interfaces/Book';
