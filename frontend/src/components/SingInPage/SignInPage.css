@@ -1,11 +1,11 @@
 .sign-in-div {
   position: absolute;
-  width: 300px;
-  height: 200px;
-  z-index: 15;
   top: 50%;
   left: 50%;
+  z-index: 15;
   margin: -100px 0 0 -150px;
+  width: 300px;
+  height: 200px;
 }
 
 .sign-in-paper {
@@ -13,8 +13,8 @@
 }
 
 .sign-in-header {
-  text-align: center;
   padding: 5px;
+  text-align: center;
 }
 
 .sign-in-div > Button {

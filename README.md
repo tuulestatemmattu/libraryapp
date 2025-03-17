@@ -7,10 +7,12 @@
 - [Sprint 1 Backlog](https://github.com/orgs/tuulestatemmattu/projects/24)
 - [Sprint 2 Backlog](https://github.com/orgs/tuulestatemmattu/projects/26)
 - [Sprint 3 Backlog](https://github.com/orgs/tuulestatemmattu/projects/28)
+- [Sprint 4 Backlog](https://github.com/orgs/tuulestatemmattu/projects/30)
 
 ### Definition of Done
 Definition of done can be found [here](documents/definition_of_done.md)
 
 ### Development environment
+* [Staging environment](https://ohtu-library-staging-c43b89853868.herokuapp.com/)
 * [Services & commands](documents/development_environment.md)
 * [Setting up a development environment](documents/development_environment_setup.md)

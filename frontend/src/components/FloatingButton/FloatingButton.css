@@ -1,9 +1,9 @@
 .floatingbutton {
   position: fixed !important;
   right: 20px;
+  border-radius: 50%;
   width: 56px;
   height: 56px;
-  border-radius: 50%;
   font-weight: 6000 !important;
 }
 

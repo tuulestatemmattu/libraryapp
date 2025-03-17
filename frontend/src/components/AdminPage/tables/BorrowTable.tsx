@@ -80,7 +80,6 @@ const BorrowTable = () => {
   };
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 100 },
     { field: 'title', headerName: 'Book Title', width: 400 },
     { field: 'user', headerName: 'User', width: 250 },
     {
