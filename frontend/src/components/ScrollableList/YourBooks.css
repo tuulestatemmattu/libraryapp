@@ -1,27 +1,24 @@
 .book-card-placeholder {
   display: flex;
   position: relative;
+  position: relative;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: 2px;
+  margin: 2px;
   border-radius: 8px;
   border-radius: 10px;
-  background-color: #ebe8e4;
-  padding: 0 2%;
-  height: 40vw;
-  max-height: 400px;
 }
 
 .book-card-placeholder .icon {
-  color: rgba(0, 0, 0, 0.1);
   font-size: 112px;
 }
 
 .book-card-placeholder .text {
   margin-top: 1%;
-  color: #555;
   font-weight: bold;
+  font-size: 16px;
   font-size: 16px;
   text-align: center;
 }

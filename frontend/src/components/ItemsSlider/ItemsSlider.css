@@ -4,6 +4,7 @@
   margin: 2px;
   border-radius: 10px;
   border-radius: 10px;
+  border-radius: 10px;
   background-color: #ebe8e4;
 }
 
@@ -19,15 +20,6 @@
 
 .scroll-button-container.right {
   right: 5px;
-}
-
-.scroll-button {
-  cursor: pointer;
-  margin: auto;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 1000px;
-  background-color: rgba(255, 255, 255, 0.75);
-  padding: 3px;
 }
 
 .scroll-list-container {

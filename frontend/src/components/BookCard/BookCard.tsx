@@ -12,6 +12,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Modal from '@mui/material/Modal';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
+import { useTheme } from '@mui/material/styles';
 
 import { FetchedBook } from '../../interfaces/Book';
 import BookCard from '../BookOverview/BookOverview';
@@ -25,6 +26,7 @@ interface BookListItemProps {
 
 const BookListItem = ({ book, loading }: BookListItemProps) => {
   const [open, setOpen] = useState(false);
+  const theme = useTheme();
 
   const getPlaceholderSVG = ({ book }: BookListItemProps) => {
     const firstLetter = book.title ? book.title.charAt(0).toUpperCase() : '?';
@@ -80,15 +82,22 @@ const BookListItem = ({ book, loading }: BookListItemProps) => {
           <div className="card-chip-positioner">
             <div className="card-chip-container">
               <Bookmark
-                className={`card-chip base ${book.borrowedByMe ? 'mine' : book.copiesAvailable ? 'available' : 'unavailable'}`}
+                className="card-chip base"
+                sx={{
+                  color: book.borrowedByMe
+                    ? theme.palette.info.main
+                    : book.copiesAvailable > 0
+                      ? theme.palette.success.main
+                      : theme.palette.error.main,
+                }}
               />
               <div className="card-chip-icon-container">
                 {book.borrowedByMe ? (
-                  <StarBorder className="card-chip icon mine" />
+                  <StarBorder sx={{ color: theme.palette.info.dark }} />
                 ) : book.copiesAvailable > 0 ? (
-                  <CheckCircleOutline className="card-chip icon available" />
+                  <CheckCircleOutline sx={{ color: theme.palette.success.dark }} />
                 ) : (
-                  <HighlightOff className="card-chip icon unavailable" />
+                  <HighlightOff sx={{ color: theme.palette.error.dark }} />
                 )}
               </div>
             </div>

@@ -3,9 +3,7 @@
   flex-direction: column;
   justify-content: baseline;
   border-radius: 15px;
-  background-color: rgba(230, 230, 230, 0.9);
   width: 300px;
-  color: black;
 }
 .profile-info-box {
   display: flex;
@@ -20,6 +18,7 @@
   right: 0px;
   margin: 7px;
   color: grey;
+  font-size: 12px;
   font-size: 12px;
 }
 .avatar-picture {
@@ -41,8 +40,7 @@
 }
 .profile-card-email {
   margin: 0px;
-  color: grey;
-  font-size: 10px;
+  font-size: 12px;
 }
 .profile-card-buttons {
   display: flex;

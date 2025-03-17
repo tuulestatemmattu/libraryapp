@@ -1,7 +1,6 @@
 .typemenuicon {
   left: 5px;
-  margin-top: 50%;
-  color: #101820 !important;
+  margin-top: 40%;
 }
 
 .location-box {
@@ -12,15 +11,14 @@
   letter-spacing: 3px !important;
 }
 
-.profile {
-  right: 5px;
-}
-
 .leftside-items {
+  display: flex;
+  align-items: center;
   gap: 10px !important;
 }
 
 .admin-button {
+  align-self: center; /* This will vertically center the button */
   font-size: 15px !important;
 }
 
