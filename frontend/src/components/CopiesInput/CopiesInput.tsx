@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 
+import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { debounce } from '@mui/material/utils';
@@ -31,7 +32,7 @@ const CopiesInput: React.FC<CopiesInputProps> = ({ copies, setCopies }) => {
       <span>Copies: </span>
       <ButtonGroup variant="contained">
         <Button onClick={handleDecrement}>-</Button>
-        <span>{copies}</span>
+        <Box sx={{ padding: '10px' }}>{copies}</Box>
         <Button onClick={handleIncrement}>+</Button>
       </ButtonGroup>
     </div>

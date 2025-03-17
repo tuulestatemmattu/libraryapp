@@ -6,21 +6,21 @@
 
 .book-card-image {
   margin-top: 0 !important;
-  width: 100% !important;
   aspect-ratio: 75/100 !important;
+  width: 100% !important;
   object-fit: cover !important;
   object-position: center !important;
 }
 
 .book-card-content {
-  text-align: left;
   padding: 1vw !important;
+  text-align: left;
 }
 
 .book-card-skeleton {
   margin-top: 0 !important;
-  width: 100% !important;
   aspect-ratio: 75/100 !important;
+  width: 100% !important;
   object-fit: cover !important;
   object-position: center !important;
 }
@@ -32,10 +32,10 @@
 }
 
 .book-title {
-  font-size: 20px !important;
-  white-space: nowrap;
   overflow: hidden;
+  font-size: 20px !important;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @media (max-width: 800px) {
@@ -45,10 +45,10 @@
 }
 
 .book-authors {
-  font-size: 16px !important;
-  white-space: nowrap;
   overflow: hidden;
+  font-size: 16px !important;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @media (max-width: 800px) {
@@ -65,10 +65,10 @@
 
 .card-chip-container {
   position: relative;
-
-  text-align: center;
   width: 100%;
   height: 100%;
+
+  text-align: center;
 }
 
 .card-chip.base {
@@ -78,8 +78,8 @@
 
 .card-chip-icon-container {
   position: absolute;
-  z-index: 1;
   top: 17%;
+  z-index: 1;
   width: 100%;
   height: 100%;
 }

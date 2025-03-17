@@ -18,8 +18,8 @@
 
 /* Specific for the scan (camera) view */
 .scan-content {
-  max-width: 100%;
   width: auto;
+  max-width: 100%;
   height: auto;
   overflow: hidden;
 }
