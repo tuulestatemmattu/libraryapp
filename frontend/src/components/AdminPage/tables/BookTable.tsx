@@ -20,6 +20,7 @@ import TagSelect from '../../TagSelect/TagSelect';
 const BookTable = () => {
   const [rows, setRows] = useState<FetchedBook[]>([]);
   const tags = useMainStore((state) => state.tags);
+  const addOrUpdateBook = useMainStore((state) => state.addOrUpdateBook);
   const [selectedTags, setSelectedTags] = useState<FetchedTag[]>([]);
   const [newBook, setNewBook] = useState({
     title: '',
@@ -76,6 +77,7 @@ const BookTable = () => {
     console.log(newBook);
     addBook(newBook).then((result) => {
       setRows([...rows, result]);
+      addOrUpdateBook(result);
       setNewBook({
         title: '',
         authors: '',
