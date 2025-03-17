@@ -13,11 +13,15 @@
 
 .leftside-items {
   gap: 10px !important;
+  display: flex;
+  align-items: center;
 }
 
 .admin-button {
   font-size: 15px !important;
+  align-self: center; /* This will vertically center the button */
 }
+
 
 @media (max-width: 480px) {
   .admin-button {
