@@ -12,14 +12,12 @@ form {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 90%;
+  width: 100%;
   max-width: 700px;
 }
 
 .copies-input {
   position: relative;
-  top: 15px !important;
-  height: 40px !important;
 }
 
 .addbookform-buttons {
