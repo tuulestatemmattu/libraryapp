@@ -15,7 +15,6 @@ class QueueEntry extends Model<InferAttributes<QueueEntry>, InferCreationAttribu
   declare id: CreationOptional<number>;
   declare bookId: ForeignKey<Book['id']>;
   declare userGoogleId: ForeignKey<User['google_id']>;
-  declare bookReady: boolean;
 }
 
 QueueEntry.init(
@@ -39,10 +38,6 @@ QueueEntry.init(
         model: User,
         key: 'google_id',
       },
-      allowNull: false,
-    },
-    bookReady: {
-      type: DataTypes.BOOLEAN,
       allowNull: false,
     },
   },
