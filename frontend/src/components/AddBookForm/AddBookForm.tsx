@@ -3,6 +3,7 @@ import React, { SyntheticEvent, useState } from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { SelectChangeEvent } from '@mui/material/Select';
+import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
@@ -131,12 +132,18 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
         <div className="tag-select-div">
           <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
         </div>
-        <div className="addbookform-bottom-row">
+        <Stack
+          direction="row"
+          spacing={2}
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ width: '90%', maxWidth: '700px' }}
+        >
           <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
           <div className="copies-input">
             <CopiesInput copies={copies} setCopies={setCopies} />
           </div>
-        </div>
+        </Stack>
         <ButtonGroup variant="contained" className="addbookform-buttons">
           <Button type="button" onClick={handleClear} variant="contained">
             Clear
