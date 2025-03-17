@@ -50,7 +50,8 @@ const BookCard = ({ book, setOpen }: props) => {
 
   const handleAddToQueue = async (id: number) => {
     try {
-      await addBookToQueue(id);
+      const newBook = await addBookToQueue(id);
+      addOrUpdateBook(newBook);
     } catch (error) {
       console.error('Failed to add the book to the queue:', error);
     }
