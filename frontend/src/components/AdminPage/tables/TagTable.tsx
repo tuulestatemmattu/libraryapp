@@ -170,7 +170,7 @@ const TagTable = () => {
           columns={columns}
           editMode="row"
           initialState={{ pagination: { paginationModel } }}
-          pageSizeOptions={[5, 10]}
+          pageSizeOptions={[5, 10, 20, 50, 100]}
           rowModesModel={rowModesModel}
           onRowModesModelChange={handleRowModesModelChange}
           onRowEditStop={handleRowEditStop}
@@ -181,6 +181,7 @@ const TagTable = () => {
                 backgroundColor: 'rgba(255, 235, 60, 0.5) !important',
               },
             },
+            border: 1,
           }}
           slots={{
             toolbar: () => (
