@@ -17,7 +17,7 @@ const ScrollableList = ({ title, books }: props) => {
   return (
     <div>
       {title}
-      <article style={{ width: '95vw', backgroundColor: theme.palette.componentBack?.main }}>
+      <article style={{ width: '95vw', borderRadius: '8px',  backgroundColor: theme.palette.componentBack?.main }}>
         <ItemsSlider renderButtons={true}>
           {books.map((book: FetchedBook) => (
             <BookListItem key={book.id} book={book} />
