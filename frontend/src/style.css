@@ -5,30 +5,30 @@
 }
 
 h2 {
-  font-family: inherit;
   font-size: medium;
+  font-family: inherit;
 }
 
 h3 {
-  font-family: inherit;
   font-size: small;
+  font-family: inherit;
 }
 
 body {
-  background-color: #f0f0ec;
   margin-bottom: 100px; /* This is a hotfix for floating buttons not overlapping page content */
+  background-color: #f0f0ec;
 }
 
 article {
-  margin-top: 10px;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-family: inherit;
+  align-items: center;
+  margin-top: 10px;
+  margin-right: auto;
+  margin-left: auto;
   width: 100%;
   max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
+  font-family: inherit;
 }
 
 @media (max-width: 599px) {
@@ -60,12 +60,12 @@ article {
 }
 
 .page-content {
-  margin-top: 60px; /* Margin for navbar */
-  margin-left: auto;
-  margin-right: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 60px; /* Margin for navbar */
+  margin-right: auto;
+  margin-left: auto;
   width: 98%;
   max-width: 1200px;
 }
