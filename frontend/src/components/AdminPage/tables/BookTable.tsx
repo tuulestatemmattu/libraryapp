@@ -165,7 +165,7 @@ const BookTable = () => {
       </Box>
       <Paper sx={{ height: 'auto', width: '100%' }}>
         <DataGrid
-          rows={[...rows, ...(newBook.title ? [{ ...newBook, id: '-' }] : [])]}
+          rows={rows}
           columns={columns}
           getRowHeight={() => 'auto'}
           initialState={{ pagination: { paginationModel } }}
@@ -180,50 +180,6 @@ const BookTable = () => {
             toolbar: CustomToolBar,
           }}
         />
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1, mr: 1, ml: 1 }}>
-          <Stack direction="row" spacing={1} alignItems={'center'} mb={1}>
-            <TextField
-              label="Title"
-              name="title"
-              value={newBook.title}
-              onChange={handleInputChange}
-            />
-            <TextField
-              label="Authors"
-              name="authors"
-              value={newBook.authors}
-              onChange={handleInputChange}
-            />
-            <TextField label="ISBN" name="isbn" value={newBook.isbn} onChange={handleInputChange} />
-            <TextField
-              label="Published Date"
-              name="publishedDate"
-              value={newBook.publishedDate}
-              onChange={handleInputChange}
-            />
-            <TextField
-              label="Description"
-              name="description"
-              value={newBook.description}
-              onChange={handleInputChange}
-            />
-
-            <LocationSelect value={newBook.location} onChangeLocation={handleLocationChange} />
-            <TextField
-              label="Copies"
-              name="copies"
-              value={newBook.copies}
-              onChange={handleInputChange}
-            />
-            <Box sx={{ width: 200 }}>
-              <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
-            </Box>
-
-            <Button variant="contained" onClick={handleAddBook}>
-              Add Book
-            </Button>
-          </Stack>
-        </Box>
       </Paper>
     </div>
   );
