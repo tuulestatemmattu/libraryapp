@@ -7,7 +7,6 @@
   height: 40vw;
   padding: 0 2%;
   border-radius: 8px;
-  background-color: #ebe8e4;
   border-radius: 10px;
   position: relative;
   margin: 2px;
@@ -15,13 +14,11 @@
 
 .book-card-placeholder .icon {
   font-size: 112px;
-  color: rgba(0, 0, 0, 0.1);
 }
 
 .book-card-placeholder .text {
   margin-top: 1%;
   font-size: 16px;
-  color: #555;
   font-weight: bold;
   text-align: center;
 }
