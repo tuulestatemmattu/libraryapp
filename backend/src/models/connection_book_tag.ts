@@ -36,6 +36,7 @@ ConnectionBookTag.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: { model: 'tag', key: 'id' },
+      onDelete: 'CASCADE',
     },
   },
   {
