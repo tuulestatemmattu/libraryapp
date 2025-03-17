@@ -107,12 +107,12 @@ bookRouter.put('/edit/:id', bookValidator, requireAdmin, async (req, res) => {
     const copiesAvailable = bookToEdit.copiesAvailable + Number(copies) - bookToEdit.copies;
 
     if (Number(copies) < copiesAvailable) {
-      res.status(400).json({ error: 'Copies cannot be less than Copies Available' });
+      res.status(400).json({ message: 'Copies cannot be less than Copies Available' });
       return;
     }
 
     if (copiesAvailable < 0) {
-      res.status(400).json({ error: 'Copies available cannot be less than 0' });
+      res.status(400).json({ message: 'Copies available cannot be less than 0' });
     } else {
       bookToEdit.set({
         title: title,
@@ -209,7 +209,7 @@ bookRouter.put('/return/:id', async (req, res) => {
 
 bookRouter.get('/borrows', async (req, res) => {
   const borrows = await Borrow.findAll({
-    attributes: ['id', 'borrowedDate', 'active'],
+    attributes: ['id', 'borrowedDate'],
     include: [
       {
         model: User,
@@ -217,7 +217,7 @@ bookRouter.get('/borrows', async (req, res) => {
       },
       {
         model: Book,
-        attributes: ['title', 'id'],
+        attributes: ['title'],
       },
     ],
   });

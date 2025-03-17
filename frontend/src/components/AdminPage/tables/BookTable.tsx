@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import React from 'react';
 
 import EditIcon from '@mui/icons-material/Edit';
@@ -27,7 +26,6 @@ import { updateBook } from '../../../services/book';
 import SelectTags from './SelectTags';
 
 const BookTable = () => {
-  const [rows, setRows] = useState<AdminViewBook[]>([]);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
 
   const books = useMainStore((state) => state.books);
@@ -49,9 +47,7 @@ const BookTable = () => {
     };
   };
 
-  useEffect(() => {
-    setRows(books.map((book: FetchedBook) => toAdminViewBook(book)));
-  }, []);
+  const rows = books.map((book) => toAdminViewBook(book));
 
   const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
