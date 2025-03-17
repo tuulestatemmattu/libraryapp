@@ -35,4 +35,18 @@ interface CreatedBook {
   tags: FetchedTag[];
 }
 
-export type { CreatedBook, FetchedBook };
+interface AdminViewBook {
+  id: number;
+  title: string;
+  authors: string;
+  isbn: string;
+  publishedDate: string;
+  description: string;
+  location: string;
+  copies: number;
+  copiesAvailable: number;
+  imageLink?: string;
+  tags: FetchedTag[];
+}
+
+export type { CreatedBook, FetchedBook, AdminViewBook };
