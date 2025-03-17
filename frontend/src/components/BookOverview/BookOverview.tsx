@@ -8,6 +8,7 @@ import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import { useTheme } from '@mui/material';
 
 import useMainStore from '../../hooks/useMainStore';
 import { FetchedBook } from '../../interfaces/Book';
@@ -23,7 +24,7 @@ interface props {
 
 const BookCard = ({ book, setOpen }: props) => {
   const addOrUpdateBook = useMainStore((state) => state.addOrUpdateBook);
-
+  const theme = useTheme();
   const handleClose = () => {
     setOpen(false);
   };
@@ -162,7 +163,7 @@ const BookCard = ({ book, setOpen }: props) => {
         </div>
         {/* ItemSlider containing tags associated with the book */}
         <CardContent sx={{ pt: 0, pb: 0 }} className="book-tags-slider">
-          <ItemsSlider renderButtons={false}>
+          <ItemsSlider renderButtons={false} backgroundColor={theme.palette.componentBack.light}>
             {book.tags.map((tag) => (
               <Chip key={tag.id} label={tag.name} size="small" />
             ))}
