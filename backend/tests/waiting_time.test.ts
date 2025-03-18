@@ -1,6 +1,4 @@
 /* eslint-disable no-undef */
-import exp from 'constants';
-
 import { calculateWaitingTime, fetchBook } from '../src/controllers/book';
 import { Book, Borrow, ConnectionBookTag, QueueEntry, Tag, User } from '../src/models';
 import { connectToDatabase, disconnectDatabase } from '../src/util/db';
