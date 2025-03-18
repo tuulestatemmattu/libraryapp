@@ -1,5 +1,7 @@
 /* eslint-disable no-undef */
-import { calculateWaitingTime } from '../src/controllers/book';
+import exp from 'constants';
+
+import { calculateWaitingTime, fetchBook } from '../src/controllers/book';
 import { Book, Borrow, ConnectionBookTag, QueueEntry, Tag, User } from '../src/models';
 import { connectToDatabase, disconnectDatabase } from '../src/util/db';
 
@@ -50,7 +52,9 @@ describe('calculateWaitingTime function', () => {
   it('should return 0 when one book available', async () => {
     const bookId = (await Book.create(sampleBook)).id;
     const entry = await QueueEntry.create({ bookId, userGoogleId: 'sample_google_id' });
-    const waitingTime = await calculateWaitingTime(entry);
+
+    const book = await fetchBook(bookId);
+    const waitingTime = await calculateWaitingTime(book, entry);
     expect(waitingTime).toBe(0);
   });
 
@@ -65,7 +69,8 @@ describe('calculateWaitingTime function', () => {
     await QueueEntry.create({ bookId, userGoogleId: 'sample_google_id' });
 
     const entry = await QueueEntry.create({ bookId, userGoogleId: 'sample_google_id' });
-    const waitingTime = await calculateWaitingTime(entry);
+    const book = await fetchBook(bookId);
+    const waitingTime = await calculateWaitingTime(book, entry);
     expect(waitingTime).toBe(0);
   });
 
@@ -85,7 +90,8 @@ describe('calculateWaitingTime function', () => {
     });
 
     const entry = await QueueEntry.create({ bookId, userGoogleId: 'sample_google_id' });
-    const waitingTime = await calculateWaitingTime(entry);
+    const book = await fetchBook(bookId);
+    const waitingTime = await calculateWaitingTime(book, entry);
     expect(waitingTime).toBe(11);
   });
 
@@ -111,7 +117,8 @@ describe('calculateWaitingTime function', () => {
     });
 
     const entry = await QueueEntry.create({ bookId, userGoogleId: 'sample_google_id' });
-    const waitingTime = await calculateWaitingTime(entry);
+    const book = await fetchBook(bookId);
+    const waitingTime = await calculateWaitingTime(book, entry);
     expect(waitingTime).toBe(11);
   });
 
@@ -138,9 +145,10 @@ describe('calculateWaitingTime function', () => {
 
     const entry = await QueueEntry.create({ bookId, userGoogleId: 'sample_google_id' });
     const entry2 = await QueueEntry.create({ bookId, userGoogleId: 'sample_google_id' });
-    const waitingTime = await calculateWaitingTime(entry);
+    const book = await fetchBook(bookId);
+    const waitingTime = await calculateWaitingTime(book, entry);
     expect(waitingTime).toBe(11);
-    const waitingTime2 = await calculateWaitingTime(entry2);
+    const waitingTime2 = await calculateWaitingTime(book, entry2);
     expect(waitingTime2).toBe(21);
   });
 
@@ -161,9 +169,10 @@ describe('calculateWaitingTime function', () => {
 
     const entry = await QueueEntry.create({ bookId, userGoogleId: 'sample_google_id' });
     const entry2 = await QueueEntry.create({ bookId, userGoogleId: 'sample_google_id' });
-    const waitingTime = await calculateWaitingTime(entry);
+    const book = await fetchBook(bookId);
+    const waitingTime = await calculateWaitingTime(book, entry);
     expect(waitingTime).toBe(11);
-    const waitingTime2 = await calculateWaitingTime(entry2);
+    const waitingTime2 = await calculateWaitingTime(book, entry2);
     expect(waitingTime2).toBe(42);
   });
 });
