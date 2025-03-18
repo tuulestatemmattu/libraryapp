@@ -53,7 +53,6 @@ const borrowBook = async (id: number) => {
 
 const returnBook = async (id: number) => {
   const token = getToken();
-  console.log(id)
   const response = await axios.put(
     `${baseUrl}/return/${id}`,
     {}, //PUT pyynnöt tarvii tähän tyhjän objektin, koska headerit on vasta kolmas parametri
