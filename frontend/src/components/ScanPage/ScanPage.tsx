@@ -11,26 +11,10 @@ import BookCard from '../BookOverview/BookOverview';
 import '../../style.css';
 import './ScanPage.css';
 
-const placeholderBook: FetchedBook = {
-  id: 1,
-  title: 'placeholder',
-  authors: 'placeholder',
-  isbn: '1234567890',
-  publishedDate: '2000',
-  description: '',
-  location: 'Helsinki',
-  borrowedByMe: false,
-  queuedByMe: false,
-  copies: 0,
-  copiesAvailable: 0,
-  lastBorrowedDate: new Date(),
-  tags: [],
-};
-
 const ScanPage = () => {
   const books = useMainStore((state) => state.books);
   const [open, setOpen] = useState(false);
-  const [scannedBook, setScannedBook] = useState<FetchedBook>(placeholderBook);
+  const [scannedBook, setScannedBook] = useState<FetchedBook | null>(null);
   const [isbn, setIsbn] = useState<string | null>(null);
   const { showNotification } = useNotification();
 
@@ -66,7 +50,7 @@ const ScanPage = () => {
           zIndex: 1500,
         }}
       >
-        <BookCard book={scannedBook} setOpen={setOpen} />
+        {scannedBook ? <BookCard book={scannedBook} setOpen={setOpen} /> : <></>}
       </Modal>
     </article>
   );

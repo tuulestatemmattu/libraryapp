@@ -8,13 +8,16 @@ interface FetchedBook {
   publishedDate: string;
   description: string;
   location: string;
-  borrowedByMe: boolean;
-  queuedByMe: boolean;
   copies: number;
   copiesAvailable: number;
-  lastBorrowedDate: Date;
   imageLink?: string;
+
   tags: FetchedTag[];
+  borrowedByMe: boolean;
+  lastBorrowedDate: Date;
+  queuedByMe: boolean;
+  queueTime: number;
+  queueSize: number;
 }
 
 interface CreatedBook {

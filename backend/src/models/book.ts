@@ -5,10 +5,13 @@ import {
   InferAttributes,
   InferCreationAttributes,
   Model,
+  NonAttribute,
 } from 'sequelize';
 import isIsbn from 'validator/lib/isISBN';
 
 import { sequelize } from '../util/db';
+import Borrow from './borrow';
+import QueueEntry from './queue_entry';
 import Tag from './tag';
 
 class Book extends Model<InferAttributes<Book>, InferCreationAttributes<Book>> {
@@ -22,6 +25,10 @@ class Book extends Model<InferAttributes<Book>, InferCreationAttributes<Book>> {
   declare copies: number;
   declare copiesAvailable: number;
   declare imageLink: string | null;
+
+  declare tags?: NonAttribute<Tag[]>;
+  declare borrows?: NonAttribute<Borrow[]>;
+  declare queue_entries?: NonAttribute<QueueEntry[]>;
 
   declare setTags: BelongsToManySetAssociationsMixin<Tag, number>;
 }
