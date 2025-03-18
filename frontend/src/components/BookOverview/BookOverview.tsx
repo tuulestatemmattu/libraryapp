@@ -123,7 +123,7 @@ const BookCard = ({ book, setOpen }: props) => {
                 >
                   Return
                 </Button>
-              ) : book.copiesAvailable > 0 ? (
+              ) : (book.copiesAvailable > 0 && book.queueSize === 0) || book.queueTime === 0 ? (
                 <Button
                   variant="contained"
                   className="book-overview-action-button"
@@ -183,17 +183,20 @@ const BookCard = ({ book, setOpen }: props) => {
                 color="text.secondary"
                 className="overview-info-text overview-text"
               >
-                <strong>Copies available:</strong> {book.copiesAvailable}
+                <strong>Copies available:</strong>{' '}
+                {book.copiesAvailable - book.queueSize > 0
+                  ? book.copiesAvailable - book.queueSize
+                  : `0${book.queueSize > 0 ? ` (${book.queueSize} in queue)` : ''}`}
               </Typography>
-              {/*
-              <Typography
-                variant="subtitle1"
-                color="text.secondary"
-                className="overview-info-text overview-text"
-              >
-                <strong>tags:</strong> scifi
-              </Typography>
-              */}
+              {book.queuedByMe && (
+                <Typography
+                  variant="subtitle1"
+                  color="text.secondary"
+                  className="overview-info-text overview-text"
+                >
+                  <strong>Queue wait time:</strong> {book.queueTime} days
+                </Typography>
+              )}
             </div>
           </CardContent>
         </div>
