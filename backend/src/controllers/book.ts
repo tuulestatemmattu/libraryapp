@@ -214,6 +214,7 @@ bookRouter.put('/borrow/:id', async (req, res) => {
       const timeNow = new Date();
       const borrowedDate = timeNow;
       await Borrow.create({ bookId: book.id, userGoogleId: userId, borrowedDate, active: true });
+      await QueueEntry.destroy({ where: { bookId: book.id, userGoogleId: userId } });
       await book.save();
       await book.reload();
       const borrowedBook = await prepareBookForFrontend(book, userId);
