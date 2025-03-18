@@ -8,6 +8,41 @@ import bookValidator from '../util/validation';
 const bookRouter = express.Router();
 bookRouter.use(requireLogin);
 
+// Must optimize later
+export const calculateWaitingTime = async (queueEntry: QueueEntry) => {
+  const book = await Book.findOne({
+    where: { id: queueEntry.bookId },
+  });
+  const activeBorrows = await Borrow.findAll({
+    where: { bookId: queueEntry.bookId, active: true },
+    order: [['borrowedDate', 'ASC']],
+  });
+  const queueEntries = await QueueEntry.findAll({
+    where: { bookId: queueEntry.bookId },
+    order: [['createdAt', 'ASC']],
+  });
+
+  if (!book) {
+    throw new Error('Book not found');
+  }
+
+  const waitingTimes: number[] = [];
+  for (let i = 0; i < queueEntries.length; i++) {
+    if (i < book.copiesAvailable) {
+      waitingTimes.push(0);
+    } else if (i < book.copies) {
+      const diffMs = activeBorrows[i].borrowedDate.getTime() - new Date().getTime();
+      const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+      waitingTimes.push(Math.max(0, diffDays + 30) + 1);
+    } else {
+      waitingTimes.push(waitingTimes[i % book.copies] + 30 + 1);
+    }
+  }
+
+  const index = queueEntries.findIndex((entry) => entry.id === queueEntry.id);
+  return waitingTimes[index];
+};
+
 const toBookWithBorrowedByMe = async (book: Book, userId: string) => {
   const bookData = book.dataValues;
   const myBorrow = await Borrow.findOne({
@@ -25,7 +60,12 @@ const toBookWithBorrowedByMe = async (book: Book, userId: string) => {
       queuedByMe: false,
     };
   } else if (myQueue) {
-    return { ...bookData, borrowedByMe: false, queuedByMe: true };
+    return {
+      ...bookData,
+      borrowedByMe: false,
+      queuedByMe: true,
+      queueTime: await calculateWaitingTime(myQueue),
+    };
   } else {
     return { ...bookData, borrowedByMe: false };
   }
