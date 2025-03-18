@@ -14,7 +14,7 @@ import User from './user';
 class Borrow extends Model<InferAttributes<Borrow>, InferCreationAttributes<Borrow>> {
   declare id: CreationOptional<number>;
   declare bookId: ForeignKey<Book['id']>;
-  declare borrowedDate: Date | null;
+  declare borrowedDate: Date;
   declare userGoogleId: ForeignKey<User['google_id']>;
   declare active: boolean;
 }
@@ -36,7 +36,7 @@ Borrow.init(
     },
     borrowedDate: {
       type: DataTypes.DATE,
-      allowNull: true,
+      allowNull: false,
     },
     active: {
       type: DataTypes.BOOLEAN,
