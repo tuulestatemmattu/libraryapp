@@ -79,6 +79,14 @@ const addBookToQueue = async (id: number) => {
   return response.data;
 };
 
+const removeBookFromQueue = async (id: number) => {
+  const token = getToken();
+  const response = await axios.delete(`${baseUrl}/queue/${id}`, {
+    headers: { authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
 export {
   addBook,
   getBooks,
@@ -88,4 +96,5 @@ export {
   returnBook,
   getBorrows,
   addBookToQueue,
+  removeBookFromQueue,
 };

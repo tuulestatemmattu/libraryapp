@@ -214,6 +214,7 @@ bookRouter.put('/borrow/:id', async (req, res) => {
       const borrowedDate = timeNow;
       await Borrow.create({ bookId: book.id, userGoogleId: userId, borrowedDate, active: true });
       await book.save();
+      await book.reload();
       const borrowedBook = await prepareBookForFrontend(book, userId);
       res.json(borrowedBook);
     } else {
@@ -242,6 +243,7 @@ bookRouter.put('/return/:id', async (req, res) => {
       borrowed.set({ ...borrowed, active: false });
       await borrowed.save();
       await book.save();
+      await book.reload();
       const returnedBook = await prepareBookForFrontend(book, userId);
       res.json(returnedBook);
     } else {
@@ -288,8 +290,35 @@ bookRouter.put('/queue/:id', async (req, res) => {
 
   const book = await fetchBook(bookId);
   if (!book) {
-    res.status(404).send({ message: 'Book not found... This shouldnt be possible.' });
-    return;
+    throw new Error('Book not found... This shouldnt be possible.');
+  }
+  res.json(await prepareBookForFrontend(book, userId));
+});
+
+bookRouter.delete('/queue/:id', async (req, res) => {
+  const userId = req.userId as string;
+  const bookId = parseInt(req.params.id);
+
+  try {
+    const queueEntry = await QueueEntry.findOne({
+      where: { bookId, userGoogleId: userId },
+    });
+    if (!queueEntry) {
+      res.status(404).send({ message: 'Queue entry not found' });
+      return;
+    }
+
+    await queueEntry.destroy();
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).send({ message: error.message });
+      return;
+    }
+  }
+
+  const book = await fetchBook(bookId);
+  if (!book) {
+    throw new Error('Book not found... This shouldnt be possible.');
   }
   res.json(await prepareBookForFrontend(book, userId));
 });
