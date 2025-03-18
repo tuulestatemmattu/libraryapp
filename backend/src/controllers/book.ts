@@ -314,4 +314,44 @@ bookRouter.put('/queue/:id', async (req, res) => {
   res.json(await toBookWithBorrowedByMe(book, userId));
 });
 
+bookRouter.delete('/queue/:id', async (req, res) => {
+  const userId = req.userId as string;
+  const bookId = parseInt(req.params.id);
+
+  try {
+    const queueEntry = await QueueEntry.findOne({
+      where: { bookId, userGoogleId: userId },
+    });
+    if (!queueEntry) {
+      res.status(404).send({ message: 'Queue entry not found' });
+      return;
+    }
+
+    await queueEntry.destroy();
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).send({ message: error.message });
+      return;
+    }
+  }
+
+  const book = await Book.findOne({
+    include: [
+      {
+        model: Tag,
+        attributes: ['name', 'id'],
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+    where: { id: bookId },
+  });
+  if (!book) {
+    res.status(404).send({ message: 'Book not found... This shouldnt be possible.' });
+    return;
+  }
+  res.json(await toBookWithBorrowedByMe(book, userId));
+});
+
 export default bookRouter;

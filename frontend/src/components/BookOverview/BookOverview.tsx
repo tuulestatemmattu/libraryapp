@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 
 import useMainStore from '../../hooks/useMainStore';
 import { FetchedBook } from '../../interfaces/Book';
-import { addBookToQueue, borrowBook, returnBook } from '../../services/book';
+import { addBookToQueue, borrowBook, removeBookFromQueue, returnBook } from '../../services/book';
 import ItemsSlider from '../ItemsSlider/ItemsSlider';
 
 import './BookOverview.css';
@@ -55,6 +55,15 @@ const BookCard = ({ book, setOpen }: props) => {
       addOrUpdateBook(newBook);
     } catch (error) {
       console.error('Failed to add the book to the queue:', error);
+    }
+  };
+
+  const handleRemoveFromQueue = async (id: number) => {
+    try {
+      const newBook = await removeBookFromQueue(id);
+      addOrUpdateBook(newBook);
+    } catch (error) {
+      console.error('Failed to remove the book from the queue:', error);
     }
   };
 
@@ -131,8 +140,17 @@ const BookCard = ({ book, setOpen }: props) => {
                 >
                   Add To Queue
                 </Button>
+              ) : book.queuedByMe ? (
+                <Button
+                  variant="contained"
+                  className="book-overview-action-button"
+                  sx={{ fontSize: '1rem !important' }}
+                  onClick={() => handleRemoveFromQueue(book.id)}
+                >
+                  Remove From Queue
+                </Button>
               ) : (
-                <div>In your queue. Leevi keksii paremman tähän.</div>
+                <> </>
               )}
             </CardActions>
           </div>
