@@ -91,6 +91,7 @@ const prepareBookForFrontend = async (book: Book, userId: string) => {
     lastBorrowedDate: myBorrow ? myBorrow.borrowedDate : null,
     queuedByMe: myQueue ? true : false,
     queueTime: myQueue ? await calculateWaitingTime(book, myQueue) : null,
+    queueSize: book.queue_entries ? book.queue_entries.length : 0,
   };
 };
 
