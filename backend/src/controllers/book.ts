@@ -223,7 +223,7 @@ bookRouter.put('/return/:id', async (req, res) => {
 
 bookRouter.get('/borrows', requireAdmin, async (req, res) => {
   const borrows = await Borrow.findAll({
-    attributes: ['id', 'borrowedDate'],
+    attributes: ['id', 'borrowedDate', 'active'],
     include: [
       {
         model: User,
@@ -231,7 +231,7 @@ bookRouter.get('/borrows', requireAdmin, async (req, res) => {
       },
       {
         model: Book,
-        attributes: ['title'],
+        attributes: ['title', 'id'],
       },
     ],
   });
