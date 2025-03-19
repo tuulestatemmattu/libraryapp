@@ -30,6 +30,7 @@ const BookCard = ({ book, setOpen }: props) => {
   const returnDate = book.borrowedByMe
     ? new Date(new Date(book.lastBorrowedDate).getTime() + 86400000 * 30)
     : new Date(0);
+  /* TODO: When backend returns return date delete calc code */
   const dates = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const returnDateString = `${dates[returnDate.getDay()]} ${returnDate.getDate()}.${returnDate.getMonth()}.  ${moment(returnDate).diff(new Date(), 'days')} left`;
   const handleClose = () => {
