@@ -1,9 +1,6 @@
 import { useState } from 'react';
 
-import Bookmark from '@mui/icons-material/Bookmark';
-import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
-import HighlightOff from '@mui/icons-material/HighlightOff';
-import StarBorder from '@mui/icons-material/StarBorder';
+import { Chip, Paper } from '@mui/material';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
@@ -12,7 +9,6 @@ import CardMedia from '@mui/material/CardMedia';
 import Modal from '@mui/material/Modal';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
-import { useTheme } from '@mui/material/styles';
 
 import { FetchedBook } from '../../interfaces/Book';
 import BookCard from '../BookOverview/BookOverview';
@@ -26,7 +22,22 @@ interface BookListItemProps {
 
 const BookListItem = ({ book, loading }: BookListItemProps) => {
   const [open, setOpen] = useState(false);
-  const theme = useTheme();
+  /* TODO: When backend returns return date delete calc code */
+  const returnDate = book.borrowedByMe
+    ? new Date(new Date(book.lastBorrowedDate).getTime() + 86400000 * 30)
+    : new Date(0);
+
+  const status = book.borrowedByMe
+    ? returnDate.getTime() - new Date().getTime() < 0
+      ? 'late'
+      : 'borrowed'
+    : book.copiesAvailable > 0
+      ? 'available'
+      : book.queuedByMe
+        ? book.queueTime === 0
+          ? 'ready'
+          : 'reserved'
+        : 'unavailable';
 
   const getPlaceholderSVG = ({ book }: BookListItemProps) => {
     const firstLetter = book.title ? book.title.charAt(0).toUpperCase() : '?';
@@ -79,29 +90,9 @@ const BookListItem = ({ book, loading }: BookListItemProps) => {
               className="book-card-image"
             />
           )}
-          <div className="card-chip-positioner">
-            <div className="card-chip-container">
-              <Bookmark
-                className="card-chip base"
-                sx={{
-                  color: book.borrowedByMe
-                    ? theme.palette.info.main
-                    : book.copiesAvailable > 0
-                      ? theme.palette.success.main
-                      : theme.palette.error.main,
-                }}
-              />
-              <div className="card-chip-icon-container">
-                {book.borrowedByMe ? (
-                  <StarBorder sx={{ color: theme.palette.info.dark }} />
-                ) : book.copiesAvailable > 0 ? (
-                  <CheckCircleOutline sx={{ color: theme.palette.success.dark }} />
-                ) : (
-                  <HighlightOff sx={{ color: theme.palette.error.dark }} />
-                )}
-              </div>
-            </div>
-          </div>
+          <Paper elevation={5}>
+            <Chip className="book-card-chip" size="small" color={status} label={status} />
+          </Paper>
         </Box>
         <CardContent className="book-card-content">
           {loading ? (
