@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -19,12 +19,12 @@ import TagSelect from '../TagSelect/TagSelect';
 import '../../style.css';
 import './AddBookForm.css';
 
-interface BookFormProps {
+interface AddBookFormProps {
   onSubmit: (book: CreatedBook) => Promise<{ status: number }>;
   initialValues: CreatedBook | null;
 }
 
-const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
+const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
   const defaultLocation = useMainStore((state) => state.location);
   const tags = useMainStore((state) => state.tags);
 

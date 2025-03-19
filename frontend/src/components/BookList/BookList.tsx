@@ -9,17 +9,17 @@ import { useTheme } from '@mui/material/styles';
 import useMainStore from '../../hooks/useMainStore';
 import { FetchedBook } from '../../interfaces/Book';
 import { FetchedTag } from '../../interfaces/Tags';
-import BookListItem from '../BookCard/BookCard';
+import BookCard from '../BookCard/BookCard';
 import FilterWithTags from '../FilterWithTags/FilterWithTags';
 
 import '../../style.css';
 import './BookList.css';
 
-interface props {
+interface BookListProps {
   books: FetchedBook[];
 }
 
-const BookList = ({ books }: props) => {
+const BookList = ({ books }: BookListProps) => {
   const [filter, setFilter] = useState('');
   const [selectedTags, setSelectedTags] = useState<FetchedTag[]>([]);
   const location = useMainStore((state) => state.location);
@@ -59,7 +59,7 @@ const BookList = ({ books }: props) => {
         <div className="books-container" style={{ backgroundColor: componentBackColor }}>
           <Grid2 container spacing={1} wrap="wrap" className="grid-container">
             {filteredBooks.map((book) => (
-              <BookListItem key={book.id} book={book} />
+              <BookCard key={book.id} book={book} />
             ))}
           </Grid2>
         </div>

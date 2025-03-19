@@ -2,16 +2,16 @@ import AutoStories from '@mui/icons-material/AutoStories';
 import { useTheme } from '@mui/material/styles';
 
 import { FetchedBook } from '../../interfaces/Book';
-import BookListItem from '../BookCard/BookCard';
+import BookCard from '../BookCard/BookCard';
 import ItemsSlider from '../ItemsSlider/ItemsSlider';
 
 import './YourBooks.css';
 
-interface props {
+interface ScrollableListProps {
   title: string;
   books: FetchedBook[];
 }
-const ScrollableList = ({ title, books }: props) => {
+const ScrollableList = ({ title, books }: ScrollableListProps) => {
   const theme = useTheme();
 
   return (
@@ -26,7 +26,7 @@ const ScrollableList = ({ title, books }: props) => {
       >
         <ItemsSlider renderButtons={true}>
           {books.map((book: FetchedBook) => (
-            <BookListItem key={book.id} book={book} />
+            <BookCard key={book.id} book={book} />
           ))}
         </ItemsSlider>
         {books.length === 0 && (

@@ -3,11 +3,11 @@ import { useEffect, useRef } from 'react';
 
 import { eanToIsbn, validateIsbn } from '../util/isbnUtils';
 
-interface ScannerProps {
+interface BarcodeScannerProps {
   isbnHandler: (isbn: string) => Promise<boolean> | boolean;
 }
 
-const BarcodeScanner = ({ isbnHandler }: ScannerProps) => {
+const BarcodeScanner = ({ isbnHandler }: BarcodeScannerProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const restartScanning = useRef(false);
 

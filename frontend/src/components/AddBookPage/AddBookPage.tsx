@@ -23,7 +23,7 @@ import './AddBookPage.css';
 type ViewOpt = 'form' | 'scan' | 'isbn';
 type initialValues = CreatedBook | null;
 
-const AddBooksPage = () => {
+const AddBookPage = () => {
   useRequireAdmin();
   const navigate = useNavigate();
   const location = useLocation();
@@ -129,4 +129,4 @@ const AddBooksPage = () => {
   );
 };
 
-export default AddBooksPage;
+export default AddBookPage;

@@ -15,7 +15,11 @@ interface NotificationContextType {
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
-export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+interface NotificationProviderProps {
+  children: React.ReactNode;
+}
+
+export const NotificationProvider = ({ children }: NotificationProviderProps) => {
   const [notification, setNotification] = useState<{
     message: string;
     type: NotificationType;

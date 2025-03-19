@@ -5,12 +5,12 @@ import { officeLocations } from '../../constants';
 
 import './LocationSelect.css';
 
-interface InputProps {
+interface LocationSelectProps {
   value: string;
   onChangeLocation: (arg0: string) => void;
 }
 
-const LocationSelect = ({ value, onChangeLocation }: InputProps) => {
+const LocationSelect = ({ value, onChangeLocation }: LocationSelectProps) => {
   return (
     <TextField
       select
@@ -18,7 +18,6 @@ const LocationSelect = ({ value, onChangeLocation }: InputProps) => {
       onChange={(event) => onChangeLocation(event.target.value)}
       label="Office"
       className="location-select"
-      //style={{ marginTop: '20px' }}
       slotProps={{
         input: { id: 'location-select' },
         inputLabel: { htmlFor: 'location-select' },

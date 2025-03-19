@@ -10,7 +10,7 @@ interface CopiesInputProps {
   setCopies: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const CopiesInput: React.FC<CopiesInputProps> = ({ copies, setCopies }) => {
+const CopiesInput = ({ copies, setCopies }: CopiesInputProps) => {
   const handleDecrement = useCallback(
     debounce(() => {
       if (copies > 1) {
