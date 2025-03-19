@@ -12,6 +12,13 @@
   object-position: center !important;
 }
 
+.book-card-chip {
+  position: absolute;
+  right: 10%;
+  bottom: 5%;
+  font-size: 0.7rem !important;
+}
+
 .book-card-content {
   padding: 1vw !important;
   text-align: left;
@@ -55,36 +62,4 @@
   .book-authors {
     font-size: 2vw !important;
   }
-}
-
-.card-chip-positioner {
-  position: absolute;
-  top: 4%;
-  right: 3%;
-}
-
-.card-chip-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-
-  text-align: center;
-}
-
-.card-chip.base {
-  position: relative;
-  font-size: 300% !important;
-}
-
-.card-chip-icon-container {
-  position: absolute;
-  top: 17%;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-}
-
-.card-chip.icon {
-  width: 100%;
-  height: 50%;
 }

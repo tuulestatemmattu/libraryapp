@@ -17,7 +17,7 @@ declare module '@mui/material/styles' {
     };
   }
 }
-const theme = createTheme({
+let theme = createTheme({
   palette: {
     primary: {
       main: '#ffc107', //main yellow
@@ -113,5 +113,79 @@ const theme = createTheme({
     },
   },
 });
+
+theme = createTheme(theme, {
+  // Custom colors created with augmentColor go here
+  palette: {
+    late: theme.palette.augmentColor({
+      color: {
+        main: '#ff595e',
+      },
+      name: 'late',
+    }),
+    borrowed: theme.palette.augmentColor({
+      color: {
+        main: '#6a4c93',
+      },
+      name: 'borrowed',
+    }),
+    available: theme.palette.augmentColor({
+      color: {
+        main: '#8ac926',
+      },
+      name: 'available',
+    }),
+    ready: theme.palette.augmentColor({
+      color: {
+        main: '#8ac926',
+      },
+      name: 'ready',
+    }),
+    reserved: theme.palette.augmentColor({
+      color: {
+        main: '#118ab2',
+      },
+      name: 'ffca3a',
+    }),
+    unavailable: theme.palette.augmentColor({
+      color: {
+        main: '#ff924c',
+      },
+      name: 'unavailable',
+    }),
+  },
+});
+
+declare module '@mui/material/styles' {
+  interface Palette {
+    late: Palette['primary'];
+    borrowed: Palette['primary'];
+    available: Palette['primary'];
+    ready: Palette['primary'];
+    reserved: Palette['primary'];
+    unavailable: Palette['primary'];
+  }
+
+  interface PaletteOptions {
+    custom?: PaletteOptions['primary'];
+    late?: PaletteOptions['primary'];
+    borrowed?: PaletteOptions['primary'];
+    available?: PaletteOptions['primary'];
+    ready?: PaletteOptions['primary'];
+    reserved?: PaletteOptions['primary'];
+    unavailable?: PaletteOptions['primary'];
+  }
+}
+
+declare module '@mui/material/Chip' {
+  interface ChipPropsColorOverrides {
+    late: true;
+    borrowed: true;
+    available: true;
+    ready: true;
+    reserved: true;
+    unavailable: true;
+  }
+}
 
 export default theme;
