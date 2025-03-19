@@ -2,88 +2,51 @@ import axios from 'axios';
 
 import { apiBaseUrl } from '../constants';
 import { AdminViewBook, CreatedBook, FetchedBook } from '../interfaces/Book';
-import { getToken } from '../util/getToken';
 
 const baseUrl = apiBaseUrl + '/books';
 
 const addBook = async (book: CreatedBook): Promise<FetchedBook> => {
-  const token = getToken();
-
-  const response = await axios.post(baseUrl, book, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
+  const response = await axios.post(baseUrl, book);
   return response.data;
 };
 
 const getBooks = async () => {
-  const token = getToken();
-  const response = await axios.get(baseUrl, { headers: { Authorization: `Bearer ${token}` } });
+  const response = await axios.get(baseUrl);
   return response.data;
 };
 
 const updateBook = async (book: AdminViewBook) => {
-  const token = getToken();
-
-  const response = await axios.put(`${baseUrl}/edit/${book.id}`, book, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const response = await axios.put(`${baseUrl}/edit/${book.id}`, book);
   return response.data;
 };
 
 const getDetails = async (id: number) => {
-  const token = getToken();
-  const response = await axios.get(`${baseUrl}/${id}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const response = await axios.get(`${baseUrl}/${id}`);
   return response.data;
 };
 
 const borrowBook = async (id: number) => {
-  const token = getToken();
-  const response = await axios.put(
-    `${baseUrl}/borrow/${id}`,
-    {}, //PUT pyynnöt tarvii tähän tyhjän objektin, koska headerit on vasta kolmas parametri
-    {
-      headers: { authorization: `Bearer ${token}` },
-    },
-  );
+  const response = await axios.put(`${baseUrl}/borrow/${id}`);
   return response.data;
 };
 
 const returnBook = async (id: number) => {
-  const token = getToken();
-  const response = await axios.put(
-    `${baseUrl}/return/${id}`,
-    {}, //PUT pyynnöt tarvii tähän tyhjän objektin, koska headerit on vasta kolmas parametri
-    {
-      headers: { authorization: `Bearer ${token}` },
-    },
-  );
+  const response = await axios.put(`${baseUrl}/return/${id}`);
   return response.data;
 };
 
 const getBorrows = async () => {
-  const token = getToken();
-  const response = await axios.get(`${baseUrl}/borrows`, {
-    headers: { authorization: `Bearer ${token}` },
-  });
+  const response = await axios.get(`${baseUrl}/borrows`);
   return response.data;
 };
 
 const addBookToQueue = async (id: number) => {
-  const token = getToken();
-  const response = await axios.put(`${baseUrl}/queue/${id}`, {
-    headers: { authorization: `Bearer ${token}` },
-  });
+  const response = await axios.put(`${baseUrl}/queue/${id}`);
   return response.data;
 };
 
 const removeBookFromQueue = async (id: number) => {
-  const token = getToken();
-  const response = await axios.delete(`${baseUrl}/queue/${id}`, {
-    headers: { authorization: `Bearer ${token}` },
-  });
+  const response = await axios.delete(`${baseUrl}/queue/${id}`);
   return response.data;
 };
 
