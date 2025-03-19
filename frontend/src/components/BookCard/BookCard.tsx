@@ -11,16 +11,16 @@ import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 
 import { FetchedBook } from '../../interfaces/Book';
-import BookCard from '../BookOverview/BookOverview';
+import BookOverview from '../BookOverview/BookOverview';
 
 import './BookCard.css';
 
-interface BookListItemProps {
+interface BookCardProps {
   book: FetchedBook;
   loading?: boolean;
 }
 
-const BookListItem = ({ book, loading }: BookListItemProps) => {
+const BookCard = ({ book, loading }: BookCardProps) => {
   const [open, setOpen] = useState(false);
   /* TODO: When backend returns return date delete calc code */
   const returnDate = book.borrowedByMe
@@ -39,7 +39,7 @@ const BookListItem = ({ book, loading }: BookListItemProps) => {
           : 'reserved'
         : 'unavailable';
 
-  const getPlaceholderSVG = ({ book }: BookListItemProps) => {
+  const getPlaceholderSVG = (book: FetchedBook) => {
     const firstLetter = book.title ? book.title.charAt(0).toUpperCase() : '?';
 
     const generateColorFromISBN = (isbn: string) => {
@@ -85,7 +85,7 @@ const BookListItem = ({ book, loading }: BookListItemProps) => {
           ) : (
             <CardMedia
               component="img"
-              src={book.imageLink ? book.imageLink : getPlaceholderSVG({ book })}
+              src={book.imageLink ? book.imageLink : getPlaceholderSVG(book)}
               alt="image"
               className="book-card-image"
             />
@@ -119,10 +119,10 @@ const BookListItem = ({ book, loading }: BookListItemProps) => {
           zIndex: 1500,
         }}
       >
-        <BookCard book={book} setOpen={setOpen} />
+        <BookOverview book={book} setOpen={setOpen} />
       </Modal>
     </Card>
   );
 };
 
-export default BookListItem;
+export default BookCard;

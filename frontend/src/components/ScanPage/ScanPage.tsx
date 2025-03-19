@@ -6,7 +6,7 @@ import { useNotification } from '../../context/NotificationsProvider/Notificatio
 import useMainStore from '../../hooks/useMainStore';
 import { FetchedBook } from '../../interfaces/Book';
 import BarcodeScanner from '../BarcodeScanner';
-import BookCard from '../BookOverview/BookOverview';
+import BookOverview from '../BookOverview/BookOverview';
 
 import '../../style.css';
 import './ScanPage.css';
@@ -50,7 +50,7 @@ const ScanPage = () => {
           zIndex: 1500,
         }}
       >
-        {scannedBook ? <BookCard book={scannedBook} setOpen={setOpen} /> : <></>}
+        {scannedBook ? <BookOverview book={scannedBook} setOpen={setOpen} /> : <></>}
       </Modal>
     </article>
   );
