@@ -143,19 +143,17 @@ const BookCard = ({ book, setOpen }: props) => {
                 <Button
                   variant="contained"
                   className="book-overview-action-button"
-                  sx={{ fontSize: '1.3rem !important' }}
                   onClick={() => handleAddToQueue(book.id)}
                 >
-                  Add To Queue
+                  Reserve
                 </Button>
               ) : book.queuedByMe ? (
                 <Button
                   variant="contained"
                   className="book-overview-action-button"
-                  sx={{ fontSize: '1rem !important' }}
                   onClick={() => handleRemoveFromQueue(book.id)}
                 >
-                  Remove From Queue
+                  Unreserve
                 </Button>
               ) : (
                 <> </>
@@ -192,9 +190,7 @@ const BookCard = ({ book, setOpen }: props) => {
                 className="overview-info-text overview-text"
               >
                 <strong>Copies available:</strong>{' '}
-                {book.copiesAvailable - book.queueSize > 0
-                  ? book.copiesAvailable - book.queueSize
-                  : `0${book.queueSize > 0 ? ` (${book.queueSize} in queue)` : ''}`}
+                {Math.max(book.copiesAvailable - book.queueSize, 0)}
               </Typography>
               {book.borrowedByMe && (
                 <Typography
@@ -212,7 +208,7 @@ const BookCard = ({ book, setOpen }: props) => {
                   color="text.secondary"
                   className="overview-info-text overview-text"
                 >
-                  <strong>Queue wait time:</strong> {book.queueTime} days
+                  <strong>Available in:</strong> {book.queueTime} days
                 </Typography>
               )}
             </div>
