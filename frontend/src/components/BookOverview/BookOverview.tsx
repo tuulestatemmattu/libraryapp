@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import ClearIcon from '@mui/icons-material/Clear';
 import { useTheme } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -25,6 +27,11 @@ interface props {
 const BookCard = ({ book, setOpen }: props) => {
   const addOrUpdateBook = useMainStore((state) => state.addOrUpdateBook);
   const theme = useTheme();
+  const returnDate = book.borrowedByMe
+    ? new Date(new Date(book.lastBorrowedDate).getTime() + 86400000 * 30)
+    : new Date(0);
+  const dates = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const returnDateString = `${dates[returnDate.getDay()]} ${returnDate.getDate()}.${returnDate.getMonth()}.  ${moment(returnDate).diff(new Date(), 'days')} left`;
   const handleClose = () => {
     setOpen(false);
   };
@@ -188,6 +195,16 @@ const BookCard = ({ book, setOpen }: props) => {
                   ? book.copiesAvailable - book.queueSize
                   : `0${book.queueSize > 0 ? ` (${book.queueSize} in queue)` : ''}`}
               </Typography>
+              {book.borrowedByMe && (
+                <Typography
+                  variant="subtitle1"
+                  color="text.secondary"
+                  className="overview-info-text overview-text"
+                >
+                  <strong>Return date: </strong>
+                  {returnDateString}
+                </Typography>
+              )}
               {book.queuedByMe && (
                 <Typography
                   variant="subtitle1"
