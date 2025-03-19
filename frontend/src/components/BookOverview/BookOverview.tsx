@@ -61,6 +61,7 @@ const BookCard = ({ book, setOpen }: props) => {
     try {
       const newBook = await addBookToQueue(id);
       addOrUpdateBook(newBook);
+      handleClose();
     } catch (error) {
       console.error('Failed to add the book to the queue:', error);
     }
@@ -70,6 +71,7 @@ const BookCard = ({ book, setOpen }: props) => {
     try {
       const newBook = await removeBookFromQueue(id);
       addOrUpdateBook(newBook);
+      handleClose();
     } catch (error) {
       console.error('Failed to remove the book from the queue:', error);
     }
