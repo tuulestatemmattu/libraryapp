@@ -24,11 +24,13 @@ export const fetchBooks = async (where: WhereOptions<InferAttributes<Book>>) => 
         model: Borrow,
         where: { active: true },
         order: [['borrowedDate', 'ASC']],
+        separate: true,
         required: false,
       },
       {
         model: QueueEntry,
         order: [['createdAt', 'ASC']],
+        separate: true,
         required: false,
       },
     ],
