@@ -19,12 +19,12 @@ import ItemsSlider from '../ItemsSlider/ItemsSlider';
 
 import './BookOverview.css';
 
-interface props {
+interface BookCardProps {
   book: FetchedBook;
   setOpen: (open: boolean) => void;
 }
 
-const BookCard = ({ book, setOpen }: props) => {
+const BookCard = ({ book, setOpen }: BookCardProps) => {
   const addOrUpdateBook = useMainStore((state) => state.addOrUpdateBook);
   const theme = useTheme();
   const returnDate = book.borrowedByMe

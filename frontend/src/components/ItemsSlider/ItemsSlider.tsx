@@ -7,14 +7,19 @@ import { useTheme } from '@mui/material/styles';
 
 import './ItemsSlider.css';
 
-interface Props {
+interface ItemsSliderProps {
   children: ReactElement[];
   renderButtons: boolean;
   backgroundColor?: string;
   borderColor?: string;
 }
 
-const ItemsSlider = ({ renderButtons, children, backgroundColor, borderColor }: Props) => {
+const ItemsSlider = ({
+  renderButtons,
+  children,
+  backgroundColor,
+  borderColor,
+}: ItemsSliderProps) => {
   const scrollref = useRef<HTMLDivElement | null>(null);
   const scrollAmount = 400;
   const theme = useTheme();

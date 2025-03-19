@@ -7,11 +7,11 @@ import StyledInput from '../StyledInput/StyledInput';
 
 import './IsbnPage.css';
 
-interface IsbnProps {
-  isbnHandler: (_isbn: string) => void;
+interface IsbnPageProps {
+  isbnHandler: (isbn: string) => void;
 }
 
-const IsbnPage = ({ isbnHandler }: IsbnProps) => {
+const IsbnPage = ({ isbnHandler }: IsbnPageProps) => {
   const [isbn, setIsbn] = useState<string>('');
 
   const handleSubmitIsbn = (event: React.SyntheticEvent) => {

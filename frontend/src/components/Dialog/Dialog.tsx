@@ -2,12 +2,15 @@ import React, { forwardRef, useEffect } from 'react';
 
 import './Dialog.css';
 
-type Props = {
+type DialogProps = {
   children: React.ReactNode;
   toggleDialog: () => void;
 };
 
-const Dialog = forwardRef<HTMLDialogElement, Props>(({ children, toggleDialog }, ref) => {
+const DialogComponent = (
+  { children, toggleDialog }: DialogProps,
+  ref: React.Ref<HTMLDialogElement>,
+) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       toggleDialog();
@@ -29,6 +32,8 @@ const Dialog = forwardRef<HTMLDialogElement, Props>(({ children, toggleDialog },
       {children}
     </dialog>
   );
-});
+};
+
+const Dialog = forwardRef(DialogComponent);
 
 export default Dialog;

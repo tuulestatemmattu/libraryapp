@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useEffect, useState } from 'react';
 
 import {
@@ -24,7 +23,9 @@ const getStyles = (name: string, selectedTags: FetchedTag[], theme: Theme) => {
   };
 };
 
-const SelectTags: React.FC<GridRenderEditCellParams<FetchedTag[]>> = ({ id, value, field }) => {
+type SelectTagsProps = GridRenderEditCellParams<FetchedTag[]>;
+
+const SelectTags = ({ id, value, field }: SelectTagsProps) => {
   const [selectedTags, setSelectedtags] = useState<FetchedTag[]>([]);
   const tags = useMainStore((state) => state.tags);
   const apiRef = useGridApiContext();

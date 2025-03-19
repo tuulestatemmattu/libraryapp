@@ -15,11 +15,11 @@ import FilterWithTags from '../FilterWithTags/FilterWithTags';
 import '../../style.css';
 import './BookList.css';
 
-interface props {
+interface BookListProps {
   books: FetchedBook[];
 }
 
-const BookList = ({ books }: props) => {
+const BookList = ({ books }: BookListProps) => {
   const [filter, setFilter] = useState('');
   const [selectedTags, setSelectedTags] = useState<FetchedTag[]>([]);
   const location = useMainStore((state) => state.location);

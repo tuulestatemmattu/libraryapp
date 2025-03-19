@@ -7,11 +7,11 @@ import ItemsSlider from '../ItemsSlider/ItemsSlider';
 
 import './YourBooks.css';
 
-interface props {
+interface ScrollableListProps {
   title: string;
   books: FetchedBook[];
 }
-const ScrollableList = ({ title, books }: props) => {
+const ScrollableList = ({ title, books }: ScrollableListProps) => {
   const theme = useTheme();
 
   return (
