@@ -65,8 +65,8 @@ export const calculateWaitingTime = async (book: Book, queueEntry: QueueEntry) =
 };
 
 const calculateDueDate = async (borrowedDate: Date) => {
-  return new Date(borrowedDate.getTime() + 30 * 24 * 60 * 60 * 1000)
-}
+  return new Date(borrowedDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+};
 
 const prepareBookForFrontend = async (book: Book, userId: string) => {
   const myBorrow =
