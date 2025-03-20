@@ -23,14 +23,10 @@ export const fetchBooks = async (where: WhereOptions<InferAttributes<Book>>) => 
       {
         model: Borrow,
         where: { active: true },
-        order: [['borrowedDate', 'ASC']],
-        separate: true,
         required: false,
       },
       {
         model: QueueEntry,
-        order: [['createdAt', 'ASC']],
-        separate: true,
         required: false,
       },
     ],
@@ -48,6 +44,8 @@ export const calculateWaitingTime = async (book: Book, queueEntry: QueueEntry) =
   if (activeBorrows === undefined || queueEntries === undefined) {
     throw new Error('Book does not have borrows or queue_entries');
   }
+  activeBorrows.sort((a, b) => a.borrowedDate.getTime() - b.borrowedDate.getTime());
+  queueEntries.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
 
   const waitingTimes: number[] = [];
   for (let i = 0; i < queueEntries.length; i++) {

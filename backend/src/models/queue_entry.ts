@@ -15,6 +15,8 @@ class QueueEntry extends Model<InferAttributes<QueueEntry>, InferCreationAttribu
   declare id: CreationOptional<number>;
   declare bookId: ForeignKey<Book['id']>;
   declare userGoogleId: ForeignKey<User['google_id']>;
+  declare createdAt: CreationOptional<Date>;
+  declare updatedAt: CreationOptional<Date>;
 }
 
 QueueEntry.init(
@@ -38,6 +40,14 @@ QueueEntry.init(
         model: User,
         key: 'google_id',
       },
+      allowNull: false,
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
       allowNull: false,
     },
   },
