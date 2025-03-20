@@ -261,14 +261,14 @@ bookRouter.put('/return/:id', async (req, res) => {
 bookRouter.delete('/:id', requireAdmin, async (req, res) => {
   try {
     const bookId = req.params.id;
+    const book = await Book.findByPk(bookId);
 
-    const deletedBook = await Book.destroy({ where: { id: bookId } });
-
-    if (deletedBook == 1) {
-      res.status(204).send();
-    } else if (deletedBook == 0) {
+    if (!book) {
       res.status(404).send({ message: 'Book not found' });
+      return;
     }
+    await book.destroy();
+    res.status(204).send();
   } catch (error: unknown) {
     if (error instanceof Error) {
       res.status(500).send({ message: error.message });

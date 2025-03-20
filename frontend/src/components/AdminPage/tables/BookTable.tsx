@@ -1,11 +1,11 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import {
   Box,
+  Button,
   Chip,
   Dialog,
   DialogActions,
