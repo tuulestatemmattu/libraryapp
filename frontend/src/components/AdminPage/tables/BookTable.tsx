@@ -2,6 +2,7 @@ import React from 'react';
 
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import { Box, Chip, Paper, Tooltip } from '@mui/material';
 import {
   DataGrid,
@@ -22,7 +23,7 @@ import {
 import useMainStore from '../../../hooks/useMainStore';
 import { AdminViewBook, FetchedBook } from '../../../interfaces/Book';
 import { FetchedTag } from '../../../interfaces/Tags';
-import { updateBook } from '../../../services/book';
+import { updateBook, deleteBook } from '../../../services/book';
 import SelectTags from './SelectTags';
 
 const BookTable = () => {
@@ -61,6 +62,10 @@ const BookTable = () => {
 
   const handleSaveClick = (id: GridRowId) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+  };
+
+  const handleDeleteClick = (id: GridRowId) => () => {
+    deleteBook(Number(id));
   };
 
   const processRowUpdate = async (newRow: GridRowModel) => {
@@ -140,6 +145,7 @@ const BookTable = () => {
 
         return [
           <GridActionsCellItem icon={<EditIcon />} label="Edit" onClick={handleEditClick(id)} />,
+          <GridActionsCellItem icon={<DeleteIcon />} label="Delete" onClick={handleDeleteClick(id)} />,
         ];
       },
     },

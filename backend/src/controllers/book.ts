@@ -258,6 +258,24 @@ bookRouter.put('/return/:id', async (req, res) => {
   }
 });
 
+bookRouter.delete('/:id', requireAdmin, async (req, res) => {
+  const bookId = req.params.id;
+  /*
+  const bookToDelete = await Book.findOne({ where: { id: bookId } });
+
+  if (!bookToDelete) {
+
+  }
+  */
+  const deletedBook = await Book.destroy({ where: { id: bookId } });
+  console.log(deletedBook)
+  if (deletedBook == 1) {
+    res.status(200).send({ message: 'succesfully deleted'})
+  } else if (deletedBook == 0) {
+    res.status(204).send({ message: 'no content'})
+  }
+})
+
 bookRouter.get('/borrows', requireAdmin, async (req, res) => {
   const borrows = await Borrow.findAll({
     attributes: ['id', 'borrowedDate', 'active'],
