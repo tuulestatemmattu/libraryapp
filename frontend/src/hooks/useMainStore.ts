@@ -21,6 +21,7 @@ interface StoreState {
   books: FetchedBook[];
   setBooks: (books: FetchedBook[]) => void;
   addOrUpdateBook: (book: FetchedBook) => void;
+  deleteBook: (id: number) => void;
 }
 
 const useMainStore = create<StoreState>((set) => ({
@@ -62,6 +63,11 @@ const useMainStore = create<StoreState>((set) => ({
     set((state) => ({
       ...state,
       books: [...state.books.filter((b) => b.id !== book.id), book],
+    })),
+  deleteBook: (id: number) =>
+    set((state) => ({
+      ...state,
+      books: state.books.filter((book) => book.id !== id),
     })),
 }));
 

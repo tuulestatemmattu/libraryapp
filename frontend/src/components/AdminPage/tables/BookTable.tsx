@@ -1,8 +1,19 @@
 import React from 'react';
 
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
-import { Box, Chip, Paper, Tooltip } from '@mui/material';
+import {
+  Box,
+  Button,
+  Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Paper,
+  Tooltip,
+} from '@mui/material';
 import {
   DataGrid,
   GridActionsCellItem,
@@ -22,14 +33,17 @@ import {
 import useMainStore from '../../../hooks/useMainStore';
 import { AdminViewBook, FetchedBook } from '../../../interfaces/Book';
 import { FetchedTag } from '../../../interfaces/Tags';
-import { updateBook } from '../../../services/book';
+import { deleteBook, updateBook } from '../../../services/book';
 import SelectTags from './SelectTags';
 
 const BookTable = () => {
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
+  const [deleteId, setDeleteId] = React.useState<GridRowId | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
 
   const books = useMainStore((state) => state.books);
   const storeAddOrUpdateBook = useMainStore((state) => state.addOrUpdateBook);
+  const storeDeleteBook = useMainStore((state) => state.deleteBook);
 
   const toAdminViewBook = (book: FetchedBook): AdminViewBook => {
     return {
@@ -61,6 +75,23 @@ const BookTable = () => {
 
   const handleSaveClick = (id: GridRowId) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+  };
+
+  const handleDeleteClick = (id: GridRowId) => () => {
+    setDeleteId(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    await deleteBook(Number(deleteId));
+    storeDeleteBook(Number(deleteId));
+    setDeleteDialogOpen(false);
+    setDeleteId(null);
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteDialogOpen(false);
+    setDeleteId(null);
   };
 
   const processRowUpdate = async (newRow: GridRowModel) => {
@@ -140,6 +171,11 @@ const BookTable = () => {
 
         return [
           <GridActionsCellItem icon={<EditIcon />} label="Edit" onClick={handleEditClick(id)} />,
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            onClick={handleDeleteClick(id)}
+          />,
         ];
       },
     },
@@ -181,6 +217,18 @@ const BookTable = () => {
           }}
         />
       </Paper>
+      <Dialog open={deleteDialogOpen} onClose={() => handleDeleteCancel()}>
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>Are you sure you want to delete this book entry entirely?</DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="primary">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

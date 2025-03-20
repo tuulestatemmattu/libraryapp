@@ -20,6 +20,10 @@ const updateBook = async (book: AdminViewBook) => {
   return response.data;
 };
 
+const deleteBook = async (id: number) => {
+  await axios.delete(`${baseUrl}/${id}`);
+};
+
 const getDetails = async (id: number) => {
   const response = await axios.get(`${baseUrl}/${id}`);
   return response.data;
@@ -54,6 +58,7 @@ export {
   addBook,
   getBooks,
   updateBook,
+  deleteBook,
   getDetails,
   borrowBook,
   returnBook,
