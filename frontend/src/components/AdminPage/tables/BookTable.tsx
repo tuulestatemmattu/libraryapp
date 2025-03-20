@@ -219,7 +219,7 @@ const BookTable = () => {
       </Paper>
       <Dialog open={deleteDialogOpen} onClose={() => handleDeleteCancel()}>
         <DialogTitle>Confirm Delete</DialogTitle>
-        <DialogContent>Are you sure you want to delete this book?</DialogContent>
+        <DialogContent>Are you sure you want to delete this book entry entirely?</DialogContent>
         <DialogActions>
           <Button onClick={handleDeleteCancel} color="primary">
             Cancel
