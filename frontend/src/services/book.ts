@@ -22,7 +22,7 @@ const updateBook = async (book: AdminViewBook) => {
 
 const deleteBook = async (id: number) => {
   await axios.delete(`${baseUrl}/${id}`);
-}
+};
 
 const getDetails = async (id: number) => {
   const response = await axios.get(`${baseUrl}/${id}`);

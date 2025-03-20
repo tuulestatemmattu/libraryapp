@@ -259,22 +259,22 @@ bookRouter.put('/return/:id', async (req, res) => {
 });
 
 bookRouter.delete('/:id', requireAdmin, async (req, res) => {
-  const bookId = req.params.id;
-  /*
-  const bookToDelete = await Book.findOne({ where: { id: bookId } });
+  try {
+    const bookId = req.params.id;
 
-  if (!bookToDelete) {
+    const deletedBook = await Book.destroy({ where: { id: bookId } });
 
+    if (deletedBook == 1) {
+      res.status(204).send();
+    } else if (deletedBook == 0) {
+      res.status(404).send({ message: 'Book not found' });
+    }
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).send({ message: error.message });
+    }
   }
-  */
-  const deletedBook = await Book.destroy({ where: { id: bookId } });
-  console.log(deletedBook)
-  if (deletedBook == 1) {
-    res.status(200).send({ message: 'succesfully deleted'})
-  } else if (deletedBook == 0) {
-    res.status(204).send({ message: 'no content'})
-  }
-})
+});
 
 bookRouter.get('/borrows', requireAdmin, async (req, res) => {
   const borrows = await Borrow.findAll({
