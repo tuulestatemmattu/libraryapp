@@ -64,6 +64,10 @@ export const calculateWaitingTime = async (book: Book, queueEntry: QueueEntry) =
   return waitingTimes[index];
 };
 
+const calculateDueDate = async (borrowedDate: Date) => {
+  return new Date(borrowedDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+};
+
 const prepareBookForFrontend = async (book: Book, userId: string) => {
   const myBorrow =
     book.borrows === undefined
@@ -89,6 +93,7 @@ const prepareBookForFrontend = async (book: Book, userId: string) => {
     tags: book.tags,
     borrowedByMe: myBorrow ? true : false,
     lastBorrowedDate: myBorrow ? myBorrow.borrowedDate : null,
+    dueDate: myBorrow ? await calculateDueDate(myBorrow.borrowedDate) : null,
     queuedByMe: myQueue ? true : false,
     queueTime: myQueue ? await calculateWaitingTime(book, myQueue) : null,
     queueSize: book.queue_entries ? book.queue_entries.length : 0,

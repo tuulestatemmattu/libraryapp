@@ -170,7 +170,7 @@ describe('PUT /api/books/borrow/:id', () => {
     await Book.destroy({ where: {} });
   });
 
-  it('should borrow a book and return the updated book', async () => {
+  it('should borrow a book and return the updated book with dueDate', async () => {
     const book = await Book.create({
       ...sampleBook,
     });
@@ -183,6 +183,10 @@ describe('PUT /api/books/borrow/:id', () => {
     const borrow = await Borrow.findOne({ where: { bookId: book?.id } });
     expect(borrow?.userGoogleId).toBe('sample_google_id');
     expect(borrow?.borrowedDate).not.toBe(null);
+
+    const expectedDueDate = borrow?.borrowedDate ? new Date(borrow.borrowedDate) : new Date();
+    expectedDueDate.setDate(expectedDueDate.getDate() + 30);
+    expect(new Date(response.body.dueDate).toISOString()).toBe(expectedDueDate.toISOString());
   });
 
   it('should return 403 if the book is not available', async () => {
