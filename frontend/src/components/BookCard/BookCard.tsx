@@ -20,6 +20,8 @@ interface BookCardProps {
   loading?: boolean;
 }
 
+type Status = 'late' | 'borrowed' | 'available' | 'ready' | 'reserved' | 'unavailable';
+
 const BookCard = ({ book, loading }: BookCardProps) => {
   const [open, setOpen] = useState(false);
   /* TODO: When backend returns return date delete calc code */
@@ -27,18 +29,23 @@ const BookCard = ({ book, loading }: BookCardProps) => {
     ? new Date(new Date(book.lastBorrowedDate).getTime() + 86400000 * 30)
     : new Date(0);
 
-  const status = book.borrowedByMe
-    ? returnDate.getTime() - new Date().getTime() < 0
-      ? 'late'
-      : 'borrowed'
-    : book.copiesAvailable > 0
-      ? 'available'
-      : book.queuedByMe
-        ? book.queueTime === 0
-          ? 'ready'
-          : 'reserved'
-        : 'unavailable';
-
+  let status: Status = 'available';
+  if (book.borrowedByMe) {
+    if (returnDate.getTime() - new Date().getTime() < 0) {
+      status = 'late';
+    } else {
+      status = 'borrowed';
+    }
+  } else if (book.queuedByMe) {
+    if (book.queueTime === 0) {
+      status = 'ready';
+    } else {
+      status = 'reserved';
+    }
+  } else {
+    status = book.copiesAvailable - book.queueSize > 0 ? 'available' : 'unavailable';
+  }
+  
   const getPlaceholderSVG = (book: FetchedBook) => {
     const firstLetter = book.title ? book.title.charAt(0).toUpperCase() : '?';
 

@@ -145,7 +145,7 @@ theme = createTheme(theme, {
       color: {
         main: '#118ab2',
       },
-      name: 'ffca3a',
+      name: 'reserved',
     }),
     unavailable: theme.palette.augmentColor({
       color: {
