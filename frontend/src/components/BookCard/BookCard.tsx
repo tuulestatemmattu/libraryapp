@@ -20,31 +20,8 @@ interface BookCardProps {
   loading?: boolean;
 }
 
-type Status = 'late' | 'borrowed' | 'available' | 'ready' | 'reserved' | 'unavailable';
-
 const BookCard = ({ book, loading }: BookCardProps) => {
   const [open, setOpen] = useState(false);
-  /* TODO: When backend returns return date delete calc code */
-  const returnDate = book.borrowedByMe
-    ? new Date(new Date(book.lastBorrowedDate).getTime() + 86400000 * 30)
-    : new Date(0);
-
-  let status: Status = 'available';
-  if (book.borrowedByMe) {
-    if (returnDate.getTime() - new Date().getTime() < 0) {
-      status = 'late';
-    } else {
-      status = 'borrowed';
-    }
-  } else if (book.queuedByMe) {
-    if (book.queueTime === 0) {
-      status = 'ready';
-    } else {
-      status = 'reserved';
-    }
-  } else {
-    status = book.copiesAvailable - book.queueSize > 0 ? 'available' : 'unavailable';
-  }
 
   const getPlaceholderSVG = (book: FetchedBook) => {
     const firstLetter = book.title ? book.title.charAt(0).toUpperCase() : '?';
@@ -98,7 +75,7 @@ const BookCard = ({ book, loading }: BookCardProps) => {
             />
           )}
           <Paper elevation={5}>
-            <Chip className="book-card-chip" size="small" color={status} label={status} />
+            <Chip className="book-card-chip" size="small" color={book.status} label={book.status} />
           </Paper>
         </Box>
         <CardContent className="book-card-content">

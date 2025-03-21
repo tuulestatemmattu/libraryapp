@@ -28,7 +28,7 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
   const addOrUpdateBook = useMainStore((state) => state.addOrUpdateBook);
   const theme = useTheme();
 
-  const returnDate = book.dueDate ? new Date(book.dueDate) : new Date();
+  const returnDate = new Date(book.dueDate);
   const dates = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const returnDateString = `${dates[returnDate.getDay()]} ${returnDate.getDate()}.${returnDate.getMonth() + 1}.  (${moment(returnDate).diff(new Date(), 'days')} days left)`;
 

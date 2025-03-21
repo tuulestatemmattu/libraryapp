@@ -38,6 +38,10 @@ export const fetchBook = async (id: string | number) => {
   return (await fetchBooks({ id }))[0];
 };
 
+const calculateDueDate = async (borrowedDate: Date) => {
+  return new Date(borrowedDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+};
+
 export const calculateWaitingTime = async (book: Book, queueEntry: QueueEntry) => {
   const activeBorrows = book.borrows;
   const queueEntries = book.queue_entries;
@@ -64,19 +68,31 @@ export const calculateWaitingTime = async (book: Book, queueEntry: QueueEntry) =
   return waitingTimes[index];
 };
 
-const calculateDueDate = async (borrowedDate: Date) => {
-  return new Date(borrowedDate.getTime() + 30 * 24 * 60 * 60 * 1000);
-};
-
 const prepareBookForFrontend = async (book: Book, userId: string) => {
-  const myBorrow =
-    book.borrows === undefined
-      ? null
-      : book.borrows.find((borrow) => borrow.userGoogleId === userId) || null;
-  const myQueue =
-    book.queue_entries === undefined
-      ? null
-      : book.queue_entries.find((queue) => queue.userGoogleId === userId) || null;
+  const myBorrow = book.borrows?.find((borrow) => borrow.userGoogleId === userId) || null;
+  const myQueueEntry =
+    book.queue_entries?.find((queueEntry) => queueEntry.userGoogleId === userId) || null;
+
+  const dueDate = myBorrow ? await calculateDueDate(myBorrow.borrowedDate) : null;
+  const queueTime = myQueueEntry ? await calculateWaitingTime(book, myQueueEntry) : null;
+  const queueSize = book.queue_entries ? book.queue_entries.length : 0;
+
+  let status = '';
+  if (myBorrow) {
+    if (new Date().getTime() > (dueDate as Date).getTime()) {
+      status = 'late';
+    } else {
+      status = 'borrowed';
+    }
+  } else if (myQueueEntry) {
+    if (queueTime === 0) {
+      status = 'ready';
+    } else {
+      status = 'reserved';
+    }
+  } else {
+    status = book.copiesAvailable - queueSize > 0 ? 'available' : 'unavailable';
+  }
 
   return {
     id: book.id,
@@ -91,12 +107,12 @@ const prepareBookForFrontend = async (book: Book, userId: string) => {
     imageLink: book.imageLink,
 
     tags: book.tags,
-    borrowedByMe: myBorrow ? true : false,
-    lastBorrowedDate: myBorrow ? myBorrow.borrowedDate : null,
-    dueDate: myBorrow ? await calculateDueDate(myBorrow.borrowedDate) : null,
-    queuedByMe: myQueue ? true : false,
-    queueTime: myQueue ? await calculateWaitingTime(book, myQueue) : null,
-    queueSize: book.queue_entries ? book.queue_entries.length : 0,
+    borrowedByMe: !!myBorrow,
+    dueDate: dueDate,
+    queuedByMe: !!myQueueEntry,
+    queueTime: queueTime,
+    queueSize: queueSize,
+    status: status,
   };
 };
 
