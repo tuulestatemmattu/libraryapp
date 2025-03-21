@@ -86,7 +86,6 @@ const BarcodeScanner = ({ isbnHandler }: BarcodeScannerProps) => {
 
   return (
     <section>
-      <h3>Scan barcode with camera</h3>
       <video autoPlay={true} playsInline={true} muted={true} ref={videoRef}></video>
     </section>
   );
