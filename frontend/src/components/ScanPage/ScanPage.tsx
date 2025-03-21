@@ -41,6 +41,7 @@ const ScanPage = () => {
         <h2>Borrow books by scanning</h2>
         <div className="scan-content">
           <BarcodeScanner isbnHandler={isbnHandler} />
+          <div className="scan-overlay"></div> {/* Overlay for styling */}
         </div>
       </div>
       <Modal
