@@ -45,7 +45,7 @@ const BookCard = ({ book, loading }: BookCardProps) => {
   } else {
     status = book.copiesAvailable - book.queueSize > 0 ? 'available' : 'unavailable';
   }
-  
+
   const getPlaceholderSVG = (book: FetchedBook) => {
     const firstLetter = book.title ? book.title.charAt(0).toUpperCase() : '?';
 
