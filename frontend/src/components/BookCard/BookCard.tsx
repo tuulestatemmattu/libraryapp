@@ -126,7 +126,9 @@ const BookCard = ({ book, loading }: BookCardProps) => {
           zIndex: 1500,
         }}
       >
-        <BookOverview book={book} setOpen={setOpen} />
+        <>
+          <BookOverview book={book} setOpen={setOpen} />
+        </>
       </Modal>
     </Card>
   );
