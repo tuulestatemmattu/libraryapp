@@ -124,7 +124,7 @@ const AddBookPage = () => {
       </div>
       <div className={`book-content ${view === 'scan' ? 'scan' : ''}`}>
         <Content />
-        <div className="scan-overlay"></div>
+        <div className={`${view === 'scan' ? 'scan-overlay' : ''}`}></div>
       </div>
     </article>
   );
