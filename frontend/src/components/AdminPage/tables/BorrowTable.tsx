@@ -147,7 +147,7 @@ const BorrowTable = () => {
   };
   const paginationModel = { page: 0, pageSize: 20 };
   return (
-    <div>
+    <article>
       <Box sx={{ textAlign: 'center' }}>
         <h1>Borrow data</h1>
       </Box>
@@ -168,7 +168,7 @@ const BorrowTable = () => {
           }}
         />
       </Paper>
-    </div>
+    </article>
   );
 };
 
