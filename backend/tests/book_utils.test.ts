@@ -1,7 +1,8 @@
 /* eslint-disable no-undef */
-import { calculateWaitingTime, fetchBook } from '../src/controllers/book';
-import { Book, Borrow, ConnectionBookTag, QueueEntry, Tag, User } from '../src/models';
+import { Book, Borrow, ConnectionBookTag, QueueEntry, Tag } from '../src/models';
+import { calculateWaitingTime, fetchBook } from '../src/util/bookUtils';
 import { connectToDatabase, disconnectDatabase } from '../src/util/db';
+import { initUsersWithSampleUser } from './common';
 
 const sampleBook = {
   title: 'Clean Code: A Handbook of Agile Software Craftsmanship',
@@ -16,20 +17,12 @@ const sampleBook = {
 
 beforeAll(async () => {
   await connectToDatabase();
+  await initUsersWithSampleUser();
 
-  await User.sync();
-  await User.destroy({ where: {} });
-  await User.create({
-    google_id: 'sample_google_id',
-    email: 'sample_email@example.com',
-    picture: 'sample_picture_url',
-    name: 'Sample Name',
-  });
-
-  await Tag.sync();
-  await ConnectionBookTag.sync();
   await Book.sync();
   await Borrow.sync();
+  await Tag.sync();
+  await ConnectionBookTag.sync();
   await QueueEntry.sync();
 
   jest.useFakeTimers({ now: new Date(2025, 3, 30) }); //30.3.2025
@@ -49,7 +42,10 @@ describe('calculateWaitingTime function', () => {
 
   it('should return 0 when one book available', async () => {
     const bookId = (await Book.create(sampleBook)).id;
-    const entry = await QueueEntry.create({ bookId, userGoogleId: 'sample_google_id' });
+    const entry = await QueueEntry.create({
+      bookId,
+      userGoogleId: 'sample_google_id',
+    });
 
     const book = await fetchBook(bookId);
     const waitingTime = await calculateWaitingTime(book, entry);
@@ -66,7 +62,10 @@ describe('calculateWaitingTime function', () => {
     ).id;
     await QueueEntry.create({ bookId, userGoogleId: 'sample_google_id' });
 
-    const entry = await QueueEntry.create({ bookId, userGoogleId: 'sample_google_id' });
+    const entry = await QueueEntry.create({
+      bookId,
+      userGoogleId: 'sample_google_id',
+    });
     const book = await fetchBook(bookId);
     const waitingTime = await calculateWaitingTime(book, entry);
     expect(waitingTime).toBe(0);
@@ -87,7 +86,10 @@ describe('calculateWaitingTime function', () => {
       active: true,
     });
 
-    const entry = await QueueEntry.create({ bookId, userGoogleId: 'sample_google_id' });
+    const entry = await QueueEntry.create({
+      bookId,
+      userGoogleId: 'sample_google_id',
+    });
     const book = await fetchBook(bookId);
     const waitingTime = await calculateWaitingTime(book, entry);
     expect(waitingTime).toBe(11);
@@ -114,7 +116,10 @@ describe('calculateWaitingTime function', () => {
       active: true,
     });
 
-    const entry = await QueueEntry.create({ bookId, userGoogleId: 'sample_google_id' });
+    const entry = await QueueEntry.create({
+      bookId,
+      userGoogleId: 'sample_google_id',
+    });
     const book = await fetchBook(bookId);
     const waitingTime = await calculateWaitingTime(book, entry);
     expect(waitingTime).toBe(11);
@@ -141,8 +146,15 @@ describe('calculateWaitingTime function', () => {
       active: true,
     });
 
-    const entry = await QueueEntry.create({ bookId, userGoogleId: 'sample_google_id' });
-    const entry2 = await QueueEntry.create({ bookId, userGoogleId: 'sample_google_id' });
+    const entry = await QueueEntry.create({
+      bookId,
+      userGoogleId: 'sample_google_id',
+    });
+    const entry2 = await QueueEntry.create({
+      bookId,
+      userGoogleId: 'sample_google_id',
+    });
+
     const book = await fetchBook(bookId);
     const waitingTime = await calculateWaitingTime(book, entry);
     expect(waitingTime).toBe(11);
@@ -165,8 +177,15 @@ describe('calculateWaitingTime function', () => {
       active: true,
     });
 
-    const entry = await QueueEntry.create({ bookId, userGoogleId: 'sample_google_id' });
-    const entry2 = await QueueEntry.create({ bookId, userGoogleId: 'sample_google_id' });
+    const entry = await QueueEntry.create({
+      bookId,
+      userGoogleId: 'sample_google_id',
+    });
+    const entry2 = await QueueEntry.create({
+      bookId,
+      userGoogleId: 'sample_google_id',
+    });
+
     const book = await fetchBook(bookId);
     const waitingTime = await calculateWaitingTime(book, entry);
     expect(waitingTime).toBe(11);

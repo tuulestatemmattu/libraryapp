@@ -1,8 +1,10 @@
 /* eslint-disable no-undef */
 import supertest from 'supertest';
+import { mockTokenExtractor } from './common';
+
+mockTokenExtractor();
 
 import app from '../src/app';
-
 const api = supertest(app);
 
 const mockResponse = {
@@ -24,14 +26,6 @@ const mockResponse = {
     ],
   },
 };
-
-jest.mock('../src/util/middleware/tokenExtractor', () => ({
-  tokenExtractor: jest.fn((req, _res, next) => {
-    req.userId = 'sample_google_id';
-    req.admin = true;
-    next();
-  }),
-}));
 
 jest.mock('axios', () => ({
   get: jest.fn(() => Promise.resolve(mockResponse)),
