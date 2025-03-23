@@ -1,10 +1,12 @@
 /* eslint-disable no-undef */
 import supertest from 'supertest';
+import { Book, Borrow, ConnectionBookTag, QueueEntry, Tag } from '../src/models';
+import { connectToDatabase, disconnectDatabase } from '../src/util/db';
+import { initUsersWithSampleUser, mockTokenExtractor } from './common';
+
+mockTokenExtractor('sample_google_id', true);
 
 import app from '../src/app';
-import { Book, Borrow, ConnectionBookTag, QueueEntry, Tag, User } from '../src/models';
-import { connectToDatabase, disconnectDatabase } from '../src/util/db';
-
 const api = supertest(app);
 
 const sampleBook = {
@@ -33,28 +35,12 @@ const sampleTag = {
   name: 'Agile',
 };
 
-jest.mock('../src/util/middleware/tokenExtractor', () => ({
-  tokenExtractor: jest.fn((req, _res, next) => {
-    req.userId = 'sample_google_id';
-    req.admin = true;
-    next();
-  }),
-}));
-
 beforeAll(async () => {
   await connectToDatabase();
+  await initUsersWithSampleUser();
 
-  await User.sync();
-  await User.destroy({ where: {} });
-  await User.create({
-    google_id: 'sample_google_id',
-    email: 'sample_email@example.com',
-    picture: 'sample_picture_url',
-    name: 'Sample Name',
-  });
   await Book.sync();
   await Borrow.sync();
-  await Borrow.destroy({ where: {} });
   await Tag.sync();
   await ConnectionBookTag.sync();
   await QueueEntry.sync();
@@ -69,24 +55,22 @@ describe('GET /api/books', () => {
     await Book.destroy({ where: {} });
     await Tag.destroy({ where: {} });
     await ConnectionBookTag.destroy({ where: {} });
-    await Book.create({
-      ...sampleBook,
-    });
-    await Book.create({
-      ...sampleBook2,
-    });
-    await Tag.create({
-      ...sampleTag,
-    });
-    const sampleBookFromDb = await Book.findOne({ where: { title: sampleBook.title } });
-    const sampleBookId = sampleBookFromDb ? sampleBookFromDb.id : 0;
+    await Borrow.destroy({ where: {} });
 
-    const sampleTagFromDb = await Tag.findOne({ where: { name: sampleTag.name } });
-    const sampleTagId = sampleTagFromDb ? sampleTagFromDb.id : 0;
+    const sampleBookDb = await Book.create(sampleBook);
+    const SampleTagDb = await Tag.create(sampleTag);
+    await Book.create(sampleBook2);
 
     await ConnectionBookTag.create({
-      bookId: sampleBookId,
-      tagId: sampleTagId,
+      bookId: sampleBookDb.id,
+      tagId: SampleTagDb.id,
+    });
+
+    await Borrow.create({
+      bookId: sampleBookDb.id,
+      borrowedDate: new Date(),
+      userGoogleId: 'sample_google_id',
+      active: true,
     });
   });
 
@@ -94,6 +78,7 @@ describe('GET /api/books', () => {
     const response = await api.get('/api/books');
     expect(response.status).toBe(200);
     expect(response.body.length).toBe(2);
+
     const titles = response.body.map((book: Book) => book.title);
     expect(titles).toContain(sampleBook.title);
     expect(titles).toContain(sampleBook2.title);
@@ -105,9 +90,8 @@ describe('GET /api/books', () => {
     expect(response.body.length).toBe(2);
 
     const books = response.body;
-    const states = [books[0].borrowedByMe, books[1].borrowedByMe];
-    expect(states).toContain(false);
-    expect(states).toContain(false);
+    expect(books[0].borrowedByMe).toBe(true);
+    expect(books[1].borrowedByMe).toBe(false);
   });
 
   it('should return correct books with correct tags', async () => {
@@ -171,9 +155,7 @@ describe('PUT /api/books/borrow/:id', () => {
   });
 
   it('should borrow a book and return the updated book with dueDate', async () => {
-    const book = await Book.create({
-      ...sampleBook,
-    });
+    const book = await Book.create(sampleBook);
     const response = await api.put(`/api/books/borrow/${book?.id}`);
     expect(response.status).toBe(200);
 
@@ -211,18 +193,16 @@ describe('PUT /api/books/return/:id', () => {
   beforeEach(async () => {
     await Borrow.destroy({ where: {} });
     await Book.destroy({ where: {} });
-    await Book.create({
-      ...sampleBook,
-    });
   });
 
   it('should return a book and update its status', async () => {
-    const book = await Book.findOne({ where: { isbn: sampleBook.isbn } });
-    await api.put(`/api/books/borrow/${book?.id}`);
-    const response = await api.put(`/api/books/return/${book?.id}`);
+    const bookId = (await Book.create(sampleBook)).id;
+    await api.put(`/api/books/borrow/${bookId}`);
+
+    const response = await api.put(`/api/books/return/${bookId}`);
     expect(response.status).toBe(200);
 
-    const updatedBook = await Book.findOne({ where: { id: book?.id } });
+    const updatedBook = await Book.findOne({ where: { id: bookId } });
     expect(updatedBook?.copiesAvailable).toBe(1);
   });
 
