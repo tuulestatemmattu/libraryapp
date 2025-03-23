@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import Modal from '@mui/material/Modal';
+import { useTheme } from '@mui/material/styles';
 
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';
@@ -11,7 +12,12 @@ import BookOverview from '../BookOverview/BookOverview';
 import '../../style.css';
 import './ScanPage.css';
 
-const ScanPage = () => {
+interface ScanPageProps {
+  borderColor?: string;
+}
+
+const ScanPage = ({ borderColor }: ScanPageProps) => {
+  const theme = useTheme();
   const books = useMainStore((state) => state.books);
   const [open, setOpen] = useState(false);
   const [scannedBook, setScannedBook] = useState<FetchedBook | null>(null);
@@ -41,7 +47,14 @@ const ScanPage = () => {
         <h2>Borrow books by scanning</h2>
         <div className="scan-content">
           <BarcodeScanner isbnHandler={isbnHandler} />
-          <div className="scan-overlay"></div> {/* Overlay for styling */}
+          <div
+            className="scan-overlay"
+            style={{
+              boxShadow: `0 0 0 5000px ${theme.palette.componentBack.dark}`,
+              borderRight: `2px solid ${borderColor || theme.palette.primary.light}`,
+              borderLeft: `2px solid ${borderColor || theme.palette.primary.light}`,
+            }}
+          ></div>
         </div>
       </div>
       <Modal
