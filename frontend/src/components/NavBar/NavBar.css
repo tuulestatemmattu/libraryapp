@@ -1,27 +1,24 @@
 .typemenuicon {
   left: 5px;
-  margin-top: 50%;
-  color: #101820 !important;
+  margin-top: 40%;
 }
 
 .location-box {
   margin: '0 auto';
   overflow-y: 'visible';
   font-weight: 600 !important;
-  letter-spacing: 3px !important;
   font-size: 20px;
-}
-
-.profile {
-  right: 5px;
+  letter-spacing: 3px !important;
 }
 
 .leftside-items {
-  display: flex !important;
+  display: flex;
+  align-items: center;
   gap: 10px !important;
 }
 
 .admin-button {
+  align-self: center; /* This will vertically center the button */
   font-size: 15px !important;
 }
 

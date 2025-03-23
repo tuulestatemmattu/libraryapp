@@ -16,7 +16,7 @@ import {
 import { useNotification } from '../../../context/NotificationsProvider/NotificationProvider';
 import useRequireAdmin from '../../../hooks/useRequireAdmin';
 import Profile from '../../../interfaces/Profile';
-import { getUsers, promoteUsers } from '../../../services/admin';
+import { getUsers, promoteUser } from '../../../services/admin';
 
 const UserTable = () => {
   useRequireAdmin();
@@ -40,7 +40,7 @@ const UserTable = () => {
 
     for (const user of selected) {
       try {
-        const result = await promoteUsers(user);
+        const result = await promoteUser(user);
         console.log(result);
         showNotification('User promoted successfully!', 'success');
       } catch {
@@ -60,7 +60,7 @@ const UserTable = () => {
   };
 
   const columns: GridColDef[] = [
-    { field: 'name', headerName: 'name', width: 200 },
+    { field: 'name', headerName: 'Name', width: 200 },
     { field: 'email', headerName: 'Email', width: 250 },
     { field: 'admin', headerName: 'Admin', width: 130 },
     { ...GRID_CHECKBOX_SELECTION_COL_DEF },
@@ -81,7 +81,7 @@ const UserTable = () => {
   };
 
   return (
-    <div>
+    <article>
       <Box sx={{ textAlign: 'center' }}>
         <h1>users</h1>
       </Box>
@@ -100,7 +100,7 @@ const UserTable = () => {
           }}
         />
       </Paper>
-    </div>
+    </article>
   );
 };
 

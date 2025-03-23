@@ -1,25 +1,25 @@
 .book-overview-card {
+  display: flex;
   position: relative;
+
+  top: 50%;
+  flex-direction: column;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  margin: auto;
+
+  border-radius: 25px !important;
   width: 80vw;
   max-width: 800px !important;
   max-height: 75vh;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-
-  border-radius: 25px !important;
 }
 
 .overview-close-button {
   position: absolute !important;
-  font-size: large !important;
-  right: 3%;
   top: 2%;
+  right: 3%;
   z-index: 10;
+  font-size: large !important;
 }
 
 .overview-content-container {
@@ -27,17 +27,17 @@
 }
 
 .overview-tophalf-container {
-  position: relative;
   display: flex;
+  position: relative;
   flex-direction: row;
-  margin-bottom: 5%;
   align-items: center;
+  margin-bottom: 5%;
 }
 
 .overview-topleft-container {
+  margin-left: 5%;
   width: 20vw !important;
   max-width: 200px !important;
-  margin-left: 5%;
 }
 
 .book-overview-image-container {
@@ -46,17 +46,16 @@
 }
 
 .book-overview-action-button {
+  margin-top: 5px !important;
   width: 100% !important;
   height: 7vw !important;
   max-height: 56px;
   font-size: 3vw !important;
-
-  margin-top: 5px !important;
 }
 
 .book-overview-image {
-  width: 100% !important;
   aspect-ratio: 75/100 !important;
+  width: 100% !important;
 }
 
 .book-overview-info-container {
@@ -70,8 +69,8 @@
 }
 
 .overview-title {
-  font-size: 4vw !important;
   font-weight: 500 !important;
+  font-size: 4vw !important;
 }
 
 .overview-info-text {
@@ -79,8 +78,8 @@
 }
 
 .overview-description-container {
-  overflow-y: scroll !important;
   max-height: 25vh;
+  overflow-y: scroll !important;
 }
 
 .overview-description {
@@ -105,8 +104,4 @@
   .book-overview-action-button {
     font-size: 24px !important;
   }
-}
-
-.book-tags-slider .scroll-item-container {
-  background-color: #ffff;
 }

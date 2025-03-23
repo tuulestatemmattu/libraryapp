@@ -1,5 +1,4 @@
 .book-card {
-  border: 1px solid rgba(0, 0, 0, 0.12);
   width: 25vw;
   max-width: 225px;
   height: auto;
@@ -7,21 +6,28 @@
 
 .book-card-image {
   margin-top: 0 !important;
-  width: 100% !important;
   aspect-ratio: 75/100 !important;
+  width: 100% !important;
   object-fit: cover !important;
   object-position: center !important;
 }
 
+.book-card-chip {
+  position: absolute;
+  right: 10%;
+  bottom: 5%;
+  font-size: 0.7rem !important;
+}
+
 .book-card-content {
-  text-align: left;
   padding: 1vw !important;
+  text-align: left;
 }
 
 .book-card-skeleton {
   margin-top: 0 !important;
-  width: 100% !important;
   aspect-ratio: 75/100 !important;
+  width: 100% !important;
   object-fit: cover !important;
   object-position: center !important;
 }
@@ -33,10 +39,10 @@
 }
 
 .book-title {
-  font-size: 20px !important;
-  white-space: nowrap;
   overflow: hidden;
+  font-size: 20px !important;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @media (max-width: 800px) {
@@ -46,70 +52,14 @@
 }
 
 .book-authors {
-  font-size: 16px !important;
-  white-space: nowrap;
   overflow: hidden;
+  font-size: 16px !important;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @media (max-width: 800px) {
   .book-authors {
     font-size: 2vw !important;
   }
-}
-
-.card-chip-positioner {
-  position: absolute;
-  top: 4%;
-  right: 3%;
-}
-
-.card-chip-container {
-  position: relative;
-
-  text-align: center;
-  width: 100%;
-  height: 100%;
-}
-
-.card-chip.base {
-  position: relative;
-  font-size: 300% !important;
-}
-
-.card-chip.base.available {
-  color: lightgreen;
-}
-
-.card-chip.base.mine {
-  color: lightblue;
-}
-
-.card-chip.base.unavailable {
-  color: salmon;
-}
-
-.card-chip-icon-container {
-  position: absolute;
-  z-index: 1;
-  top: 17%;
-  width: 100%;
-  height: 100%;
-}
-
-.card-chip.icon {
-  width: 100%;
-  height: 50%;
-}
-
-.card-chip.icon.available {
-  color: green;
-}
-
-.card-chip.icon.mine {
-  color: blue;
-}
-
-.card-chip.icon.unavailable {
-  color: red;
 }

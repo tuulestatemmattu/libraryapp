@@ -1,4 +1,7 @@
+import { Stack } from '@mui/material';
+
 import useMainStore from '../hooks/useMainStore';
+import { BookStatus, FetchedBook } from '../interfaces/Book';
 import BookList from './BookList/BookList';
 import ScrollableList from './ScrollableList/ScrollableList';
 
@@ -7,36 +10,31 @@ import '../style.css';
 const HomePage = () => {
   const books = useMainStore((state) => state.books);
 
+  const sortByOrder = (statusOrder: BookStatus[]) => {
+    return (b1: FetchedBook, b2: FetchedBook) => {
+      if (b1.status === b2.status) {
+        return b1.title.localeCompare(b2.title);
+      }
+      return statusOrder.indexOf(b1.status) - statusOrder.indexOf(b2.status);
+    };
+  };
+
+  const yourBooks = books
+    .filter((book: FetchedBook) => book.borrowedByMe || book.queuedByMe)
+    .sort(sortByOrder(['ready', 'late', 'borrowed', 'reserved']));
+
+  const allBooks = books.sort(
+    sortByOrder(['available', 'unavailable', 'reserved', 'borrowed', 'late', 'ready']),
+  );
+
   return (
     <article>
       <h2>
-        <ScrollableList
-          title="Your books"
-          books={books
-            /* Filter my books then sort first books that youve had the longest */
-            .filter((book) => book.borrowedByMe)
-            .sort((b1, b2) =>
-              b1.lastBorrowedDate === b2.lastBorrowedDate
-                ? 0
-                : b1.lastBorrowedDate < b2.lastBorrowedDate
-                  ? -1
-                  : 1,
-            )}
-        />
+        <Stack>
+          <ScrollableList title="Your books" books={yourBooks} />
+        </Stack>
       </h2>
-      <BookList
-        /* Sort books 'Available, not available, borrow by me' all categorys alphabetically */
-        books={books.sort(
-          (b1, b2) =>
-            (b1.copiesAvailable > 0 === b2.copiesAvailable > 0
-              ? 0
-              : b1.copiesAvailable > 0
-                ? -1
-                : 1) ||
-            (b1.borrowedByMe === b2.borrowedByMe ? 0 : b1.borrowedByMe ? 1 : -1) ||
-            (b1.title === b2.title ? 0 : b1.title < b2.title ? -1 : 1),
-        )}
-      />
+      <BookList books={allBooks} />
     </article>
   );
 };

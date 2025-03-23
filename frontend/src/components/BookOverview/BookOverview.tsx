@@ -1,4 +1,7 @@
+import moment from 'moment';
+
 import ClearIcon from '@mui/icons-material/Clear';
+import { useTheme } from '@mui/material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -11,18 +14,23 @@ import Typography from '@mui/material/Typography';
 
 import useMainStore from '../../hooks/useMainStore';
 import { FetchedBook } from '../../interfaces/Book';
-import { borrowBook, returnBook } from '../../services/book';
+import { addBookToQueue, borrowBook, removeBookFromQueue, returnBook } from '../../services/book';
 import ItemsSlider from '../ItemsSlider/ItemsSlider';
 
 import './BookOverview.css';
 
-interface props {
+interface BookOverviewProps {
   book: FetchedBook;
   setOpen: (open: boolean) => void;
 }
 
-const BookCard = ({ book, setOpen }: props) => {
+const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
   const addOrUpdateBook = useMainStore((state) => state.addOrUpdateBook);
+  const theme = useTheme();
+
+  const returnDate = new Date(book.dueDate);
+  const dates = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const returnDateString = `${dates[returnDate.getDay()]} ${returnDate.getDate()}.${returnDate.getMonth() + 1}.  (${moment(returnDate).diff(new Date(), 'days')} days left)`;
 
   const handleClose = () => {
     setOpen(false);
@@ -45,6 +53,26 @@ const BookCard = ({ book, setOpen }: props) => {
       handleClose();
     } catch (error) {
       console.error('Failed to return the book:', error);
+    }
+  };
+
+  const handleAddToQueue = async (id: number) => {
+    try {
+      const newBook = await addBookToQueue(id);
+      addOrUpdateBook(newBook);
+      handleClose();
+    } catch (error) {
+      console.error('Failed to add the book to the queue:', error);
+    }
+  };
+
+  const handleRemoveFromQueue = async (id: number) => {
+    try {
+      const newBook = await removeBookFromQueue(id);
+      addOrUpdateBook(newBook);
+      handleClose();
+    } catch (error) {
+      console.error('Failed to remove the book from the queue:', error);
     }
   };
 
@@ -104,7 +132,7 @@ const BookCard = ({ book, setOpen }: props) => {
                 >
                   Return
                 </Button>
-              ) : book.copiesAvailable > 0 ? (
+              ) : (book.copiesAvailable > 0 && book.queueSize === 0) || book.queueTime === 0 ? (
                 <Button
                   variant="contained"
                   className="book-overview-action-button"
@@ -112,8 +140,24 @@ const BookCard = ({ book, setOpen }: props) => {
                 >
                   Borrow
                 </Button>
+              ) : !book.queuedByMe ? (
+                <Button
+                  variant="contained"
+                  className="book-overview-action-button"
+                  onClick={() => handleAddToQueue(book.id)}
+                >
+                  Reserve
+                </Button>
+              ) : book.queuedByMe ? (
+                <Button
+                  variant="contained"
+                  className="book-overview-action-button"
+                  onClick={() => handleRemoveFromQueue(book.id)}
+                >
+                  Unreserve
+                </Button>
               ) : (
-                <div></div>
+                <> </>
               )}
             </CardActions>
           </div>
@@ -146,23 +190,34 @@ const BookCard = ({ book, setOpen }: props) => {
                 color="text.secondary"
                 className="overview-info-text overview-text"
               >
-                <strong>Copies available:</strong> {book.copiesAvailable}
+                <strong>Copies available:</strong>{' '}
+                {Math.max(book.copiesAvailable - book.queueSize, 0)}
               </Typography>
-              {/*
-              <Typography
-                variant="subtitle1"
-                color="text.secondary"
-                className="overview-info-text overview-text"
-              >
-                <strong>tags:</strong> scifi
-              </Typography>
-              */}
+              {book.borrowedByMe && (
+                <Typography
+                  variant="subtitle1"
+                  color="text.secondary"
+                  className="overview-info-text overview-text"
+                >
+                  <strong>Return date: </strong>
+                  {returnDateString}
+                </Typography>
+              )}
+              {book.queuedByMe && (
+                <Typography
+                  variant="subtitle1"
+                  color="text.secondary"
+                  className="overview-info-text overview-text"
+                >
+                  <strong>Available in:</strong> {book.queueTime} days
+                </Typography>
+              )}
             </div>
           </CardContent>
         </div>
         {/* ItemSlider containing tags associated with the book */}
         <CardContent sx={{ pt: 0, pb: 0 }} className="book-tags-slider">
-          <ItemsSlider renderButtons={false}>
+          <ItemsSlider renderButtons={false} backgroundColor={theme.palette.componentBack.light}>
             {book.tags.map((tag) => (
               <Chip key={tag.id} label={tag.name} size="small" />
             ))}
@@ -182,4 +237,4 @@ const BookCard = ({ book, setOpen }: props) => {
   );
 };
 
-export default BookCard;
+export default BookOverview;

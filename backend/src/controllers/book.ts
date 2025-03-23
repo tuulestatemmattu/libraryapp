@@ -1,6 +1,7 @@
 import express from 'express';
 
-import { Book, Borrow, Tag } from '../models';
+import { Book, Borrow, QueueEntry, Tag, User } from '../models';
+import { fetchBook, fetchBooks, prepareBookForFrontend } from '../util/bookUtils';
 import { requireAdmin } from '../util/middleware/requireAdmin';
 import { requireLogin } from '../util/middleware/requireLogin';
 import bookValidator from '../util/validation';
@@ -8,42 +9,13 @@ import bookValidator from '../util/validation';
 const bookRouter = express.Router();
 bookRouter.use(requireLogin);
 
-const toBookWithBorrowedByMe = async (book: Book, userId: string) => {
-  const bookData = book.dataValues;
-  const myBorrow = await Borrow.findOne({ where: { bookId: book.id, userGoogleId: userId } });
-
-  if (myBorrow) {
-    return { ...bookData, borrowedByMe: true, lastBorrowedDate: myBorrow.borrowedDate };
-  } else {
-    return { ...bookData, borrowedByMe: false };
-  }
-};
-
 bookRouter.get('/', async (req, res) => {
-  if (!req.userId) {
-    res.status(401).send({ message: 'must be logged in to get books' });
-    return;
-  }
-
-  const books = await Book.findAll({
-    include: [
-      {
-        model: Tag,
-        attributes: ['name', 'id'],
-        through: {
-          attributes: [],
-        },
-      },
-    ],
-  });
-  const userId = req.userId.toString();
-  const booksWithBorrowInfo = await Promise.all(
-    books.map((book) => toBookWithBorrowedByMe(book, userId)),
-  );
-  res.send(booksWithBorrowInfo);
+  const userId = req.userId as string;
+  const books = await fetchBooks({});
+  res.json(books.map((book) => prepareBookForFrontend(book, userId)));
 });
 
-bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
+bookRouter.post('/', requireAdmin, bookValidator, async (req, res) => {
   const userId = req.userId as string;
   const { title, authors, isbn, description, publishedDate, location, copies, tags } = req.body;
 
@@ -52,40 +24,32 @@ bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
     : undefined;
 
   try {
-    const existingBook = await Book.findOne({ where: { isbn } });
-
-    if (existingBook) {
-      const updatedBook = await existingBook.increment(['copies', 'copiesAvailable'], {
-        by: copies,
-      });
-
-      const tag_ids = tags.map((tag: Tag) => tag.id);
-      await updatedBook.setTags(tag_ids);
-
-      const updatedBookWithBorrowInfo = await toBookWithBorrowedByMe(updatedBook, userId);
-      res.status(200).send({ ...updatedBookWithBorrowInfo, tags });
-    } else {
-      const newBook = await Book.create(
-        {
-          title,
-          authors,
-          isbn,
-          description,
-          publishedDate,
-          location,
-          copies,
-          copiesAvailable: copies,
-          imageLink,
-        },
-        { validate: true },
-      );
-
-      const tag_ids = tags.map((tag: Tag) => tag.id);
-      await newBook.setTags(tag_ids);
-
-      const newBookWithBorrowInfo = await toBookWithBorrowedByMe(newBook, userId);
-      res.status(201).send({ ...newBookWithBorrowInfo, tags });
+    if (await Book.findOne({ where: { isbn, location } })) {
+      res.status(400).send('Book is already in the database');
+      return;
     }
+
+    const book = await Book.create(
+      {
+        title,
+        authors,
+        isbn,
+        description,
+        publishedDate,
+        location,
+        copies,
+        copiesAvailable: copies,
+        imageLink,
+      },
+      { validate: true },
+    );
+
+    const tag_ids = tags.map((tag: Tag) => tag.id);
+    await book.setTags(tag_ids);
+
+    const fetchedBook = await fetchBook(book.id);
+    const newBookWithBorrowInfo = await prepareBookForFrontend(fetchedBook, userId);
+    res.status(201).send({ ...newBookWithBorrowInfo, tags });
   } catch (error: unknown) {
     if (error instanceof Error) {
       res.status(500).send({ message: error.message });
@@ -93,30 +57,78 @@ bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
   }
 });
 
-bookRouter.put('/borrow/:id', async (req, res) => {
-  const userId = req.userId as string;
+bookRouter.put('/:id', requireAdmin, bookValidator, async (req, res) => {
   const bookId = req.params.id;
-  const book = await Book.findOne({
-    include: [
-      {
-        model: Tag,
-        attributes: ['name', 'id'],
-        through: {
-          attributes: [],
-        },
-      },
-    ],
-    where: { id: bookId },
+  const userId = req.userId as string;
+  const { title, authors, isbn, description, publishedDate, location, copies, imageLink, tags } =
+    req.body;
+
+  const bookToEdit = await fetchBook(bookId);
+  if (!bookToEdit) {
+    res.status(404).send({ message: `Book with id ${bookId} does not exist` });
+    return;
+  }
+
+  const copiesAvailable = bookToEdit.copiesAvailable + Number(copies) - bookToEdit.copies;
+  if (Number(copies) < copiesAvailable) {
+    res
+      .status(400)
+      .json({ message: "Copies can't be chanced, since there are too many borrowed." });
+    return;
+  }
+
+  bookToEdit.set({
+    title: title,
+    authors: authors,
+    isbn: isbn,
+    description: description,
+    publishedDate: publishedDate,
+    location: location,
+    copies: copies,
+    copiesAvailable: copiesAvailable,
+    imageLink: imageLink,
   });
 
+  const tag_ids = tags.map((tag: Tag) => tag.id);
+  await bookToEdit.setTags(tag_ids);
+  await bookToEdit.save();
+
+  const editedBook = await prepareBookForFrontend(bookToEdit, userId);
+  res.status(201).send({ ...editedBook, tags });
+});
+
+bookRouter.delete('/:id', requireAdmin, async (req, res) => {
+  try {
+    const bookId = req.params.id;
+    const book = await Book.findByPk(bookId);
+    if (!book) {
+      res.status(404).send({ message: 'Book not found' });
+      return;
+    }
+    await book.destroy();
+    res.status(204).send();
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).send({ message: error.message });
+    }
+  }
+});
+
+bookRouter.post('/:id/borrow', async (req, res) => {
+  const userId = req.userId as string;
+  const bookId = req.params.id;
+
+  const book = await fetchBook(bookId);
   if (book) {
     if (book.copiesAvailable > 0) {
       book.decrement('copiesAvailable');
       const timeNow = new Date();
       const borrowedDate = timeNow;
-      await Borrow.create({ bookId: book.id, userGoogleId: userId, borrowedDate });
+      await Borrow.create({ bookId: book.id, userGoogleId: userId, borrowedDate, active: true });
+      await QueueEntry.destroy({ where: { bookId: book.id, userGoogleId: userId } });
       await book.save();
-      const borrowedBook = await toBookWithBorrowedByMe(book, userId);
+      await book.reload();
+      const borrowedBook = await prepareBookForFrontend(book, userId);
       res.json(borrowedBook);
     } else {
       res.status(403).send({ message: 'book is not available' });
@@ -126,38 +138,89 @@ bookRouter.put('/borrow/:id', async (req, res) => {
   }
 });
 
-bookRouter.put('/return/:id', async (req, res) => {
+bookRouter.post('/:id/return', async (req, res) => {
   const userId = req.userId as string;
   const bookId = req.params.id;
-  const book = await Book.findOne({
-    include: [
-      {
-        model: Tag,
-        attributes: ['name', 'id'],
-        through: {
-          attributes: [],
-        },
-      },
-    ],
-    where: { id: bookId },
+
+  const book = await fetchBook(bookId);
+  if (!book) {
+    res.status(404).send({ message: 'book does not exist' });
+    return;
+  }
+
+  const borrow = req.admin
+    ? await Borrow.findOne({
+        where: { bookId: book.id, active: true },
+      })
+    : await Borrow.findOne({
+        where: { bookId: book.id, userGoogleId: userId, active: true },
+      });
+
+  if (!borrow) {
+    res.status(403).send({ message: 'no permission to return this book' });
+    return;
+  }
+
+  borrow.set({ ...borrow, active: false });
+  await borrow.save();
+
+  await book.increment('copiesAvailable');
+  await book.save();
+  await book.reload();
+
+  const returnedBook = prepareBookForFrontend(book, userId);
+  res.json(returnedBook);
+});
+
+bookRouter.post('/:id/reserve', async (req, res) => {
+  const userId = req.userId as string;
+  const bookId = parseInt(req.params.id);
+
+  if (await QueueEntry.findOne({ where: { bookId, userGoogleId: userId } })) {
+    res.status(403).send({ message: 'Book is already reserved' });
+    return;
+  }
+
+  await QueueEntry.create({
+    bookId: bookId,
+    userGoogleId: userId,
   });
 
-  if (book) {
-    const borrowed = await Borrow.findOne({
-      where: { bookId: book.id, userGoogleId: userId },
-    });
-    if (borrowed) {
-      book.increment('copiesAvailable');
-      await borrowed.destroy();
-      await book.save();
-      const returnedBook = await toBookWithBorrowedByMe(book, userId);
-      res.json(returnedBook);
-    } else {
-      res.status(403).send({ message: 'no permission to return this book' });
-    }
-  } else {
-    res.status(404).send({ message: 'book does not exist' });
+  const book = (await fetchBook(bookId)) as Book;
+  res.json(await prepareBookForFrontend(book, userId));
+});
+
+bookRouter.post('/:id/unreserve', async (req, res) => {
+  const userId = req.userId as string;
+  const bookId = parseInt(req.params.id);
+
+  const deleted = await QueueEntry.destroy({
+    where: { bookId, userGoogleId: userId },
+  });
+  if (!deleted) {
+    res.status(404).send({ message: 'Book is not reserved' });
+    return;
   }
+
+  const book = (await fetchBook(bookId)) as Book;
+  res.json(await prepareBookForFrontend(book, userId));
+});
+
+bookRouter.get('/borrows', requireAdmin, async (req, res) => {
+  const borrows = await Borrow.findAll({
+    attributes: ['id', 'borrowedDate', 'active'],
+    include: [
+      {
+        model: User,
+        attributes: ['name', 'email'],
+      },
+      {
+        model: Book,
+        attributes: ['title', 'id'],
+      },
+    ],
+  });
+  res.json(borrows);
 });
 
 export default bookRouter;

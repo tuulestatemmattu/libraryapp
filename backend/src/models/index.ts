@@ -1,6 +1,7 @@
 import Book from './book';
 import Borrow from './borrow';
 import ConnectionBookTag from './connection_book_tag';
+import QueueEntry from './queue_entry';
 import Tag from './tag';
 import User from './user';
 
@@ -16,12 +17,18 @@ Borrow.belongsTo(User);
 Book.belongsToMany(Tag, { through: ConnectionBookTag });
 Tag.belongsToMany(Book, { through: ConnectionBookTag });
 
+User.hasMany(QueueEntry);
+QueueEntry.belongsTo(User);
+Book.hasMany(QueueEntry);
+QueueEntry.belongsTo(Book);
+
 const syncModels = async () => {
   await User.sync({ alter: true });
   await Book.sync({ alter: true });
   await Borrow.sync({ alter: true });
   await Tag.sync({ alter: true });
   await ConnectionBookTag.sync({ alter: true });
+  await QueueEntry.sync({ alter: true });
 };
 
 const resetTables = async () => {
@@ -30,6 +37,7 @@ const resetTables = async () => {
   await Borrow.destroy({ where: {} });
   await Tag.destroy({ where: {} });
   await ConnectionBookTag.destroy({ where: {} });
+  await QueueEntry.destroy({ where: {} });
 };
 
-export { syncModels, resetTables, Book, User, Borrow, Tag, ConnectionBookTag };
+export { syncModels, resetTables, Book, User, Borrow, Tag, ConnectionBookTag, QueueEntry };

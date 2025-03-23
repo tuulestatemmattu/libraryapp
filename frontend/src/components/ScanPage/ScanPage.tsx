@@ -1,35 +1,26 @@
 import { useEffect, useState } from 'react';
 
 import Modal from '@mui/material/Modal';
+import { useTheme } from '@mui/material/styles';
 
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';
 import { FetchedBook } from '../../interfaces/Book';
 import BarcodeScanner from '../BarcodeScanner';
-import BookCard from '../BookOverview/BookOverview';
+import BookOverview from '../BookOverview/BookOverview';
 
 import '../../style.css';
 import './ScanPage.css';
 
-const placeholderBook: FetchedBook = {
-  id: 1,
-  title: 'placeholder',
-  authors: 'placeholder',
-  isbn: '1234567890',
-  publishedDate: '2000',
-  description: '',
-  location: 'Helsinki',
-  borrowedByMe: false,
-  copies: 0,
-  copiesAvailable: 0,
-  lastBorrowedDate: new Date(),
-  tags: [],
-};
+interface ScanPageProps {
+  borderColor?: string;
+}
 
-const ScanPage = () => {
+const ScanPage = ({ borderColor }: ScanPageProps) => {
+  const theme = useTheme();
   const books = useMainStore((state) => state.books);
   const [open, setOpen] = useState(false);
-  const [scannedBook, setScannedBook] = useState<FetchedBook>(placeholderBook);
+  const [scannedBook, setScannedBook] = useState<FetchedBook | null>(null);
   const [isbn, setIsbn] = useState<string | null>(null);
   const { showNotification } = useNotification();
 
@@ -56,6 +47,14 @@ const ScanPage = () => {
         <h2>Borrow books by scanning</h2>
         <div className="scan-content">
           <BarcodeScanner isbnHandler={isbnHandler} />
+          <div
+            className="scan-overlay"
+            style={{
+              boxShadow: `0 0 0 5000px ${theme.palette.componentBack.dark}`,
+              borderRight: `2px solid ${borderColor || theme.palette.primary.light}`,
+              borderLeft: `2px solid ${borderColor || theme.palette.primary.light}`,
+            }}
+          ></div>
         </div>
       </div>
       <Modal
@@ -65,7 +64,7 @@ const ScanPage = () => {
           zIndex: 1500,
         }}
       >
-        <BookCard book={scannedBook} setOpen={setOpen} />
+        {scannedBook ? <BookOverview book={scannedBook} setOpen={setOpen} /> : <></>}
       </Modal>
     </article>
   );

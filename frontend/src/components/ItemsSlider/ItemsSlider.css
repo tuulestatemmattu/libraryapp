@@ -1,10 +1,11 @@
 .scroll-item-container {
   position: relative;
   margin: 6px;
-  background-color: #ebe8e4;
-  border-radius: 10px;
   margin: 2px;
   border-radius: 10px;
+  border-radius: 10px;
+  border-radius: 10px;
+  background-color: #ebe8e4;
 }
 
 .scroll-button-container {
@@ -21,22 +22,13 @@
   right: 5px;
 }
 
-.scroll-button {
-  margin: auto;
-  padding: 3px;
-  background-color: rgba(255, 255, 255, 0.75);
-  border-radius: 1000px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-}
-
 .scroll-list-container {
   display: flex;
-  max-height: 400px;
   flex-direction: row;
+  padding: 0 2%;
+  max-height: 400px;
   overflow-x: auto;
   scroll-behavior: smooth;
-  padding: 0 2%;
 }
 
 .scroll-list-container::-webkit-scrollbar {

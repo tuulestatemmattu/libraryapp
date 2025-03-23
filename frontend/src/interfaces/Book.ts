@@ -1,5 +1,7 @@
 import { FetchedTag } from './Tags';
 
+type BookStatus = 'available' | 'unavailable' | 'late' | 'borrowed' | 'ready' | 'reserved';
+
 interface FetchedBook {
   id: number;
   authors: string;
@@ -8,12 +10,17 @@ interface FetchedBook {
   publishedDate: string;
   description: string;
   location: string;
-  borrowedByMe: boolean;
   copies: number;
   copiesAvailable: number;
-  lastBorrowedDate: Date;
   imageLink?: string;
+
   tags: FetchedTag[];
+  borrowedByMe: boolean;
+  dueDate: string;
+  queuedByMe: boolean;
+  queueTime: number;
+  queueSize: number;
+  status: BookStatus;
 }
 
 interface CreatedBook {
@@ -35,4 +42,18 @@ interface CreatedBook {
   tags: FetchedTag[];
 }
 
-export type { CreatedBook, FetchedBook };
+interface AdminViewBook {
+  id: number;
+  title: string;
+  authors: string;
+  isbn: string;
+  publishedDate: string;
+  description: string;
+  location: string;
+  copies: number;
+  copiesAvailable: number;
+  imageLink?: string;
+  tags: FetchedTag[];
+}
+
+export type { BookStatus, CreatedBook, FetchedBook, AdminViewBook };

@@ -6,6 +6,7 @@ import TagIcon from '@mui/icons-material/Tag';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import { useTheme } from '@mui/material/styles';
 
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';
@@ -20,10 +21,15 @@ import IsbnPage from '../IsbnPage/IsbnPage';
 import '../../style.css';
 import './AddBookPage.css';
 
+interface AddBookPageProps {
+  borderColor?: string;
+}
+
 type ViewOpt = 'form' | 'scan' | 'isbn';
 type initialValues = CreatedBook | null;
 
-const AddBooksPage = () => {
+const AddBookPage = ({ borderColor }: AddBookPageProps) => {
+  const theme = useTheme();
   useRequireAdmin();
   const navigate = useNavigate();
   const location = useLocation();
@@ -124,9 +130,19 @@ const AddBooksPage = () => {
       </div>
       <div className={`book-content ${view === 'scan' ? 'scan' : ''}`}>
         <Content />
+        {view === 'scan' && (
+          <div
+            className="scan-overlay"
+            style={{
+              boxShadow: `0 0 0 5000px ${theme.palette.componentBack.dark}`,
+              borderRight: `2px solid ${borderColor || theme.palette.primary.light}`,
+              borderLeft: `2px solid ${borderColor || theme.palette.primary.light}`,
+            }}
+          ></div>
+        )}
       </div>
     </article>
   );
 };
 
-export default AddBooksPage;
+export default AddBookPage;

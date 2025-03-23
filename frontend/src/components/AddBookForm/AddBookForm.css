@@ -8,18 +8,8 @@ form {
   margin-left: 30px;
 }
 
-.addbookform-bottom-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 90%;
-  max-width: 700px;
-}
-
 .copies-input {
   position: relative;
-  top: 15px !important;
-  height: 40px !important;
 }
 
 .addbookform-buttons {

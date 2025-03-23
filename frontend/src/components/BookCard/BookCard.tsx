@@ -1,9 +1,6 @@
 import { useState } from 'react';
 
-import Bookmark from '@mui/icons-material/Bookmark';
-import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline';
-import HighlightOff from '@mui/icons-material/HighlightOff';
-import StarBorder from '@mui/icons-material/StarBorder';
+import { Chip, Paper } from '@mui/material';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
@@ -14,19 +11,19 @@ import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 
 import { FetchedBook } from '../../interfaces/Book';
-import BookCard from '../BookOverview/BookOverview';
+import BookOverview from '../BookOverview/BookOverview';
 
 import './BookCard.css';
 
-interface BookListItemProps {
+interface BookCardProps {
   book: FetchedBook;
   loading?: boolean;
 }
 
-const BookListItem = ({ book, loading }: BookListItemProps) => {
+const BookCard = ({ book, loading }: BookCardProps) => {
   const [open, setOpen] = useState(false);
 
-  const getPlaceholderSVG = ({ book }: BookListItemProps) => {
+  const getPlaceholderSVG = (book: FetchedBook) => {
     const firstLetter = book.title ? book.title.charAt(0).toUpperCase() : '?';
 
     const generateColorFromISBN = (isbn: string) => {
@@ -72,27 +69,14 @@ const BookListItem = ({ book, loading }: BookListItemProps) => {
           ) : (
             <CardMedia
               component="img"
-              src={book.imageLink ? book.imageLink : getPlaceholderSVG({ book })}
+              src={book.imageLink ? book.imageLink : getPlaceholderSVG(book)}
               alt="image"
               className="book-card-image"
             />
           )}
-          <div className="card-chip-positioner">
-            <div className="card-chip-container">
-              <Bookmark
-                className={`card-chip base ${book.borrowedByMe ? 'mine' : book.copiesAvailable ? 'available' : 'unavailable'}`}
-              />
-              <div className="card-chip-icon-container">
-                {book.borrowedByMe ? (
-                  <StarBorder className="card-chip icon mine" />
-                ) : book.copiesAvailable > 0 ? (
-                  <CheckCircleOutline className="card-chip icon available" />
-                ) : (
-                  <HighlightOff className="card-chip icon unavailable" />
-                )}
-              </div>
-            </div>
-          </div>
+          <Paper elevation={5}>
+            <Chip className="book-card-chip" size="small" color={book.status} label={book.status} />
+          </Paper>
         </Box>
         <CardContent className="book-card-content">
           {loading ? (
@@ -119,10 +103,12 @@ const BookListItem = ({ book, loading }: BookListItemProps) => {
           zIndex: 1500,
         }}
       >
-        <BookCard book={book} setOpen={setOpen} />
+        <>
+          <BookOverview book={book} setOpen={setOpen} />
+        </>
       </Modal>
     </Card>
   );
 };
 
-export default BookListItem;
+export default BookCard;

@@ -2,13 +2,13 @@ import TextField from '@mui/material/TextField';
 
 import './StyledInput.css';
 
-interface InputProps {
+interface StyledInputProps {
   label: string;
   value: string;
   setValue: (arg0: string) => void;
 }
 
-const StyledInput = ({ label, value, setValue }: InputProps) => {
+const StyledInput = ({ label, value, setValue }: StyledInputProps) => {
   return (
     <TextField
       className="styled-input"

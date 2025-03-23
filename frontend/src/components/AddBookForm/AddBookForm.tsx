@@ -1,15 +1,15 @@
-import React, { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { SelectChangeEvent } from '@mui/material/Select';
+import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';
 import { CreatedBook } from '../../interfaces/Book';
 import { FetchedTag } from '../../interfaces/Tags';
-import AddTag from '../AddTag/AddTag';
 import CopiesInput from '../CopiesInput/CopiesInput';
 import LocationSelect from '../LocationSelect/LocationSelect';
 import StyledInput from '../StyledInput/StyledInput';
@@ -19,12 +19,12 @@ import TagSelect from '../TagSelect/TagSelect';
 import '../../style.css';
 import './AddBookForm.css';
 
-interface BookFormProps {
+interface AddBookFormProps {
   onSubmit: (book: CreatedBook) => Promise<{ status: number }>;
   initialValues: CreatedBook | null;
 }
 
-const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
+const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
   const defaultLocation = useMainStore((state) => state.location);
   const tags = useMainStore((state) => state.tags);
 
@@ -132,12 +132,18 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
         <div className="tag-select-div">
           <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
         </div>
-        <div className="addbookform-bottom-row">
+        <Stack
+          direction="row"
+          spacing={2}
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ width: '90%', maxWidth: '700px' }}
+        >
           <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
           <div className="copies-input">
             <CopiesInput copies={copies} setCopies={setCopies} />
           </div>
-        </div>
+        </Stack>
         <ButtonGroup variant="contained" className="addbookform-buttons">
           <Button type="button" onClick={handleClear} variant="contained">
             Clear
@@ -147,9 +153,6 @@ const AddBookForm: React.FC<BookFormProps> = ({ onSubmit, initialValues }) => {
           </Button>
         </ButtonGroup>
       </form>
-      <div className="add-tag">
-        <AddTag />
-      </div>
     </article>
   );
 };

@@ -8,7 +8,7 @@
   "bracketSpacing": true,
   "arrowParens": "always",
   "endOfLine": "lf",
-  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-css-order"],
   "importOrder": [
     "^@mui/(.*)$",
     "^[./].*(?<!\\.(c|le|sc)ss)$",

@@ -31,15 +31,34 @@
 
 /* Specific for the scan (camera) view */
 .book-content.scan {
-  max-width: 100%;
-  width: auto;
-  height: auto;
+  position: relative;
+  margin-top: 7vw;
+  width: 90vw;
+  max-width: 800px;
+  height: 60vh;
+  max-height: 500px;
   overflow: hidden;
 }
 
 .book-content.scan video {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  max-width: 600px;
-  height: auto;
-  object-fit: contain;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scan-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.9;
+  background: transparent;
+  width: 30vw;
+  min-width: 200px;
+  max-width: 300px;
+  height: 100px;
+  pointer-events: none;
 }

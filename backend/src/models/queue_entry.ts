@@ -11,15 +11,15 @@ import { sequelize } from '../util/db';
 import Book from './book';
 import User from './user';
 
-class Borrow extends Model<InferAttributes<Borrow>, InferCreationAttributes<Borrow>> {
+class QueueEntry extends Model<InferAttributes<QueueEntry>, InferCreationAttributes<QueueEntry>> {
   declare id: CreationOptional<number>;
   declare bookId: ForeignKey<Book['id']>;
-  declare borrowedDate: Date;
   declare userGoogleId: ForeignKey<User['google_id']>;
-  declare active: boolean;
+  declare createdAt: CreationOptional<Date>;
+  declare updatedAt: CreationOptional<Date>;
 }
 
-Borrow.init(
+QueueEntry.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -34,20 +34,28 @@ Borrow.init(
       },
       allowNull: false,
     },
-    borrowedDate: {
+    userGoogleId: {
+      type: DataTypes.STRING,
+      references: {
+        model: User,
+        key: 'google_id',
+      },
+      allowNull: false,
+    },
+    createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
     },
-    active: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true,
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
     },
   },
   {
     sequelize,
     underscored: true,
-    modelName: 'borrow',
+    modelName: 'queue_entry',
   },
 );
 
-export default Borrow;
+export default QueueEntry;
