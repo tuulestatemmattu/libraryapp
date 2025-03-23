@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "nodemon src/index.ts",
-    "test": "NODE_ENV=test jest --detectOpenHandles --forceExit",
+    "test": "NODE_ENV=test jest --detectOpenHandles --forceExit --runInBand",
     "build": "NODE_ENV=production tsc",
     "lint": "eslint src tests",
     "prettier": "prettier --write src tests",

@@ -130,7 +130,7 @@ bookRouter.get('/', async (req, res) => {
   res.send(booksWithBorrowInfo);
 });
 
-bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
+bookRouter.post('/', requireAdmin, bookValidator, async (req, res) => {
   const userId = req.userId as string;
   const { title, authors, isbn, description, publishedDate, location, copies, tags } = req.body;
 
@@ -180,7 +180,7 @@ bookRouter.post('/', bookValidator, requireAdmin, async (req, res) => {
   }
 });
 
-bookRouter.put('/edit/:id', bookValidator, requireAdmin, async (req, res) => {
+bookRouter.put('/edit/:id', requireAdmin, bookValidator, async (req, res) => {
   const bookId = req.params.id;
   const userId = req.userId as string;
   const { title, authors, isbn, description, publishedDate, location, copies, imageLink, tags } =
@@ -312,7 +312,7 @@ bookRouter.get('/borrows', requireAdmin, async (req, res) => {
   res.json(borrows);
 });
 
-bookRouter.put('/queue/:id', async (req, res) => {
+bookRouter.put('/queue/:id', requireLogin, async (req, res) => {
   const userId = req.userId as string;
   const bookId = parseInt(req.params.id);
 
@@ -336,7 +336,7 @@ bookRouter.put('/queue/:id', async (req, res) => {
   res.json(await prepareBookForFrontend(book, userId));
 });
 
-bookRouter.delete('/queue/:id', async (req, res) => {
+bookRouter.delete('/queue/:id', requireLogin, async (req, res) => {
   const userId = req.userId as string;
   const bookId = parseInt(req.params.id);
 
