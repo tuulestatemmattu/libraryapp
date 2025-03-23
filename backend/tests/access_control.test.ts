@@ -19,10 +19,10 @@ describe('Access control', () => {
     });
 
     await api.get('/api/books').expect(401);
-    await api.post('/api/books/borrow/0').expect(401);
-    await api.post('/api/books/return/0').expect(401);
-    await api.put('/api/books/queue/0').expect(401);
-    await api.delete('/api/books/queue/0').expect(401);
+    await api.post('/api/books/0/borrow').expect(401);
+    await api.post('/api/books/0/return').expect(401);
+    await api.put('/api/books/0/reserve').expect(401);
+    await api.delete('/api/books/0/unreserve').expect(401);
     await api.get('/api/tags').expect(401);
   });
 
@@ -34,7 +34,7 @@ describe('Access control', () => {
     });
 
     await api.post('/api/books').expect(403);
-    await api.put('/api/books/edit/0').expect(403);
+    await api.put('/api/books/0').expect(403);
     await api.delete('/api/books/0').expect(403);
     await api.get('/api/books/borrows').expect(403);
 

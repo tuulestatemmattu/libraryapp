@@ -16,7 +16,7 @@ const getBooks = async () => {
 };
 
 const updateBook = async (book: AdminViewBook) => {
-  const response = await axios.put(`${baseUrl}/edit/${book.id}`, book);
+  const response = await axios.put(`${baseUrl}/${book.id}`, book);
   return response.data;
 };
 
@@ -24,18 +24,13 @@ const deleteBook = async (id: number) => {
   await axios.delete(`${baseUrl}/${id}`);
 };
 
-const getDetails = async (id: number) => {
-  const response = await axios.get(`${baseUrl}/${id}`);
-  return response.data;
-};
-
 const borrowBook = async (id: number) => {
-  const response = await axios.put(`${baseUrl}/borrow/${id}`);
+  const response = await axios.post(`${baseUrl}/${id}/borrow`);
   return response.data;
 };
 
 const returnBook = async (id: number) => {
-  const response = await axios.put(`${baseUrl}/return/${id}`);
+  const response = await axios.post(`${baseUrl}/${id}/return`);
   return response.data;
 };
 
@@ -45,12 +40,12 @@ const getBorrows = async () => {
 };
 
 const addBookToQueue = async (id: number) => {
-  const response = await axios.put(`${baseUrl}/queue/${id}`);
+  const response = await axios.post(`${baseUrl}/${id}/reserve`);
   return response.data;
 };
 
 const removeBookFromQueue = async (id: number) => {
-  const response = await axios.delete(`${baseUrl}/queue/${id}`);
+  const response = await axios.post(`${baseUrl}/${id}/unreserve`);
   return response.data;
 };
 
@@ -59,7 +54,6 @@ export {
   getBooks,
   updateBook,
   deleteBook,
-  getDetails,
   borrowBook,
   returnBook,
   getBorrows,

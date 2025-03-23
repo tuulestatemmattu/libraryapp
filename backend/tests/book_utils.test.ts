@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
-import { calculateWaitingTime, fetchBook } from '../src/controllers/book';
 import { Book, Borrow, ConnectionBookTag, QueueEntry, Tag } from '../src/models';
+import { calculateWaitingTime, fetchBook } from '../src/util/bookUtils';
 import { connectToDatabase, disconnectDatabase } from '../src/util/db';
 import { initUsersWithSampleUser } from './common';
 

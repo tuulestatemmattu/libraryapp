@@ -85,24 +85,23 @@ describe('GET /api/books', () => {
   });
 
   it('should return correct books with borrowedByMe info', async () => {
-    const response = await api.get('/api/books');
-    expect(response.status).toBe(200);
-    expect(response.body.length).toBe(2);
-
-    const books = response.body;
-    expect(books[0].borrowedByMe).toBe(true);
-    expect(books[1].borrowedByMe).toBe(false);
+    const response = await api.get('/api/books').expect(200);
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ title: sampleBook.title, borrowedByMe: true }),
+        expect.objectContaining({ title: sampleBook2.title, borrowedByMe: false }),
+      ]),
+    );
   });
 
   it('should return correct books with correct tags', async () => {
-    const response = await api.get('/api/books');
-    expect(response.status).toBe(200);
-    expect(response.body.length).toBe(2);
-
-    const books = response.body;
-    expect(books[0].tags.length).toBe(1);
-    expect(books[0].tags[0]).toMatchObject({ name: sampleTag.name });
-    expect(books[1].tags.length).toBe(0);
+    const response = await api.get('/api/books').expect(200);
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ tags: [expect.objectContaining({ name: sampleTag.name })] }),
+        expect.objectContaining({ tags: [] }),
+      ]),
+    );
   });
 });
 
@@ -148,7 +147,7 @@ describe('POST /api/books', () => {
   });
 });
 
-describe('PUT /api/books/borrow/:id', () => {
+describe('POST /api/books/:id/borrow', () => {
   beforeEach(async () => {
     await Borrow.destroy({ where: {} });
     await Book.destroy({ where: {} });
@@ -156,7 +155,7 @@ describe('PUT /api/books/borrow/:id', () => {
 
   it('should borrow a book and return the updated book with dueDate', async () => {
     const book = await Book.create(sampleBook);
-    const response = await api.put(`/api/books/borrow/${book?.id}`);
+    const response = await api.post(`/api/books/${book?.id}/borrow`);
     expect(response.status).toBe(200);
 
     const updatedBook = await Book.findOne({ where: { id: book?.id } });
@@ -177,29 +176,34 @@ describe('PUT /api/books/borrow/:id', () => {
       copiesAvailable: 0,
     });
 
-    const response = await api.put(`/api/books/borrow/${book?.id}`);
+    const response = await api.post(`/api/books/${book?.id}/borrow`);
     expect(response.status).toBe(403);
     expect(response.body.message).toBe('book is not available');
   });
 
   it('should return 404 if the book does not exist', async () => {
-    const response = await api.put('/api/books/borrow/999');
+    const response = await api.post('/api/books/999/borrow');
     expect(response.status).toBe(404);
     expect(response.body.message).toBe('book does not exist');
   });
 });
 
-describe('PUT /api/books/return/:id', () => {
+describe('POST /api/books/:id/return', () => {
   beforeEach(async () => {
     await Borrow.destroy({ where: {} });
     await Book.destroy({ where: {} });
   });
 
   it('should return a book and update its status', async () => {
-    const bookId = (await Book.create(sampleBook)).id;
-    await api.put(`/api/books/borrow/${bookId}`);
+    const bookId = (await Book.create({ ...sampleBook, copiesAvailable: 0 })).id;
+    await Borrow.create({
+      bookId,
+      borrowedDate: new Date(),
+      userGoogleId: 'sample_google_id',
+      active: true,
+    });
 
-    const response = await api.put(`/api/books/return/${bookId}`);
+    const response = await api.post(`/api/books/${bookId}/return`);
     expect(response.status).toBe(200);
 
     const updatedBook = await Book.findOne({ where: { id: bookId } });
@@ -207,7 +211,7 @@ describe('PUT /api/books/return/:id', () => {
   });
 
   it('should return 404 if the book does not exist', async () => {
-    const response = await api.put('/api/books/return/999');
+    const response = await api.post('/api/books/999/return');
     expect(response.status).toBe(404);
     expect(response.body.message).toBe('book does not exist');
   });
