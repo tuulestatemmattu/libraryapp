@@ -11,7 +11,9 @@ jobs:
     steps:
       - name: Send POST request to google.com
         run: |
-          curl \ 
-            -X POST "${{ secrets.STAGING_CRON_URL }}" \
+          response=$(curl -s -w "\nHTTP_CODE:%{http_code}" "${{ secrets.STAGING_CRON_URL }}" \
+            -X POST \
             -H "Content-Type: application/json" \
-            -d "{\"secret\": \"${{ secrets.CRON_SECRET }}\"}"
+            -d "{\"secret\": \"${{ secrets.CRON_SECRET }}\"}")
+          echo "Response:"
+          echo "$response"
