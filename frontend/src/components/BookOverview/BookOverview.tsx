@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
 
 import ClearIcon from '@mui/icons-material/Clear';
 import { useTheme } from '@mui/material';
@@ -26,7 +27,9 @@ interface BookOverviewProps {
 
 const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
   const addOrUpdateBook = useMainStore((state) => state.addOrUpdateBook);
+  const profile = useMainStore((state) => state.profile);
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const returnDate = new Date(book.dueDate);
   const dates = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -74,6 +77,10 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
     } catch (error) {
       console.error('Failed to remove the book from the queue:', error);
     }
+  };
+
+  const handleEditButtonPress = () => {
+    navigate(`/admin?view=books&bookId=${book.id}`);
   };
 
   const getPlaceholderSVG = (book: FetchedBook) => {
@@ -230,8 +237,19 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
             {book.description}
           </Typography>
         </CardContent>
+        {profile && profile.admin && (
+          <CardActions>
+            <Button
+              variant="text"
+              className="edit-button"
+              size="small"
+              onClick={handleEditButtonPress}
+            >
+              Edit this book
+            </Button>
+          </CardActions>
+        )}
       </div>
-
       {/* Bottom: Action Buttons */}
     </Card>
   );
