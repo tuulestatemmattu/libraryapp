@@ -13,6 +13,7 @@ const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GOOGLE_OAUTH_REDIRECT_URI = process.env.GOOGLE_OAUTH_REDIRECT_URI;
 
 const JWT_SECRET = process.env.JWT_SECRET || '';
+const CRON_SECRET = process.env.CRON_SECRET || '';
 
 const FRONTEND_URL = process.env.FRONTEND_URL || '';
 
@@ -25,5 +26,6 @@ export {
   GOOGLE_CLIENT_SECRET,
   GOOGLE_OAUTH_REDIRECT_URI,
   JWT_SECRET,
+  CRON_SECRET,
   FRONTEND_URL,
 };
