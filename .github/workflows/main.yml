@@ -4,6 +4,7 @@ on:
   push:
     branches:
     - '**'
+  workflow_dispatch:
 
 jobs:
   frontend:
@@ -95,6 +96,7 @@ jobs:
         HD_GOOGLE_CLIENT_SECRET: ${{ secrets.STAGING_GOOGLE_CLIENT_SECRET }}
         HD_GOOGLE_OAUTH_REDIRECT_URI: ${{ secrets.STAGING_GOOGLE_OAUTH_REDIRECT_URI }}
         HD_JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        HD_CRON_SECRET: ${{ secrets.CRON_SECRET }}
   
   deploy-production:
     needs: [frontend, backend]
@@ -124,3 +126,4 @@ jobs:
         HD_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
         HD_GOOGLE_OAUTH_REDIRECT_URI: ${{ secrets.GOOGLE_OAUTH_REDIRECT_URI }}
         HD_JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        HD_CRON_SECRET: ${{ secrets.CRON_SECRET }}
