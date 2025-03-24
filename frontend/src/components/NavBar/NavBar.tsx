@@ -6,7 +6,6 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
@@ -43,25 +42,28 @@ const NavBar = () => {
 
   return (
     <div>
-      <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-        <Box>
-          <AppBar>
-            <Toolbar style={{ justifyContent: 'space-between' }}>
-              <Box className="leftside-items">
-                <Typography
-                  variant="h6"
-                  component="div"
-                  className="typmenuicon"
-                  onClick={() => navigate('/')}
-                >
-                  <MenuBookIcon className="typemenuicon" />
-                </Typography>
-                {profile.admin && (
-                  <Button color="inherit" onClick={handleAdminClick} className="admin-button">
-                    Admin Panel
-                  </Button>
-                )}
-              </Box>
+      <Box>
+        <AppBar>
+          <Toolbar>
+            <Box
+              className="leftside-items"
+              sx={{ width: '20%', display: 'flex', justifyContent: 'flex-start' }}
+            >
+              <Typography
+                variant="h6"
+                component="div"
+                className="typmenuicon"
+                onClick={() => navigate('/')}
+              >
+                <MenuBookIcon className="typemenuicon" />
+              </Typography>
+              {profile.admin && (
+                <Button color="inherit" onClick={handleAdminClick} className="admin-button">
+                  Admin Panel
+                </Button>
+              )}
+            </Box>
+            <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
               <Select
                 className="location-box"
                 value={location}
@@ -88,11 +90,13 @@ const NavBar = () => {
                   </MenuItem>
                 ))}
               </Select>
+            </Box>
+            <Box sx={{ width: '20%', display: 'flex', justifyContent: 'flex-end' }}>
               <ProfilePicture />
-            </Toolbar>
-          </AppBar>
-        </Box>
-      </Stack>
+            </Box>
+          </Toolbar>
+        </AppBar>
+      </Box>
     </div>
   );
 };
