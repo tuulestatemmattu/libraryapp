@@ -2,7 +2,7 @@ import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 
 import ClearIcon from '@mui/icons-material/Clear';
-import { useTheme } from '@mui/material';
+import { Stack, useTheme } from '@mui/material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -130,45 +130,8 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
                 alt="book cover"
               />
             </Paper>
-            <CardActions sx={{ padding: 0 }}>
-              {book.borrowedByMe ? (
-                <Button
-                  variant="contained"
-                  className="book-overview-action-button"
-                  onClick={() => handleReturn(book.id)}
-                >
-                  Return
-                </Button>
-              ) : (book.copiesAvailable > 0 && book.queueSize === 0) || book.queueTime === 0 ? (
-                <Button
-                  variant="contained"
-                  className="book-overview-action-button"
-                  onClick={() => handleBorrow(book.id)}
-                >
-                  Borrow
-                </Button>
-              ) : !book.queuedByMe ? (
-                <Button
-                  variant="contained"
-                  className="book-overview-action-button"
-                  onClick={() => handleAddToQueue(book.id)}
-                >
-                  Reserve
-                </Button>
-              ) : book.queuedByMe ? (
-                <Button
-                  variant="contained"
-                  className="book-overview-action-button"
-                  onClick={() => handleRemoveFromQueue(book.id)}
-                >
-                  Unreserve
-                </Button>
-              ) : (
-                <> </>
-              )}
-            </CardActions>
           </div>
-          <CardContent>
+          <CardContent sx={{ py: 0 }}>
             <div className="book-overview-info-container">
               <Typography
                 gutterBottom
@@ -237,20 +200,59 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
             {book.description}
           </Typography>
         </CardContent>
-        {profile && profile.admin && (
-          <CardActions>
-            <Button
-              variant="text"
-              className="edit-button"
-              size="small"
-              onClick={handleEditButtonPress}
-            >
-              Edit this book
-            </Button>
+
+        {/* Bottom: Action Buttons */}
+        <Stack direction="row-reverse" sx={{ pt: 1 }}>
+          <CardActions sx={{ pr: 1, pl: 1 }}>
+            {book.borrowedByMe ? (
+              <Button
+                variant="contained"
+                className="book-overview-action-button"
+                onClick={() => handleReturn(book.id)}
+              >
+                Return
+              </Button>
+            ) : (book.copiesAvailable > 0 && book.queueSize === 0) || book.queueTime === 0 ? (
+              <Button
+                variant="contained"
+                className="book-overview-action-button"
+                onClick={() => handleBorrow(book.id)}
+              >
+                Borrow
+              </Button>
+            ) : !book.queuedByMe ? (
+              <Button
+                variant="contained"
+                className="book-overview-action-button"
+                onClick={() => handleAddToQueue(book.id)}
+              >
+                Reserve
+              </Button>
+            ) : book.queuedByMe ? (
+              <Button
+                variant="contained"
+                className="book-overview-action-button"
+                onClick={() => handleRemoveFromQueue(book.id)}
+              >
+                Unreserve
+              </Button>
+            ) : (
+              <> </>
+            )}
           </CardActions>
-        )}
+          {profile && profile.admin && (
+            <CardActions sx={{ pr: 1, pl: 1 }}>
+              <Button
+                variant="contained"
+                className="book-overview-action-button"
+                onClick={handleEditButtonPress}
+              >
+                Edit this book
+              </Button>
+            </CardActions>
+          )}
+        </Stack>
       </div>
-      {/* Bottom: Action Buttons */}
     </Card>
   );
 };
