@@ -63,9 +63,9 @@ const AdminPage = () => {
           </Button>
         </ButtonGroup>
       </div>
-      <div>
+      <article>
         <Content />
-      </div>
+      </article>
     </article>
   );
 };

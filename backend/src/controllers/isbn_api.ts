@@ -1,7 +1,7 @@
 import axios from 'axios';
 import express from 'express';
 
-import { requireLogin } from '../util/middleware/requireLogin';
+import { requireAdmin } from '../util/middleware/requireAdmin';
 
 interface googleApiResponse {
   totalItems: string;
@@ -24,7 +24,7 @@ interface googleApiResponse {
 }
 
 const isbnRouter = express.Router();
-isbnRouter.use(requireLogin);
+isbnRouter.use(requireAdmin);
 
 isbnRouter.post('/', async (req, res) => {
   const { isbn } = req.body;

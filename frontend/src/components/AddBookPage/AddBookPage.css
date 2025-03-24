@@ -55,9 +55,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
   opacity: 0.9;
-  box-shadow: 0 0 0 5000px rgba(0, 0, 0, 0.5);
-  border-right: 2px solid white;
-  border-left: 2px solid white;
   background: transparent;
   width: 30vw;
   min-width: 200px;

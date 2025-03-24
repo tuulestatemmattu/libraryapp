@@ -210,7 +210,7 @@ const BookTable = () => {
   };
 
   return (
-    <div>
+    <article>
       <Box sx={{ textAlign: 'center' }}>
         <h1>Books</h1>
       </Box>
@@ -252,7 +252,7 @@ const BookTable = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </article>
   );
 };
 

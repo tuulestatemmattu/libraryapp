@@ -31,7 +31,6 @@ app.use(tokenExtractor);
 
 app.use('/api/books', bookRouter);
 app.use('/api/isbn', isbnRouter);
-app.use('/api/books', bookRouter);
 app.use('/api/tags', tagRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/users', userRouter);
