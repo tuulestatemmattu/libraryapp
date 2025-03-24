@@ -6,7 +6,6 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
@@ -43,11 +42,10 @@ const NavBar = () => {
 
   return (
     <div>
-      <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
         <Box>
           <AppBar>
-            <Toolbar style={{ justifyContent: 'space-between' }}>
-              <Box className="leftside-items">
+            <Toolbar>
+              <Box className="leftside-items" sx={{ width: '20%', display: 'flex', justifyContent: 'flex-start' }}>
                 <Typography
                   variant="h6"
                   component="div"
@@ -62,37 +60,40 @@ const NavBar = () => {
                   </Button>
                 )}
               </Box>
-              <Select
-                className="location-box"
-                value={location}
-                onChange={({ target }) => setLocation(target.value)}
-                sx={{
-                  boxShadow: 'none',
-                  '.MuiOutlinedInput-notchedOutline': { border: 0 },
-                  '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                    border: 0,
-                  },
-                  '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    border: 0,
-                  },
-                }}
-                MenuProps={MenuProps}
-              >
-                {officeLocations.map((officeLocation) => (
-                  <MenuItem
-                    key={officeLocation}
-                    value={officeLocation}
-                    style={{ letterSpacing: '3px', fontWeight: '666' }}
-                  >
-                    {officeLocation}
-                  </MenuItem>
-                ))}
-              </Select>
-              <ProfilePicture />
+              <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+                <Select
+                  className="location-box"
+                  value={location}
+                  onChange={({ target }) => setLocation(target.value)}
+                  sx={{
+                    boxShadow: 'none',
+                    '.MuiOutlinedInput-notchedOutline': { border: 0 },
+                    '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                      border: 0,
+                    },
+                    '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                      border: 0,
+                    },
+                  }}
+                  MenuProps={MenuProps}
+                >
+                  {officeLocations.map((officeLocation) => (
+                    <MenuItem
+                      key={officeLocation}
+                      value={officeLocation}
+                      style={{ letterSpacing: '3px', fontWeight: '666' }}
+                    >
+                      {officeLocation}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Box>
+              <Box sx={{ width: '20%', display: 'flex', justifyContent: 'flex-end'}}>
+                <ProfilePicture />
+              </Box>
             </Toolbar>
           </AppBar>
         </Box>
-      </Stack>
     </div>
   );
 };
