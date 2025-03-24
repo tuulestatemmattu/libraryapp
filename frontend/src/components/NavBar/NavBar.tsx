@@ -42,58 +42,61 @@ const NavBar = () => {
 
   return (
     <div>
-        <Box>
-          <AppBar>
-            <Toolbar>
-              <Box className="leftside-items" sx={{ width: '20%', display: 'flex', justifyContent: 'flex-start' }}>
-                <Typography
-                  variant="h6"
-                  component="div"
-                  className="typmenuicon"
-                  onClick={() => navigate('/')}
-                >
-                  <MenuBookIcon className="typemenuicon" />
-                </Typography>
-                {profile.admin && (
-                  <Button color="inherit" onClick={handleAdminClick} className="admin-button">
-                    Admin Panel
-                  </Button>
-                )}
-              </Box>
-              <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-                <Select
-                  className="location-box"
-                  value={location}
-                  onChange={({ target }) => setLocation(target.value)}
-                  sx={{
-                    boxShadow: 'none',
-                    '.MuiOutlinedInput-notchedOutline': { border: 0 },
-                    '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                      border: 0,
-                    },
-                    '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      border: 0,
-                    },
-                  }}
-                  MenuProps={MenuProps}
-                >
-                  {officeLocations.map((officeLocation) => (
-                    <MenuItem
-                      key={officeLocation}
-                      value={officeLocation}
-                      style={{ letterSpacing: '3px', fontWeight: '666' }}
-                    >
-                      {officeLocation}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Box>
-              <Box sx={{ width: '20%', display: 'flex', justifyContent: 'flex-end'}}>
-                <ProfilePicture />
-              </Box>
-            </Toolbar>
-          </AppBar>
-        </Box>
+      <Box>
+        <AppBar>
+          <Toolbar>
+            <Box
+              className="leftside-items"
+              sx={{ width: '20%', display: 'flex', justifyContent: 'flex-start' }}
+            >
+              <Typography
+                variant="h6"
+                component="div"
+                className="typmenuicon"
+                onClick={() => navigate('/')}
+              >
+                <MenuBookIcon className="typemenuicon" />
+              </Typography>
+              {profile.admin && (
+                <Button color="inherit" onClick={handleAdminClick} className="admin-button">
+                  Admin Panel
+                </Button>
+              )}
+            </Box>
+            <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+              <Select
+                className="location-box"
+                value={location}
+                onChange={({ target }) => setLocation(target.value)}
+                sx={{
+                  boxShadow: 'none',
+                  '.MuiOutlinedInput-notchedOutline': { border: 0 },
+                  '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                    border: 0,
+                  },
+                  '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    border: 0,
+                  },
+                }}
+                MenuProps={MenuProps}
+              >
+                {officeLocations.map((officeLocation) => (
+                  <MenuItem
+                    key={officeLocation}
+                    value={officeLocation}
+                    style={{ letterSpacing: '3px', fontWeight: '666' }}
+                  >
+                    {officeLocation}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Box>
+            <Box sx={{ width: '20%', display: 'flex', justifyContent: 'flex-end' }}>
+              <ProfilePicture />
+            </Box>
+          </Toolbar>
+        </AppBar>
+      </Box>
     </div>
   );
 };
