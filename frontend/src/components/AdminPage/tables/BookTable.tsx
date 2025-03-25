@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import EditIcon from '@mui/icons-material/Edit';
@@ -37,6 +37,9 @@ import { deleteBook, updateBook } from '../../../services/book';
 import SelectTags from './SelectTags';
 
 const BookTable = () => {
+  const queryParams = new URLSearchParams(location.search);
+  const bookIdParam = Number(queryParams.get('bookId'));
+
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
   const [deleteId, setDeleteId] = React.useState<GridRowId | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
@@ -63,6 +66,15 @@ const BookTable = () => {
 
   const rows = books.map((book) => toAdminViewBook(book));
 
+  useEffect(() => {
+    if (bookIdParam && rows.map((book) => book.id).includes(bookIdParam)) {
+      setRowModesModel({
+        ...rowModesModel,
+        [bookIdParam]: { mode: GridRowModes.Edit, fieldToFocus: 'title' },
+      });
+    }
+  }, []);
+
   const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
       event.defaultMuiPrevented = true;
@@ -70,7 +82,10 @@ const BookTable = () => {
   };
 
   const handleEditClick = (id: GridRowId) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+    setRowModesModel({
+      ...rowModesModel,
+      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'title' },
+    });
   };
 
   const handleSaveClick = (id: GridRowId) => () => {
@@ -203,6 +218,7 @@ const BookTable = () => {
         <DataGrid
           rows={rows}
           columns={columns}
+          editMode="row"
           getRowHeight={() => 'auto'}
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[5, 10]}
@@ -211,7 +227,14 @@ const BookTable = () => {
           onRowEditStop={handleRowEditStop}
           processRowUpdate={processRowUpdate}
           onProcessRowUpdateError={processRowError}
-          sx={{ border: 1 }}
+          sx={{
+            '& .MuiDataGrid-row.MuiDataGrid-row--editing': {
+              '& .MuiDataGrid-cell': {
+                backgroundColor: 'rgba(255, 235, 60, 0.5) !important',
+              },
+            },
+            border: 1,
+          }}
           slots={{
             toolbar: CustomToolBar,
           }}

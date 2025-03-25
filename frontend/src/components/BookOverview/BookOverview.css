@@ -31,7 +31,6 @@
   position: relative;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 5%;
 }
 
 .overview-topleft-container {
@@ -78,12 +77,22 @@
 }
 
 .overview-description-container {
-  max-height: 25vh;
+  max-height: 20vh;
   overflow-y: scroll !important;
 }
 
 .overview-description {
   font-size: 2.5vw !important;
+}
+
+.edit-button {
+  align-self: center;
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+  width: 50% !important;
+  height: 5vw !important;
+  max-height: 56px;
+  font-size: 1.8vw !important;
 }
 
 @media screen and (min-width: 800px) {
