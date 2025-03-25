@@ -41,17 +41,15 @@ export const sendPrivateMessage = async (email: string, message: string) => {
 
   const slackUserId = slackUserIdResponse.data.user.id;
 
-  const slackConversationIdResponse = (
-    await axios.post<slackConversationOpenResponse>(
-      'https://slack.com/api/conversations.open',
-      { users: slackUserId },
-      {
-        headers: {
-          Authorization: `Bearer ${SLACK_BOT_TOKEN}`,
-          'content-type': 'application/x-www-form-urlencoded',
-        },
+  const slackConversationIdResponse = await axios.post<slackConversationOpenResponse>(
+    'https://slack.com/api/conversations.open',
+    { users: slackUserId },
+    {
+      headers: {
+        Authorization: `Bearer ${SLACK_BOT_TOKEN}`,
+        'content-type': 'application/x-www-form-urlencoded',
       },
-    )
+    },
   );
 
   if (!slackConversationIdResponse.data.ok) {
@@ -75,12 +73,11 @@ export const sendPrivateMessage = async (email: string, message: string) => {
   }
 };
 
-export const sendNotificationToChannel = async (message:string) => {
-  const slackMessageResponse = await axios.post<slackMessageResponse>(
-    SLACK_WEBHOOK_URL,
-    { text: message }
-  );
+export const sendNotificationToChannel = async (message: string) => {
+  const slackMessageResponse = await axios.post<slackMessageResponse>(SLACK_WEBHOOK_URL, {
+    text: message,
+  });
   if (slackMessageResponse.status != 200) {
     throw new Error(`Slack error: ${slackMessageResponse.statusText}`);
   }
-}
+};
