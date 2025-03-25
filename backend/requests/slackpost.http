@@ -1,0 +1,25 @@
+curl -X POST "https://slack.com/api/users.lookupByEmail" \
+  -H "Authorization: Bearer SLACK_BOT_TOKEN" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  --data "email=leevi.suotula@gmail.com"
+
+
+###
+POST https://slack.com/api/conversations.open
+Authorization: Bearer SLACK_BOT_TOKEN
+Content-Type: application/json
+
+{
+    "users": ["U08JY3F0PPF"]
+}
+
+###
+POST https://slack.com/api/chat.postMessage
+Authorization: Bearer SLACK_BOT_TOKEN
+Content-type: application/json
+
+{
+  "channel": "D08JLU9A0RM",
+  "text": "Hello world :tada:"
+}
+###
