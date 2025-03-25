@@ -3,12 +3,16 @@ import axios from 'axios';
 import { SLACK_BOT_TOKEN } from './config';
 
 interface slackUserResponse {
+  ok: boolean;
+  error: string;
   user: {
     id: string;
   };
 }
 
 interface slackConversationOpenResponse {
+  ok: boolean;
+  error: string;
   channel: {
     id: string;
   };
@@ -16,6 +20,7 @@ interface slackConversationOpenResponse {
 
 interface slackMessageResponse {
   ok: boolean;
+  error: string;
 }
 
 const sendPrivateMessage = async (email: string, message: string) => {
@@ -30,9 +35,13 @@ const sendPrivateMessage = async (email: string, message: string) => {
     },
   );
 
+  if (!slackUserIdResponse.data.ok) {
+    throw new Error(`Slack error: ${slackUserIdResponse.data.error}`);
+  }
+
   const slackUserId = slackUserIdResponse.data.user.id;
 
-  const slackConversationId = (
+  const slackConversationIdResponse = (
     await axios.post<slackConversationOpenResponse>(
       'https://slack.com/api/conversations.open',
       { users: slackUserId },
@@ -43,9 +52,15 @@ const sendPrivateMessage = async (email: string, message: string) => {
         },
       },
     )
-  ).data.channel.id;
+  );
 
-  const _slackMessageResponse = await axios.post<slackMessageResponse>(
+  if (!slackConversationIdResponse.data.ok) {
+    throw new Error(`Slack error: ${slackConversationIdResponse.data.error}`);
+  }
+
+  const slackConversationId = slackConversationIdResponse.data.channel.id;
+
+  const slackMessageResponse = await axios.post<slackMessageResponse>(
     'https://slack.com/api/chat.postMessage',
     { channel: slackConversationId, text: message },
     {
@@ -55,6 +70,9 @@ const sendPrivateMessage = async (email: string, message: string) => {
       },
     },
   );
+  if (!slackMessageResponse.data.ok) {
+    throw new Error(`Slack error: ${slackMessageResponse.data.error}`);
+  }
 };
 
 export default sendPrivateMessage;
