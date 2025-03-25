@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { SLACK_BOT_TOKEN } from './config';
+import { SLACK_BOT_TOKEN, SLACK_WEBHOOK_URL } from './config';
 
 interface slackUserResponse {
   ok: boolean;
@@ -23,7 +23,7 @@ interface slackMessageResponse {
   error: string;
 }
 
-const sendPrivateMessage = async (email: string, message: string) => {
+export const sendPrivateMessage = async (email: string, message: string) => {
   const slackUserIdResponse = await axios.post<slackUserResponse>(
     'https://slack.com/api/users.lookupByEmail',
     { email: email },
@@ -75,4 +75,12 @@ const sendPrivateMessage = async (email: string, message: string) => {
   }
 };
 
-export default sendPrivateMessage;
+export const sendNotificationToChannel = async (message:string) => {
+  const slackMessageResponse = await axios.post<slackMessageResponse>(
+    SLACK_WEBHOOK_URL,
+    { text: message }
+  );
+  if (slackMessageResponse.status != 200) {
+    throw new Error(`Slack error: ${slackMessageResponse.statusText}`);
+  }
+}
