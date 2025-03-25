@@ -16,3 +16,4 @@ Definition of done can be found [here](documents/definition_of_done.md)
 * [Staging environment](https://ohtu-library-staging-c43b89853868.herokuapp.com/)
 * [Services & commands](documents/development_environment.md)
 * [Setting up a development environment](documents/development_environment_setup.md)
+
