@@ -21,11 +21,12 @@ router.get('/resetdb', async (_req, res) => {
 
 router.get('/login', async (_req, res) => {
   res.cookie(
-    'user',
+    'profile',
     JSON.stringify({
       name: 'Sample Name',
       email: 'sample_email@example.com',
       picture: 'sample_picture_url',
+      admin: true,
     }),
   );
 
