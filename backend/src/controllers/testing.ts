@@ -30,7 +30,7 @@ router.get('/login', async (_req, res) => {
     }),
   );
 
-  const token = jwt.sign({ id: 'sample_google_id' }, JWT_SECRET);
+  const token = jwt.sign({ id: 'sample_google_id', admin: true }, JWT_SECRET);
   res.cookie('token', token);
 
   res.status(200).end();
