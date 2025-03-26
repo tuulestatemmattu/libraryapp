@@ -3,7 +3,7 @@ import { Op } from 'sequelize';
 
 import { Book, Borrow, User } from '../models';
 import { calculateDueDate } from '../util/bookUtils';
-import { CRON_SECRET } from '../util/config';
+import { CRON_SECRET, LOAN_PERIOD } from '../util/config';
 import { sendPrivateMessage } from '../util/slackbot';
 
 const router = express.Router();
@@ -15,9 +15,11 @@ router.post('/', async (req, res) => {
     return;
   }
 
-  const baseDate = new Date();
-  const firstNotificationLimit = new Date(baseDate.setDate(baseDate.getDate() + 30 - 7));
-  const secondNotificationLimit = new Date(baseDate.setDate(baseDate.getDate() + 30 - 1));
+  const dateNow = new Date();
+  const firstNotificationLimit = new Date(dateNow);
+  const secondNotificationLimit = new Date(dateNow);
+  firstNotificationLimit.setDate(dateNow.getDate() - LOAN_PERIOD + 7);
+  secondNotificationLimit.setDate(dateNow.getDate() - LOAN_PERIOD + 1);
 
   const where = {
     active: true,
@@ -60,7 +62,7 @@ router.post('/', async (req, res) => {
     const dueDate = calculateDueDate(borrow.borrowedDate).toDateString();
     await sendPrivateMessage(
       borrow.user.email,
-      `Your book ${borrow.book.title} by ${borrow.book.authors} is due ${dueDate}`,
+      `Your book _${borrow.book.title}_ by _${borrow.book.authors}_ is due ${dueDate}`,
     );
   }
 

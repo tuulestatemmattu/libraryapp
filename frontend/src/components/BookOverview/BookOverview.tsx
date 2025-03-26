@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 
 import ClearIcon from '@mui/icons-material/Clear';
@@ -33,7 +32,7 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
 
   const returnDate = new Date(book.dueDate);
   const dates = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const returnDateString = `${dates[returnDate.getDay()]} ${returnDate.getDate()}.${returnDate.getMonth() + 1}.  (${moment(returnDate).diff(new Date(), 'days')} days left)`;
+  const returnDateString = `${dates[returnDate.getDay()]} ${returnDate.getDate()}.${returnDate.getMonth() + 1}.  (${book.daysLeft} days left)`;
 
   const handleClose = () => {
     setOpen(false);

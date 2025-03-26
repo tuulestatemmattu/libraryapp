@@ -1,7 +1,13 @@
 import express from 'express';
 
 import { Book, Borrow, QueueEntry, Tag, User } from '../models';
-import { fetchBook, fetchBooks, prepareBookForFrontend } from '../util/bookUtils';
+import {
+  calculateDaysLeft,
+  calculateDueDate,
+  fetchBook,
+  fetchBooks,
+  prepareBookForFrontend,
+} from '../util/bookUtils';
 import { requireAdmin } from '../util/middleware/requireAdmin';
 import { requireLogin } from '../util/middleware/requireLogin';
 import bookValidator from '../util/validation';
@@ -48,8 +54,7 @@ bookRouter.post('/', requireAdmin, bookValidator, async (req, res) => {
     await book.setTags(tag_ids);
 
     const fetchedBook = await fetchBook(book.id);
-    const newBookWithBorrowInfo = await prepareBookForFrontend(fetchedBook, userId);
-    res.status(201).send({ ...newBookWithBorrowInfo, tags });
+    res.status(201).send(prepareBookForFrontend(fetchedBook, userId));
   } catch (error: unknown) {
     if (error instanceof Error) {
       res.status(500).send({ message: error.message });
@@ -93,7 +98,7 @@ bookRouter.put('/:id', requireAdmin, bookValidator, async (req, res) => {
   await bookToEdit.setTags(tag_ids);
   await bookToEdit.save();
 
-  const editedBook = await prepareBookForFrontend(bookToEdit, userId);
+  const editedBook = prepareBookForFrontend(bookToEdit, userId);
   res.status(201).send({ ...editedBook, tags });
 });
 
@@ -128,7 +133,7 @@ bookRouter.post('/:id/borrow', async (req, res) => {
       await QueueEntry.destroy({ where: { bookId: book.id, userGoogleId: userId } });
       await book.save();
       await book.reload();
-      const borrowedBook = await prepareBookForFrontend(book, userId);
+      const borrowedBook = prepareBookForFrontend(book, userId);
       res.json(borrowedBook);
     } else {
       res.status(403).send({ message: 'book is not available' });
@@ -187,7 +192,7 @@ bookRouter.post('/:id/reserve', async (req, res) => {
   });
 
   const book = (await fetchBook(bookId)) as Book;
-  res.json(await prepareBookForFrontend(book, userId));
+  res.json(prepareBookForFrontend(book, userId));
 });
 
 bookRouter.post('/:id/unreserve', async (req, res) => {
@@ -203,7 +208,7 @@ bookRouter.post('/:id/unreserve', async (req, res) => {
   }
 
   const book = (await fetchBook(bookId)) as Book;
-  res.json(await prepareBookForFrontend(book, userId));
+  res.json(prepareBookForFrontend(book, userId));
 });
 
 bookRouter.get('/borrows', requireAdmin, async (req, res) => {
@@ -220,7 +225,13 @@ bookRouter.get('/borrows', requireAdmin, async (req, res) => {
       },
     ],
   });
-  res.json(borrows);
+
+  const newBorrows = borrows.map((borrow: Borrow) => ({
+    ...borrow.dataValues,
+    dueDate: calculateDueDate(borrow.borrowedDate),
+    daysLeft: calculateDaysLeft(borrow.borrowedDate),
+  }));
+  res.json(newBorrows);
 });
 
 export default bookRouter;

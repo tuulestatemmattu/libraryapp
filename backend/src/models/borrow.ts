@@ -40,7 +40,7 @@ Borrow.init(
       allowNull: false,
     },
     borrowedDate: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
     },
     active: {

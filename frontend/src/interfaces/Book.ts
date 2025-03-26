@@ -17,6 +17,7 @@ interface FetchedBook {
   tags: FetchedTag[];
   borrowedByMe: boolean;
   dueDate: string;
+  daysLeft: number;
   queuedByMe: boolean;
   queueTime: number;
   queueSize: number;
