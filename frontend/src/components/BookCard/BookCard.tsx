@@ -10,7 +10,7 @@ import Modal from '@mui/material/Modal';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 
-import { FetchedBook } from '../../interfaces/Book';
+import { BookStatus, FetchedBook } from '../../interfaces/Book';
 import BookOverview from '../BookOverview/BookOverview';
 
 import './BookCard.css';
@@ -53,6 +53,15 @@ const BookCard = ({ book, loading }: BookCardProps) => {
       </svg>`;
   };
 
+  const getStatusChipLabel = (book: FetchedBook): BookStatus | string => {
+    if (book.status === 'borrowed') {
+      const daysLeft = book.daysLeft.toString() + ' day' + (book.daysLeft === 1 ? '' : 's');
+      return daysLeft;
+    } else {
+      return book.status;
+    }
+  };
+
   return (
     <Card className="book-card">
       <CardActionArea className="book-card-action" onClick={() => setOpen(true)}>
@@ -75,7 +84,12 @@ const BookCard = ({ book, loading }: BookCardProps) => {
             />
           )}
           <Paper elevation={5}>
-            <Chip className="book-card-chip" size="small" color={book.status} label={book.status} />
+            <Chip
+              className="book-card-chip"
+              size="small"
+              color={book.status}
+              label={getStatusChipLabel(book)}
+            />
           </Paper>
         </Box>
         <CardContent className="book-card-content">
