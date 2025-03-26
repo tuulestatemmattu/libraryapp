@@ -95,7 +95,7 @@ let theme = createTheme({
         },
         body: {
           backgroundColor: '#f0f0ec',
-          marginBottom: '100px',
+          marginBottom: '40px',
         },
         article: {
           marginTop: '10px',

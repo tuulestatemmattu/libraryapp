@@ -21,6 +21,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  margin-top: 3vw;
+  margin-bottom: 3vw;
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  overflow: visible;
 }
 
 /* Specific for the scan (camera) view */
