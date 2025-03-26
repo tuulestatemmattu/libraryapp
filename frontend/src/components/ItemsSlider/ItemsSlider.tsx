@@ -82,8 +82,7 @@ const ItemsSlider = ({
           {children.map((child) =>
             child.props.book && child.props.book.status === 'late' ? (
               <div className="scroll-list-item-container-late-book" key={child.key}>
-                {' '}
-                {child}{' '}
+                {child}
               </div>
             ) : (
               <div className="scroll-list-item-container" key={child.key}>
