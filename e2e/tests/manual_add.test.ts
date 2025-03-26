@@ -43,8 +43,9 @@ test('Manual book add by FORM', async ({ page, context }) => {
 
   await page.goto(FRONTEND_URL, { waitUntil: 'load' });
 
-  const book = await page.getByText('Learn Objective-C on the Mac');
-  expect(book).not.toBeNull();
+  const bookTitle = await page.getByText('Learn Objective-C on the Mac');
+  await expect(bookTitle).toBeVisible();
+  
 });
 
 test('Manual book add by ISBN', async ({ page, context }) => {
@@ -67,6 +68,7 @@ test('Manual book add by ISBN', async ({ page, context }) => {
 
   await page.goto(FRONTEND_URL, { waitUntil: 'load' });
 
-  const book = await page.getByText('C# Programming for Beginners');
-  expect(book).not.toBeNull();
+  const bookTitle = await page.getByText('C# Programming for Beginners');
+  await expect(bookTitle).toBeVisible();
+  
 });
