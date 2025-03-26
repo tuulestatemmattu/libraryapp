@@ -79,11 +79,18 @@ const ItemsSlider = ({
           </div>
         )}
         <div ref={scrollref} className="scroll-list-container">
-          {children.map((child) => (
-            <div className="scroll-list-item-container" key={child.key}>
-              {child}
-            </div>
-          ))}
+          {children.map((child) =>
+            child.props.book && child.props.book.status === 'late' ? (
+              <div className="scroll-list-item-container-late-book" key={child.key}>
+                {' '}
+                {child}{' '}
+              </div>
+            ) : (
+              <div className="scroll-list-item-container" key={child.key}>
+                {child}
+              </div>
+            ),
+          )}
         </div>
       </div>
     </Stack>
