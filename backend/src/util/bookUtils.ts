@@ -31,7 +31,7 @@ export const fetchBook = async (id: string | number) => {
   return (await fetchBooks({ id }))[0];
 };
 
-const calculateDueDate = (borrowedDate: Date) => {
+export const calculateDueDate = (borrowedDate: Date) => {
   return new Date(borrowedDate.getTime() + 30 * 24 * 60 * 60 * 1000);
 };
 

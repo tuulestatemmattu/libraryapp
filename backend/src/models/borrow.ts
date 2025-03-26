@@ -5,6 +5,7 @@ import {
   InferAttributes,
   InferCreationAttributes,
   Model,
+  NonAttribute,
 } from 'sequelize';
 
 import { sequelize } from '../util/db';
@@ -17,6 +18,10 @@ class Borrow extends Model<InferAttributes<Borrow>, InferCreationAttributes<Borr
   declare borrowedDate: Date;
   declare userGoogleId: ForeignKey<User['google_id']>;
   declare active: boolean;
+  declare notificationsSent: CreationOptional<number>;
+
+  declare book?: NonAttribute<Book>;
+  declare user?: NonAttribute<User>;
 }
 
 Borrow.init(
@@ -41,6 +46,11 @@ Borrow.init(
     active: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
+    },
+    notificationsSent: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+      allowNull: false,
     },
   },
   {
