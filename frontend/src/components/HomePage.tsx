@@ -13,7 +13,13 @@ const HomePage = () => {
   const sortByOrder = (statusOrder: BookStatus[]) => {
     return (b1: FetchedBook, b2: FetchedBook) => {
       if (b1.status === b2.status) {
-        return b1.title.localeCompare(b2.title);
+        // sorts borrowed books by days left first and alphabetical order second
+        if (b1.status === 'borrowed') {
+          const daysLeftDifference = b1.daysLeft - b2.daysLeft;
+          return daysLeftDifference === 0 ? b1.title.localeCompare(b2.title) : daysLeftDifference;
+        } else {
+          return b1.title.localeCompare(b2.title);
+        }
       }
       return statusOrder.indexOf(b1.status) - statusOrder.indexOf(b2.status);
     };
