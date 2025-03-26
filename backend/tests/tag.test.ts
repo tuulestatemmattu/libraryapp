@@ -65,6 +65,26 @@ describe('POST /api/tags', () => {
   });
 });
 
+describe('PUT /api/tags/:id', () => {
+  beforeEach(async () => {
+    await Tag.destroy({ where: {} });
+  });
+
+  test('should edit pre-existing tag', async () => {
+    const tagId = (await Tag.create(sampleTag)).id;
+    await api.put(`/api/tags/${tagId}`).send({ name: 'DevOps' }).expect(200);
+
+    const allTags = await Tag.findAll();
+    expect(allTags).toEqual(
+      expect.arrayContaining([expect.objectContaining({ id: tagId, name: 'DevOps' })]),
+    );
+  });
+
+  test('should return 404 if tag does not exist', async () => {
+    await api.put('/api/tags/9999').expect(404);
+  });
+});
+
 describe('DELETE /api/tags/:id', () => {
   beforeEach(async () => {
     await Tag.destroy({ where: {} });
