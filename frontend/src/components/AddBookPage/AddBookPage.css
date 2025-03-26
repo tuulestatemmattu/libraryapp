@@ -19,9 +19,9 @@
 
 .book-content {
   display: flex;
+  position: relative;
   flex-direction: column;
   align-items: center;
-  position: relative;
   margin-top: 3vw;
   margin-bottom: 3vw;
   width: 100%;
