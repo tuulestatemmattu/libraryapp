@@ -31,9 +31,12 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const returnDate = new Date(book.dueDate);
-  const dates = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const returnDateString = `${dates[returnDate.getDay()]} ${returnDate.getDate()}.${returnDate.getMonth() + 1}.  (${moment(returnDate).diff(new Date(), 'days')} days left)`;
+  const daysLeftString =
+    Math.abs(book.daysLeft) +
+    ' day' +
+    (Math.abs(book.daysLeft) == 1 ? ' ' : 's ') +
+    (book.daysLeft > 0 ? 'left' : 'ago');
+  const returnDateString = `${moment(book.dueDate).format('ddd D.M.')} (${daysLeftString})`;
 
   const handleClose = () => {
     setOpen(false);
@@ -161,7 +164,8 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
                 className="overview-info-text overview-text"
               >
                 <strong>Copies available:</strong>{' '}
-                {Math.max(book.copiesAvailable - book.queueSize, 0)}
+                {Math.max(book.copiesAvailable - book.queueSize, 0) +
+                  (book.status == 'ready' ? 1 : 0)}
               </Typography>
               {book.borrowedByMe && (
                 <Typography
@@ -204,7 +208,7 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
         {/* Bottom: Action Buttons */}
         <Stack direction="row-reverse" sx={{ pt: 1 }}>
           <CardActions sx={{ pr: 1, pl: 1 }}>
-            {book.borrowedByMe ? (
+            {book.status == 'borrowed' || book.status == 'late' ? (
               <Button
                 variant="contained"
                 className="book-overview-action-button"
@@ -212,7 +216,7 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
               >
                 Return
               </Button>
-            ) : (book.copiesAvailable > 0 && book.queueSize === 0) || book.queueTime === 0 ? (
+            ) : book.status == 'available' || book.status == 'ready' ? (
               <Button
                 variant="contained"
                 className="book-overview-action-button"
@@ -220,7 +224,7 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
               >
                 Borrow
               </Button>
-            ) : !book.queuedByMe ? (
+            ) : book.status == 'unavailable' ? (
               <Button
                 variant="contained"
                 className="book-overview-action-button"
@@ -228,7 +232,7 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
               >
                 Reserve
               </Button>
-            ) : book.queuedByMe ? (
+            ) : book.status == 'reserved' ? (
               <Button
                 variant="contained"
                 className="book-overview-action-button"

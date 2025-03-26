@@ -1,6 +1,7 @@
 import { InferAttributes, WhereOptions } from 'sequelize/types/model';
 
 import { Book, Borrow, QueueEntry, Tag } from '../models';
+import { LOAN_PERIOD } from './config';
 
 export const fetchBooks = async (where: WhereOptions<InferAttributes<Book>>) => {
   const books = await Book.findAll({
@@ -31,8 +32,20 @@ export const fetchBook = async (id: string | number) => {
   return (await fetchBooks({ id }))[0];
 };
 
-const calculateDueDate = (borrowedDate: Date) => {
-  return new Date(borrowedDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+export const calculateDueDate = (borrowedDate: Date) => {
+  const due = new Date(new Date(borrowedDate).getTime() + LOAN_PERIOD * 24 * 60 * 60 * 1000);
+  const dueDate = new Date(due.getFullYear(), due.getMonth(), due.getDate(), 0, 0, 0, 0);
+  return dueDate;
+};
+
+export const calculateDaysLeft = (borrowedDate: Date) => {
+  const dueDate = calculateDueDate(borrowedDate);
+  const now = new Date();
+  const dateNow = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+
+  const msDiff = dueDate.valueOf() - dateNow.valueOf();
+  const dayDiff = Math.floor(msDiff / (24 * 60 * 60 * 1000));
+  return dayDiff;
 };
 
 export const calculateWaitingTime = (book: Book, queueEntry: QueueEntry) => {
@@ -41,19 +54,18 @@ export const calculateWaitingTime = (book: Book, queueEntry: QueueEntry) => {
   if (activeBorrows === undefined || queueEntries === undefined) {
     throw new Error('Book does not have borrows or queue_entries');
   }
-  activeBorrows.sort((a, b) => a.borrowedDate.getTime() - b.borrowedDate.getTime());
-  queueEntries.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+  activeBorrows.sort((a, b) => a.borrowedDate.valueOf() - b.borrowedDate.valueOf());
+  queueEntries.sort((a, b) => a.createdAt.valueOf() - b.createdAt.valueOf());
 
   const waitingTimes: number[] = [];
   for (let i = 0; i < queueEntries.length; i++) {
     if (i < book.copiesAvailable) {
       waitingTimes.push(0);
     } else if (i < book.copies) {
-      const diffMs = activeBorrows[i].borrowedDate.getTime() - new Date().getTime();
-      const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-      waitingTimes.push(Math.max(0, diffDays + 30) + 1);
+      const daysLeft = calculateDaysLeft(activeBorrows[i].borrowedDate);
+      waitingTimes.push(Math.max(0, daysLeft) + 1);
     } else {
-      waitingTimes.push(waitingTimes[i % book.copies] + 30 + 1);
+      waitingTimes.push(waitingTimes[i % book.copies] + LOAN_PERIOD + 1);
     }
   }
 
@@ -67,6 +79,7 @@ export const prepareBookForFrontend = (book: Book, userId: string) => {
     book.queue_entries?.find((queueEntry) => queueEntry.userGoogleId === userId) || null;
 
   const dueDate = myBorrow ? calculateDueDate(myBorrow.borrowedDate) : null;
+  const daysLeft = myBorrow ? calculateDaysLeft(myBorrow.borrowedDate) : null;
   const queueTime = myQueueEntry ? calculateWaitingTime(book, myQueueEntry) : null;
   const queueSize = book.queue_entries ? book.queue_entries.length : 0;
 
@@ -102,6 +115,7 @@ export const prepareBookForFrontend = (book: Book, userId: string) => {
     tags: book.tags,
     borrowedByMe: !!myBorrow,
     dueDate: dueDate,
+    daysLeft: daysLeft,
     queuedByMe: !!myQueueEntry,
     queueTime: queueTime,
     queueSize: queueSize,

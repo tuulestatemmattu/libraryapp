@@ -1,6 +1,8 @@
 interface BorrowData {
   id: number;
   borrowedDate: string;
+  dueDate: string;
+  daysLeft: number;
   active: boolean;
   user: {
     name: string;
