@@ -10,6 +10,7 @@ import {
 } from '../util/bookUtils';
 import { requireAdmin } from '../util/middleware/requireAdmin';
 import { requireLogin } from '../util/middleware/requireLogin';
+import { sendNotificationToChannel } from '../util/slackbot';
 import bookValidator from '../util/validation';
 
 const bookRouter = express.Router();
@@ -55,6 +56,12 @@ bookRouter.post('/', requireAdmin, bookValidator, async (req, res) => {
 
     const fetchedBook = await fetchBook(book.id);
     res.status(201).send(prepareBookForFrontend(fetchedBook, userId));
+
+    if (location === 'Helsinki') {
+      sendNotificationToChannel(
+        `:books: A new book "*${title}*" has been added to the library!`,
+      ).catch((err) => console.error('Failed to send Slack notification:', err));
+    }
   } catch (error: unknown) {
     if (error instanceof Error) {
       res.status(500).send({ message: error.message });
