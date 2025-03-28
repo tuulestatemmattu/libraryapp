@@ -1,11 +1,9 @@
 import { SyntheticEvent, useState } from 'react';
 
+import { Grid2 } from '@mui/material';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { SelectChangeEvent } from '@mui/material/Select';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';
 import { CreatedBook } from '../../interfaces/Book';
@@ -105,53 +103,32 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
   return (
     <article>
       <form onSubmit={handleSubmit}>
-        <div>
+        <Grid2 /*in MUI v7, this is just Grid and the old one is GridLegacy*/>
+          <h2>Add a new book</h2>
           <StyledInput label="ISBN" value={isbn} setValue={setIsbn} />
-        </div>
-        <div>
           <StyledInput label="Title" value={title} setValue={setTitle} />
-        </div>
-        <div>
           <StyledInput label="Author" value={authors} setValue={setAuthors} />
-        </div>
-        <div>
-          <TextField
-            className="styled-input"
+          <StyledInput
             label="Description"
-            multiline
-            type="text"
-            variant="standard"
             value={description}
-            name="description"
-            onChange={({ target }) => setDescription(target.value)}
+            setValue={setDescription}
+            multiline={true}
           />
-        </div>
-        <div>
           <StyledInput label="Publication date" value={publishedDate} setValue={setPublishedDate} />
-        </div>
-        <div className="tag-select-div">
-          <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
-        </div>
-        <Stack
-          direction="row"
-          spacing={2}
-          justifyContent="space-between"
-          alignItems="center"
-          sx={{ width: '90%', maxWidth: '700px' }}
-        >
-          <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
-          <div className="copies-input">
-            <CopiesInput copies={copies} setCopies={setCopies} />
+          <div className="tag-select-div">
+            <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
           </div>
-        </Stack>
-        <ButtonGroup variant="contained" className="addbookform-buttons">
-          <Button type="button" onClick={handleClear} variant="contained">
-            Clear
-          </Button>
-          <Button type="submit" variant="contained">
-            Add
-          </Button>
-        </ButtonGroup>
+          <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
+          <CopiesInput copies={copies} setCopies={setCopies} />
+          <ButtonGroup variant="contained" className="addbookform-buttons">
+            <Button type="button" onClick={handleClear} variant="contained">
+              Clear
+            </Button>
+            <Button type="submit" variant="contained">
+              Add
+            </Button>
+          </ButtonGroup>
+        </Grid2>
       </form>
     </article>
   );
