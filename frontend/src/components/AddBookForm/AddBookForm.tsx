@@ -8,11 +8,11 @@ import { useNotification } from '../../context/NotificationsProvider/Notificatio
 import useMainStore from '../../hooks/useMainStore';
 import { CreatedBook } from '../../interfaces/Book';
 import { FetchedTag } from '../../interfaces/Tags';
-import CopiesInput from '../CopiesInput/CopiesInput';
-import LocationSelect from '../LocationSelect/LocationSelect';
+import CopiesInput from './CopiesInput/CopiesInput';
+import LocationSelect from './LocationSelect/LocationSelect';
 import StyledInput from '../StyledInput/StyledInput';
 import '../StyledInput/StyledInput';
-import TagSelect from '../TagSelect/TagSelect';
+import TagSelect from './TagSelect/TagSelect';
 
 import '../../style.css';
 import './AddBookForm.css';
