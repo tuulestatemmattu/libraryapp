@@ -103,28 +103,32 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
 
   return (
     <article>
+      <h2>Add a new book</h2>
       <form onSubmit={handleSubmit}>
-        <Grid2 /*in MUI v7, this is just Grid and the old one is GridLegacy*/>
-          <h2>Add a new book</h2>
+        <Grid2
+          container
+          spacing={1}
+          direction="row" /*in MUI v7, this is just Grid and the old one is GridLegacy*/
+        >
           <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
           <StyledTextField label="Title" value={title} setValue={setTitle} />
           <StyledTextField label="Author" value={authors} setValue={setAuthors} />
+          <StyledTextField
+            label="Publication date"
+            value={publishedDate}
+            setValue={setPublishedDate}
+          />
           <StyledTextField
             label="Description"
             value={description}
             setValue={setDescription}
             multiline={true}
           />
-          <StyledTextField
-            label="Publication date"
-            value={publishedDate}
-            setValue={setPublishedDate}
-          />
           <div className="tag-select-div">
             <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
           </div>
-          <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
           <CopiesInput copies={copies} setCopies={setCopies} />
+          <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
           <ButtonGroup variant="contained" className="addbookform-buttons">
             <Button type="button" onClick={handleClear} variant="contained">
               Clear

@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react';
 
-import { Box } from '@mui/material';
+import { Box, ButtonGroup } from '@mui/material';
 import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
 import { debounce } from '@mui/material/utils';
+
+import './CopiesInput.css';
 
 interface CopiesInputProps {
   copies: number;
@@ -28,12 +29,15 @@ const CopiesInput = ({ copies, setCopies }: CopiesInputProps) => {
   );
 
   return (
-    <div className="copies-input">
-      <span>Copies: </span>
-      <ButtonGroup variant="contained">
-        <Button onClick={handleDecrement}>-</Button>
-        <Box sx={{ padding: '10px' }}>{copies}</Box>
-        <Button onClick={handleIncrement}>+</Button>
+    <div>
+      <ButtonGroup variant="outlined" className="copies-input-group">
+        <Button onClick={handleDecrement} className="copies-input-decrement">
+          –
+        </Button>
+        <Box className="copies-input-value">{copies}</Box>
+        <Button onClick={handleIncrement} className="copies-input-increment">
+          +
+        </Button>
       </ButtonGroup>
     </div>
   );
