@@ -10,7 +10,7 @@ import {
 } from '../util/bookUtils';
 import { requireAdmin } from '../util/middleware/requireAdmin';
 import { requireLogin } from '../util/middleware/requireLogin';
-import { sendNotificationToChannel } from '../util/slackbot';
+import { sendNotificationToChannel, sendPrivateMessage } from '../util/slackbot';
 import bookValidator from '../util/validation';
 
 const bookRouter = express.Router();
@@ -179,6 +179,16 @@ bookRouter.post('/:id/return', async (req, res) => {
   await book.increment('copiesAvailable');
   await book.save();
   await book.reload();
+
+  if (book.queue_entries && book.queue_entries.length > 0) {
+    const receiver_user = await User.findByPk(book.queue_entries[0].userGoogleId);
+    if (receiver_user) {
+      sendPrivateMessage(
+        receiver_user.email,
+        `:book: Your reserved book "*${book.title}*" is now available for you to borrow!`,
+      ).catch((error) => console.error('Failed to send Slack notification:', error));
+    }
+  }
 
   const returnedBook = prepareBookForFrontend(book, userId);
   res.json(returnedBook);
