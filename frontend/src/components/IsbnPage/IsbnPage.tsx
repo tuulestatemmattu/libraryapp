@@ -3,7 +3,7 @@ import React from 'react';
 
 import Button from '@mui/material/Button';
 
-import StyledInput from '../StyledInput/StyledInput';
+import StyledTextField from '../StyledTextField/StyledTextField';
 
 import './IsbnPage.css';
 
@@ -23,7 +23,7 @@ const IsbnPage = ({ isbnHandler }: IsbnPageProps) => {
   return (
     <div>
       <form onSubmit={handleSubmitIsbn}>
-        <StyledInput label="isbn" value={isbn} setValue={setIsbn} />
+        <StyledTextField label="isbn" value={isbn} setValue={setIsbn} />
         <br />
         <Button type="submit" className="isbn-submit-button">
           Search

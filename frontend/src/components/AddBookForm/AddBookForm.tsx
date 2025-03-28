@@ -4,14 +4,15 @@ import { Grid2 } from '@mui/material';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { SelectChangeEvent } from '@mui/material/Select';
+
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';
 import { CreatedBook } from '../../interfaces/Book';
 import { FetchedTag } from '../../interfaces/Tags';
+import StyledTextField from '../StyledTextField/StyledTextField';
+import '../StyledTextField/StyledTextField';
 import CopiesInput from './CopiesInput/CopiesInput';
 import LocationSelect from './LocationSelect/LocationSelect';
-import StyledInput from '../StyledInput/StyledInput';
-import '../StyledInput/StyledInput';
 import TagSelect from './TagSelect/TagSelect';
 
 import '../../style.css';
@@ -105,16 +106,20 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
       <form onSubmit={handleSubmit}>
         <Grid2 /*in MUI v7, this is just Grid and the old one is GridLegacy*/>
           <h2>Add a new book</h2>
-          <StyledInput label="ISBN" value={isbn} setValue={setIsbn} />
-          <StyledInput label="Title" value={title} setValue={setTitle} />
-          <StyledInput label="Author" value={authors} setValue={setAuthors} />
-          <StyledInput
+          <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
+          <StyledTextField label="Title" value={title} setValue={setTitle} />
+          <StyledTextField label="Author" value={authors} setValue={setAuthors} />
+          <StyledTextField
             label="Description"
             value={description}
             setValue={setDescription}
             multiline={true}
           />
-          <StyledInput label="Publication date" value={publishedDate} setValue={setPublishedDate} />
+          <StyledTextField
+            label="Publication date"
+            value={publishedDate}
+            setValue={setPublishedDate}
+          />
           <div className="tag-select-div">
             <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
           </div>
