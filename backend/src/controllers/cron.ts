@@ -60,10 +60,10 @@ router.post('/', async (req, res) => {
     }
 
     const dueDate = calculateDueDate(borrow.borrowedDate).toDateString();
-    await sendPrivateMessage(
+    sendPrivateMessage(
       borrow.user.email,
       `Your book _${borrow.book.title}_ by _${borrow.book.authors}_ is due ${dueDate}`,
-    );
+    ).catch((err) => console.error('Failed to send Slack notification:', err));
   }
 
   await Borrow.increment('notificationsSent', {
