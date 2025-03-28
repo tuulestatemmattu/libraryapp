@@ -106,13 +106,13 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
     <article>
       <form onSubmit={handleSubmit}>
         <div>
-          <StyledInput label="title" value={title} setValue={setTitle} />
+          <StyledInput label="ISBN" value={isbn} setValue={setIsbn} />
+        </div>
+        <div>
+          <StyledInput label="Title" value={title} setValue={setTitle} />
         </div>
         <div>
           <StyledInput label="Author" value={authors} setValue={setAuthors} />
-        </div>
-        <div>
-          <StyledInput label="ISBN" value={isbn} setValue={setIsbn} />
         </div>
         <div>
           <TextField
@@ -127,7 +127,7 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
           />
         </div>
         <div>
-          <StyledInput label="publishYear" value={publishedDate} setValue={setPublishedDate} />
+          <StyledInput label="Publication date" value={publishedDate} setValue={setPublishedDate} />
         </div>
         <div className="tag-select-div">
           <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
