@@ -7,7 +7,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Theme, useTheme } from '@mui/material/styles';
 
-import { FetchedTag } from '../../interfaces/Tags';
+import { FetchedTag } from '../../../interfaces/Tags';
 
 interface TagSelectProps {
   tags: FetchedTag[];

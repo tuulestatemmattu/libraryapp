@@ -1,7 +1,7 @@
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 
-import { officeLocations } from '../../constants';
+import { officeLocations } from '../../../constants';
 
 import './LocationSelect.css';
 
