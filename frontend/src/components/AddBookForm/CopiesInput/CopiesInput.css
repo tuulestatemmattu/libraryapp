@@ -1,0 +1,26 @@
+.copies-input-group {
+  display: flex;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+}
+
+.copies-input-decrement {
+  border-radius: 5px 0 0 5px;
+}
+
+.copies-input-increment {
+  border-radius: 0 5px 5px 0;
+}
+
+.copies-input-value {
+  padding: 0 10px;
+  text-align: center;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: large;
+  height: 55px;
+  width: 40px !important;
+}
+  

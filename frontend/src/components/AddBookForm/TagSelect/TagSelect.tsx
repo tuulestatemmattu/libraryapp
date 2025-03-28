@@ -40,7 +40,7 @@ const TagSelect = ({ tags, selectedTags, onSelectTag }: TagSelectProps) => {
 
   const theme = useTheme();
   return (
-    <FormControl sx={{ my: 1.5, maxWidth: 300, width: '90%' }}>
+    <FormControl sx={{ my: 1.5, maxWidth: '100%', width: '100%' }}>
       <InputLabel>Tags</InputLabel>
       <Select
         labelId="tags-label"
