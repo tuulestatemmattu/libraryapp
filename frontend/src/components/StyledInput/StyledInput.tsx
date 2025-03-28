@@ -6,9 +6,10 @@ interface StyledInputProps {
   label: string;
   value: string;
   setValue: (arg0: string) => void;
+  multiline?: boolean;
 }
 
-const StyledInput = ({ label, value, setValue }: StyledInputProps) => {
+const StyledInput = ({ label, value, setValue, multiline}: StyledInputProps) => {
   return (
     <TextField
       className="styled-input"
@@ -18,6 +19,7 @@ const StyledInput = ({ label, value, setValue }: StyledInputProps) => {
       value={value}
       name="Isbn"
       onChange={({ target }) => setValue(target.value)}
+      multiline={multiline}
     />
   );
 };
