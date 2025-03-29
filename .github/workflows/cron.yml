@@ -9,7 +9,15 @@ jobs:
   send-request:
     runs-on: ubuntu-latest
     steps:
-      - name: Send POST request to google.com
+      - name: Send request to production environment
+        run: |
+          response=$(curl -s -w "\nHTTP_CODE:%{http_code}" "${{ secrets.CRON_URL }}" \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -d "{\"secret\": \"${{ secrets.CRON_SECRET }}\"}")
+          echo "Response:"
+          echo "$response"
+      - name: Send request to staging environment
         run: |
           response=$(curl -s -w "\nHTTP_CODE:%{http_code}" "${{ secrets.STAGING_CRON_URL }}" \
             -X POST \
