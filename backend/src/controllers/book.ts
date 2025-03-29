@@ -253,7 +253,10 @@ bookRouter.get('/borrows', requireAdmin, async (req, res) => {
 
 bookRouter.put('/:id/extend', async (req, res) => {
   const id = req.params.id;
-  const loan = await Borrow.findByPk(id);
+  const userId = req.userId as string;
+  const loan = await Borrow.findOne({
+    where: { bookId: id, userGoogleId: req.userId, active: true },
+  });
   if (!loan) {
     res.status(404).send({ message: 'Loan not found' });
     return;
@@ -268,8 +271,11 @@ bookRouter.put('/:id/extend', async (req, res) => {
   const newBorrowDate = new Date();
   const newLoan = await loan.update({ borrowedDate: newBorrowDate });
   console.log('newLoan', newLoan);
+
   await newLoan.save();
-  res.json(newLoan);
+  const book = await fetchBook(newLoan.bookId);
+  const newBook = prepareBookForFrontend(book, userId);
+  res.json(newBook);
 });
 
 export default bookRouter;
