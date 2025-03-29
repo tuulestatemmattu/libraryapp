@@ -60,9 +60,10 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
 
   const handleExtend = async (id: number) => {
     try {
-      const newBook = await extendBookLoan(id);
-      console.log('Extended book:', newBook);
-      addOrUpdateBook(newBook);
+      const newLoan = await extendBookLoan(id);
+      console.log('Extended book:', newLoan);
+      addOrUpdateBook(newLoan);
+      handleClose();
     } catch (error) {
       console.error('Failed to extend the book:', error);
     }
@@ -238,7 +239,7 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
                   className="book-overview-action-button"
                   onClick={() => handleExtend(book.id)}
                 >
-                  Extend Loan
+                  Extend
                 </Button>
               </>
             ) : book.status == 'available' || book.status == 'ready' ? (
