@@ -49,6 +49,11 @@ const removeBookFromQueue = async (id: number) => {
   return response.data;
 };
 
+const extendBookLoan = async (id: number) => {
+  const response = await axios.put(`${baseUrl}/${id}/extend`);
+  return response.data;
+};
+
 export {
   addBook,
   getBooks,
@@ -59,4 +64,5 @@ export {
   getBorrows,
   addBookToQueue,
   removeBookFromQueue,
+  extendBookLoan,
 };

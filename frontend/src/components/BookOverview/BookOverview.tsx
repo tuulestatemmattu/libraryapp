@@ -15,7 +15,13 @@ import Typography from '@mui/material/Typography';
 
 import useMainStore from '../../hooks/useMainStore';
 import { FetchedBook } from '../../interfaces/Book';
-import { addBookToQueue, borrowBook, removeBookFromQueue, returnBook } from '../../services/book';
+import {
+  addBookToQueue,
+  borrowBook,
+  extendBookLoan,
+  removeBookFromQueue,
+  returnBook,
+} from '../../services/book';
 import ItemsSlider from '../ItemsSlider/ItemsSlider';
 
 import './BookOverview.css';
@@ -49,6 +55,16 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
       handleClose();
     } catch (error) {
       console.error('Failed to borrow the book:', error);
+    }
+  };
+
+  const handleExtend = async (id: number) => {
+    try {
+      const newBook = await extendBookLoan(id);
+      console.log('Extended book:', newBook);
+      addOrUpdateBook(newBook);
+    } catch (error) {
+      console.error('Failed to extend the book:', error);
     }
   };
 
@@ -209,13 +225,22 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
         <Stack direction="row-reverse" sx={{ pt: 1 }}>
           <CardActions sx={{ pr: 1, pl: 1 }}>
             {book.status == 'borrowed' || book.status == 'late' ? (
-              <Button
-                variant="contained"
-                className="book-overview-action-button"
-                onClick={() => handleReturn(book.id)}
-              >
-                Return
-              </Button>
+              <>
+                <Button
+                  variant="contained"
+                  className="book-overview-action-button"
+                  onClick={() => handleReturn(book.id)}
+                >
+                  Return
+                </Button>
+                <Button
+                  variant="contained"
+                  className="book-overview-action-button"
+                  onClick={() => handleExtend(book.id)}
+                >
+                  Extend Loan
+                </Button>
+              </>
             ) : book.status == 'available' || book.status == 'ready' ? (
               <Button
                 variant="contained"
