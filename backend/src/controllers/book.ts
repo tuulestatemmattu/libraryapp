@@ -251,4 +251,31 @@ bookRouter.get('/borrows', requireAdmin, async (req, res) => {
   res.json(newBorrows);
 });
 
+bookRouter.put('/:id/extend', async (req, res) => {
+  const id = req.params.id;
+  const userId = req.userId as string;
+  const loan = await Borrow.findOne({
+    where: { bookId: id, userGoogleId: req.userId, active: true },
+  });
+  if (!loan) {
+    res.status(404).send({ message: 'Loan not found' });
+    return;
+  }
+  const reserved = await QueueEntry.findOne({
+    where: { bookId: loan.bookId },
+  });
+  if (reserved) {
+    res.status(403).send({ message: 'Loan cannot be extended, since there is a reservation' });
+    return;
+  }
+  const newBorrowDate = new Date();
+  const newLoan = await loan.update({ borrowedDate: newBorrowDate });
+  console.log('newLoan', newLoan);
+
+  await newLoan.save();
+  const book = await fetchBook(newLoan.bookId);
+  const newBook = prepareBookForFrontend(book, userId);
+  res.json(newBook);
+});
+
 export default bookRouter;
