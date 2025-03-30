@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,6 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
+import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';
 import { FetchedBook } from '../../interfaces/Book';
 import {
@@ -36,6 +38,7 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
   const profile = useMainStore((state) => state.profile);
   const theme = useTheme();
   const navigate = useNavigate();
+  const { showNotification } = useNotification();
 
   const daysLeftString =
     Math.abs(book.daysLeft) +
@@ -63,9 +66,12 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
       const newLoan = await extendBookLoan(id);
       console.log('Extended book:', newLoan);
       addOrUpdateBook(newLoan);
+      showNotification('Loan extended successfully', 'success');
       handleClose();
     } catch (error) {
-      console.error('Failed to extend the book:', error);
+      if (error instanceof AxiosError && error.response) {
+        showNotification('Failed to extend loan: ' + error.response.data.message, 'error');
+      }
     }
   };
 
