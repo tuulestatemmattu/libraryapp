@@ -7,7 +7,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Theme, useTheme } from '@mui/material/styles';
 
-import { FetchedTag } from '../../interfaces/Tags';
+import { FetchedTag } from '../../../interfaces/Tags';
 
 interface TagSelectProps {
   tags: FetchedTag[];
@@ -40,7 +40,7 @@ const TagSelect = ({ tags, selectedTags, onSelectTag }: TagSelectProps) => {
 
   const theme = useTheme();
   return (
-    <FormControl sx={{ my: 1.5, maxWidth: 300, width: '90%' }}>
+    <FormControl sx={{ my: 1.5, maxWidth: '100%', width: '100%' }}>
       <InputLabel>Tags</InputLabel>
       <Select
         labelId="tags-label"

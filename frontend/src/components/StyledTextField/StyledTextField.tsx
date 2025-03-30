@@ -1,14 +1,15 @@
 import TextField from '@mui/material/TextField';
 
-import './StyledInput.css';
+import './StyledTextField.css';
 
-interface StyledInputProps {
+interface StyledTextFieldProps {
   label: string;
   value: string;
   setValue: (arg0: string) => void;
+  multiline?: boolean;
 }
 
-const StyledInput = ({ label, value, setValue }: StyledInputProps) => {
+const StyledTextField = ({ label, value, setValue, multiline }: StyledTextFieldProps) => {
   return (
     <TextField
       className="styled-input"
@@ -18,8 +19,9 @@ const StyledInput = ({ label, value, setValue }: StyledInputProps) => {
       value={value}
       name="Isbn"
       onChange={({ target }) => setValue(target.value)}
+      multiline={multiline}
     />
   );
 };
 
-export default StyledInput;
+export default StyledTextField;

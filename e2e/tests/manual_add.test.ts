@@ -25,17 +25,17 @@ test('Manual book add by FORM', async ({ page, context }) => {
   await page.getByRole('button', { name: 'FORM' }).waitFor();
   await page.getByRole('button', { name: 'FORM' }).click();
 
-  await page.getByLabel('title').waitFor();
+  await page.getByLabel('Title').waitFor();
   await page.getByLabel('Author').waitFor();
   await page.getByLabel('ISBN').waitFor();
-  await page.getByLabel('description').waitFor();
-  await page.getByLabel('publishYear').waitFor();
+  await page.getByLabel('Description').waitFor();
+  await page.getByLabel('Publication date').waitFor();
 
-  await page.getByLabel('title').fill('Learn Objective-C on the Mac');
+  await page.getByLabel('Title').fill('Learn Objective-C on the Mac');
   await page.getByLabel('Author').fill('Scott Knaster, Mark Dalrymple, Waqar Malik');
   await page.getByLabel('ISBN').fill('978-1-4302-4188-1');
-  await page.getByLabel('description').fill('Test description');
-  await page.getByLabel('publishYear').fill('2012-06-29');
+  await page.getByLabel('Description').fill('Test description');
+  await page.getByLabel('Publication date').fill('2012-06-29');
 
 
   await page.getByRole('button', { name: 'Add', exact: true }).waitFor();
