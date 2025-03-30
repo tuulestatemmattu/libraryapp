@@ -1,7 +1,9 @@
+import { AxiosError } from 'axios';
 import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
 
 import ClearIcon from '@mui/icons-material/Clear';
-import { useTheme } from '@mui/material';
+import { Stack, useTheme } from '@mui/material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -12,9 +14,16 @@ import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
+import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';
 import { FetchedBook } from '../../interfaces/Book';
-import { addBookToQueue, borrowBook, removeBookFromQueue, returnBook } from '../../services/book';
+import {
+  addBookToQueue,
+  borrowBook,
+  extendBookLoan,
+  removeBookFromQueue,
+  returnBook,
+} from '../../services/book';
 import ItemsSlider from '../ItemsSlider/ItemsSlider';
 
 import './BookOverview.css';
@@ -26,11 +35,17 @@ interface BookOverviewProps {
 
 const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
   const addOrUpdateBook = useMainStore((state) => state.addOrUpdateBook);
+  const profile = useMainStore((state) => state.profile);
   const theme = useTheme();
+  const navigate = useNavigate();
+  const { showNotification } = useNotification();
 
-  const returnDate = new Date(book.dueDate);
-  const dates = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const returnDateString = `${dates[returnDate.getDay()]} ${returnDate.getDate()}.${returnDate.getMonth() + 1}.  (${moment(returnDate).diff(new Date(), 'days')} days left)`;
+  const daysLeftString =
+    Math.abs(book.daysLeft) +
+    ' day' +
+    (Math.abs(book.daysLeft) == 1 ? ' ' : 's ') +
+    (book.daysLeft > 0 ? 'left' : 'ago');
+  const returnDateString = `${moment(book.dueDate).format('ddd D.M.')} (${daysLeftString})`;
 
   const handleClose = () => {
     setOpen(false);
@@ -43,6 +58,20 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
       handleClose();
     } catch (error) {
       console.error('Failed to borrow the book:', error);
+    }
+  };
+
+  const handleExtend = async (id: number) => {
+    try {
+      const newLoan = await extendBookLoan(id);
+      console.log('Extended book:', newLoan);
+      addOrUpdateBook(newLoan);
+      showNotification('Loan extended successfully', 'success');
+      handleClose();
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        showNotification('Failed to extend loan: ' + error.response.data.message, 'error');
+      }
     }
   };
 
@@ -74,6 +103,10 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
     } catch (error) {
       console.error('Failed to remove the book from the queue:', error);
     }
+  };
+
+  const handleEditButtonPress = () => {
+    navigate(`/admin?view=books&bookId=${book.id}`);
   };
 
   const getPlaceholderSVG = (book: FetchedBook) => {
@@ -123,45 +156,8 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
                 alt="book cover"
               />
             </Paper>
-            <CardActions sx={{ padding: 0 }}>
-              {book.borrowedByMe ? (
-                <Button
-                  variant="contained"
-                  className="book-overview-action-button"
-                  onClick={() => handleReturn(book.id)}
-                >
-                  Return
-                </Button>
-              ) : (book.copiesAvailable > 0 && book.queueSize === 0) || book.queueTime === 0 ? (
-                <Button
-                  variant="contained"
-                  className="book-overview-action-button"
-                  onClick={() => handleBorrow(book.id)}
-                >
-                  Borrow
-                </Button>
-              ) : !book.queuedByMe ? (
-                <Button
-                  variant="contained"
-                  className="book-overview-action-button"
-                  onClick={() => handleAddToQueue(book.id)}
-                >
-                  Reserve
-                </Button>
-              ) : book.queuedByMe ? (
-                <Button
-                  variant="contained"
-                  className="book-overview-action-button"
-                  onClick={() => handleRemoveFromQueue(book.id)}
-                >
-                  Unreserve
-                </Button>
-              ) : (
-                <> </>
-              )}
-            </CardActions>
           </div>
-          <CardContent>
+          <CardContent sx={{ py: 0 }}>
             <div className="book-overview-info-container">
               <Typography
                 gutterBottom
@@ -191,7 +187,8 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
                 className="overview-info-text overview-text"
               >
                 <strong>Copies available:</strong>{' '}
-                {Math.max(book.copiesAvailable - book.queueSize, 0)}
+                {Math.max(book.copiesAvailable - book.queueSize, 0) +
+                  (book.status == 'ready' ? 1 : 0)}
               </Typography>
               {book.borrowedByMe && (
                 <Typography
@@ -230,9 +227,68 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
             {book.description}
           </Typography>
         </CardContent>
-      </div>
 
-      {/* Bottom: Action Buttons */}
+        {/* Bottom: Action Buttons */}
+        <Stack direction="row-reverse" sx={{ pt: 1 }}>
+          <CardActions sx={{ pr: 1, pl: 1 }}>
+            {book.status == 'borrowed' || book.status == 'late' ? (
+              <>
+                <Button
+                  variant="contained"
+                  className="book-overview-action-button"
+                  onClick={() => handleReturn(book.id)}
+                >
+                  Return
+                </Button>
+                <Button
+                  variant="contained"
+                  className="book-overview-action-button"
+                  onClick={() => handleExtend(book.id)}
+                >
+                  Extend
+                </Button>
+              </>
+            ) : book.status == 'available' || book.status == 'ready' ? (
+              <Button
+                variant="contained"
+                className="book-overview-action-button"
+                onClick={() => handleBorrow(book.id)}
+              >
+                Borrow
+              </Button>
+            ) : book.status == 'unavailable' ? (
+              <Button
+                variant="contained"
+                className="book-overview-action-button"
+                onClick={() => handleAddToQueue(book.id)}
+              >
+                Reserve
+              </Button>
+            ) : book.status == 'reserved' ? (
+              <Button
+                variant="contained"
+                className="book-overview-action-button"
+                onClick={() => handleRemoveFromQueue(book.id)}
+              >
+                Unreserve
+              </Button>
+            ) : (
+              <> </>
+            )}
+          </CardActions>
+          {profile && profile.admin && (
+            <CardActions sx={{ pr: 1, pl: 1 }}>
+              <Button
+                variant="contained"
+                className="book-overview-action-button"
+                onClick={handleEditButtonPress}
+              >
+                Edit this book
+              </Button>
+            </CardActions>
+          )}
+        </Stack>
+      </div>
     </Card>
   );
 };

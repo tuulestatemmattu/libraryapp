@@ -1,9 +1,16 @@
 import express from 'express';
 
 import { Book, Borrow, QueueEntry, Tag, User } from '../models';
-import { fetchBook, fetchBooks, prepareBookForFrontend } from '../util/bookUtils';
+import {
+  calculateDaysLeft,
+  calculateDueDate,
+  fetchBook,
+  fetchBooks,
+  prepareBookForFrontend,
+} from '../util/bookUtils';
 import { requireAdmin } from '../util/middleware/requireAdmin';
 import { requireLogin } from '../util/middleware/requireLogin';
+import { sendNotificationToChannel, sendPrivateMessage } from '../util/slackbot';
 import bookValidator from '../util/validation';
 
 const bookRouter = express.Router();
@@ -48,8 +55,13 @@ bookRouter.post('/', requireAdmin, bookValidator, async (req, res) => {
     await book.setTags(tag_ids);
 
     const fetchedBook = await fetchBook(book.id);
-    const newBookWithBorrowInfo = await prepareBookForFrontend(fetchedBook, userId);
-    res.status(201).send({ ...newBookWithBorrowInfo, tags });
+    res.status(201).send(prepareBookForFrontend(fetchedBook, userId));
+
+    if (location === 'Helsinki') {
+      sendNotificationToChannel(
+        `:books: A new book "*${title}*" has been added to the library!`,
+      ).catch((err) => console.error('Failed to send Slack notification:', err));
+    }
   } catch (error: unknown) {
     if (error instanceof Error) {
       res.status(500).send({ message: error.message });
@@ -93,7 +105,7 @@ bookRouter.put('/:id', requireAdmin, bookValidator, async (req, res) => {
   await bookToEdit.setTags(tag_ids);
   await bookToEdit.save();
 
-  const editedBook = await prepareBookForFrontend(bookToEdit, userId);
+  const editedBook = prepareBookForFrontend(bookToEdit, userId);
   res.status(201).send({ ...editedBook, tags });
 });
 
@@ -128,7 +140,7 @@ bookRouter.post('/:id/borrow', async (req, res) => {
       await QueueEntry.destroy({ where: { bookId: book.id, userGoogleId: userId } });
       await book.save();
       await book.reload();
-      const borrowedBook = await prepareBookForFrontend(book, userId);
+      const borrowedBook = prepareBookForFrontend(book, userId);
       res.json(borrowedBook);
     } else {
       res.status(403).send({ message: 'book is not available' });
@@ -168,6 +180,16 @@ bookRouter.post('/:id/return', async (req, res) => {
   await book.save();
   await book.reload();
 
+  if (book.queue_entries && book.queue_entries.length > 0) {
+    const receiver_user = await User.findByPk(book.queue_entries[0].userGoogleId);
+    if (receiver_user) {
+      sendPrivateMessage(
+        receiver_user.email,
+        `:book: Your reserved book "*${book.title}*" is now available for you to borrow!`,
+      ).catch((error) => console.error('Failed to send Slack notification:', error));
+    }
+  }
+
   const returnedBook = prepareBookForFrontend(book, userId);
   res.json(returnedBook);
 });
@@ -187,7 +209,7 @@ bookRouter.post('/:id/reserve', async (req, res) => {
   });
 
   const book = (await fetchBook(bookId)) as Book;
-  res.json(await prepareBookForFrontend(book, userId));
+  res.json(prepareBookForFrontend(book, userId));
 });
 
 bookRouter.post('/:id/unreserve', async (req, res) => {
@@ -203,7 +225,7 @@ bookRouter.post('/:id/unreserve', async (req, res) => {
   }
 
   const book = (await fetchBook(bookId)) as Book;
-  res.json(await prepareBookForFrontend(book, userId));
+  res.json(prepareBookForFrontend(book, userId));
 });
 
 bookRouter.get('/borrows', requireAdmin, async (req, res) => {
@@ -220,7 +242,40 @@ bookRouter.get('/borrows', requireAdmin, async (req, res) => {
       },
     ],
   });
-  res.json(borrows);
+
+  const newBorrows = borrows.map((borrow: Borrow) => ({
+    ...borrow.dataValues,
+    dueDate: calculateDueDate(borrow.borrowedDate),
+    daysLeft: calculateDaysLeft(borrow.borrowedDate),
+  }));
+  res.json(newBorrows);
+});
+
+bookRouter.put('/:id/extend', async (req, res) => {
+  const id = req.params.id;
+  const userId = req.userId as string;
+  const loan = await Borrow.findOne({
+    where: { bookId: id, userGoogleId: req.userId, active: true },
+  });
+  if (!loan) {
+    res.status(404).send({ message: 'Loan not found' });
+    return;
+  }
+  const reserved = await QueueEntry.findOne({
+    where: { bookId: loan.bookId },
+  });
+  if (reserved) {
+    res.status(403).send({ message: 'Loan cannot be extended, since there is a reservation' });
+    return;
+  }
+  const newBorrowDate = new Date();
+  const newLoan = await loan.update({ borrowedDate: newBorrowDate });
+  console.log('newLoan', newLoan);
+
+  await newLoan.save();
+  const book = await fetchBook(newLoan.bookId);
+  const newBook = prepareBookForFrontend(book, userId);
+  res.json(newBook);
 });
 
 export default bookRouter;

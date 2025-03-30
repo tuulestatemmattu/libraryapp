@@ -13,26 +13,6 @@ import {
 import { BorrowData } from '../../../interfaces/Borrow';
 import { getBorrows, returnBook } from '../../../services/book';
 
-const parseDueDate = (borrowed: string) => {
-  const result = new Date(borrowed);
-  result.setDate(result.getDate() + 30);
-
-  return result.toISOString().split('T')[0];
-};
-
-const parseDaysLeft = (borrowed: string) => {
-  const borrowedDate = new Date(borrowed);
-  borrowedDate.setDate(borrowedDate.getDate() + 30); // Add 30 days to get the due date
-
-  const today = new Date();
-
-  // Calculate the difference in milliseconds and convert to days
-  const diffTime = borrowedDate.getTime() - today.getTime();
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
-
-  return diffDays;
-};
-
 const BorrowTable = () => {
   const [rows, setRows] = useState([]);
 
@@ -45,8 +25,8 @@ const BorrowTable = () => {
             title: b.book.title,
             user: b.user.email,
             borrowedDate: b.borrowedDate.slice(0, 10),
-            due: parseDueDate(b.borrowedDate),
-            days: parseDaysLeft(b.borrowedDate),
+            due: b.dueDate.slice(0, 10),
+            days: b.daysLeft,
             bookId: b.book.id,
             active: b.active,
           };
@@ -68,8 +48,8 @@ const BorrowTable = () => {
           title: b.book.title,
           user: b.user.email,
           borrowedDate: b.borrowedDate.slice(0, 10),
-          due: parseDueDate(b.borrowedDate),
-          days: parseDaysLeft(b.borrowedDate),
+          due: b.dueDate.slice(0, 10),
+          days: b.daysLeft,
           bookId: b.book.id,
           active: b.active,
         })),

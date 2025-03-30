@@ -5,11 +5,8 @@
 }
 
 form {
-  margin-left: 30px;
-}
-
-.copies-input {
-  position: relative;
+  margin-left: 0px;
+  width: 95%;
 }
 
 .addbookform-buttons {
@@ -19,8 +16,7 @@ form {
 }
 
 .tag-select-div {
-  width: 90%;
-  max-width: 700px;
+  width: 100%;
 }
 
 .add-tag {

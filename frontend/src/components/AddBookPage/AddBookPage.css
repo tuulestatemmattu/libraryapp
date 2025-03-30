@@ -19,14 +19,15 @@
 
 .book-content {
   display: flex;
+  position: relative;
   flex-direction: column;
   align-items: center;
-}
-
-.book-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin-top: 3vw;
+  margin-bottom: 3vw;
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  overflow: visible;
 }
 
 /* Specific for the scan (camera) view */

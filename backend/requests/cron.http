@@ -1,0 +1,6 @@
+POST http://localhost:3001/api/cron
+Content-type: application/json
+
+{
+  "secret": "salainen"
+}

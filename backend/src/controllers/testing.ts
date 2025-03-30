@@ -21,15 +21,16 @@ router.get('/resetdb', async (_req, res) => {
 
 router.get('/login', async (_req, res) => {
   res.cookie(
-    'user',
+    'profile',
     JSON.stringify({
       name: 'Sample Name',
       email: 'sample_email@example.com',
       picture: 'sample_picture_url',
+      admin: true,
     }),
   );
 
-  const token = jwt.sign({ id: 'sample_google_id' }, JWT_SECRET);
+  const token = jwt.sign({ id: 'sample_google_id', admin: true }, JWT_SECRET);
   res.cookie('token', token);
 
   res.status(200).end();
