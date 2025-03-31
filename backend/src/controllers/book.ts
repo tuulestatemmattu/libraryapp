@@ -181,7 +181,8 @@ bookRouter.post('/:id/return', async (req, res) => {
   await book.reload();
 
   if (book.queue_entries && book.queue_entries.length > 0) {
-    const receiver_user = await User.findByPk(book.queue_entries[0].userGoogleId);
+    const ready_count = book.copiesAvailable - 1;
+    const receiver_user = await User.findByPk(book.queue_entries[ready_count].userGoogleId);
     if (receiver_user) {
       sendPrivateMessage(
         receiver_user.email,
