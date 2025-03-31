@@ -1,6 +1,8 @@
 import { SyntheticEvent, useState } from 'react';
 
-import { Box, Grid, Button } from '@mui/material';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { SelectChangeEvent } from '@mui/material/Select';
 
