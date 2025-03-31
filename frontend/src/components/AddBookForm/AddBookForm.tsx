@@ -1,9 +1,9 @@
 import { SyntheticEvent, useState } from 'react';
 
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import Grid from '@mui/material/Grid';
 import { SelectChangeEvent } from '@mui/material/Select';
 
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
