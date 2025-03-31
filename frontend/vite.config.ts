@@ -12,4 +12,7 @@ export default defineConfig({
       }
     })
   ],
+  server: {
+    allowedHosts: ['frontend-e2e']
+  }
 })

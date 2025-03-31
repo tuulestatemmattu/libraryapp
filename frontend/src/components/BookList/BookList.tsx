@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Stack } from '@mui/material';
 import Box from '@mui/material/Box';
-import Grid2 from '@mui/material/Grid2';
+import Grid from '@mui/material/Grid';
 import Input from '@mui/material/Input';
 import { useTheme } from '@mui/material/styles';
 
@@ -57,11 +57,11 @@ const BookList = ({ books }: BookListProps) => {
         </Box>
         <FilterWithTags selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
         <div className="books-container" style={{ backgroundColor: componentBackColor }}>
-          <Grid2 container spacing={1} wrap="wrap" className="grid-container">
+          <Grid container spacing={1} wrap="wrap" className="grid-container">
             {filteredBooks.map((book) => (
               <BookCard key={book.id} book={book} />
             ))}
-          </Grid2>
+          </Grid>
         </div>
       </Stack>
     </article>
