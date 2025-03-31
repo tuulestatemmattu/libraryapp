@@ -105,11 +105,7 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
     <article>
       <h2>Add a new book</h2>
       <form onSubmit={handleSubmit}>
-        <Grid
-          container
-          spacing={1}
-          direction="row"
-        >
+        <Grid container spacing={1} direction="row">
           <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
           <StyledTextField label="Title" value={title} setValue={setTitle} />
           <StyledTextField label="Author" value={authors} setValue={setAuthors} />
