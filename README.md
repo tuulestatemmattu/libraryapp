@@ -1,5 +1,7 @@
 # [Libraryapp](https://ohtu-library-7801af5eb8b8.herokuapp.com/) 
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b993feea44e84543ad9637df434e8892)](https://app.codacy.com/gh/tuulestatemmattu/libraryapp?utm_source=github.com&utm_medium=referral&utm_content=tuulestatemmattu/libraryapp&utm_campaign=Badge_Grade)
+
 ### Backlog links
 
 - [Product Backlog](https://github.com/orgs/tuulestatemmattu/projects/19)
