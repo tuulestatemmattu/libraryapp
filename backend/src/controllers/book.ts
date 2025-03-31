@@ -278,4 +278,33 @@ bookRouter.put('/:id/extend', async (req, res) => {
   res.json(newBook);
 });
 
+bookRouter.get('/queue', requireAdmin, async (req, res) => {
+  const queueEntries = await QueueEntry.findAll({
+    attributes: ['id', 'createdAt', 'bookId'],
+    include: [
+      {
+        model: User,
+        attributes: ['name', 'email'],
+      },
+      {
+        model: Book,
+        attributes: ['title', 'id'],
+      },
+    ],
+    order: [['bookId', 'ASC'], ['createdAt', 'ASC']],
+  });
+
+  const newQueueEntries = queueEntries.map((entry: QueueEntry, index: number, array: QueueEntry[]) => {
+    const position = array.filter(e => e.bookId === entry.bookId)
+                          .findIndex(e => e.id === entry.id) + 1;
+
+    return {
+      ...entry.dataValues,
+      position,
+    };
+  });
+
+  res.json(newQueueEntries);
+});
+
 export default bookRouter;

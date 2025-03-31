@@ -54,6 +54,11 @@ const extendBookLoan = async (id: number) => {
   return response.data;
 };
 
+const getQueueEntries = async () => {
+  const response = await axios.get(`${baseUrl}/queue`);
+  return response.data;
+};
+
 export {
   addBook,
   getBooks,
@@ -65,4 +70,5 @@ export {
   addBookToQueue,
   removeBookFromQueue,
   extendBookLoan,
+  getQueueEntries,
 };
