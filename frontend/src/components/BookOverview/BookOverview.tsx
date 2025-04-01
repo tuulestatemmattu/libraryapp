@@ -283,7 +283,7 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
                 className="book-overview-action-button"
                 onClick={handleEditButtonPress}
               >
-                Edit this book
+                Edit
               </Button>
             </CardActions>
           )}
