@@ -1,20 +1,14 @@
 import express from 'express';
 import { Op } from 'sequelize';
 
-import { Book, Borrow, User } from '../models';
+import { Book, Borrow, QueueEntry, User } from '../models';
 import { calculateDueDate } from '../util/bookUtils';
 import { CRON_SECRET, LOAN_PERIOD } from '../util/config';
 import { sendPrivateMessage } from '../util/slackbot';
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
-  const { secret } = req.body;
-  if (secret != CRON_SECRET) {
-    res.status(401).json({ message: 'invalid or missing secret' });
-    return;
-  }
-
+const sendNotifications = async () => {
   const dateNow = new Date();
   const firstNotificationLimit = new Date(dateNow);
   const secondNotificationLimit = new Date(dateNow);
@@ -70,6 +64,31 @@ router.post('/', async (req, res) => {
     by: 1,
     where,
   });
+};
+
+const removeOldReservations = async () => {
+  const dateNow = new Date();
+  const reservationTimeLimit = new Date(dateNow);
+  reservationTimeLimit.setDate(dateNow.getDate() - 7);
+
+  await QueueEntry.destroy({
+    where: {
+      readyDate: {
+        [Op.lte]: reservationTimeLimit,
+      },
+    },
+  });
+};
+
+router.post('/', async (req, res) => {
+  const { secret } = req.body;
+  if (secret != CRON_SECRET) {
+    res.status(401).json({ message: 'invalid or missing secret' });
+    return;
+  }
+
+  await sendNotifications();
+  await removeOldReservations();
 
   res.status(200).end();
 });

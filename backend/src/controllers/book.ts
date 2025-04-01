@@ -182,7 +182,7 @@ bookRouter.post('/:id/return', async (req, res) => {
 
   if (book.queue_entries && book.queue_entries.length > 0) {
     const ready_count = book.copiesAvailable - 1;
-    book.queue_entries[ready_count].update('readyDate', new Date());
+    await book.queue_entries[ready_count].update({ readyDate: new Date() });
 
     const receiver_user = await User.findByPk(book.queue_entries[ready_count].userGoogleId);
     if (receiver_user) {
