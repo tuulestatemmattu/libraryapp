@@ -1,8 +1,9 @@
 import { SyntheticEvent, useState } from 'react';
 
-import { Grid } from '@mui/material';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import Grid from '@mui/material/Grid';
 import { SelectChangeEvent } from '@mui/material/Select';
 
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
@@ -10,7 +11,6 @@ import useMainStore from '../../hooks/useMainStore';
 import { CreatedBook } from '../../interfaces/Book';
 import { FetchedTag } from '../../interfaces/Tags';
 import StyledTextField from '../StyledTextField/StyledTextField';
-import '../StyledTextField/StyledTextField';
 import CopiesInput from './CopiesInput/CopiesInput';
 import LocationSelect from './LocationSelect/LocationSelect';
 import TagSelect from './TagSelect/TagSelect';
@@ -123,8 +123,14 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
           <div className="tag-select-div">
             <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
           </div>
-          <CopiesInput copies={copies} setCopies={setCopies} />
-          <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
+          <Box display="flex" flexDirection="row" alignItems="center" gap={2} width="100%">
+            <Grid sx={{ flexShrink: 0, width: 130 }}>
+              <CopiesInput copies={copies} setCopies={setCopies} />
+            </Grid>
+            <Grid sx={{ flexGrow: 1 }}>
+              <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
+            </Grid>
+          </Box>
           <ButtonGroup variant="contained" className="addbookform-buttons">
             <Button type="button" onClick={handleClear} variant="contained">
               Clear

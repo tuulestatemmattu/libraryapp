@@ -14,6 +14,7 @@ const LocationSelect = ({ value, onChangeLocation }: LocationSelectProps) => {
   return (
     <TextField
       select
+      fullWidth
       value={value}
       onChange={(event) => onChangeLocation(event.target.value)}
       label="Office"
