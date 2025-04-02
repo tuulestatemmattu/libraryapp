@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, test, vi } from 'vitest';
 
-import { officeLocations } from '../../constants';
+import { officeLocations } from '../../../constants';
 import LocationSelect from './LocationSelect';
 
 describe('LocationSelect', () => {

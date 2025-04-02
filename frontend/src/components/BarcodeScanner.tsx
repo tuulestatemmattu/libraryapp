@@ -8,6 +8,7 @@ interface BarcodeScannerProps {
 }
 
 const BarcodeScanner = ({ isbnHandler }: BarcodeScannerProps) => {
+  const stopStreamRef = useRef<(() => void) | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const restartScanning = useRef(false);
 
@@ -18,11 +19,27 @@ const BarcodeScanner = ({ isbnHandler }: BarcodeScannerProps) => {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: 'environment' },
       });
+
+      const stopFunc = () => {
+        stream.getTracks().forEach((track) => {
+          track.stop();
+        });
+      };
+      stopStreamRef.current = stopFunc;
+
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
       }
     } catch (error) {
       console.error('Cannot access camera', error);
+    }
+  };
+
+  const stopVideoStream = () => {
+    if (stopStreamRef.current) {
+      console.log('Turning off camera');
+      Quagga.stop();
+      stopStreamRef.current();
     }
   };
 
@@ -82,6 +99,7 @@ const BarcodeScanner = ({ isbnHandler }: BarcodeScannerProps) => {
     alreadyScanned = false;
     getVideoStream();
     initScanner();
+    return stopVideoStream;
   }, []);
 
   return (

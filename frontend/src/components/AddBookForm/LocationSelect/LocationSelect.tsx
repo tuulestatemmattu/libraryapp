@@ -1,7 +1,7 @@
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 
-import { officeLocations } from '../../constants';
+import { officeLocations } from '../../../constants';
 
 import './LocationSelect.css';
 
@@ -14,6 +14,7 @@ const LocationSelect = ({ value, onChangeLocation }: LocationSelectProps) => {
   return (
     <TextField
       select
+      fullWidth
       value={value}
       onChange={(event) => onChangeLocation(event.target.value)}
       label="Office"

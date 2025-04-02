@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,9 +14,16 @@ import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
+import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';
 import { FetchedBook } from '../../interfaces/Book';
-import { addBookToQueue, borrowBook, removeBookFromQueue, returnBook } from '../../services/book';
+import {
+  addBookToQueue,
+  borrowBook,
+  extendBookLoan,
+  removeBookFromQueue,
+  returnBook,
+} from '../../services/book';
 import ItemsSlider from '../ItemsSlider/ItemsSlider';
 
 import './BookOverview.css';
@@ -30,6 +38,7 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
   const profile = useMainStore((state) => state.profile);
   const theme = useTheme();
   const navigate = useNavigate();
+  const { showNotification } = useNotification();
 
   const daysLeftString =
     Math.abs(book.daysLeft) +
@@ -49,6 +58,20 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
       handleClose();
     } catch (error) {
       console.error('Failed to borrow the book:', error);
+    }
+  };
+
+  const handleExtend = async (id: number) => {
+    try {
+      const newLoan = await extendBookLoan(id);
+      console.log('Extended book:', newLoan);
+      addOrUpdateBook(newLoan);
+      showNotification('Loan extended successfully', 'success');
+      handleClose();
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        showNotification('Failed to extend loan: ' + error.response.data.message, 'error');
+      }
     }
   };
 
@@ -209,13 +232,22 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
         <Stack direction="row-reverse" sx={{ pt: 1 }}>
           <CardActions sx={{ pr: 1, pl: 1 }}>
             {book.status == 'borrowed' || book.status == 'late' ? (
-              <Button
-                variant="contained"
-                className="book-overview-action-button"
-                onClick={() => handleReturn(book.id)}
-              >
-                Return
-              </Button>
+              <>
+                <Button
+                  variant="contained"
+                  className="book-overview-action-button"
+                  onClick={() => handleReturn(book.id)}
+                >
+                  Return
+                </Button>
+                <Button
+                  variant="contained"
+                  className="book-overview-action-button"
+                  onClick={() => handleExtend(book.id)}
+                >
+                  Extend
+                </Button>
+              </>
             ) : book.status == 'available' || book.status == 'ready' ? (
               <Button
                 variant="contained"
@@ -251,7 +283,7 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
                 className="book-overview-action-button"
                 onClick={handleEditButtonPress}
               >
-                Edit this book
+                Edit
               </Button>
             </CardActions>
           )}

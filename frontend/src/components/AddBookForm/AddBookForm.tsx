@@ -1,20 +1,19 @@
 import { SyntheticEvent, useState } from 'react';
 
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import Grid from '@mui/material/Grid';
 import { SelectChangeEvent } from '@mui/material/Select';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
 
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';
 import { CreatedBook } from '../../interfaces/Book';
 import { FetchedTag } from '../../interfaces/Tags';
-import CopiesInput from '../CopiesInput/CopiesInput';
-import LocationSelect from '../LocationSelect/LocationSelect';
-import StyledInput from '../StyledInput/StyledInput';
-import '../StyledInput/StyledInput';
-import TagSelect from '../TagSelect/TagSelect';
+import StyledTextField from '../StyledTextField/StyledTextField';
+import CopiesInput from './CopiesInput/CopiesInput';
+import LocationSelect from './LocationSelect/LocationSelect';
+import TagSelect from './TagSelect/TagSelect';
 
 import '../../style.css';
 import './AddBookForm.css';
@@ -104,54 +103,43 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
 
   return (
     <article>
+      <h2>Add a new book</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <StyledInput label="title" value={title} setValue={setTitle} />
-        </div>
-        <div>
-          <StyledInput label="Author" value={authors} setValue={setAuthors} />
-        </div>
-        <div>
-          <StyledInput label="ISBN" value={isbn} setValue={setIsbn} />
-        </div>
-        <div>
-          <TextField
-            className="styled-input"
-            label="Description"
-            multiline
-            type="text"
-            variant="standard"
-            value={description}
-            name="description"
-            onChange={({ target }) => setDescription(target.value)}
+        <Grid container spacing={1} direction="row">
+          <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
+          <StyledTextField label="Title" value={title} setValue={setTitle} />
+          <StyledTextField label="Author" value={authors} setValue={setAuthors} />
+          <StyledTextField
+            label="Publication date"
+            value={publishedDate}
+            setValue={setPublishedDate}
           />
-        </div>
-        <div>
-          <StyledInput label="publishYear" value={publishedDate} setValue={setPublishedDate} />
-        </div>
-        <div className="tag-select-div">
-          <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
-        </div>
-        <Stack
-          direction="row"
-          spacing={2}
-          justifyContent="space-between"
-          alignItems="center"
-          sx={{ width: '90%', maxWidth: '700px' }}
-        >
-          <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
-          <div className="copies-input">
-            <CopiesInput copies={copies} setCopies={setCopies} />
+          <StyledTextField
+            label="Description"
+            value={description}
+            setValue={setDescription}
+            multiline={true}
+          />
+          <div className="tag-select-div">
+            <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
           </div>
-        </Stack>
-        <ButtonGroup variant="contained" className="addbookform-buttons">
-          <Button type="button" onClick={handleClear} variant="contained">
-            Clear
-          </Button>
-          <Button type="submit" variant="contained">
-            Add
-          </Button>
-        </ButtonGroup>
+          <Box display="flex" flexDirection="row" alignItems="center" gap={2} width="100%">
+            <Grid sx={{ flexShrink: 0, width: 130 }}>
+              <CopiesInput copies={copies} setCopies={setCopies} />
+            </Grid>
+            <Grid sx={{ flexGrow: 1 }}>
+              <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
+            </Grid>
+          </Box>
+          <ButtonGroup variant="contained" className="addbookform-buttons">
+            <Button type="button" onClick={handleClear} variant="contained">
+              Clear
+            </Button>
+            <Button type="submit" variant="contained">
+              Add
+            </Button>
+          </ButtonGroup>
+        </Grid>
       </form>
     </article>
   );
