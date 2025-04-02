@@ -38,8 +38,6 @@ jobs:
         working-directory: frontend
     steps:
       - uses: actions/checkout@v3
-        with:
-          ref: ${{ secrets.LHCI_GITHUB_APP_TOKEN  }}
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
@@ -52,8 +50,6 @@ jobs:
         run: |
           npm install -g @lhci/cli@0.13.x
           lhci autorun
-        env:
-          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN  }}
   
   backend:
     runs-on: ubuntu-latest
