@@ -59,6 +59,10 @@ const getQueueEntries = async () => {
   return response.data;
 };
 
+const deleteQueueEntry = async (id: number) => {
+  await axios.delete(`${baseUrl}/queue/${id}`);
+};
+
 export {
   addBook,
   getBooks,
@@ -71,4 +75,5 @@ export {
   removeBookFromQueue,
   extendBookLoan,
   getQueueEntries,
+  deleteQueueEntry,
 };

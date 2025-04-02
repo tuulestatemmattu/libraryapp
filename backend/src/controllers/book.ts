@@ -307,4 +307,23 @@ bookRouter.get('/queue', requireAdmin, async (req, res) => {
   res.json(newQueueEntries);
 });
 
+bookRouter.delete('/queue/:id', requireAdmin, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const queueEntry = await QueueEntry.findByPk(id);
+    if (!queueEntry) {
+      res.status(404).send({ message: 'Queue entry not found' });
+      return;
+    }
+
+    await queueEntry.destroy();
+    res.status(204).send();
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).send({ message: error.message });
+    }
+  }
+});
+
 export default bookRouter;

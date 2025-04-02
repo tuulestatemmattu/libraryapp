@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 
-import { Box, Paper } from '@mui/material';
+import { Box, Paper, Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   DataGrid,
+  GridActionsCellItem,
   GridColDef,
+  GridRowId,
   GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarDensitySelector,
@@ -11,10 +14,12 @@ import {
 } from '@mui/x-data-grid';
 
 import { QueueEntryData } from '../../../interfaces/QueueEntry';
-import { getQueueEntries } from '../../../services/book';
+import { getQueueEntries, deleteQueueEntry } from '../../../services/book';
 
 const QueueTable = () => {
-  const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState<{ id: number; title: string; user: string; createdAt: string; position: number }[]>([]);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState<GridRowId | null>(null);
 
   useEffect(() => {
     getQueueEntries().then((result) =>
@@ -32,18 +37,53 @@ const QueueTable = () => {
     );
   }, []);
 
+  const handleDeleteClick = (id: number) => () => {
+    setDeleteId(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (deleteId !== null) {
+      await deleteQueueEntry(Number(deleteId));
+      setRows((prevRows) => prevRows.filter((row) => row.id !== deleteId));
+      setDeleteDialogOpen(false);
+      setDeleteId(null);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteDialogOpen(false);
+    setDeleteId(null);
+  };
+
   const columns: GridColDef[] = [
-    { field: 'title', headerName: 'Book Title', width: 400 },
-    { field: 'user', headerName: 'User', width: 250 },
+    { field: 'title', headerName: 'Book Title', width: 300 },
+    { field: 'user', headerName: 'User', width: 200 },
     {
-        field: 'position',
-        headerName: 'Position',
-        width: 150,
+      field: 'position',
+      headerName: 'Position',
+      width: 100,
     },
     {
       field: 'createdAt',
       headerName: 'Reserved',
       width: 150,
+    },
+    {
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Actions',
+      width: 100,
+      cellClassName: 'actions',
+      getActions: ({ id }) => {
+        return [
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            onClick={handleDeleteClick(id as number)}
+          />,
+        ];
+      },
     },
   ];
 
@@ -57,7 +97,9 @@ const QueueTable = () => {
       </GridToolbarContainer>
     );
   };
+
   const paginationModel = { page: 0, pageSize: 20 };
+
   return (
     <article>
       <Box sx={{ textAlign: 'center' }}>
@@ -80,6 +122,18 @@ const QueueTable = () => {
           }}
         />
       </Paper>
+      <Dialog open={deleteDialogOpen} onClose={handleCancelDelete}>
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>Are you sure you want to delete this queue entry?</DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelDelete} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmDelete} color="primary">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </article>
   );
 };
