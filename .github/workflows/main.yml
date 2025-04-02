@@ -40,7 +40,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          ref: ${{ github.sha }} 
       - name: Use Node.js 16.x
         uses: actions/setup-node@v3
         with:
