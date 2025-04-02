@@ -67,8 +67,8 @@ const QueueTable = () => {
   };
 
   const columns: GridColDef[] = [
-    { field: 'title', headerName: 'Book Title', width: 300 },
-    { field: 'user', headerName: 'User', width: 200 },
+    { field: 'title', headerName: 'Book Title', width: 300, flex: 1 },
+    { field: 'user', headerName: 'User', width: 250 },
     {
       field: 'position',
       headerName: 'Position',
@@ -77,7 +77,7 @@ const QueueTable = () => {
     {
       field: 'createdAt',
       headerName: 'Reserved',
-      width: 150,
+      width: 100,
     },
     {
       field: 'actions',
