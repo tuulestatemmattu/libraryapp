@@ -99,6 +99,30 @@ jobs:
         HD_CRON_SECRET: ${{ secrets.CRON_SECRET }}
         HD_SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         HD_SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        
+  lighthouse-staging:
+        needs: deploy-staging
+        if: github.ref == 'refs/heads/staging' && github.event_name == 'push'
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v3
+          - name: Use Node.js
+            uses: actions/setup-node@v3
+            with:
+              node-version: 16.x
+          - name: npm install
+            run: npm install -g @lhci/cli@0.14.x
+          - name: run Lighthouse CI
+            run: |
+              lhci autorun --config=./lighthouserc.json
+            env:
+              LHCI_BUILD_CONTEXT__CURRENT_BRANCH: staging
+              LHCI_BUILD_CONTEXT__GITHUB_ACTOR: ${{ github.actor }}
+              LHCI_BUILD_CONTEXT__GITHUB_EVENT_NAME: ${{ github.event_name }}
+              LHCI_BUILD_CONTEXT__GITHUB_REPOSITORY: ${{ github.repository }}
+              LHCI_BUILD_CONTEXT__GITHUB_SHA: ${{ github.sha }}
+              LHCI_BUILD_CONTEXT__GITHUB_REF: ${{ github.ref }}
+              LHCI_TARGET_URL: https://${{ secrets.HEROKU_STAGING_APP_NAME }}.herokuapp.com
   
   deploy-production:
     needs: [frontend, backend]
@@ -132,26 +156,4 @@ jobs:
         HD_SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         HD_SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-lighthouse-staging:
-    needs: deploy-staging
-    if: github.ref == 'refs/heads/staging' && github.event_name == 'push'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-      - name: npm install
-        run: npm install -g @lhci/cli@0.14.x
-      - name: run Lighthouse CI
-        run: |
-          lhci autorun --config=./lighthouserc.json
-        env:
-          LHCI_BUILD_CONTEXT__CURRENT_BRANCH: staging
-          LHCI_BUILD_CONTEXT__GITHUB_ACTOR: ${{ github.actor }}
-          LHCI_BUILD_CONTEXT__GITHUB_EVENT_NAME: ${{ github.event_name }}
-          LHCI_BUILD_CONTEXT__GITHUB_REPOSITORY: ${{ github.repository }}
-          LHCI_BUILD_CONTEXT__GITHUB_SHA: ${{ github.sha }}
-          LHCI_BUILD_CONTEXT__GITHUB_REF: ${{ github.ref }}
-          LHCI_TARGET_URL: https://${{ secrets.HEROKU_STAGING_APP_NAME }}.herokuapp.com
+    
