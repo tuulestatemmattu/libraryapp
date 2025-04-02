@@ -1,7 +1,15 @@
 import { useEffect, useState } from 'react';
 
-import { Box, Paper, Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Paper,
+} from '@mui/material';
 import {
   DataGrid,
   GridActionsCellItem,
@@ -14,10 +22,12 @@ import {
 } from '@mui/x-data-grid';
 
 import { QueueEntryData } from '../../../interfaces/QueueEntry';
-import { getQueueEntries, deleteQueueEntry } from '../../../services/book';
+import { deleteQueueEntry, getQueueEntries } from '../../../services/book';
 
 const QueueTable = () => {
-  const [rows, setRows] = useState<{ id: number; title: string; user: string; createdAt: string; position: number }[]>([]);
+  const [rows, setRows] = useState<
+    { id: number; title: string; user: string; createdAt: string; position: number }[]
+  >([]);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<GridRowId | null>(null);
 

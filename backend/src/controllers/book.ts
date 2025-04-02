@@ -291,18 +291,23 @@ bookRouter.get('/queue', requireAdmin, async (req, res) => {
         attributes: ['title', 'id'],
       },
     ],
-    order: [['bookId', 'ASC'], ['createdAt', 'ASC']],
+    order: [
+      ['bookId', 'ASC'],
+      ['createdAt', 'ASC'],
+    ],
   });
 
-  const newQueueEntries = queueEntries.map((entry: QueueEntry, index: number, array: QueueEntry[]) => {
-    const position = array.filter(e => e.bookId === entry.bookId)
-                          .findIndex(e => e.id === entry.id) + 1;
+  const newQueueEntries = queueEntries.map(
+    (entry: QueueEntry, index: number, array: QueueEntry[]) => {
+      const position =
+        array.filter((e) => e.bookId === entry.bookId).findIndex((e) => e.id === entry.id) + 1;
 
-    return {
-      ...entry.dataValues,
-      position,
-    };
-  });
+      return {
+        ...entry.dataValues,
+        position,
+      };
+    },
+  );
 
   res.json(newQueueEntries);
 });

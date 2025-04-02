@@ -6,9 +6,9 @@ import { Button, ButtonGroup } from '@mui/material';
 import useRequireAdmin from '../../hooks/useRequireAdmin';
 import BookTable from './tables/BookTable';
 import BorrowTable from './tables/BorrowTable';
+import QueueTable from './tables/QueueTable';
 import TagTable from './tables/TagTable';
 import UserTable from './tables/UserTable';
-import QueueTable from './tables/QueueTable';
 
 type ViewOpt = 'users' | 'tags' | 'books' | 'borrows' | 'queues';
 
