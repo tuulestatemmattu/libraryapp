@@ -40,11 +40,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: ${{ github.sha }} 
-      - name: Use Node.js 16.x
+          ref: ${{ github.sha }}
+      - name: Use Node.js 23
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 23
       - name: npm install, build
         run: |
           npm install
@@ -54,7 +54,7 @@ jobs:
           npm install -g @lhci/cli@0.13.x
           lhci autorun
         env:
-          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKENd }}
   
   backend:
     runs-on: ubuntu-latest
