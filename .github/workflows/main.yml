@@ -41,9 +41,9 @@ jobs:
         with:
           ref: ${{ secrets.LHCI_GITHUB_APP_TOKEN  }}
       - name: Install Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: '23'
+          node-version: '16'
       - name: npm install, build
         run: |
           npm install
