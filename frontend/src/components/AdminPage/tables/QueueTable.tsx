@@ -55,7 +55,18 @@ const QueueTable = () => {
   const handleConfirmDelete = async () => {
     if (deleteId !== null) {
       await deleteQueueEntry(Number(deleteId));
-      setRows((prevRows) => prevRows.filter((row) => row.id !== deleteId));
+
+      const updatedQueue = await getQueueEntries();
+      setRows(
+        updatedQueue.map((q: QueueEntryData) => ({
+          id: q.id,
+          title: q.book.title,
+          user: q.user.email,
+          createdAt: q.createdAt.slice(0, 10),
+          position: q.position,
+        })),
+      );
+
       setDeleteDialogOpen(false);
       setDeleteId(null);
     }
