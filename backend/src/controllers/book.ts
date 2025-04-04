@@ -57,10 +57,30 @@ bookRouter.post('/', requireAdmin, bookValidator, async (req, res) => {
     const fetchedBook = await fetchBook(book.id);
     res.status(201).send(prepareBookForFrontend(fetchedBook, userId));
 
+    const tagNames = fetchedBook.tags?.map((tag: Tag) => tag.name).join(', ');
+    console.log(tagNames, imageLink, authors);
+
     if (location === 'Helsinki') {
-      sendNotificationToChannel(
-        `:books: A new book "*${title}*" has been added to the library!`,
-      ).catch((err) => console.error('Failed to send Slack notification:', err));
+      const payload = {
+        text: `:books: A new book "*${title}*" has been added to the library!`,
+        attachments: [
+          {
+            author_name: authors,
+            fallback: 'Book image',
+            image_url: imageLink,
+            fields: [
+              {
+                title: ':paperclip: Tags:',
+                value: `*${tagNames || 'No tags'}*`,
+                short: false,
+              },
+            ],
+          },
+        ],
+      };
+      sendNotificationToChannel(payload).catch((err) =>
+        console.error('Failed to send Slack notification:', err),
+      );
     }
   } catch (error: unknown) {
     if (error instanceof Error) {
