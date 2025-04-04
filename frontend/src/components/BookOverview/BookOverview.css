@@ -33,13 +33,10 @@
   align-items: center;
 }
 
-.overview-topleft-container {
+.book-overview-image-container {
   margin-left: 5%;
   width: 20vw !important;
   max-width: 200px !important;
-}
-
-.book-overview-image-container {
   border-radius: 5% !important;
   height: fit-content;
 }

@@ -147,7 +147,6 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
       </IconButton>
       <div className="overview-content-container">
         <div className="overview-tophalf-container">
-          <div className="overview-topleft-container">
             <Paper className="book-overview-image-container" elevation={5}>
               <CardMedia
                 component="img"
@@ -156,7 +155,6 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
                 alt="book cover"
               />
             </Paper>
-          </div>
           <CardContent sx={{ py: 0 }}>
             <div className="book-overview-info-container">
               <Typography
