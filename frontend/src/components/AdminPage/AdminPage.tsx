@@ -6,10 +6,11 @@ import { Button, ButtonGroup } from '@mui/material';
 import useRequireAdmin from '../../hooks/useRequireAdmin';
 import BookTable from './tables/BookTable';
 import BorrowTable from './tables/BorrowTable';
+import QueueTable from './tables/QueueTable';
 import TagTable from './tables/TagTable';
 import UserTable from './tables/UserTable';
 
-type ViewOpt = 'users' | 'tags' | 'books' | 'borrows';
+type ViewOpt = 'users' | 'tags' | 'books' | 'borrows' | 'queues';
 
 const AdminPage = () => {
   useRequireAdmin();
@@ -43,6 +44,9 @@ const AdminPage = () => {
     if (view === 'borrows') {
       return <BorrowTable />;
     }
+    if (view === 'queues') {
+      return <QueueTable />;
+    }
   };
 
   return (
@@ -60,6 +64,9 @@ const AdminPage = () => {
           </Button>
           <Button className="button" variant="contained" onClick={() => changeView('borrows')}>
             Borrows
+          </Button>
+          <Button className="button" variant="contained" onClick={() => changeView('queues')}>
+            Queues
           </Button>
         </ButtonGroup>
       </div>

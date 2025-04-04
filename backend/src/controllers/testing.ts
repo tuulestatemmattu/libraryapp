@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 
@@ -8,8 +9,9 @@ const router = express.Router();
 
 router.get('/resetdb', async (req, res) => {
   const { secret } = req.body;
-  if (secret != CRON_SECRET) {
+  if (!crypto.timingSafeEqual(Buffer.from(secret), Buffer.from(CRON_SECRET))) {
     res.status(401).json({ message: 'invalid or missing secret' });
+    return;
   }
 
   await resetTables();
@@ -26,7 +28,7 @@ router.get('/resetdb', async (req, res) => {
 
 router.get('/login', async (req, res) => {
   const { secret } = req.body;
-  if (secret != CRON_SECRET) {
+  if (!crypto.timingSafeEqual(Buffer.from(secret), Buffer.from(CRON_SECRET))) {
     res.status(401).json({ message: 'invalid or missing secret' });
     return;
   }
