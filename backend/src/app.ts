@@ -38,7 +38,8 @@ app.use('/api/users', userRouter);
 app.use('/api/cron', cronRouter);
 
 app.get('/api/ping', (_req, res) => {
-  res.send('pong2');
+  console.log('ping');
+  res.send('pong');
 });
 
 if (NODE_ENV == 'development' || NODE_ENV == 'test') {
