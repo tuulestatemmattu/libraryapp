@@ -78,9 +78,9 @@ bookRouter.post('/', requireAdmin, bookValidator, async (req, res) => {
           },
         ],
       };
-      sendNotificationToChannel(payload).catch((err) =>
-        console.error('Failed to send Slack notification:', err),
-      );
+      sendNotificationToChannel(payload).catch((err: unknown) => {
+        console.error('Failed to send Slack notification:', err);
+      });
     }
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -202,14 +202,16 @@ bookRouter.post('/:id/return', async (req, res) => {
 
   if (book.queue_entries && book.queue_entries.length > 0) {
     const ready_count = book.copiesAvailable - 1;
-    await book.queue_entries[ready_count].update({ readyDate: new Date() });
+    await book.queue_entries[Number(ready_count)].update({ readyDate: new Date() });
 
-    const receiver_user = await User.findByPk(book.queue_entries[ready_count].userGoogleId);
+    const receiver_user = await User.findByPk(book.queue_entries[Number(ready_count)].userGoogleId);
     if (receiver_user) {
       sendPrivateMessage(
         receiver_user.email,
         `:book: Your reserved book "*${book.title}*" is now available for you to borrow!`,
-      ).catch((error) => console.error('Failed to send Slack notification:', error));
+      ).catch((error: unknown) => {
+        console.error('Failed to send Slack notification:', error);
+      });
     }
   }
 

@@ -48,7 +48,7 @@ isbnRouter.post('/', async (req, res) => {
 
       res.send(book);
     }
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Google API error:', error);
     res.status(500).send({ message: 'Google API may be down.' }).end();
   }
