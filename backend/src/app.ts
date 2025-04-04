@@ -10,7 +10,7 @@ import loginRouter from './controllers/login';
 import tagRouter from './controllers/tag';
 import testingRouter from './controllers/testing';
 import userRouter from './controllers/users';
-import { NODE_ENV } from './util/config';
+import { NODE_ENV, STAGING } from './util/config';
 import { tokenExtractor } from './util/middleware/tokenExtractor';
 
 declare global {
@@ -41,7 +41,7 @@ app.get('/api/ping', (_req, res) => {
   res.send('pong');
 });
 
-if (NODE_ENV == 'development' || NODE_ENV == 'test') {
+if (NODE_ENV == 'development' || NODE_ENV == 'test' || STAGING) {
   app.use('/api/testing', testingRouter);
 }
 
