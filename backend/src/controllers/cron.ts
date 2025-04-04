@@ -20,15 +20,11 @@ const sendNotifications = async () => {
     [Op.or]: [
       {
         notificationsSent: 0,
-        borrowedDate: {
-          [Op.lte]: firstNotificationLimit,
-        },
+        borrowedDate: { [Op.lte]: firstNotificationLimit },
       },
       {
         notificationsSent: 1,
-        borrowedDate: {
-          [Op.lte]: secondNotificationLimit,
-        },
+        borrowedDate: { [Op.lte]: secondNotificationLimit },
       },
     ],
   };
