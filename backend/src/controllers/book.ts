@@ -202,12 +202,9 @@ bookRouter.post('/:id/return', async (req, res) => {
 
   if (book.queue_entries && book.queue_entries.length > 0) {
     const ready_count = book.copiesAvailable - 1;
-    if (ready_count < 0 || ready_count >= book.queue_entries.length) {
-      throw new Error('Invalid ready count');
-    }
+    await book.queue_entries[Number(ready_count)].update({ readyDate: new Date() });
 
-    await book.queue_entries[ready_count].update({ readyDate: new Date() });
-    const receiver_user = await User.findByPk(book.queue_entries[ready_count].userGoogleId);
+    const receiver_user = await User.findByPk(book.queue_entries[Number(ready_count)].userGoogleId);
     if (receiver_user) {
       sendPrivateMessage(
         receiver_user.email,
