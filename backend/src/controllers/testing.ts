@@ -2,35 +2,53 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 
 import { User, resetTables } from '../models';
-import { JWT_SECRET } from '../util/config';
+import { CRON_SECRET, JWT_SECRET, STAGING } from '../util/config';
 
 const router = express.Router();
 
-router.get('/resetdb', async (_req, res) => {
+router.get('/resetdb', async (req, res) => {
+  const { secret } = req.body;
+  if ( secret != CRON_SECRET ) {
+    res.status(401).json({message: 'invalid or missing secret'});
+  }
+
   await resetTables();
   await User.create({
-    google_id: 'sample_google_id',
-    email: 'sample_email@example.com',
+    google_id: 'test_google_id',
+    name: 'Test user',
+    email: 'test.user@example.com',
     picture: 'sample_picture_url',
-    name: 'Sample Name',
     admin: true,
   });
 
   res.status(200).end();
 });
 
-router.get('/login', async (_req, res) => {
+router.get('/login', async (req, res) => {
+  const { secret } = req.body;
+  if ( secret != CRON_SECRET ) {
+    res.status(401).json({message: 'invalid or missing secret'});
+  }
+  if (!(await User.findOne({where: {google_id: 'test google id',}}))) {
+    await User.create({
+      google_id: 'test google id',
+      name: 'Test user',
+      email: 'test.user@example.com',
+      picture: 'sample_picture_url',
+      admin: true,
+    });
+  }
   res.cookie(
     'profile',
     JSON.stringify({
-      name: 'Sample Name',
-      email: 'sample_email@example.com',
+      name: 'Test user',
+      email: 'test.user@example.com',
       picture: 'sample_picture_url',
       admin: true,
     }),
   );
 
-  const token = jwt.sign({ id: 'sample_google_id', admin: true }, JWT_SECRET);
+  const token = jwt.sign({ id: 'test_google_id', admin: true }, JWT_SECRET);
   res.cookie('token', token);
 
   res.status(200).end();

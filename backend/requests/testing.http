@@ -1,0 +1,6 @@
+GET http://localhost:3001/api/testing/login
+Content-Type: application/json
+
+{
+    "secret": "salainen"
+}
