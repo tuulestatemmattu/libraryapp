@@ -231,6 +231,15 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
         {/* Bottom: Action Buttons */}
         <Stack direction="row-reverse" sx={{ pt: 1 }}>
           <CardActions sx={{ pr: 1, pl: 1 }}>
+            {profile && profile.admin && (
+              <Button
+                variant="contained"
+                className="book-overview-action-button"
+                onClick={handleEditButtonPress}
+              >
+                Edit
+              </Button>
+            )}
             {book.status == 'borrowed' || book.status == 'late' ? (
               <>
                 <Button
@@ -275,17 +284,6 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
               </Button>
             )}
           </CardActions>
-          {profile?.admin && (
-            <CardActions sx={{ pr: 1, pl: 1 }}>
-              <Button
-                variant="contained"
-                className="book-overview-action-button"
-                onClick={handleEditButtonPress}
-              >
-                Edit
-              </Button>
-            </CardActions>
-          )}
         </Stack>
       </div>
     </Card>
