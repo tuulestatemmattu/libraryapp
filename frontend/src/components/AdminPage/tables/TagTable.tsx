@@ -40,7 +40,7 @@ const TagTable = () => {
   const [open, setOpen] = useState(false);
   const [newTagName, setNewTagName] = useState('');
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [deleteId, setDeleteId] = useState<GridRowId | null>(null);
+  const [deleteId, setDeleteId] = useState<string | number | null>(null);
   const [duplicateDialogOpen, setDuplicateDialogOpen] = useState(false);
 
   const tags = useMainStore((state) => state.tags);

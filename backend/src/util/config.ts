@@ -21,7 +21,7 @@ const CRON_SECRET = process.env.CRON_SECRET ?? '';
 
 const FRONTEND_URL = process.env.FRONTEND_URL ?? '';
 
-const LOAN_PERIOD = process.env.LOAN_PERIOD ? (parseInt(process.env.LOAN_PERIOD) as number) : 30;
+const LOAN_PERIOD = process.env.LOAN_PERIOD ? parseInt(process.env.LOAN_PERIOD) : 30;
 
 export {
   PORT,

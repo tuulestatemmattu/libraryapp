@@ -14,7 +14,6 @@ import {
   DataGrid,
   GridActionsCellItem,
   GridColDef,
-  GridRowId,
   GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarDensitySelector,
@@ -29,7 +28,7 @@ const QueueTable = () => {
     { id: number; title: string; user: string; createdAt: string; position: number }[]
   >([]);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [deleteId, setDeleteId] = useState<GridRowId | null>(null);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
 
   useEffect(() => {
     getQueueEntries()

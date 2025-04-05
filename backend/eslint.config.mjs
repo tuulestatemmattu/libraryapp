@@ -51,6 +51,9 @@ export default [
       "@typescript-eslint/use-unknown-in-catch-callback-variable": "error",
       "@typescript-eslint/prefer-nullish-coalescing": "error",
       "@typescript-eslint/prefer-optional-chain": "error",
+      "@typescript-eslint/no-redundant-type-constituents": "error",
+      "@typescript-eslint/consistent-type-definitions": "error",
+      "@typescript-eslint/no-unnecessary-type-assertion": "error",
     },
   }
 ];
