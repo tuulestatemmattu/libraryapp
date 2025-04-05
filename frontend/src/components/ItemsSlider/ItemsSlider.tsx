@@ -33,7 +33,7 @@ const ItemsSlider = ({
       <div
         className="scroll-item-container"
         style={{
-          backgroundColor: backgroundColor || theme.palette.componentBack?.main,
+          backgroundColor: backgroundColor || theme.palette.componentBack.main,
         }}
       >
         {renderButtons && (
@@ -47,12 +47,12 @@ const ItemsSlider = ({
               <KeyboardArrowLeftIcon
                 fontSize="large"
                 style={{
-                  backgroundColor: backgroundColor || theme.palette.componentBack?.light,
+                  backgroundColor: backgroundColor || theme.palette.componentBack.light,
                   margin: 'auto',
                   padding: '3px',
                   borderRadius: '1000px',
                   border: '1px solid',
-                  borderColor: borderColor || theme.palette.componentBack?.dark,
+                  borderColor: borderColor || theme.palette.componentBack.dark,
                 }}
                 className="scroll-button"
               />
@@ -67,12 +67,12 @@ const ItemsSlider = ({
                 fontSize="large"
                 className="scroll-button"
                 style={{
-                  backgroundColor: backgroundColor || theme.palette.componentBack?.light,
+                  backgroundColor: backgroundColor || theme.palette.componentBack.light,
                   margin: 'auto',
                   padding: '3px',
                   borderRadius: '1000px',
                   border: '1px solid',
-                  borderColor: borderColor || theme.palette.componentBack?.dark,
+                  borderColor: borderColor || theme.palette.componentBack.dark,
                 }}
               />
             </div>

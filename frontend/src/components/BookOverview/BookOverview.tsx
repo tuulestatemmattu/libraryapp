@@ -264,7 +264,8 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
               >
                 Reserve
               </Button>
-            ) : book.status == 'reserved' ? (
+            ) : (
+              // reserved
               <Button
                 variant="contained"
                 className="book-overview-action-button"
@@ -272,8 +273,6 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
               >
                 Unreserve
               </Button>
-            ) : (
-              <> </>
             )}
           </CardActions>
           {profile && profile.admin && (

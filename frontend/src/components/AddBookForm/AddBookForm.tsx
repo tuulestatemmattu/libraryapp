@@ -56,7 +56,7 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
     try {
       const response = await onSubmit(book);
 
-      if (response?.status === 201 || response?.status === 200) {
+      if (response.status === 201 || response.status === 200) {
         showNotification('New book added successfully!', 'success');
         setTitle('');
         setAuthors('');

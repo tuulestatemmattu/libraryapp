@@ -38,7 +38,7 @@ const AddBookPage = ({ borderColor }: AddBookPageProps) => {
   const queryParams = new URLSearchParams(location.search);
   const viewParam = queryParams.get('view') as ViewOpt;
 
-  const [view, setView] = useState<ViewOpt>(viewParam || 'form');
+  const [view, setView] = useState<ViewOpt>(viewParam);
   const [book, setBook] = useState<initialValues>(null);
   const { showNotification } = useNotification();
 
@@ -48,9 +48,7 @@ const AddBookPage = ({ borderColor }: AddBookPageProps) => {
   };
 
   useEffect(() => {
-    if (viewParam) {
-      setView(viewParam);
-    }
+    setView(viewParam);
   }, [viewParam]);
 
   const handleIsbnSubmit = async (isbn: string) => {
@@ -104,11 +102,10 @@ const AddBookPage = ({ borderColor }: AddBookPageProps) => {
   const Content = () => {
     if (view === 'form') {
       return <AddBookForm onSubmit={handleManualSubmit} initialValues={book} />;
-    }
-    if (view === 'isbn') {
+    } else if (view === 'isbn') {
       return <IsbnPage isbnHandler={handleIsbnSubmit} />;
-    }
-    if (view === 'scan') {
+    } else {
+      // scan
       return <BarcodeScanner isbnHandler={handleScannerSubmit} />;
     }
   };

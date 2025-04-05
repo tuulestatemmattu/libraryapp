@@ -21,6 +21,8 @@ export default [
       ecmaVersion: "latest",
       sourceType: "module",
       parserOptions: {
+        projectService: true,
+        tsconfigRootDir: __dirname,
         ecmaFeatures: {
           jsx: true
         }
@@ -39,6 +41,7 @@ export default [
           "caughtErrorsIgnorePattern": "^_"
         }
       ],
+      "@typescript-eslint/no-unnecessary-condition": "error",
     },
   }
 ];

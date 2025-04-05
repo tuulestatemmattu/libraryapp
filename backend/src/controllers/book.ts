@@ -54,11 +54,10 @@ bookRouter.post('/', requireAdmin, bookValidator, async (req, res) => {
     const tag_ids = tags.map((tag: Tag) => tag.id);
     await book.setTags(tag_ids);
 
-    const fetchedBook = await fetchBook(book.id);
+    const fetchedBook = (await fetchBook(book.id)) as Book;
     res.status(201).send(prepareBookForFrontend(fetchedBook, userId));
 
     const tagNames = fetchedBook.tags?.map((tag: Tag) => tag.name).join(', ');
-    console.log(tagNames, imageLink, authors);
 
     if (location === 'Helsinki') {
       const payload = {
@@ -295,10 +294,9 @@ bookRouter.put('/:id/extend', async (req, res) => {
   }
   const newBorrowDate = new Date();
   const newLoan = await loan.update({ borrowedDate: newBorrowDate });
-  console.log('newLoan', newLoan);
 
   await newLoan.save();
-  const book = await fetchBook(newLoan.bookId);
+  const book = (await fetchBook(newLoan.bookId)) as Book;
   const newBook = prepareBookForFrontend(book, userId);
   res.json(newBook);
 });

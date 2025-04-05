@@ -29,7 +29,8 @@ export const fetchBooks = async (where: WhereOptions<InferAttributes<Book>>) => 
 };
 
 export const fetchBook = async (id: string | number) => {
-  return (await fetchBooks({ id }))[0];
+  const books = await fetchBooks({ id });
+  return books.length === 1 ? books[0] : null;
 };
 
 export const calculateDueDate = (borrowedDate: Date) => {

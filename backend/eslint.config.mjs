@@ -37,6 +37,7 @@ export default [
           "caughtErrorsIgnorePattern": "^_"
         }
       ],
+      "@typescript-eslint/no-unnecessary-condition": "error",
     },
   }
 ];
