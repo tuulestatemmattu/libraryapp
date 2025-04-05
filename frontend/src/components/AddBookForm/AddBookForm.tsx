@@ -36,6 +36,7 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
   const [location, setLocation] = useState(initialValues?.location || defaultLocation);
   const [selectedTags, setSelectedTags] = useState<FetchedTag[]>([]);
   const [copies, setCopies] = useState(1);
+  const [imageLinks, setImageLinks] = useState(initialValues?.imageLinks);
   const { showNotification } = useNotification();
 
   const handleSubmit = async (e: SyntheticEvent) => {
@@ -49,11 +50,9 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
       location,
       tags: selectedTags,
       copies,
+      imageLinks,
     };
 
-    if (initialValues?.imageLinks) {
-      book.imageLinks = initialValues.imageLinks;
-    }
     try {
       const response = await onSubmit(book);
 
@@ -66,6 +65,7 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
         setPublishedDate('');
         setLocation('');
         setCopies(1);
+        setImageLinks(undefined);
       } else {
         showNotification('Failed to add the book. Please try again!', 'error');
       }
@@ -82,6 +82,7 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
       setAuthors(book.authors);
       setDescription(book.description);
       setPublishedDate(book.publishedDate);
+      setImageLinks(book.imageLinks);
     } else {
       showNotification(
         'The given ISBN was not found in the database. Please check the input.',
@@ -99,6 +100,7 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
     setLocation('');
     setSelectedTags([]);
     setCopies(1);
+    setImageLinks(undefined);
   };
 
   const handleChangeLocation = (value: string) => {
