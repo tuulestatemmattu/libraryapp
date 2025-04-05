@@ -10,6 +10,7 @@ import { useNotification } from '../../context/NotificationsProvider/Notificatio
 import useMainStore from '../../hooks/useMainStore';
 import { CreatedBook } from '../../interfaces/Book';
 import { FetchedTag } from '../../interfaces/Tags';
+import getInfoFromIsbn from '../../services/isbn';
 import StyledTextField from '../StyledTextField/StyledTextField';
 import CopiesInput from './CopiesInput/CopiesInput';
 import LocationSelect from './LocationSelect/LocationSelect';
@@ -74,6 +75,21 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
     }
   };
 
+  const handleIsbnSearch = async () => {
+    const book = await getInfoFromIsbn(isbn);
+    if (book) {
+      setTitle(book.title);
+      setAuthors(book.authors);
+      setDescription(book.description);
+      setPublishedDate(book.publishedDate);
+    } else {
+      showNotification(
+        'The given ISBN was not found in the database. Please check the input.',
+        'info',
+      );
+    }
+  };
+
   const handleClear = () => {
     setTitle('');
     setAuthors('');
@@ -107,6 +123,7 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
       <form onSubmit={handleSubmit}>
         <Grid container spacing={1} direction="row">
           <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
+          <Button onClick={handleIsbnSearch}>Search</Button>
           <StyledTextField label="Title" value={title} setValue={setTitle} />
           <StyledTextField label="Author" value={authors} setValue={setAuthors} />
           <StyledTextField
