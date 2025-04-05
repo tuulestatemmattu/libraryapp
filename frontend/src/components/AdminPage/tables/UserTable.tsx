@@ -24,14 +24,23 @@ const UserTable = () => {
   const [selected, setSelected] = useState<string[]>([]);
   const { showNotification } = useNotification();
 
+  const fetchUsers = () => {
+    getUsers()
+      .then((result) => {
+        setRows(
+          result.map((u: Profile) => {
+            return { id: u.email, name: u.name, email: u.email, admin: u.admin };
+          }),
+        );
+        setSelected([]);
+      })
+      .catch((error: unknown) => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
-    getUsers().then((result) =>
-      setRows(
-        result.map((u: Profile) => {
-          return { id: u.email, name: u.name, email: u.email, admin: u.admin };
-        }),
-      ),
-    );
+    fetchUsers();
   }, []);
 
   const handlePromotion = async (e: React.SyntheticEvent) => {
@@ -47,16 +56,7 @@ const UserTable = () => {
         showNotification(`Failed to promote ${user}`, 'error');
       }
     }
-    const result = await getUsers();
-    setRows(
-      result.map((u: Profile) => ({
-        id: u.email,
-        name: u.name,
-        email: u.email,
-        admin: u.admin,
-      })),
-    );
-    setSelected([]);
+    fetchUsers();
   };
 
   const handleDemotion = async (e: React.SyntheticEvent) => {
@@ -72,16 +72,7 @@ const UserTable = () => {
         showNotification(`Failed to demote ${user}`, 'error');
       }
     }
-    const result = await getUsers();
-    setRows(
-      result.map((u: Profile) => ({
-        id: u.email,
-        name: u.name,
-        email: u.email,
-        admin: u.admin,
-      })),
-    );
-    setSelected([]);
+    fetchUsers();
   };
 
   const columns: GridColDef[] = [
@@ -119,7 +110,9 @@ const UserTable = () => {
           pageSizeOptions={[5, 10]}
           checkboxSelection
           rowSelectionModel={selected}
-          onRowSelectionModelChange={(ids) => setSelected(ids.map((id) => id.toString()))}
+          onRowSelectionModelChange={(ids) => {
+            setSelected(ids.map((id) => id.toString()));
+          }}
           sx={{ border: 1 }}
           slots={{
             toolbar: CustomToolBar,
