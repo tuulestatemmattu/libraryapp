@@ -78,7 +78,7 @@ const BookCard = ({ book, loading }: BookCardProps) => {
           ) : (
             <CardMedia
               component="img"
-              src={book.imageLink ? book.imageLink : getPlaceholderSVG(book)}
+              src={book.imageLink ?? getPlaceholderSVG(book)}
               alt="image"
               className="book-card-image"
             />

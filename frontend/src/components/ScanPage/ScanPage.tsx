@@ -51,8 +51,8 @@ const ScanPage = ({ borderColor }: ScanPageProps) => {
             className="scan-overlay"
             style={{
               boxShadow: `0 0 0 5000px ${theme.palette.componentBack.dark}`,
-              borderRight: `2px solid ${borderColor || theme.palette.primary.light}`,
-              borderLeft: `2px solid ${borderColor || theme.palette.primary.light}`,
+              borderRight: `2px solid ${borderColor ?? theme.palette.primary.light}`,
+              borderLeft: `2px solid ${borderColor ?? theme.palette.primary.light}`,
             }}
           ></div>
         </div>

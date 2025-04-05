@@ -46,6 +46,8 @@ export default [
       "@typescript-eslint/require-await": "error",
       "@typescript-eslint/no-meaningless-void-operator": "error",
       "@typescript-eslint/use-unknown-in-catch-callback-variable": "error",
+      "@typescript-eslint/prefer-nullish-coalescing": "error",
+      "@typescript-eslint/prefer-optional-chain": "error",
     },
   }
 ];

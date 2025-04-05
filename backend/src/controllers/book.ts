@@ -70,7 +70,7 @@ bookRouter.post('/', requireAdmin, bookValidator, async (req, res) => {
             fields: [
               {
                 title: ':paperclip: Tags:',
-                value: `*${tagNames || 'No tags'}*`,
+                value: `*${tagNames ?? 'No tags'}*`,
                 short: false,
               },
             ],

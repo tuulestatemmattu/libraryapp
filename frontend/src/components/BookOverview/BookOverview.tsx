@@ -152,7 +152,7 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
               <CardMedia
                 component="img"
                 className="book-overview-image"
-                image={book.imageLink ? book.imageLink : getPlaceholderSVG(book)}
+                image={book.imageLink ?? getPlaceholderSVG(book)}
                 alt="book cover"
               />
             </Paper>
@@ -275,7 +275,7 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
               </Button>
             )}
           </CardActions>
-          {profile && profile.admin && (
+          {profile?.admin && (
             <CardActions sx={{ pr: 1, pl: 1 }}>
               <Button
                 variant="contained"

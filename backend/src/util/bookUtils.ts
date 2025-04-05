@@ -75,9 +75,9 @@ export const calculateWaitingTime = (book: Book, queueEntry: QueueEntry) => {
 };
 
 export const prepareBookForFrontend = (book: Book, userId: string) => {
-  const myBorrow = book.borrows?.find((borrow) => borrow.userGoogleId === userId) || null;
+  const myBorrow = book.borrows?.find((borrow) => borrow.userGoogleId === userId) ?? null;
   const myQueueEntry =
-    book.queue_entries?.find((queueEntry) => queueEntry.userGoogleId === userId) || null;
+    book.queue_entries?.find((queueEntry) => queueEntry.userGoogleId === userId) ?? null;
 
   const dueDate = myBorrow ? calculateDueDate(myBorrow.borrowedDate) : null;
   const daysLeft = myBorrow ? calculateDaysLeft(myBorrow.borrowedDate) : null;
