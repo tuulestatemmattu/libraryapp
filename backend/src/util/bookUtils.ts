@@ -86,7 +86,8 @@ export const prepareBookForFrontend = (book: Book, userId: string) => {
 
   let status = '';
   if (myBorrow) {
-    if (new Date().getTime() > (dueDate as Date).getTime()) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    if (new Date().getTime() > dueDate!.getTime()) {
       status = 'late';
     } else {
       status = 'borrowed';

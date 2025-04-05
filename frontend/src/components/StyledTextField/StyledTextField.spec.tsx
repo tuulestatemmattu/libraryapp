@@ -6,12 +6,14 @@ import StyledTextField from './StyledTextField';
 
 describe('StyledTextField', () => {
   test('renders with correct label', () => {
-    render(<StyledTextField label="ISBN" value="" setValue={() => {}} />);
+    const setValue = vi.fn();
+    render(<StyledTextField label="ISBN" value="" setValue={setValue} />);
     expect(screen.getByLabelText('ISBN')).toBeInTheDocument();
   });
 
   test('displays the correct initial value', () => {
-    render(<StyledTextField label="ISBN" value="1234567890" setValue={() => {}} />);
+    const setValue = vi.fn();
+    render(<StyledTextField label="ISBN" value="1234567890" setValue={setValue} />);
     expect(screen.getByDisplayValue('1234567890')).toBeInTheDocument();
   });
 
