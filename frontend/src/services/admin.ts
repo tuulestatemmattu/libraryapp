@@ -12,4 +12,9 @@ const promoteUser = async (email: string) => {
   return response.data;
 };
 
-export { getUsers, promoteUser };
+const demoteUser = async (email: string) => {
+  const response = await axios.post(`${apiBaseUrl}/admin/demote`, { email: email });
+  return response.data;
+};
+
+export { getUsers, promoteUser, demoteUser };

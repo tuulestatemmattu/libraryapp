@@ -25,4 +25,21 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.post('/demote', async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      res.status(404).send({ message: 'User not found' });
+      return;
+    }
+    user.admin = false;
+    await user.save();
+    res.status(200).end();
+  } catch (error) {
+    console.error('Error while demoting user:', error);
+    res.status(500).end();
+  }
+});
 export default router;

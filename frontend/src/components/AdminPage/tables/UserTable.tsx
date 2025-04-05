@@ -16,7 +16,7 @@ import {
 import { useNotification } from '../../../context/NotificationsProvider/NotificationProvider';
 import useRequireAdmin from '../../../hooks/useRequireAdmin';
 import Profile from '../../../interfaces/Profile';
-import { getUsers, promoteUser } from '../../../services/admin';
+import { demoteUser, getUsers, promoteUser } from '../../../services/admin';
 
 const UserTable = () => {
   useRequireAdmin();
@@ -59,6 +59,31 @@ const UserTable = () => {
     setSelected([]);
   };
 
+  const handleDemotion = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    console.log(selected);
+
+    for (const user of selected) {
+      try {
+        const result = await demoteUser(user);
+        console.log(result);
+        showNotification('User demoted successfully!', 'success');
+      } catch {
+        showNotification(`Failed to demote ${user}`, 'error');
+      }
+    }
+    const result = await getUsers();
+    setRows(
+      result.map((u: Profile) => ({
+        id: u.email,
+        name: u.name,
+        email: u.email,
+        admin: u.admin,
+      })),
+    );
+    setSelected([]);
+  };
+
   const columns: GridColDef[] = [
     { field: 'name', headerName: 'Name', width: 200 },
     { field: 'email', headerName: 'Email', width: 250 },
@@ -75,6 +100,7 @@ const UserTable = () => {
         <GridToolbarColumnsButton />
         <GridToolbarDensitySelector slotProps={{ tooltip: { title: 'Change density' } }} />
         <Box sx={{ flexGrow: 1 }} />
+        <Button onClick={handleDemotion}>Demote selected Users</Button>
         <Button onClick={handlePromotion}>Promote Selected Users</Button>
       </GridToolbarContainer>
     );
