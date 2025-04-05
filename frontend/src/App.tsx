@@ -26,8 +26,16 @@ const App = () => {
   const setTags = useMainStore((state) => state.setTags);
 
   useEffect(() => {
-    getBooks().then((result) => setBooks(result));
-    getTags().then((result) => setTags(result));
+    getBooks()
+      .then((result) => setBooks(result))
+      .catch((error: unknown) => {
+        console.error('Error fetching books:', error);
+      });
+    getTags()
+      .then((result) => setTags(result))
+      .catch((error: unknown) => {
+        console.error('Error fetching tags:', error);
+      });
   }, []);
 
   if (!profile) {

@@ -8,7 +8,7 @@ const useRequireAdmin = () => {
   const profile = useMainStore((state) => state.profile);
 
   useEffect(() => {
-    if (!profile || !profile.admin) {
+    if (!profile?.admin) {
       navigate('/');
     }
   }, [profile]);

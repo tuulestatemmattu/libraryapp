@@ -17,22 +17,26 @@ const BorrowTable = () => {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    getBorrows().then((result) =>
-      setRows(
-        result.map((b: BorrowData) => {
-          return {
-            id: b.id,
-            title: b.book.title,
-            user: b.user.email,
-            borrowedDate: b.borrowedDate.slice(0, 10),
-            due: b.dueDate.slice(0, 10),
-            days: b.daysLeft,
-            bookId: b.book.id,
-            active: b.active,
-          };
-        }),
-      ),
-    );
+    getBorrows()
+      .then((result) =>
+        setRows(
+          result.map((b: BorrowData) => {
+            return {
+              id: b.id,
+              title: b.book.title,
+              user: b.user.email,
+              borrowedDate: b.borrowedDate.slice(0, 10),
+              due: b.dueDate.slice(0, 10),
+              days: b.daysLeft,
+              bookId: b.book.id,
+              active: b.active,
+            };
+          }),
+        ),
+      )
+      .catch((error: unknown) => {
+        console.error('Error fetching borrows:', error);
+      });
   }, []);
 
   const handleReturn = async (id: number) => {

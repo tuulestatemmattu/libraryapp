@@ -27,12 +27,12 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
   const defaultLocation = useMainStore((state) => state.location);
   const tags = useMainStore((state) => state.tags);
 
-  const [title, setTitle] = useState(initialValues?.title || '');
-  const [authors, setAuthors] = useState(initialValues?.authors || '');
-  const [isbn, setIsbn] = useState(initialValues?.isbn || '');
-  const [description, setDescription] = useState(initialValues?.description || '');
-  const [publishedDate, setPublishedDate] = useState(initialValues?.publishedDate || '');
-  const [location, setLocation] = useState(initialValues?.location || defaultLocation);
+  const [title, setTitle] = useState(initialValues?.title ?? '');
+  const [authors, setAuthors] = useState(initialValues?.authors ?? '');
+  const [isbn, setIsbn] = useState(initialValues?.isbn ?? '');
+  const [description, setDescription] = useState(initialValues?.description ?? '');
+  const [publishedDate, setPublishedDate] = useState(initialValues?.publishedDate ?? '');
+  const [location, setLocation] = useState(initialValues?.location ?? defaultLocation);
   const [selectedTags, setSelectedTags] = useState<FetchedTag[]>([]);
   const [copies, setCopies] = useState(1);
   const { showNotification } = useNotification();
@@ -56,7 +56,7 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
     try {
       const response = await onSubmit(book);
 
-      if (response?.status === 201 || response?.status === 200) {
+      if (response.status === 201 || response.status === 200) {
         showNotification('New book added successfully!', 'success');
         setTitle('');
         setAuthors('');

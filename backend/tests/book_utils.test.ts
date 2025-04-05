@@ -47,8 +47,8 @@ describe('calculateWaitingTime function', () => {
       userGoogleId: 'sample_google_id',
     });
 
-    const book = await fetchBook(bookId);
-    const waitingTime = await calculateWaitingTime(book, entry);
+    const book = (await fetchBook(bookId)) as Book;
+    const waitingTime = calculateWaitingTime(book, entry);
     expect(waitingTime).toBe(0);
   });
 
@@ -66,8 +66,8 @@ describe('calculateWaitingTime function', () => {
       bookId,
       userGoogleId: 'sample_google_id',
     });
-    const book = await fetchBook(bookId);
-    const waitingTime = await calculateWaitingTime(book, entry);
+    const book = (await fetchBook(bookId)) as Book;
+    const waitingTime = calculateWaitingTime(book, entry);
     expect(waitingTime).toBe(0);
   });
 
@@ -90,8 +90,8 @@ describe('calculateWaitingTime function', () => {
       bookId,
       userGoogleId: 'sample_google_id',
     });
-    const book = await fetchBook(bookId);
-    const waitingTime = await calculateWaitingTime(book, entry);
+    const book = (await fetchBook(bookId)) as Book;
+    const waitingTime = calculateWaitingTime(book, entry);
     expect(waitingTime).toBe(11);
   });
 
@@ -120,8 +120,8 @@ describe('calculateWaitingTime function', () => {
       bookId,
       userGoogleId: 'sample_google_id',
     });
-    const book = await fetchBook(bookId);
-    const waitingTime = await calculateWaitingTime(book, entry);
+    const book = (await fetchBook(bookId)) as Book;
+    const waitingTime = calculateWaitingTime(book, entry);
     expect(waitingTime).toBe(11);
   });
 
@@ -155,10 +155,10 @@ describe('calculateWaitingTime function', () => {
       userGoogleId: 'sample_google_id',
     });
 
-    const book = await fetchBook(bookId);
-    const waitingTime = await calculateWaitingTime(book, entry);
+    const book = (await fetchBook(bookId)) as Book;
+    const waitingTime = calculateWaitingTime(book, entry);
     expect(waitingTime).toBe(11);
-    const waitingTime2 = await calculateWaitingTime(book, entry2);
+    const waitingTime2 = calculateWaitingTime(book, entry2);
     expect(waitingTime2).toBe(21);
   });
 
@@ -186,10 +186,10 @@ describe('calculateWaitingTime function', () => {
       userGoogleId: 'sample_google_id',
     });
 
-    const book = await fetchBook(bookId);
-    const waitingTime = await calculateWaitingTime(book, entry);
+    const book = (await fetchBook(bookId)) as Book;
+    const waitingTime = calculateWaitingTime(book, entry);
     expect(waitingTime).toBe(11);
-    const waitingTime2 = await calculateWaitingTime(book, entry2);
+    const waitingTime2 = calculateWaitingTime(book, entry2);
     expect(waitingTime2).toBe(42);
   });
 });

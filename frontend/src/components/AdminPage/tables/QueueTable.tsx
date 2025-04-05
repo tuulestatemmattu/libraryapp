@@ -14,7 +14,6 @@ import {
   DataGrid,
   GridActionsCellItem,
   GridColDef,
-  GridRowId,
   GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarDensitySelector,
@@ -29,22 +28,26 @@ const QueueTable = () => {
     { id: number; title: string; user: string; createdAt: string; position: number }[]
   >([]);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [deleteId, setDeleteId] = useState<GridRowId | null>(null);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
 
   useEffect(() => {
-    getQueueEntries().then((result) =>
-      setRows(
-        result.map((q: QueueEntryData) => {
-          return {
-            id: q.id,
-            title: q.book.title,
-            user: q.user.email,
-            createdAt: q.createdAt.slice(0, 10),
-            position: q.position,
-          };
-        }),
-      ),
-    );
+    getQueueEntries()
+      .then((result) =>
+        setRows(
+          result.map((q: QueueEntryData) => {
+            return {
+              id: q.id,
+              title: q.book.title,
+              user: q.user.email,
+              createdAt: q.createdAt.slice(0, 10),
+              position: q.position,
+            };
+          }),
+        ),
+      )
+      .catch((error: unknown) => {
+        console.error('Error fetching queue entries:', error);
+      });
   }, []);
 
   const handleDeleteClick = (id: number) => () => {
