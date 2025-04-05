@@ -18,7 +18,7 @@ afterAll(async () => {
   await disconnectDatabase();
 });
 
-describe('POST /api/admin', () => {
+describe('POST /api/admin/promote', () => {
   beforeEach(async () => {
     await User.destroy({ where: {} });
     await User.create({
@@ -31,7 +31,7 @@ describe('POST /api/admin', () => {
   });
 
   it('should promote user to admin', async () => {
-    await api.post('/api/admin').send({ email: 'to_be_admin@example.com' }).expect(200);
+    await api.post('/api/admin/promote').send({ email: 'to_be_admin@example.com' }).expect(200);
 
     const user = await User.findOne({
       where: { email: 'to_be_admin@example.com' },
@@ -40,6 +40,6 @@ describe('POST /api/admin', () => {
   });
 
   it('should return 404 if user not found', async () => {
-    await api.post('/api/admin').send({ email: 'non_existent@example.com' }).expect(404);
+    await api.post('/api/admin/promote').send({ email: 'non_existent@example.com' }).expect(404);
   });
 });

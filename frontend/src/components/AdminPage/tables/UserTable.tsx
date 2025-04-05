@@ -16,7 +16,7 @@ import {
 import { useNotification } from '../../../context/NotificationsProvider/NotificationProvider';
 import useRequireAdmin from '../../../hooks/useRequireAdmin';
 import Profile from '../../../interfaces/Profile';
-import { getUsers, promoteUser } from '../../../services/admin';
+import { demoteUser, getUsers, promoteUser } from '../../../services/admin';
 
 const UserTable = () => {
   useRequireAdmin();
@@ -24,14 +24,23 @@ const UserTable = () => {
   const [selected, setSelected] = useState<string[]>([]);
   const { showNotification } = useNotification();
 
+  const fetchUsers = () => {
+    getUsers()
+      .then((result) => {
+        setRows(
+          result.map((u: Profile) => {
+            return { id: u.email, name: u.name, email: u.email, admin: u.admin };
+          }),
+        );
+        setSelected([]);
+      })
+      .catch((error: unknown) => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
-    getUsers().then((result) =>
-      setRows(
-        result.map((u: Profile) => {
-          return { id: u.email, name: u.name, email: u.email, admin: u.admin };
-        }),
-      ),
-    );
+    fetchUsers();
   }, []);
 
   const handlePromotion = async (e: React.SyntheticEvent) => {
@@ -47,16 +56,23 @@ const UserTable = () => {
         showNotification(`Failed to promote ${user}`, 'error');
       }
     }
-    const result = await getUsers();
-    setRows(
-      result.map((u: Profile) => ({
-        id: u.email,
-        name: u.name,
-        email: u.email,
-        admin: u.admin,
-      })),
-    );
-    setSelected([]);
+    fetchUsers();
+  };
+
+  const handleDemotion = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    console.log(selected);
+
+    for (const user of selected) {
+      try {
+        const result = await demoteUser(user);
+        console.log(result);
+        showNotification('User demoted successfully!', 'success');
+      } catch {
+        showNotification(`Failed to demote ${user}`, 'error');
+      }
+    }
+    fetchUsers();
   };
 
   const columns: GridColDef[] = [
@@ -75,6 +91,7 @@ const UserTable = () => {
         <GridToolbarColumnsButton />
         <GridToolbarDensitySelector slotProps={{ tooltip: { title: 'Change density' } }} />
         <Box sx={{ flexGrow: 1 }} />
+        <Button onClick={handleDemotion}>Demote selected Users</Button>
         <Button onClick={handlePromotion}>Promote Selected Users</Button>
       </GridToolbarContainer>
     );
@@ -93,7 +110,9 @@ const UserTable = () => {
           pageSizeOptions={[5, 10]}
           checkboxSelection
           rowSelectionModel={selected}
-          onRowSelectionModelChange={(ids) => setSelected(ids.map((id) => id.toString()))}
+          onRowSelectionModelChange={(ids) => {
+            setSelected(ids.map((id) => id.toString()));
+          }}
           sx={{ border: 1 }}
           slots={{
             toolbar: CustomToolBar,

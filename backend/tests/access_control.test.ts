@@ -44,7 +44,7 @@ describe('Access control', () => {
     await api.put('/api/tags/0').expect(403);
     await api.delete('/api/tags/0').expect(403);
 
-    await api.post('/api/admin').expect(403);
+    await api.post('/api/admin/promote').expect(403);
 
     await api.get('/api/users').expect(403);
   });
