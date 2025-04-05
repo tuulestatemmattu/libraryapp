@@ -6,7 +6,7 @@ import { requireAdmin } from '../util/middleware/requireAdmin';
 const router = Router();
 router.use(requireAdmin);
 
-router.post('/', async (req, res) => {
+router.post('/promote', async (req, res) => {
   const { email } = req.body;
 
   try {

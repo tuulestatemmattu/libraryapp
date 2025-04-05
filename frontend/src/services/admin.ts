@@ -8,7 +8,7 @@ const getUsers = async () => {
 };
 
 const promoteUser = async (email: string) => {
-  const response = await axios.post(`${apiBaseUrl}/admin`, { email: email });
+  const response = await axios.post(`${apiBaseUrl}/admin/promote`, { email: email });
   return response.data;
 };
 
