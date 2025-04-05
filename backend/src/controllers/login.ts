@@ -26,7 +26,7 @@ interface GoogleUser {
 
 const router = Router();
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', (req: Request, res: Response) => {
   const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
   const options: Record<string, string> = {
     redirect_uri: GOOGLE_OAUTH_REDIRECT_URI || '',

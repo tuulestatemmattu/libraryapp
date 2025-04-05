@@ -38,7 +38,7 @@ const SelectTags = ({ id, value, field }: SelectTagsProps) => {
   const handleChange = (event: SelectChangeEvent<FetchedTag[]>) => {
     const newTags = event.target.value as FetchedTag[];
     setSelectedtags(newTags);
-    apiRef.current.setEditCellValue({ id, field, value: newTags });
+    void apiRef.current.setEditCellValue({ id, field, value: newTags });
   };
 
   return (

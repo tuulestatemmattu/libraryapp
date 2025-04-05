@@ -152,12 +152,12 @@ bookRouter.post('/:id/borrow', async (req, res) => {
   const book = await fetchBook(bookId);
   if (book) {
     if (book.copiesAvailable > 0) {
-      book.decrement('copiesAvailable');
       const timeNow = new Date();
       const borrowedDate = timeNow;
       await Borrow.create({ bookId: book.id, userGoogleId: userId, borrowedDate, active: true });
       await QueueEntry.destroy({ where: { bookId: book.id, userGoogleId: userId } });
-      await book.save();
+
+      await book.decrement('copiesAvailable');
       await book.reload();
       const borrowedBook = prepareBookForFrontend(book, userId);
       res.json(borrowedBook);

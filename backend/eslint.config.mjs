@@ -27,6 +27,7 @@ export default [
         ...globals.node,
       }
     },
+    ignores: ["*.mjs"],
     rules: {
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": [
@@ -38,6 +39,16 @@ export default [
         }
       ],
       "@typescript-eslint/no-unnecessary-condition": "error",
+      "@typescript-eslint/no-floating-promises": [
+        "error",
+        {
+          ignoreVoid: true,
+          ignoreIIFE: true,
+        }
+      ],
+      "@typescript-eslint/require-await": "error",
+      "@typescript-eslint/no-meaningless-void-operator": "error",
+      "@typescript-eslint/use-unknown-in-catch-callback-variable": "error",
     },
   }
 ];

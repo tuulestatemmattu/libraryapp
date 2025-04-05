@@ -32,19 +32,23 @@ const QueueTable = () => {
   const [deleteId, setDeleteId] = useState<GridRowId | null>(null);
 
   useEffect(() => {
-    getQueueEntries().then((result) =>
-      setRows(
-        result.map((q: QueueEntryData) => {
-          return {
-            id: q.id,
-            title: q.book.title,
-            user: q.user.email,
-            createdAt: q.createdAt.slice(0, 10),
-            position: q.position,
-          };
-        }),
-      ),
-    );
+    getQueueEntries()
+      .then((result) =>
+        setRows(
+          result.map((q: QueueEntryData) => {
+            return {
+              id: q.id,
+              title: q.book.title,
+              user: q.user.email,
+              createdAt: q.createdAt.slice(0, 10),
+              position: q.position,
+            };
+          }),
+        ),
+      )
+      .catch((error: unknown) => {
+        console.error('Error fetching queue entries:', error);
+      });
   }, []);
 
   const handleDeleteClick = (id: number) => () => {

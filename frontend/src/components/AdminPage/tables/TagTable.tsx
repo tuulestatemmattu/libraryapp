@@ -64,7 +64,7 @@ const TagTable = () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' } });
   };
 
-  const handleSaveClick = (id: GridRowId) => async () => {
+  const handleSaveClick = (id: GridRowId) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
