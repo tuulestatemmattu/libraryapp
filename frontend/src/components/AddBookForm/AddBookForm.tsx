@@ -124,8 +124,14 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
       <h2>Add a new book</h2>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={1} direction="row">
-          <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
-          <Button onClick={handleIsbnSearch}>Search</Button>
+          <Box display="flex" flexDirection="row" alignItems="center" gap={2} width="100%">
+            <Grid sx={{ flexGrow: 1 }}>
+              <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
+            </Grid>
+            <Grid>
+              <Button onClick={handleIsbnSearch}>Search</Button>
+            </Grid>
+          </Box>
           <StyledTextField label="Title" value={title} setValue={setTitle} />
           <StyledTextField label="Author" value={authors} setValue={setAuthors} />
           <StyledTextField
