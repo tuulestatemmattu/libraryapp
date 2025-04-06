@@ -42,7 +42,6 @@ export default [
           "caughtErrorsIgnorePattern": "^_"
         }
       ],
-      "@typescript-eslint/no-unnecessary-condition": "error",
       "@typescript-eslint/require-await": "error",
       "@typescript-eslint/no-meaningless-void-operator": "error",
       "@typescript-eslint/use-unknown-in-catch-callback-variable": "error",
