@@ -1,6 +1,6 @@
 import { SyntheticEvent, useState } from 'react';
 
-import { Grid2 } from '@mui/material';
+import { Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { SelectChangeEvent } from '@mui/material/Select';
@@ -105,7 +105,7 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
     <article>
       <h2>Add a new book</h2>
       <form onSubmit={handleSubmit}>
-        <Grid2
+        <Grid
           container
           spacing={1}
           direction="row" /*in MUI v7, this is just Grid and the old one is GridLegacy*/
@@ -137,7 +137,7 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
               Add
             </Button>
           </ButtonGroup>
-        </Grid2>
+        </Grid>
       </form>
     </article>
   );
