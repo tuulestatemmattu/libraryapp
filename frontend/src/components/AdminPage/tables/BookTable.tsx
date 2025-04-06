@@ -176,7 +176,8 @@ const BookTable = () => {
       width: 100,
       cellClassName: 'actions',
       getActions: ({ id }) => {
-        const isInEditMode = rowModesModel[id].mode === GridRowModes.Edit;
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
         if (isInEditMode) {
           return [
