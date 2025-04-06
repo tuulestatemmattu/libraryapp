@@ -38,7 +38,7 @@ const SelectTags = ({ id, value, field }: SelectTagsProps) => {
   const handleChange = (event: SelectChangeEvent<FetchedTag[]>) => {
     const newTags = event.target.value as FetchedTag[];
     setSelectedtags(newTags);
-    apiRef.current.setEditCellValue({ id, field, value: newTags });
+    void apiRef.current.setEditCellValue({ id, field, value: newTags });
   };
 
   return (
@@ -57,8 +57,7 @@ const SelectTags = ({ id, value, field }: SelectTagsProps) => {
       )}
     >
       {tags.map((tag) => (
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        <MenuItem key={tag.id} value={tag as any} style={getStyles(tag.name, selectedTags, theme)}>
+        <MenuItem key={tag.id} value={tag.name} style={getStyles(tag.name, selectedTags, theme)}>
           {tag.name}
         </MenuItem>
       ))}

@@ -2,10 +2,10 @@ import React, { forwardRef, useEffect } from 'react';
 
 import './Dialog.css';
 
-type DialogProps = {
+interface DialogProps {
   children: React.ReactNode;
   toggleDialog: () => void;
-};
+}
 
 const DialogComponent = (
   { children, toggleDialog }: DialogProps,

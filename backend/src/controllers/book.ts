@@ -54,13 +54,32 @@ bookRouter.post('/', requireAdmin, bookValidator, async (req, res) => {
     const tag_ids = tags.map((tag: Tag) => tag.id);
     await book.setTags(tag_ids);
 
-    const fetchedBook = await fetchBook(book.id);
+    const fetchedBook = (await fetchBook(book.id)) as Book;
     res.status(201).send(prepareBookForFrontend(fetchedBook, userId));
 
+    const tagNames = fetchedBook.tags?.map((tag: Tag) => tag.name).join(', ');
+
     if (location === 'Helsinki') {
-      sendNotificationToChannel(
-        `:books: A new book "*${title}*" has been added to the library!`,
-      ).catch((err) => console.error('Failed to send Slack notification:', err));
+      const payload = {
+        text: `:books: A new book "*${title}*" has been added to the library!`,
+        attachments: [
+          {
+            author_name: authors,
+            fallback: 'Book image',
+            image_url: imageLink,
+            fields: [
+              {
+                title: ':paperclip: Tags:',
+                value: `*${tagNames ?? 'No tags'}*`,
+                short: false,
+              },
+            ],
+          },
+        ],
+      };
+      sendNotificationToChannel(payload).catch((err: unknown) => {
+        console.error('Failed to send Slack notification:', err);
+      });
     }
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -133,12 +152,12 @@ bookRouter.post('/:id/borrow', async (req, res) => {
   const book = await fetchBook(bookId);
   if (book) {
     if (book.copiesAvailable > 0) {
-      book.decrement('copiesAvailable');
       const timeNow = new Date();
       const borrowedDate = timeNow;
       await Borrow.create({ bookId: book.id, userGoogleId: userId, borrowedDate, active: true });
       await QueueEntry.destroy({ where: { bookId: book.id, userGoogleId: userId } });
-      await book.save();
+
+      await book.decrement('copiesAvailable');
       await book.reload();
       const borrowedBook = prepareBookForFrontend(book, userId);
       res.json(borrowedBook);
@@ -181,12 +200,17 @@ bookRouter.post('/:id/return', async (req, res) => {
   await book.reload();
 
   if (book.queue_entries && book.queue_entries.length > 0) {
-    const receiver_user = await User.findByPk(book.queue_entries[0].userGoogleId);
+    const ready_count = book.copiesAvailable - 1;
+    await book.queue_entries[Number(ready_count)].update({ readyDate: new Date() });
+
+    const receiver_user = await User.findByPk(book.queue_entries[Number(ready_count)].userGoogleId);
     if (receiver_user) {
       sendPrivateMessage(
         receiver_user.email,
         `:book: Your reserved book "*${book.title}*" is now available for you to borrow!`,
-      ).catch((error) => console.error('Failed to send Slack notification:', error));
+      ).catch((error: unknown) => {
+        console.error('Failed to send Slack notification:', error);
+      });
     }
   }
 
@@ -270,12 +294,64 @@ bookRouter.put('/:id/extend', async (req, res) => {
   }
   const newBorrowDate = new Date();
   const newLoan = await loan.update({ borrowedDate: newBorrowDate });
-  console.log('newLoan', newLoan);
 
   await newLoan.save();
-  const book = await fetchBook(newLoan.bookId);
+  const book = (await fetchBook(newLoan.bookId)) as Book;
   const newBook = prepareBookForFrontend(book, userId);
   res.json(newBook);
+});
+
+bookRouter.get('/queue', requireAdmin, async (req, res) => {
+  const queueEntries = await QueueEntry.findAll({
+    attributes: ['id', 'createdAt', 'bookId'],
+    include: [
+      {
+        model: User,
+        attributes: ['name', 'email'],
+      },
+      {
+        model: Book,
+        attributes: ['title', 'id'],
+      },
+    ],
+    order: [
+      ['bookId', 'ASC'],
+      ['createdAt', 'ASC'],
+    ],
+  });
+
+  const newQueueEntries = queueEntries.map(
+    (entry: QueueEntry, index: number, array: QueueEntry[]) => {
+      const position =
+        array.filter((e) => e.bookId === entry.bookId).findIndex((e) => e.id === entry.id) + 1;
+
+      return {
+        ...entry.dataValues,
+        position,
+      };
+    },
+  );
+
+  res.json(newQueueEntries);
+});
+
+bookRouter.delete('/queue/:id', requireAdmin, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const queueEntry = await QueueEntry.findByPk(id);
+    if (!queueEntry) {
+      res.status(404).send({ message: 'Queue entry not found' });
+      return;
+    }
+
+    await queueEntry.destroy();
+    res.status(204).send();
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).send({ message: error.message });
+    }
+  }
 });
 
 export default bookRouter;

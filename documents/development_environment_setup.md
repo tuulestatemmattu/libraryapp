@@ -33,5 +33,6 @@
     * Set GOOGLE_OAUTH_REDIRECT_URI=http://localhost:3001/api/login/oauth
     * Set JWT_SECRET to some value
 6. Set up slack integration
-   * set SLACK_BOT_TOKEN in .env.
+   * set SLACK_BOT_TOKEN in .env
+   * set SLACK_WEBHOOK_URL in .env
 7. Open repository root on command line and run "docker compose up" to start the application in development environment.

@@ -1,16 +1,17 @@
 import { SyntheticEvent, useState } from 'react';
 
-import { Grid2 } from '@mui/material';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import Grid from '@mui/material/Grid';
 import { SelectChangeEvent } from '@mui/material/Select';
 
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';
 import { CreatedBook } from '../../interfaces/Book';
 import { FetchedTag } from '../../interfaces/Tags';
+import getInfoFromIsbn from '../../services/isbn';
 import StyledTextField from '../StyledTextField/StyledTextField';
-import '../StyledTextField/StyledTextField';
 import CopiesInput from './CopiesInput/CopiesInput';
 import LocationSelect from './LocationSelect/LocationSelect';
 import TagSelect from './TagSelect/TagSelect';
@@ -27,14 +28,15 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
   const defaultLocation = useMainStore((state) => state.location);
   const tags = useMainStore((state) => state.tags);
 
-  const [title, setTitle] = useState(initialValues?.title || '');
-  const [authors, setAuthors] = useState(initialValues?.authors || '');
-  const [isbn, setIsbn] = useState(initialValues?.isbn || '');
-  const [description, setDescription] = useState(initialValues?.description || '');
-  const [publishedDate, setPublishedDate] = useState(initialValues?.publishedDate || '');
-  const [location, setLocation] = useState(initialValues?.location || defaultLocation);
+  const [title, setTitle] = useState(initialValues?.title ?? '');
+  const [authors, setAuthors] = useState(initialValues?.authors ?? '');
+  const [isbn, setIsbn] = useState(initialValues?.isbn ?? '');
+  const [description, setDescription] = useState(initialValues?.description ?? '');
+  const [publishedDate, setPublishedDate] = useState(initialValues?.publishedDate ?? '');
+  const [location, setLocation] = useState(initialValues?.location ?? defaultLocation);
   const [selectedTags, setSelectedTags] = useState<FetchedTag[]>([]);
   const [copies, setCopies] = useState(1);
+  const [imageLinks, setImageLinks] = useState(initialValues?.imageLinks);
   const { showNotification } = useNotification();
 
   const handleSubmit = async (e: SyntheticEvent) => {
@@ -48,23 +50,21 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
       location,
       tags: selectedTags,
       copies,
+      imageLinks,
     };
 
-    if (initialValues?.imageLinks) {
-      book.imageLinks = initialValues.imageLinks;
-    }
     try {
       const response = await onSubmit(book);
 
-      if (response?.status === 201 || response?.status === 200) {
+      if (response.status === 201 || response.status === 200) {
         showNotification('New book added successfully!', 'success');
         setTitle('');
         setAuthors('');
         setIsbn('');
         setDescription('');
         setPublishedDate('');
-        setLocation('');
         setCopies(1);
+        setImageLinks(undefined);
       } else {
         showNotification('Failed to add the book. Please try again!', 'error');
       }
@@ -74,15 +74,31 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
     }
   };
 
+  const handleIsbnSearch = async () => {
+    const book = await getInfoFromIsbn(isbn);
+    if (book) {
+      setTitle(book.title);
+      setAuthors(book.authors);
+      setDescription(book.description);
+      setPublishedDate(book.publishedDate);
+      setImageLinks(book.imageLinks);
+    } else {
+      showNotification(
+        'The given ISBN was not found in the database. Please check the input.',
+        'info',
+      );
+    }
+  };
+
   const handleClear = () => {
     setTitle('');
     setAuthors('');
     setIsbn('');
     setDescription('');
     setPublishedDate('');
-    setLocation('');
     setSelectedTags([]);
     setCopies(1);
+    setImageLinks(undefined);
   };
 
   const handleChangeLocation = (value: string) => {
@@ -105,12 +121,15 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
     <article>
       <h2>Add a new book</h2>
       <form onSubmit={handleSubmit}>
-        <Grid2
-          container
-          spacing={1}
-          direction="row" /*in MUI v7, this is just Grid and the old one is GridLegacy*/
-        >
-          <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
+        <Grid container spacing={1} direction="row">
+          <Box display="flex" flexDirection="row" alignItems="center" gap={2} width="100%">
+            <Grid sx={{ flexGrow: 1 }}>
+              <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
+            </Grid>
+            <Grid>
+              <Button onClick={handleIsbnSearch}>Search</Button>
+            </Grid>
+          </Box>
           <StyledTextField label="Title" value={title} setValue={setTitle} />
           <StyledTextField label="Author" value={authors} setValue={setAuthors} />
           <StyledTextField
@@ -127,8 +146,14 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
           <div className="tag-select-div">
             <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
           </div>
-          <CopiesInput copies={copies} setCopies={setCopies} />
-          <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
+          <Box display="flex" flexDirection="row" alignItems="center" gap={2} width="100%">
+            <Grid sx={{ flexShrink: 0, width: 130 }}>
+              <CopiesInput copies={copies} setCopies={setCopies} />
+            </Grid>
+            <Grid sx={{ flexGrow: 1 }}>
+              <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
+            </Grid>
+          </Box>
           <ButtonGroup variant="contained" className="addbookform-buttons">
             <Button type="button" onClick={handleClear} variant="contained">
               Clear
@@ -137,7 +162,7 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
               Add
             </Button>
           </ButtonGroup>
-        </Grid2>
+        </Grid>
       </form>
     </article>
   );

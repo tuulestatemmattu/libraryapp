@@ -155,13 +155,13 @@ describe('POST /api/books/:id/borrow', () => {
 
   it('should borrow a book and return the updated book with dueDate', async () => {
     const book = await Book.create(sampleBook);
-    const response = await api.post(`/api/books/${book?.id}/borrow`);
+    const response = await api.post(`/api/books/${book.id}/borrow`);
     expect(response.status).toBe(200);
 
-    const updatedBook = await Book.findOne({ where: { id: book?.id } });
+    const updatedBook = await Book.findOne({ where: { id: book.id } });
     expect(updatedBook?.copiesAvailable).toBe(0);
 
-    const borrow = await Borrow.findOne({ where: { bookId: book?.id } });
+    const borrow = await Borrow.findOne({ where: { bookId: book.id } });
     expect(borrow?.userGoogleId).toBe('sample_google_id');
     expect(borrow?.borrowedDate).not.toBe(null);
 
@@ -176,7 +176,7 @@ describe('POST /api/books/:id/borrow', () => {
       copiesAvailable: 0,
     });
 
-    const response = await api.post(`/api/books/${book?.id}/borrow`);
+    const response = await api.post(`/api/books/${book.id}/borrow`);
     expect(response.status).toBe(403);
     expect(response.body.message).toBe('book is not available');
   });
