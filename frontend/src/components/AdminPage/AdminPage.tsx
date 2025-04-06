@@ -18,7 +18,7 @@ const AdminPage = () => {
   const queryParams = new URLSearchParams(location.search);
   const viewParam = queryParams.get('view') as ViewOpt;
 
-  const [view, setView] = useState<ViewOpt>(viewParam || 'users');
+  const [view, setView] = useState<ViewOpt>(viewParam);
 
   const changeView = (newView: ViewOpt) => {
     setView(newView);
@@ -26,26 +26,21 @@ const AdminPage = () => {
   };
 
   useEffect(() => {
-    if (viewParam) {
-      setView(viewParam);
-    }
+    setView(viewParam);
   }, [viewParam]);
 
   const Content = () => {
-    if (view === 'users') {
-      return <UserTable />;
-    }
-    if (view === 'tags') {
-      return <TagTable />;
-    }
-    if (view === 'books') {
-      return <BookTable />;
-    }
-    if (view === 'borrows') {
-      return <BorrowTable />;
-    }
-    if (view === 'queues') {
-      return <QueueTable />;
+    switch (view) {
+      case 'users':
+        return <UserTable />;
+      case 'tags':
+        return <TagTable />;
+      case 'books':
+        return <BookTable />;
+      case 'borrows':
+        return <BorrowTable />;
+      case 'queues':
+        return <QueueTable />;
     }
   };
 

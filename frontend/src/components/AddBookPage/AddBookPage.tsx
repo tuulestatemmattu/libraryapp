@@ -36,7 +36,7 @@ const AddBookPage = ({ borderColor }: AddBookPageProps) => {
   const queryParams = new URLSearchParams(location.search);
   const viewParam = queryParams.get('view') as ViewOpt;
 
-  const [view, setView] = useState<ViewOpt>(viewParam || 'form');
+  const [view, setView] = useState<ViewOpt>(viewParam);
   const [book, setBook] = useState<initialValues>(null);
   const { showNotification } = useNotification();
 
@@ -46,9 +46,7 @@ const AddBookPage = ({ borderColor }: AddBookPageProps) => {
   };
 
   useEffect(() => {
-    if (viewParam) {
-      setView(viewParam);
-    }
+    setView(viewParam);
   }, [viewParam]);
 
   const handleManualSubmit = async (book: CreatedBook) => {
@@ -89,8 +87,8 @@ const AddBookPage = ({ borderColor }: AddBookPageProps) => {
   const Content = () => {
     if (view === 'form') {
       return <AddBookForm onSubmit={handleManualSubmit} initialValues={book} />;
-    }
-    if (view === 'scan') {
+    } else {
+      // scan
       return <BarcodeScanner isbnHandler={handleScannerSubmit} />;
     }
   };
@@ -114,8 +112,8 @@ const AddBookPage = ({ borderColor }: AddBookPageProps) => {
             className="scan-overlay"
             style={{
               boxShadow: `0 0 0 5000px ${theme.palette.componentBack.dark}`,
-              borderRight: `2px solid ${borderColor || theme.palette.primary.light}`,
-              borderLeft: `2px solid ${borderColor || theme.palette.primary.light}`,
+              borderRight: `2px solid ${borderColor ?? theme.palette.primary.light}`,
+              borderLeft: `2px solid ${borderColor ?? theme.palette.primary.light}`,
             }}
           ></div>
         )}

@@ -1,18 +1,18 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import checker from 'vite-plugin-checker'
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
+import checker from 'vite-plugin-checker';
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
-    checker({ 
+    checker({
       typescript: {
-        buildMode: true
-      }
-    })
+        buildMode: true,
+      },
+    }),
   ],
   server: {
-    allowedHosts: ['frontend-e2e']
-  }
-})
+    allowedHosts: ['frontend-e2e'],
+  },
+});

@@ -21,7 +21,7 @@ const ScrollableList = ({ title, books }: ScrollableListProps) => {
         style={{
           width: '95vw',
           borderRadius: '8px',
-          backgroundColor: theme.palette.componentBack?.main,
+          backgroundColor: theme.palette.componentBack.main,
         }}
       >
         <ItemsSlider renderButtons={true}>
@@ -32,7 +32,7 @@ const ScrollableList = ({ title, books }: ScrollableListProps) => {
         {books.length === 0 && (
           <div
             className="book-card-placeholder"
-            style={{ width: '100%', color: theme.palette.componentBack?.dark }}
+            style={{ width: '100%', color: theme.palette.componentBack.dark }}
           >
             <AutoStories className="icon" />
             <div className="text">You haven't borrowed any books</div>

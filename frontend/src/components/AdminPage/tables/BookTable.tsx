@@ -41,7 +41,7 @@ const BookTable = () => {
   const bookIdParam = Number(queryParams.get('bookId'));
 
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
-  const [deleteId, setDeleteId] = React.useState<GridRowId | null>(null);
+  const [deleteId, setDeleteId] = React.useState<string | number | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
 
   const books = useMainStore((state) => state.books);
@@ -176,7 +176,7 @@ const BookTable = () => {
       width: 100,
       cellClassName: 'actions',
       getActions: ({ id }) => {
-        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+        const isInEditMode = rowModesModel[id].mode === GridRowModes.Edit;
 
         if (isInEditMode) {
           return [

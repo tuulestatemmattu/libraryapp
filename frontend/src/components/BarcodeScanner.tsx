@@ -38,7 +38,6 @@ const BarcodeScanner = ({ isbnHandler }: BarcodeScannerProps) => {
   const stopVideoStream = () => {
     if (stopStreamRef.current) {
       console.log('Turning off camera');
-      Quagga.stop();
       stopStreamRef.current();
     }
   };
@@ -63,43 +62,48 @@ const BarcodeScanner = ({ isbnHandler }: BarcodeScannerProps) => {
       setTimeout(() => {
         restartScanning.current = false;
         alreadyScanned = false;
-        initScanner();
+        void initScanner();
       }, 3000);
     }
   };
 
   const initScanner = async () => {
-    if (videoRef.current) {
-      await Quagga.init(
-        {
-          inputStream: {
-            name: 'Live',
-            type: 'LiveStream',
-            target: videoRef.current,
-          },
-          decoder: {
-            readers: ['ean_reader'],
-          },
-          frequency: 20,
-        },
-        async function (err) {
-          if (err) {
-            console.error(err);
-            return;
-          }
-          console.log('Initialization finished. Ready to start');
-          Quagga.start();
-        },
-      );
-      Quagga.onDetected(async (data) => await handleBarcodeDetection(data));
+    if (!videoRef.current) {
+      return;
     }
+
+    await Quagga.init(
+      {
+        inputStream: {
+          name: 'Live',
+          type: 'LiveStream',
+          target: videoRef.current,
+        },
+        decoder: {
+          readers: ['ean_reader'],
+        },
+        frequency: 20,
+      },
+      function (err) {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        console.log('Initialization finished. Ready to start');
+        Quagga.start();
+      },
+    );
+    Quagga.onDetected(async (data) => await handleBarcodeDetection(data));
   };
 
   useEffect(() => {
     alreadyScanned = false;
-    getVideoStream();
-    initScanner();
-    return stopVideoStream;
+    void getVideoStream();
+    void initScanner();
+    return () => {
+      stopVideoStream();
+      void Quagga.stop();
+    };
   }, []);
 
   return (
