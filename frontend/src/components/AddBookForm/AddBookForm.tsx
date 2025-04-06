@@ -63,7 +63,6 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
         setIsbn('');
         setDescription('');
         setPublishedDate('');
-        setLocation('');
         setCopies(1);
         setImageLinks(undefined);
       } else {
@@ -97,7 +96,6 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
     setIsbn('');
     setDescription('');
     setPublishedDate('');
-    setLocation('');
     setSelectedTags([]);
     setCopies(1);
     setImageLinks(undefined);
