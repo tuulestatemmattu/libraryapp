@@ -10,6 +10,7 @@ import { useNotification } from '../../context/NotificationsProvider/Notificatio
 import useMainStore from '../../hooks/useMainStore';
 import { CreatedBook } from '../../interfaces/Book';
 import { FetchedTag } from '../../interfaces/Tags';
+import getInfoFromIsbn from '../../services/isbn';
 import StyledTextField from '../StyledTextField/StyledTextField';
 import CopiesInput from './CopiesInput/CopiesInput';
 import LocationSelect from './LocationSelect/LocationSelect';
@@ -35,6 +36,7 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
   const [location, setLocation] = useState(initialValues?.location ?? defaultLocation);
   const [selectedTags, setSelectedTags] = useState<FetchedTag[]>([]);
   const [copies, setCopies] = useState(1);
+  const [imageLinks, setImageLinks] = useState(initialValues?.imageLinks);
   const { showNotification } = useNotification();
 
   const handleSubmit = async (e: SyntheticEvent) => {
@@ -48,11 +50,9 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
       location,
       tags: selectedTags,
       copies,
+      imageLinks,
     };
 
-    if (initialValues?.imageLinks) {
-      book.imageLinks = initialValues.imageLinks;
-    }
     try {
       const response = await onSubmit(book);
 
@@ -63,8 +63,8 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
         setIsbn('');
         setDescription('');
         setPublishedDate('');
-        setLocation('');
         setCopies(1);
+        setImageLinks(undefined);
       } else {
         showNotification('Failed to add the book. Please try again!', 'error');
       }
@@ -74,15 +74,31 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
     }
   };
 
+  const handleIsbnSearch = async () => {
+    const book = await getInfoFromIsbn(isbn);
+    if (book) {
+      setTitle(book.title);
+      setAuthors(book.authors);
+      setDescription(book.description);
+      setPublishedDate(book.publishedDate);
+      setImageLinks(book.imageLinks);
+    } else {
+      showNotification(
+        'The given ISBN was not found in the database. Please check the input.',
+        'info',
+      );
+    }
+  };
+
   const handleClear = () => {
     setTitle('');
     setAuthors('');
     setIsbn('');
     setDescription('');
     setPublishedDate('');
-    setLocation('');
     setSelectedTags([]);
     setCopies(1);
+    setImageLinks(undefined);
   };
 
   const handleChangeLocation = (value: string) => {
@@ -106,7 +122,14 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
       <h2>Add a new book</h2>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={1} direction="row">
-          <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
+          <Box display="flex" flexDirection="row" alignItems="center" gap={2} width="100%">
+            <Grid sx={{ flexGrow: 1 }}>
+              <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
+            </Grid>
+            <Grid>
+              <Button onClick={handleIsbnSearch}>Search</Button>
+            </Grid>
+          </Box>
           <StyledTextField label="Title" value={title} setValue={setTitle} />
           <StyledTextField label="Author" value={authors} setValue={setAuthors} />
           <StyledTextField

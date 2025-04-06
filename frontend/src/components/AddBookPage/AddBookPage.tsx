@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
-import TagIcon from '@mui/icons-material/Tag';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -16,7 +15,6 @@ import { addBook } from '../../services/book';
 import getBookFromIsbn from '../../services/isbn';
 import AddBookForm from '../AddBookForm/AddBookForm';
 import BarcodeScanner from '../BarcodeScanner';
-import IsbnPage from '../IsbnPage/IsbnPage';
 
 import '../../style.css';
 import './AddBookPage.css';
@@ -25,7 +23,7 @@ interface AddBookPageProps {
   borderColor?: string;
 }
 
-type ViewOpt = 'form' | 'scan' | 'isbn';
+type ViewOpt = 'form' | 'scan';
 type initialValues = CreatedBook | null;
 
 const AddBookPage = ({ borderColor }: AddBookPageProps) => {
@@ -50,19 +48,6 @@ const AddBookPage = ({ borderColor }: AddBookPageProps) => {
   useEffect(() => {
     setView(viewParam);
   }, [viewParam]);
-
-  const handleIsbnSubmit = async (isbn: string) => {
-    const book = await getBookFromIsbn(isbn);
-    if (book) {
-      setBook(book);
-      changeView('form'); // Update view
-    } else {
-      showNotification(
-        'The given ISBN was not found in the database. Please check the input.',
-        'info',
-      );
-    }
-  };
 
   const handleManualSubmit = async (book: CreatedBook) => {
     try {
@@ -102,8 +87,6 @@ const AddBookPage = ({ borderColor }: AddBookPageProps) => {
   const Content = () => {
     if (view === 'form') {
       return <AddBookForm onSubmit={handleManualSubmit} initialValues={book} />;
-    } else if (view === 'isbn') {
-      return <IsbnPage isbnHandler={handleIsbnSubmit} />;
     } else {
       // scan
       return <BarcodeScanner isbnHandler={handleScannerSubmit} />;
@@ -116,9 +99,6 @@ const AddBookPage = ({ borderColor }: AddBookPageProps) => {
         <ButtonGroup variant="contained" className="button-group">
           <Button className="button" variant="contained" onClick={() => changeView('form')}>
             <TextFieldsIcon className="icon" /> Form
-          </Button>
-          <Button className="button" variant="contained" onClick={() => changeView('isbn')}>
-            <TagIcon className="icon" /> ISBN
           </Button>
           <Button className="button" variant="contained" onClick={() => changeView('scan')}>
             <QrCodeScannerIcon className="icon" /> Scan
