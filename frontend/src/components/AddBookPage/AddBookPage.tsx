@@ -12,7 +12,7 @@ import useMainStore from '../../hooks/useMainStore';
 import useRequireAdmin from '../../hooks/useRequireAdmin';
 import { CreatedBook } from '../../interfaces/Book';
 import { addBook } from '../../services/book';
-import getBookFromIsbn from '../../services/isbn';
+import { getInfoFromIsbn } from '../../services/isbn';
 import AddBookForm from '../AddBookForm/AddBookForm';
 import BarcodeScanner from '../BarcodeScanner';
 
@@ -65,7 +65,7 @@ const AddBookPage = ({ borderColor }: AddBookPageProps) => {
   };
 
   const handleScannerSubmit = async (isbn: string): Promise<boolean> => {
-    const book = await getBookFromIsbn(isbn);
+    const book = await getInfoFromIsbn(isbn);
     if (book) {
       setBook(book);
     } else {
