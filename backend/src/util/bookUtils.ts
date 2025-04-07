@@ -29,7 +29,8 @@ export const fetchBooks = async (where: WhereOptions<InferAttributes<Book>>) => 
 };
 
 export const fetchBook = async (id: string | number) => {
-  return (await fetchBooks({ id }))[0];
+  const books = await fetchBooks({ id });
+  return books.length === 1 ? books[0] : null;
 };
 
 export const calculateDueDate = (borrowedDate: Date) => {
@@ -74,9 +75,9 @@ export const calculateWaitingTime = (book: Book, queueEntry: QueueEntry) => {
 };
 
 export const prepareBookForFrontend = (book: Book, userId: string) => {
-  const myBorrow = book.borrows?.find((borrow) => borrow.userGoogleId === userId) || null;
+  const myBorrow = book.borrows?.find((borrow) => borrow.userGoogleId === userId) ?? null;
   const myQueueEntry =
-    book.queue_entries?.find((queueEntry) => queueEntry.userGoogleId === userId) || null;
+    book.queue_entries?.find((queueEntry) => queueEntry.userGoogleId === userId) ?? null;
 
   const dueDate = myBorrow ? calculateDueDate(myBorrow.borrowedDate) : null;
   const daysLeft = myBorrow ? calculateDaysLeft(myBorrow.borrowedDate) : null;
@@ -85,7 +86,8 @@ export const prepareBookForFrontend = (book: Book, userId: string) => {
 
   let status = '';
   if (myBorrow) {
-    if (new Date().getTime() > (dueDate as Date).getTime()) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    if (new Date().getTime() > dueDate!.getTime()) {
       status = 'late';
     } else {
       status = 'borrowed';

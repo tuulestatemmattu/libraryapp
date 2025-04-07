@@ -152,7 +152,7 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
               <CardMedia
                 component="img"
                 className="book-overview-image"
-                image={book.imageLink ? book.imageLink : getPlaceholderSVG(book)}
+                image={book.imageLink ?? getPlaceholderSVG(book)}
                 alt="book cover"
               />
             </Paper>
@@ -264,7 +264,8 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
               >
                 Reserve
               </Button>
-            ) : book.status == 'reserved' ? (
+            ) : (
+              // reserved
               <Button
                 variant="contained"
                 className="book-overview-action-button"
@@ -272,18 +273,16 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
               >
                 Unreserve
               </Button>
-            ) : (
-              <> </>
             )}
           </CardActions>
-          {profile && profile.admin && (
+          {profile?.admin && (
             <CardActions sx={{ pr: 1, pl: 1 }}>
               <Button
                 variant="contained"
                 className="book-overview-action-button"
                 onClick={handleEditButtonPress}
               >
-                Edit this book
+                Edit
               </Button>
             </CardActions>
           )}

@@ -1,0 +1,13 @@
+GET http://localhost:3001/api/testing/login
+Content-Type: application/json
+
+{
+    "secret": "salainen"
+}
+
+###
+
+curl --header "Content-Type: application/json" \
+      --request GET \
+      --data '{"secret": "salainen"}' \
+      http://localhost:3001/api/testing/login
