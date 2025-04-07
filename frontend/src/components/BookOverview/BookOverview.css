@@ -7,11 +7,12 @@
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
   margin: auto;
+  padding-top: 5% !important;
 
   border-radius: 25px !important;
   width: 80vw;
   max-width: 800px !important;
-  max-height: 75vh;
+  max-height: 90vh;
 }
 
 .overview-close-button {
@@ -23,7 +24,7 @@
 }
 
 .overview-content-container {
-  margin: 7% 5%;
+  margin: auto;
 }
 
 .overview-tophalf-container {
@@ -74,7 +75,7 @@
 }
 
 .overview-description-container {
-  max-height: 20vh;
+  max-height: 40vh;
   overflow-y: scroll !important;
 }
 
