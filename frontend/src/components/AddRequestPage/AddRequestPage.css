@@ -1,0 +1,16 @@
+@media (min-width: 600px) {
+  article {
+    margin-top: 50px;
+  }
+}
+
+form {
+  margin-left: 0px;
+  width: 95%;
+}
+
+.addrequest-buttons {
+  position: relative;
+  top: 20px !important;
+  height: 40px !important;
+}
