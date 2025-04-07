@@ -106,7 +106,7 @@ jobs:
       - name: extract-user-token
         run: |
           TOKEN=$(curl --header "Content-Type: application/json" \
-            --request GET \
+            --request POST \
             --data '{"secret": "${{ secrets.CRON_SECRET }}"}' \
             -s -i "https://${{ secrets.HEROKU_STAGING_APP_NAME }}.herokuapp.com/api/testing/login" \
             | grep -i 'Set-Cookie' \
