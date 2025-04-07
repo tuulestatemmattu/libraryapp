@@ -25,7 +25,4 @@ const searchBooks = async (title: string, author: string, isbn: string) => {
   }
 };
 
-export { 
-  getInfoFromIsbn,
-  searchBooks,
-};
+export { getInfoFromIsbn, searchBooks };

@@ -93,8 +93,10 @@ isbnRouter.post('/search', async (req, res) => {
       const book = {
         title: item.volumeInfo.title ? item.volumeInfo.title : '',
         authors: item.volumeInfo.authors ? item.volumeInfo.authors.join(', ') : '',
-        isbn: item.volumeInfo.industryIdentifiers ?
-          (item.volumeInfo.industryIdentifiers.find((identifier) => identifier.type === 'ISBN_13') ?.identifier ?? '') : '',
+        isbn: item.volumeInfo.industryIdentifiers
+          ? (item.volumeInfo.industryIdentifiers.find((identifier) => identifier.type === 'ISBN_13')
+              ?.identifier ?? '')
+          : '',
       };
       return book;
     });
