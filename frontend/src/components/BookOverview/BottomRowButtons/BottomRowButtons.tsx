@@ -1,7 +1,9 @@
 import React from 'react';
+
 import Button from '@mui/material/Button';
-import { FetchedBook } from '../../../interfaces/Book';
+
 import useMainStore from '../../../hooks/useMainStore';
+import { FetchedBook } from '../../../interfaces/Book';
 
 interface BottomRowButtonsProps {
   book: FetchedBook;
@@ -23,7 +25,6 @@ const BottomRowButtons: React.FC<BottomRowButtonsProps> = ({
   handleRemoveFromQueue,
 }) => {
   const profile = useMainStore((state) => state.profile);
-
 
   return (
     <>
