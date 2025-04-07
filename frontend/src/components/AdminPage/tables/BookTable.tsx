@@ -12,6 +12,7 @@ import {
   DialogContent,
   DialogTitle,
   Paper,
+  TextField,
   Tooltip,
 } from '@mui/material';
 import {
@@ -149,6 +150,24 @@ const BookTable = () => {
           </span>
         </Tooltip>
       ),
+      renderEditCell: (params) => {
+        return (
+          <TextField
+            value={params.value ?? ''}
+            onChange={(e) =>
+              params.api.setEditCellValue({
+                id: params.id,
+                field: params.field,
+                value: e.target.value,
+              })
+            }
+            multiline
+            rows={4}
+            variant="outlined"
+            fullWidth
+          />
+        );
+      },
     },
     { field: 'location', headerName: 'Location', width: 150, editable: true },
     { field: 'copies', headerName: 'Copies', width: 150, editable: true },
