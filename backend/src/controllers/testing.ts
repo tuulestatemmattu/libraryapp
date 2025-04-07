@@ -30,7 +30,7 @@ router.get('/resetdb', async (req, res) => {
   res.status(200).end();
 });
 
-router.get('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
   const { secret } = req.body;
   if (
     !secret ||
