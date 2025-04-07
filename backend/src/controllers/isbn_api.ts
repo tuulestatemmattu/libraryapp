@@ -54,11 +54,12 @@ isbnRouter.post('/', requireAdmin, async (req, res) => {
 });
 
 interface BookListApiResponse {
+  totalItems: number;
   items: {
     volumeInfo: {
-      title: string;
-      authors: string[];
-      industryIdentifiers: {
+      title?: string;
+      authors?: string[];
+      industryIdentifiers?: {
         type: string;
         identifier: string;
       }[];
@@ -84,13 +85,16 @@ isbnRouter.post('/search', async (req, res) => {
 
   try {
     const responseData = (await axios.get<BookListApiResponse>(apiUrl)).data;
+    if (responseData.totalItems === 0) {
+      res.json([]);
+      return;
+    }
     const bookList = responseData.items.map((item) => {
       const book = {
-        title: item.volumeInfo.title,
-        authors: item.volumeInfo.authors.join(', '),
-        isbn:
-          item.volumeInfo.industryIdentifiers.find((identifier) => identifier.type === 'ISBN_13')
-            ?.identifier ?? '',
+        title: item.volumeInfo.title ? item.volumeInfo.title : '',
+        authors: item.volumeInfo.authors ? item.volumeInfo.authors.join(', ') : '',
+        isbn: item.volumeInfo.industryIdentifiers ?
+          (item.volumeInfo.industryIdentifiers.find((identifier) => identifier.type === 'ISBN_13') ?.identifier ?? '') : '',
       };
       return book;
     });

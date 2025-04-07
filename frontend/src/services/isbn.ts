@@ -15,4 +15,17 @@ const getInfoFromIsbn = async (isbn: string): Promise<CreatedBook | null> => {
   }
 };
 
-export default getInfoFromIsbn;
+const searchBooks = async (title: string, author: string, isbn: string) => {
+  try {
+    const response = await axios.post(`${baseUrl}/search`, { title, author, isbn });
+    return response.data;
+  } catch (error) {
+    console.error('Error searching books:', error);
+    throw error;
+  }
+};
+
+export { 
+  getInfoFromIsbn,
+  searchBooks,
+};

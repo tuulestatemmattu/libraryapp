@@ -7,31 +7,41 @@ import StyledTextField from '../StyledTextField/StyledTextField';
 import '../../style.css';
 import './AddRequestPage.css';
 
-const AddRequestPage = () => {
-  const [title, setTitle] = useState('');
-  const [authors, setAuthors] = useState('');
-  const [isbn, setIsbn] = useState('');
+import { searchBooks } from '../../services/isbn';
 
-  const handleSearch = (e: SyntheticEvent) => {
+const AddRequestPage = () => {
+  const [searchTitle, setSearchTitle] = useState('');
+  const [searchAuthor, setSearchAuthor] = useState('');
+  const [searchIsbn, setSearchIsbn] = useState('');
+  
+  interface Book {
+    title: string;
+    authors: string;
+    isbn: string;
+  }
+
+  const [searchResults, setSearchResults] = useState<Book[]>([]);
+
+  const handleSearch = async (e: SyntheticEvent) => {
     e.preventDefault();
-    const request = {
-      title,
-      authors,
-      isbn,
-    };
     try {
-      console.log('Searching...', request);
+      const result = await searchBooks(searchTitle, searchAuthor, searchIsbn);
+      if (result && result.length > 0) {
+        console.log('Books found:', result);
+        setSearchResults(result);
+      } else {
+        console.log('No books found.');
+      }
     } catch (error) {
-      console.error('Error adding request:', error);
+      console.error('Error in searching books:', error);
     }
   };
-
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     const request = {
-      title,
-      authors,
-      isbn,
+      searchTitle,
+      searchAuthor,
+      searchIsbn,
     };
     try {
       console.log('Request to add book:', request);
@@ -40,46 +50,50 @@ const AddRequestPage = () => {
     }
   };
 
-  const handleClear = () => {
-    setTitle('');
-    setAuthors('');
-    setIsbn('');
+
+  const handleSearchClear = () => {
+    setSearchTitle('');
+    setSearchAuthor('');
+    setSearchIsbn('');
+  };
+
+  const handleClick = (title: string, author: string, isbn: string) => {
+    setSearchTitle(title);
+    setSearchAuthor(author);
+    setSearchIsbn(isbn);
   };
 
   return (
     <article>
       <h2>Search matching books</h2>
-      <form onSubmit={handleSearch}>
-        <Grid container spacing={1} direction={'row'}>
-          <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
-          <StyledTextField label="Title" value={title} setValue={setTitle} />
-          <StyledTextField label="Author" value={authors} setValue={setAuthors} />
-        </Grid>
-        <ButtonGroup variant="contained" className="addrequest-buttons">
-          <Button type="button" onClick={handleClear} variant="contained">
-            Clear
-          </Button>
-          <Button type="submit" variant="contained">
-            Search
-          </Button>
-        </ButtonGroup>
-      </form>
-      <h2>Add a request</h2>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={1} direction={'row'}>
-          <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
-          <StyledTextField label="Title" value={title} setValue={setTitle} />
-          <StyledTextField label="Author" value={authors} setValue={setAuthors} />
-          <ButtonGroup variant="contained" className="addrequest-buttons">
-            <Button type="button" onClick={handleClear} variant="contained">
-              Clear
-            </Button>
-            <Button type="submit" variant="contained">
+          <StyledTextField label="Search by title" value={searchTitle} setValue={setSearchTitle} />
+          <StyledTextField label="Search by author" value={searchAuthor} setValue={setSearchAuthor} />
+          <StyledTextField label="Search by ISBN" value={searchIsbn} setValue={setSearchIsbn} />
+        </Grid>
+        <ButtonGroup variant="contained" className="addrequest-buttons">
+          <Button type="button" onClick={handleSearchClear} variant="contained">
+            Clear
+          </Button>
+          <Button type="button" onClick={handleSearch} variant="contained">
+            Search
+          </Button>
+          <Button type="submit" variant="contained">
               Add
             </Button>
-          </ButtonGroup>
-        </Grid>
+        </ButtonGroup>
       </form>
+      <h2>Search results</h2>
+      <ul>
+        {searchResults.map((book, index) => (
+          <li key={index}>
+            <a onClick={() => handleClick(book.title, book.authors, book.isbn)}>
+              <strong>{book.title}</strong> { book.authors && `by ${book.authors}` } { book.isbn && `(ISBN: ${book.isbn})`}
+            </a>
+          </li>
+        ))}
+      </ul>
     </article>
   );
 };
