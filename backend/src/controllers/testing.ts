@@ -32,9 +32,9 @@ router.get('/login', async (req, res) => {
     res.status(401).json({ message: 'invalid or missing secret' });
     return;
   }
-  if (!(await User.findOne({ where: { google_id: 'test google id' } }))) {
+  if (!(await User.findOne({ where: { google_id: 'test_google_id' } }))) {
     await User.create({
-      google_id: 'test google id',
+      google_id: 'test_google_id',
       name: 'Test user',
       email: 'test.user@example.com',
       picture: 'sample_picture_url',
