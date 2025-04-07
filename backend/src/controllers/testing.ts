@@ -9,7 +9,11 @@ const router = express.Router();
 
 router.get('/resetdb', async (req, res) => {
   const { secret } = req.body;
-  if (!secret || !crypto.timingSafeEqual(Buffer.from(secret), Buffer.from(CRON_SECRET))) {
+  if (
+    !secret ||
+    secret.length != CRON_SECRET.length ||
+    !crypto.timingSafeEqual(Buffer.from(secret), Buffer.from(CRON_SECRET))
+  ) {
     res.status(401).json({ message: 'invalid or missing secret' });
     return;
   }
@@ -28,7 +32,11 @@ router.get('/resetdb', async (req, res) => {
 
 router.get('/login', async (req, res) => {
   const { secret } = req.body;
-  if (!secret || !crypto.timingSafeEqual(Buffer.from(secret), Buffer.from(CRON_SECRET))) {
+  if (
+    !secret ||
+    secret.length != CRON_SECRET.length ||
+    !crypto.timingSafeEqual(Buffer.from(secret), Buffer.from(CRON_SECRET))
+  ) {
     res.status(401).json({ message: 'invalid or missing secret' });
     return;
   }
