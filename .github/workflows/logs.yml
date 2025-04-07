@@ -1,0 +1,17 @@
+name: logs
+
+on:
+  workflow_dispatch:
+
+jobs:
+  staging_logs:
+    runs-on: ubuntu-24.04
+    steps:
+    - name: Install Heroku CLI
+      run: |
+        curl https://cli-assets.heroku.com/install.sh | sh
+    - name: Print Heroku staging logs
+      run: heroku logs --app ${{ secrets.HEROKU_STAGING_APP_NAME }} --tail
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        HEROKU_APP_NAME: ${{ secrets.HEROKU_STAGING_APP_NAME }}
