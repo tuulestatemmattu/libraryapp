@@ -3,8 +3,8 @@ import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 
 import ClearIcon from '@mui/icons-material/Clear';
-import { Stack, useTheme } from '@mui/material';
-import Button from '@mui/material/Button';
+import { Box } from '@mui/material';
+import { useTheme } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -25,6 +25,7 @@ import {
   returnBook,
 } from '../../services/book';
 import ItemsSlider from '../ItemsSlider/ItemsSlider';
+import BottomRowButtons from './BottomRowButtons/BottomRowButtons';
 
 import './BookOverview.css';
 
@@ -35,7 +36,6 @@ interface BookOverviewProps {
 
 const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
   const addOrUpdateBook = useMainStore((state) => state.addOrUpdateBook);
-  const profile = useMainStore((state) => state.profile);
   const theme = useTheme();
   const navigate = useNavigate();
   const { showNotification } = useNotification();
@@ -105,8 +105,8 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
     }
   };
 
-  const handleEditButtonPress = () => {
-    navigate(`/admin?view=books&bookId=${book.id}`);
+  const handleEdit = (id: number) => {
+    navigate(`/admin?view=books&bookId=${id}`);
   };
 
   const getPlaceholderSVG = (book: FetchedBook) => {
@@ -141,13 +141,13 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
 
   return (
     <Card className="book-overview-card">
-      {/* Top: Book Cover */}
-      <IconButton onClick={handleClose} className="overview-close-button">
-        <ClearIcon fontSize="medium" />
-      </IconButton>
-      <div className="overview-content-container">
-        <div className="overview-tophalf-container">
-          <div className="overview-topleft-container">
+      <Box>
+        {/* Top: Book Cover */}
+        <IconButton onClick={handleClose} className="overview-close-button">
+          <ClearIcon fontSize="medium" />
+        </IconButton>
+        <Box className="overview-content-container">
+          <Box className="overview-tophalf-container">
             <Paper className="book-overview-image-container" elevation={5}>
               <CardMedia
                 component="img"
@@ -156,62 +156,62 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
                 alt="book cover"
               />
             </Paper>
-          </div>
-          <CardContent sx={{ py: 0 }}>
-            <div className="book-overview-info-container">
-              <Typography
-                gutterBottom
-                variant="h4"
-                component="div"
-                className="overview-title overview-text"
-              >
-                {book.title}
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                color="text.secondary"
-                className="overview-info-text overview-text"
-              >
-                <strong>Authors:</strong> {book.authors}
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                color="text.secondary"
-                className="overview-info-text overview-text"
-              >
-                <strong>Published:</strong> {book.publishedDate}
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                color="text.secondary"
-                className="overview-info-text overview-text"
-              >
-                <strong>Copies available:</strong>{' '}
-                {Math.max(book.copiesAvailable - book.queueSize, 0) +
-                  (book.status == 'ready' ? 1 : 0)}
-              </Typography>
-              {book.borrowedByMe && (
+            <CardContent sx={{ py: 0 }}>
+              <Box className="book-overview-info-container">
+                <Typography
+                  gutterBottom
+                  variant="h4"
+                  component="div"
+                  className="overview-title overview-text"
+                >
+                  {book.title}
+                </Typography>
                 <Typography
                   variant="subtitle1"
                   color="text.secondary"
                   className="overview-info-text overview-text"
                 >
-                  <strong>Return date: </strong>
-                  {returnDateString}
+                  <strong>Authors:</strong> {book.authors}
                 </Typography>
-              )}
-              {book.queuedByMe && (
                 <Typography
                   variant="subtitle1"
                   color="text.secondary"
                   className="overview-info-text overview-text"
                 >
-                  <strong>Available in:</strong> {book.queueTime} days
+                  <strong>Published:</strong> {book.publishedDate}
                 </Typography>
-              )}
-            </div>
-          </CardContent>
-        </div>
+                <Typography
+                  variant="subtitle1"
+                  color="text.secondary"
+                  className="overview-info-text overview-text"
+                >
+                  <strong>Copies available:</strong>{' '}
+                  {Math.max(book.copiesAvailable - book.queueSize, 0) +
+                    (book.status == 'ready' ? 1 : 0)}
+                </Typography>
+                {book.borrowedByMe && (
+                  <Typography
+                    variant="subtitle1"
+                    color="text.secondary"
+                    className="overview-info-text overview-text"
+                  >
+                    <strong>Return date: </strong>
+                    {returnDateString}
+                  </Typography>
+                )}
+                {book.queuedByMe && (
+                  <Typography
+                    variant="subtitle1"
+                    color="text.secondary"
+                    className="overview-info-text overview-text"
+                  >
+                    <strong>Available in:</strong> {book.queueTime} days
+                  </Typography>
+                )}
+              </Box>
+            </CardContent>
+          </Box>
+        </Box>
         {/* ItemSlider containing tags associated with the book */}
         <CardContent sx={{ pt: 0, pb: 0 }} className="book-tags-slider">
           <ItemsSlider renderButtons={false} backgroundColor={theme.palette.componentBack.light}>
@@ -229,65 +229,18 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
         </CardContent>
 
         {/* Bottom: Action Buttons */}
-        <Stack direction="row-reverse" sx={{ pt: 1 }}>
-          <CardActions sx={{ pr: 1, pl: 1 }}>
-            {book.status == 'borrowed' || book.status == 'late' ? (
-              <>
-                <Button
-                  variant="contained"
-                  className="book-overview-action-button"
-                  onClick={() => handleReturn(book.id)}
-                >
-                  Return
-                </Button>
-                <Button
-                  variant="contained"
-                  className="book-overview-action-button"
-                  onClick={() => handleExtend(book.id)}
-                >
-                  Extend
-                </Button>
-              </>
-            ) : book.status == 'available' || book.status == 'ready' ? (
-              <Button
-                variant="contained"
-                className="book-overview-action-button"
-                onClick={() => handleBorrow(book.id)}
-              >
-                Borrow
-              </Button>
-            ) : book.status == 'unavailable' ? (
-              <Button
-                variant="contained"
-                className="book-overview-action-button"
-                onClick={() => handleAddToQueue(book.id)}
-              >
-                Reserve
-              </Button>
-            ) : (
-              // reserved
-              <Button
-                variant="contained"
-                className="book-overview-action-button"
-                onClick={() => handleRemoveFromQueue(book.id)}
-              >
-                Unreserve
-              </Button>
-            )}
-          </CardActions>
-          {profile?.admin && (
-            <CardActions sx={{ pr: 1, pl: 1 }}>
-              <Button
-                variant="contained"
-                className="book-overview-action-button"
-                onClick={handleEditButtonPress}
-              >
-                Edit
-              </Button>
-            </CardActions>
-          )}
-        </Stack>
-      </div>
+        <CardActions sx={{ pr: 1, pl: 1 }}>
+          <BottomRowButtons
+            book={book}
+            handleEdit={handleEdit}
+            handleReturn={handleReturn}
+            handleExtend={handleExtend}
+            handleBorrow={handleBorrow}
+            handleAddToQueue={handleAddToQueue}
+            handleRemoveFromQueue={handleRemoveFromQueue}
+          />
+        </CardActions>
+      </Box>
     </Card>
   );
 };
