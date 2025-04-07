@@ -1,10 +1,10 @@
 import Book from './book';
+import BookRequest from './book_request';
 import Borrow from './borrow';
 import ConnectionBookTag from './connection_book_tag';
 import QueueEntry from './queue_entry';
 import Tag from './tag';
 import User from './user';
-import BookRequest from './book_request';
 
 User.hasMany(Book);
 Book.belongsTo(User);

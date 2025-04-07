@@ -7,6 +7,7 @@ import bookRouter from './controllers/book';
 import cronRouter from './controllers/cron';
 import isbnRouter from './controllers/isbn_api';
 import loginRouter from './controllers/login';
+import requestsRouter from './controllers/requests';
 import tagRouter from './controllers/tag';
 import testingRouter from './controllers/testing';
 import userRouter from './controllers/users';
@@ -36,6 +37,7 @@ app.use('/api/tags', tagRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/users', userRouter);
 app.use('/api/cron', cronRouter);
+app.use('/api/requests', requestsRouter);
 
 app.get('/api/ping', (_req, res) => {
   res.send('pong');
