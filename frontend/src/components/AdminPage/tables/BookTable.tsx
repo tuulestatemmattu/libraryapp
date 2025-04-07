@@ -153,7 +153,7 @@ const BookTable = () => {
       renderEditCell: (params) => {
         return (
           <TextField
-            value={params.value || ''}
+            value={params.value ?? ''}
             onChange={(e) =>
               params.api.setEditCellValue({
                 id: params.id,

@@ -1,6 +1,5 @@
 import { SyntheticEvent, useState } from 'react';
 
-import { Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -128,47 +127,48 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
           direction="row" /*in MUI v7, this is just Grid and the old one is GridLegacy*/
         >
           <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
-        <Grid container spacing={1} direction="row">
-          <Box display="flex" flexDirection="row" alignItems="center" gap={2} width="100%">
-            <Grid sx={{ flexGrow: 1 }}>
-              <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
-            </Grid>
-            <Grid>
-              <Button onClick={handleIsbnSearch}>Search</Button>
-            </Grid>
-          </Box>
-          <StyledTextField label="Title" value={title} setValue={setTitle} />
-          <StyledTextField label="Author" value={authors} setValue={setAuthors} />
-          <StyledTextField
-            label="Publication date"
-            value={publishedDate}
-            setValue={setPublishedDate}
-          />
-          <StyledTextField
-            label="Description"
-            value={description}
-            setValue={setDescription}
-            multiline={true}
-          />
-          <div className="tag-select-div">
-            <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
-          </div>
-          <Box display="flex" flexDirection="row" alignItems="center" gap={2} width="100%">
-            <Grid sx={{ flexShrink: 0, width: 130 }}>
-              <CopiesInput copies={copies} setCopies={setCopies} />
-            </Grid>
-            <Grid sx={{ flexGrow: 1 }}>
-              <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
-            </Grid>
-          </Box>
-          <ButtonGroup variant="contained" className="addbookform-buttons">
-            <Button type="button" onClick={handleClear} variant="contained">
-              Clear
-            </Button>
-            <Button type="submit" variant="contained">
-              Add
-            </Button>
-          </ButtonGroup>
+          <Grid container spacing={1} direction="row">
+            <Box display="flex" flexDirection="row" alignItems="center" gap={2} width="100%">
+              <Grid sx={{ flexGrow: 1 }}>
+                <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
+              </Grid>
+              <Grid>
+                <Button onClick={handleIsbnSearch}>Search</Button>
+              </Grid>
+            </Box>
+            <StyledTextField label="Title" value={title} setValue={setTitle} />
+            <StyledTextField label="Author" value={authors} setValue={setAuthors} />
+            <StyledTextField
+              label="Publication date"
+              value={publishedDate}
+              setValue={setPublishedDate}
+            />
+            <StyledTextField
+              label="Description"
+              value={description}
+              setValue={setDescription}
+              multiline={true}
+            />
+            <div className="tag-select-div">
+              <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
+            </div>
+            <Box display="flex" flexDirection="row" alignItems="center" gap={2} width="100%">
+              <Grid sx={{ flexShrink: 0, width: 130 }}>
+                <CopiesInput copies={copies} setCopies={setCopies} />
+              </Grid>
+              <Grid sx={{ flexGrow: 1 }}>
+                <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
+              </Grid>
+            </Box>
+            <ButtonGroup variant="contained" className="addbookform-buttons">
+              <Button type="button" onClick={handleClear} variant="contained">
+                Clear
+              </Button>
+              <Button type="submit" variant="contained">
+                Add
+              </Button>
+            </ButtonGroup>
+          </Grid>
         </Grid>
       </form>
     </article>
