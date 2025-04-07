@@ -7,7 +7,16 @@ Content-Type: application/json
 
 ###
 
+GET https://ohtu-library-staging-c43b89853868.herokuapp.com/api/testing/login
+Content-Type: application/json
+
+{
+    "secret": "NDb1GoavpoMn6dpvCOY/7EDqBWWL6GN1msz2NcWDJj3yi3ugRADDCMHOH9ON+rJFZrgd/8HSF8zOO/sIfG7rhCv3SOt5"
+}
+
+###
 curl --header "Content-Type: application/json" \
       --request GET \
-      --data '{"secret": "salainen"}' \
-      http://localhost:3001/api/testing/login
+      --data '{"secret": "NDb1GoavpoMn6dpvCOY/7EDqBWWL6GN1msz2NcWDJj3yi3ugRADDCMHOH9ON+rJF
+Zrgd/8HSF8zOO/sIfG7rhCv3SOt5"}' \
+      https://ohtu-library-staging-c43b89853868.herokuapp.com/api/testing/login
