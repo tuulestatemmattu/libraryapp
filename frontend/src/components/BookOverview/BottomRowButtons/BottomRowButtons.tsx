@@ -31,7 +31,6 @@ const BottomRowButtons: React.FC<BottomRowButtonsProps> = ({
       {profile?.admin && (
         <Button
           variant="contained"
-          className="book-overview-action-button"
           onClick={() => handleEdit(book.id)}
         >
           Edit
@@ -41,14 +40,12 @@ const BottomRowButtons: React.FC<BottomRowButtonsProps> = ({
         <>
           <Button
             variant="contained"
-            className="book-overview-action-button"
             onClick={() => handleReturn(book.id)}
           >
             Return
           </Button>
           <Button
             variant="contained"
-            className="book-overview-action-button"
             onClick={() => handleExtend(book.id)}
           >
             Extend
@@ -57,7 +54,6 @@ const BottomRowButtons: React.FC<BottomRowButtonsProps> = ({
       ) : book.status === 'available' || book.status === 'ready' ? (
         <Button
           variant="contained"
-          className="book-overview-action-button"
           onClick={() => handleBorrow(book.id)}
         >
           Borrow
@@ -65,7 +61,6 @@ const BottomRowButtons: React.FC<BottomRowButtonsProps> = ({
       ) : book.status === 'unavailable' ? (
         <Button
           variant="contained"
-          className="book-overview-action-button"
           onClick={() => handleAddToQueue(book.id)}
         >
           Reserve
@@ -73,7 +68,6 @@ const BottomRowButtons: React.FC<BottomRowButtonsProps> = ({
       ) : book.status === 'reserved' ? (
         <Button
           variant="contained"
-          className="book-overview-action-button"
           onClick={() => handleRemoveFromQueue(book.id)}
         >
           Unreserve
