@@ -23,6 +23,23 @@ interface slackMessageResponse {
   error: string;
 }
 
+export type SlackBlock =
+  | {
+      type: 'section';
+      text: { type: 'mrkdwn'; text: string };
+      accessory?: { type: 'image'; image_url: string; alt_text: string };
+    }
+  | {
+      type: 'context';
+      elements: { type: 'mrkdwn'; text: string }[];
+    }
+  | {
+      type: 'image';
+      image_url: string;
+      alt_text: string;
+      title?: { type: 'plain_text'; text: string };
+    };
+
 export const sendPrivateMessage = async (email: string, message: string) => {
   const slackUserIdResponse = await axios.post<slackUserResponse>(
     'https://slack.com/api/users.lookupByEmail',
@@ -72,17 +89,8 @@ export const sendPrivateMessage = async (email: string, message: string) => {
     throw new Error(`Slack error: ${slackMessageResponse.data.error}`);
   }
 };
-interface SlackAttachment {
-  author_name?: string;
-  fallback: string;
-  image_url?: string;
-  fields?: { title: string; value: string; short?: boolean }[];
-}
 
-export const sendNotificationToChannel = async (payload: {
-  text: string;
-  attachments: SlackAttachment[];
-}) => {
+export const sendNotificationToChannel = async (payload: { blocks: SlackBlock[] }) => {
   try {
     const slackMessageResponse = await axios.post(SLACK_WEBHOOK_URL, payload);
     if (slackMessageResponse.status !== 200) {
