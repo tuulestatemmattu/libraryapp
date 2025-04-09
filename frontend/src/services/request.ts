@@ -10,4 +10,8 @@ const sendBookRequest = async (request: Request) => {
   return response.data;
 };
 
-export { sendBookRequest };
+const deleteBookRequest = async (id: number) => {
+  await axios.delete(`${baseUrl}/${id}`);
+};
+
+export { sendBookRequest, deleteBookRequest };
