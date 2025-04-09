@@ -126,7 +126,6 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
           spacing={1}
           direction="row" /*in MUI v7, this is just Grid and the old one is GridLegacy*/
         >
-          <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
           <Grid container spacing={1} direction="row">
             <Box display="flex" flexDirection="row" alignItems="center" gap={2} width="100%">
               <Grid sx={{ flexGrow: 1 }}>
