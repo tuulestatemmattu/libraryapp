@@ -29,53 +29,29 @@ const BottomRowButtons: React.FC<BottomRowButtonsProps> = ({
   return (
     <>
       {profile?.admin && (
-        <Button
-          variant="contained"
-          className="book-overview-action-button"
-          onClick={() => handleEdit(book.id)}
-        >
+        <Button variant="contained" onClick={() => handleEdit(book.id)}>
           Edit
         </Button>
       )}
       {book.status === 'borrowed' || book.status === 'late' ? (
         <>
-          <Button
-            variant="contained"
-            className="book-overview-action-button"
-            onClick={() => handleReturn(book.id)}
-          >
+          <Button variant="contained" onClick={() => handleReturn(book.id)}>
             Return
           </Button>
-          <Button
-            variant="contained"
-            className="book-overview-action-button"
-            onClick={() => handleExtend(book.id)}
-          >
+          <Button variant="contained" onClick={() => handleExtend(book.id)}>
             Extend
           </Button>
         </>
       ) : book.status === 'available' || book.status === 'ready' ? (
-        <Button
-          variant="contained"
-          className="book-overview-action-button"
-          onClick={() => handleBorrow(book.id)}
-        >
+        <Button variant="contained" onClick={() => handleBorrow(book.id)}>
           Borrow
         </Button>
       ) : book.status === 'unavailable' ? (
-        <Button
-          variant="contained"
-          className="book-overview-action-button"
-          onClick={() => handleAddToQueue(book.id)}
-        >
+        <Button variant="contained" onClick={() => handleAddToQueue(book.id)}>
           Reserve
         </Button>
       ) : book.status === 'reserved' ? (
-        <Button
-          variant="contained"
-          className="book-overview-action-button"
-          onClick={() => handleRemoveFromQueue(book.id)}
-        >
+        <Button variant="contained" onClick={() => handleRemoveFromQueue(book.id)}>
           Unreserve
         </Button>
       ) : (
