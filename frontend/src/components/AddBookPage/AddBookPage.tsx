@@ -6,6 +6,7 @@ import TextFieldsIcon from '@mui/icons-material/TextFields';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { useTheme } from '@mui/material/styles';
+import { Modal } from '@mui/material';
 
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';
@@ -38,6 +39,7 @@ const AddBookPage = ({ borderColor }: AddBookPageProps) => {
 
   const [view, setView] = useState<ViewOpt>(viewParam);
   const [book, setBook] = useState<initialValues>(null);
+  const [scannerOpen, setScannerOpen] = useState(false);
   const { showNotification } = useNotification();
 
   const changeView = (newView: ViewOpt) => {
@@ -84,6 +86,26 @@ const AddBookPage = ({ borderColor }: AddBookPageProps) => {
     return false; // Prevent scanner restart
   };
 
+  const handleScannerSubmitAlt = async (isbn: string): Promise<boolean> => {
+    const book = await getInfoFromIsbn(isbn);
+    if (book) {
+      setBook(book);
+    } else {
+      setBook({
+        isbn,
+        title: '',
+        authors: '',
+        publishedDate: '',
+        description: '',
+        location: 'Helsinki',
+        tags: [],
+        copies: 1,
+      });
+    }
+    setScannerOpen(false)
+    return false; // Prevent scanner restart
+  };
+
   const Content = () => {
     if (view === 'form') {
       return <AddBookForm onSubmit={handleManualSubmit} initialValues={book} />;
@@ -103,6 +125,7 @@ const AddBookPage = ({ borderColor }: AddBookPageProps) => {
           <Button className="button" variant="contained" onClick={() => changeView('scan')}>
             <QrCodeScannerIcon className="icon" /> Scan
           </Button>
+          <Button onClick={() => setScannerOpen(true) }>Scan :D</Button>
         </ButtonGroup>
       </div>
       <div className={`book-content ${view === 'scan' ? 'scan' : ''}`}>
@@ -118,6 +141,9 @@ const AddBookPage = ({ borderColor }: AddBookPageProps) => {
           ></div>
         )}
       </div>
+      <Modal className={'scan-box'} open={scannerOpen} onClose={() => setScannerOpen(false)}>
+        <BarcodeScanner isbnHandler={handleScannerSubmitAlt} />
+      </Modal>
     </article>
   );
 };

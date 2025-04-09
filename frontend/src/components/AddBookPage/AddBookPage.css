@@ -50,6 +50,26 @@
   object-fit: cover;
 }
 
+.scan-box {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-items: center;
+  margin-top: 3vw;
+  margin-bottom: 3vw;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 70vw;
+}
+
+.scan-box video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .scan-overlay {
   position: absolute;
   top: 50%;
