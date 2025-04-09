@@ -50,12 +50,7 @@ const BookList = ({ books }: BookListProps) => {
         <Box justifyContent="space-between" display="flex" alignItems="center">
           <h2>Books in office</h2>
 
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => navigate('/addRequest')}
-            style={{ marginBottom: '1rem' }}
-          >
+          <Button variant="contained" color="primary" onClick={() => navigate('/addRequest')}>
             Request a new book
           </Button>
         </Box>

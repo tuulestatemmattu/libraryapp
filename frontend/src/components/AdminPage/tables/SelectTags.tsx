@@ -57,7 +57,8 @@ const SelectTags = ({ id, value, field }: SelectTagsProps) => {
       )}
     >
       {tags.map((tag) => (
-        <MenuItem key={tag.id} value={tag.name} style={getStyles(tag.name, selectedTags, theme)}>
+        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+        <MenuItem key={tag.id} value={tag as any} style={getStyles(tag.name, selectedTags, theme)}>
           {tag.name}
         </MenuItem>
       ))}
