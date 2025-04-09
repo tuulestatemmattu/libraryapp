@@ -100,7 +100,7 @@ const AddRequestPage = () => {
       <h2>Search results</h2>
       {searchResults.length === 0 && <p>No results found</p>}
       {searchResults.length > 0 && <p>Click on a book to fill the form</p>}
-      { searchResults.length > 0 &&
+      {searchResults.length > 0 && (
         <Box
           sx={{
             width: '90%',
@@ -121,7 +121,7 @@ const AddRequestPage = () => {
             </ListItem>
           ))}
         </Box>
-      }
+      )}
     </article>
   );
 };
