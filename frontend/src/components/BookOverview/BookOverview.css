@@ -9,9 +9,10 @@
   margin: auto;
 
   border-radius: 25px !important;
+  padding-top: 5% !important;
   width: 80vw;
   max-width: 800px !important;
-  max-height: 75vh;
+  max-height: 90vh;
 }
 
 .overview-close-button {
@@ -23,7 +24,7 @@
 }
 
 .overview-content-container {
-  margin: 7% 5%;
+  margin: auto;
 }
 
 .overview-tophalf-container {
@@ -33,14 +34,11 @@
   align-items: center;
 }
 
-.overview-topleft-container {
+.book-overview-image-container {
   margin-left: 5%;
+  border-radius: 5% !important;
   width: 20vw !important;
   max-width: 200px !important;
-}
-
-.book-overview-image-container {
-  border-radius: 5% !important;
   height: fit-content;
 }
 
@@ -77,7 +75,7 @@
 }
 
 .overview-description-container {
-  max-height: 20vh;
+  max-height: 40vh;
   overflow-y: scroll !important;
 }
 

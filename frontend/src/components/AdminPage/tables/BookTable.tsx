@@ -12,6 +12,7 @@ import {
   DialogContent,
   DialogTitle,
   Paper,
+  TextField,
   Tooltip,
 } from '@mui/material';
 import {
@@ -41,7 +42,7 @@ const BookTable = () => {
   const bookIdParam = Number(queryParams.get('bookId'));
 
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
-  const [deleteId, setDeleteId] = React.useState<GridRowId | null>(null);
+  const [deleteId, setDeleteId] = React.useState<string | number | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
 
   const books = useMainStore((state) => state.books);
@@ -149,6 +150,24 @@ const BookTable = () => {
           </span>
         </Tooltip>
       ),
+      renderEditCell: (params) => {
+        return (
+          <TextField
+            value={params.value ?? ''}
+            onChange={(e) =>
+              params.api.setEditCellValue({
+                id: params.id,
+                field: params.field,
+                value: e.target.value,
+              })
+            }
+            multiline
+            rows={4}
+            variant="outlined"
+            fullWidth
+          />
+        );
+      },
     },
     { field: 'location', headerName: 'Location', width: 150, editable: true },
     { field: 'copies', headerName: 'Copies', width: 150, editable: true },

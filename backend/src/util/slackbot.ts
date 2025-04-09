@@ -72,12 +72,23 @@ export const sendPrivateMessage = async (email: string, message: string) => {
     throw new Error(`Slack error: ${slackMessageResponse.data.error}`);
   }
 };
+interface SlackAttachment {
+  author_name?: string;
+  fallback: string;
+  image_url?: string;
+  fields?: { title: string; value: string; short?: boolean }[];
+}
 
-export const sendNotificationToChannel = async (message: string) => {
-  const slackMessageResponse = await axios.post<slackMessageResponse>(SLACK_WEBHOOK_URL, {
-    text: message,
-  });
-  if (slackMessageResponse.status != 200) {
-    throw new Error(`Slack error: ${slackMessageResponse.statusText}`);
+export const sendNotificationToChannel = async (payload: {
+  text: string;
+  attachments: SlackAttachment[];
+}) => {
+  try {
+    const slackMessageResponse = await axios.post(SLACK_WEBHOOK_URL, payload);
+    if (slackMessageResponse.status !== 200) {
+      throw new Error(`Slack error: ${slackMessageResponse.statusText}`);
+    }
+  } catch (err) {
+    console.error('Failed to send Slack notification:', err);
   }
 };

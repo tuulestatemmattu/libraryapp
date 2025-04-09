@@ -2,13 +2,13 @@ import { DataTypes, Model, Optional } from 'sequelize';
 
 import { sequelize } from '../util/db';
 
-type UserAttributes = {
+interface UserAttributes {
   google_id: string;
   email: string;
   picture: string;
   name: string;
   admin: boolean;
-};
+}
 
 type UserCreationAttributes = Optional<UserAttributes, 'admin'>;
 

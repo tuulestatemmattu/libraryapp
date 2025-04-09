@@ -33,12 +33,12 @@ const FilterWithTags = ({ selectedTags, setSelectedTags }: FilterWithTagsProps) 
             onClick={() => handleClick(tag)}
             sx={{
               backgroundColor: selectedTags.includes(tag)
-                ? theme.palette.primary?.main
+                ? theme.palette.primary.main
                 : 'transparent',
               color: selectedTags.includes(tag)
                 ? theme.palette.secondary.main
                 : theme.palette.text.primary,
-              borderColor: theme.palette.componentBack?.main,
+              borderColor: theme.palette.componentBack.main,
             }}
           />
         ))}

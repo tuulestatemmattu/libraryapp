@@ -6,10 +6,11 @@ import { Button, ButtonGroup } from '@mui/material';
 import useRequireAdmin from '../../hooks/useRequireAdmin';
 import BookTable from './tables/BookTable';
 import BorrowTable from './tables/BorrowTable';
+import QueueTable from './tables/QueueTable';
 import TagTable from './tables/TagTable';
 import UserTable from './tables/UserTable';
 
-type ViewOpt = 'users' | 'tags' | 'books' | 'borrows';
+type ViewOpt = 'users' | 'tags' | 'books' | 'borrows' | 'queues';
 
 const AdminPage = () => {
   useRequireAdmin();
@@ -17,7 +18,7 @@ const AdminPage = () => {
   const queryParams = new URLSearchParams(location.search);
   const viewParam = queryParams.get('view') as ViewOpt;
 
-  const [view, setView] = useState<ViewOpt>(viewParam || 'users');
+  const [view, setView] = useState<ViewOpt>(viewParam);
 
   const changeView = (newView: ViewOpt) => {
     setView(newView);
@@ -25,23 +26,21 @@ const AdminPage = () => {
   };
 
   useEffect(() => {
-    if (viewParam) {
-      setView(viewParam);
-    }
+    setView(viewParam);
   }, [viewParam]);
 
   const Content = () => {
-    if (view === 'users') {
-      return <UserTable />;
-    }
-    if (view === 'tags') {
-      return <TagTable />;
-    }
-    if (view === 'books') {
-      return <BookTable />;
-    }
-    if (view === 'borrows') {
-      return <BorrowTable />;
+    switch (view) {
+      case 'users':
+        return <UserTable />;
+      case 'tags':
+        return <TagTable />;
+      case 'books':
+        return <BookTable />;
+      case 'borrows':
+        return <BorrowTable />;
+      case 'queues':
+        return <QueueTable />;
     }
   };
 
@@ -60,6 +59,9 @@ const AdminPage = () => {
           </Button>
           <Button className="button" variant="contained" onClick={() => changeView('borrows')}>
             Borrows
+          </Button>
+          <Button className="button" variant="contained" onClick={() => changeView('queues')}>
+            Queues
           </Button>
         </ButtonGroup>
       </div>
