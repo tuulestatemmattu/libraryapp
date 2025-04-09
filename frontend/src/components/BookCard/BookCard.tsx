@@ -11,7 +11,7 @@ import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 
 import { FetchedBook } from '../../interfaces/Book';
-import BookOverview from '../BookOverview/BookOverview';
+import BookModal from '../BookModal/BookModal';
 
 import './BookCard.css';
 
@@ -118,7 +118,7 @@ const BookCard = ({ book, loading }: BookCardProps) => {
         }}
       >
         <>
-          <BookOverview book={book} setOpen={setOpen} />
+          <BookModal book={book} setOpen={setOpen} />
         </>
       </Modal>
     </Card>

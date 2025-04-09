@@ -28,14 +28,14 @@ import { getPlaceholderSVG } from '../../util/svgUtils';
 import ItemsSlider from '../ItemsSlider/ItemsSlider';
 import BottomRowButtons from './BottomRowButtons/BottomRowButtons';
 
-import './BookOverview.css';
+import './BookModal.css';
 
-interface BookOverviewProps {
+interface BookModalProps {
   book: FetchedBook;
   setOpen: (open: boolean) => void;
 }
 
-const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
+const BookModal = ({ book, setOpen }: BookModalProps) => {
   const addOrUpdateBook = useMainStore((state) => state.addOrUpdateBook);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('xs'));
@@ -216,4 +216,4 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
   );
 };
 
-export default BookOverview;
+export default BookModal;
