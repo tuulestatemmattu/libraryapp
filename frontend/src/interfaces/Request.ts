@@ -4,7 +4,7 @@ interface Request {
   isbn: string;
 }
 
-interface fetchedRequest {
+interface FetchedRequest {
   id: number;
   title: string;
   author: string;
@@ -15,4 +15,4 @@ interface fetchedRequest {
   };
 }
 
-export type { Request, fetchedRequest };
+export type { Request, FetchedRequest };

@@ -2,7 +2,7 @@ import { create } from 'zustand';
 
 import { FetchedBook } from '../interfaces/Book';
 import Profile from '../interfaces/Profile';
-import { fetchedRequest } from '../interfaces/Request';
+import { FetchedRequest } from '../interfaces/Request';
 import { FetchedTag } from '../interfaces/Tags';
 
 interface StoreState {
@@ -24,9 +24,9 @@ interface StoreState {
   addOrUpdateBook: (book: FetchedBook) => void;
   deleteBook: (id: number) => void;
 
-  bookRequests: fetchedRequest[];
-  setBookRequests: (bookRequests: fetchedRequest[]) => void;
-  addBookRequest: (bookRequest: fetchedRequest) => void;
+  bookRequests: FetchedRequest[];
+  setBookRequests: (bookRequests: FetchedRequest[]) => void;
+  addBookRequest: (bookRequest: FetchedRequest) => void;
   deleteBookRequest: (id: number) => void;
 }
 
@@ -77,8 +77,8 @@ const useMainStore = create<StoreState>((set) => ({
     })),
 
   bookRequests: [],
-  setBookRequests: (bookRequests: fetchedRequest[]) => set((state) => ({ ...state, bookRequests })),
-  addBookRequest: (bookRequest: fetchedRequest) =>
+  setBookRequests: (bookRequests: FetchedRequest[]) => set((state) => ({ ...state, bookRequests })),
+  addBookRequest: (bookRequest: FetchedRequest) =>
     set((state) => ({ ...state, bookRequests: [...state.bookRequests, bookRequest] })),
   deleteBookRequest: (id: number) =>
     set((state) => ({
