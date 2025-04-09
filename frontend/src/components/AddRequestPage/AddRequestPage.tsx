@@ -1,6 +1,6 @@
 import { SyntheticEvent, useState } from 'react';
 
-import { Button, ButtonGroup, Grid } from '@mui/material';
+import { Box, Button, ButtonGroup, Grid, ListItem, ListItemButton } from '@mui/material';
 
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import { searchBooks } from '../../services/isbn';
@@ -33,9 +33,11 @@ const AddRequestPage = () => {
         setSearchResults(result);
       } else {
         console.log('No books found.');
+        setSearchResults([]);
       }
     } catch (error) {
       console.error('Error in searching books:', error);
+      setSearchResults([]);
     }
   };
   const handleSubmit = async (e: SyntheticEvent) => {
@@ -46,6 +48,10 @@ const AddRequestPage = () => {
       isbn,
     };
     try {
+      if (!title && !author && !isbn) {
+        showNotification('Please fill in at least one field!', 'error');
+        return;
+      }
       await sendBookRequest(request);
       showNotification('New request added successfully!', 'success');
       setTitle('');
@@ -56,50 +62,66 @@ const AddRequestPage = () => {
     }
   };
 
-  const handleSearchClear = () => {
-    setTitle('');
-    setAuthor('');
-    setIsbn('');
-  };
-
   const handleClick = (title: string, author: string, isbn: string) => {
     setTitle(title);
     setAuthor(author);
     setIsbn(isbn);
   };
 
+  const handleClear = () => {
+    setTitle('');
+    setAuthor('');
+    setIsbn('');
+  };
+
   return (
     <article>
-      <h2>Search matching books</h2>
+      <h2>Search matching books or fill manually</h2>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={1} direction={'row'}>
-          <StyledTextField label="Search by title" value={title} setValue={setTitle} />
-          <StyledTextField label="Search by author" value={author} setValue={setAuthor} />
-          <StyledTextField label="Search by ISBN" value={isbn} setValue={setIsbn} />
+          <StyledTextField label="Title" value={title} setValue={setTitle} />
+          <StyledTextField label="Author" value={author} setValue={setAuthor} />
+          <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
         </Grid>
-        <ButtonGroup variant="contained" className="addrequest-buttons">
-          <Button type="button" onClick={handleSearchClear} variant="contained">
-            Clear
+        <Box justifyContent="space-between" display="flex">
+          <ButtonGroup variant="contained" className="addrequest-buttons">
+            <Button type="button" onClick={handleClear} variant="contained">
+              Clear
+            </Button>
+            <Button type="button" onClick={handleSearch} variant="contained">
+              Search
+            </Button>
+          </ButtonGroup>
+          <Button type="submit" variant="contained" className="addrequest-buttons">
+            Send
           </Button>
-          <Button type="button" onClick={handleSearch} variant="contained">
-            Search
-          </Button>
-          <Button type="submit" variant="contained">
-            Add
-          </Button>
-        </ButtonGroup>
+        </Box>
       </form>
       <h2>Search results</h2>
-      <ul>
-        {searchResults.map((book, index) => (
-          <li key={index}>
-            <a onClick={() => handleClick(book.title, book.authors, book.isbn)}>
-              <strong>{book.title}</strong> {book.authors && `by ${book.authors}`}{' '}
-              {book.isbn && `(ISBN: ${book.isbn})`}
-            </a>
-          </li>
-        ))}
-      </ul>
+      {searchResults.length === 0 && <p>No results found</p>}
+      {searchResults.length > 0 && <p>Click on a book to fill the form</p>}
+      {searchResults.length > 0 && (
+        <Box
+          sx={{
+            width: '90%',
+            padding: '16px',
+            bgcolor: 'background.paper',
+            border: '1px solid #ccc',
+            borderRadius: '8px',
+          }}
+        >
+          {searchResults.map((book, index) => (
+            <ListItem key={index} component="div" disablePadding>
+              <ListItemButton>
+                <a onClick={() => handleClick(book.title, book.authors, book.isbn)}>
+                  <strong>{book.title}</strong> {book.authors && `by ${book.authors}`}{' '}
+                  {book.isbn && `(ISBN: ${book.isbn})`}
+                </a>
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </Box>
+      )}
     </article>
   );
 };
