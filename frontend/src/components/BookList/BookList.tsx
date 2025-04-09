@@ -54,7 +54,6 @@ const BookList = ({ books }: BookListProps) => {
             variant="contained"
             color="primary"
             onClick={() => navigate('/addRequest')}
-            style={{ marginBottom: '1rem' }}
           >
             Request a new book
           </Button>
