@@ -3,16 +3,16 @@ import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 
 import ClearIcon from '@mui/icons-material/Clear';
-import { Box } from '@mui/material';
 import { useTheme } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Chip from '@mui/material/Chip';
+import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
-import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';
@@ -37,6 +37,7 @@ interface BookOverviewProps {
 const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
   const addOrUpdateBook = useMainStore((state) => state.addOrUpdateBook);
   const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('xs'));
   const navigate = useNavigate();
   const { showNotification } = useNotification();
 
@@ -122,9 +123,9 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
     };
 
     return `data:image/svg+xml;utf8,
-      <svg xmlns="http://www.w3.org/2000/svg" width="200" height="300" viewBox="0 -20 200 300">
-        <rect width="200" height="260" fill="hsl(${generateColorFromISBN(book.isbn)}, 80%, 75%)" stroke="white" stroke-width="15"/>
-        <rect x="8" y="8" width="30" height="245" fill="hsl(${generateColorFromISBN(book.isbn)}, 60%, 55%)"/>
+      <svg xmlns="http://www.w3.org/2000/svg" width="180" height="240" viewBox="0 0 180 240">
+        <rect width="180" height="240" fill="hsl(${generateColorFromISBN(book.isbn)}, 80%, 75%)"/>
+        <rect x="0" y="0" width="20" height="240" fill="hsl(${generateColorFromISBN(book.isbn)}, 60%, 55%)"/>
 
         <defs>
           <filter id="textShadow">
@@ -132,115 +133,113 @@ const BookOverview = ({ book, setOpen }: BookOverviewProps) => {
           </filter>
         </defs>
 
-
-        <text x="115" y="135" font-size="110" fill="white" font-family="Arial" font-weight="bold" text-anchor="middle" dominant-baseline="middle" filter="url(%23textShadow)">
+        <text x="100" y="120" font-size="90" fill="white" font-family="Arial" font-weight="bold" text-anchor="middle" dominant-baseline="middle" filter="url(%23textShadow)">
           ${firstLetter}
         </text>
       </svg>`;
   };
 
   return (
-    <Card className="book-overview-card">
-      <Box>
-        {/* Top: Book Cover */}
-        <IconButton onClick={handleClose} className="overview-close-button">
-          <ClearIcon fontSize="medium" />
-        </IconButton>
-        <Box className="overview-content-container">
-          <Box className="overview-tophalf-container">
-            <Paper className="book-overview-image-container" elevation={5}>
-              <CardMedia
-                component="img"
-                className="book-overview-image"
-                image={book.imageLink ?? getPlaceholderSVG(book)}
-                alt="book cover"
-              />
-            </Paper>
-            <CardContent sx={{ py: 0 }}>
-              <Box className="book-overview-info-container">
-                <Typography
-                  gutterBottom
-                  variant="h4"
-                  component="div"
-                  className="overview-title overview-text"
-                >
-                  {book.title}
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  color="text.secondary"
-                  className="overview-info-text overview-text"
-                >
-                  <strong>Authors:</strong> {book.authors}
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  color="text.secondary"
-                  className="overview-info-text overview-text"
-                >
-                  <strong>Published:</strong> {book.publishedDate}
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  color="text.secondary"
-                  className="overview-info-text overview-text"
-                >
-                  <strong>Copies available:</strong>{' '}
-                  {Math.max(book.copiesAvailable - book.queueSize, 0) +
-                    (book.status == 'ready' ? 1 : 0)}
-                </Typography>
-                {book.borrowedByMe && (
-                  <Typography
-                    variant="subtitle1"
-                    color="text.secondary"
-                    className="overview-info-text overview-text"
-                  >
-                    <strong>Return date: </strong>
-                    {returnDateString}
-                  </Typography>
-                )}
-                {book.queuedByMe && (
-                  <Typography
-                    variant="subtitle1"
-                    color="text.secondary"
-                    className="overview-info-text overview-text"
-                  >
-                    <strong>Available in:</strong> {book.queueTime} days
-                  </Typography>
-                )}
-              </Box>
-            </CardContent>
-          </Box>
-        </Box>
-        {/* ItemSlider containing tags associated with the book */}
-        <CardContent sx={{ pt: 0, pb: 0 }} className="book-tags-slider">
-          <ItemsSlider renderButtons={false} backgroundColor={theme.palette.componentBack.light}>
-            {book.tags.map((tag) => (
-              <Chip key={tag.id} label={tag.name} size="small" />
-            ))}
-          </ItemsSlider>
-        </CardContent>
-
-        {/* Middle: Book Information */}
-        <CardContent className="overview-description-container">
-          <Typography variant="body1" className="overview-description overview-text">
-            {book.description}
+    <Card className="book-modal">
+      <Grid container sx={{ m: 1.5, overflowY: 'scroll', overflowX: 'hidden' }}>
+        {/* Book Title and Close Button */}
+        <Grid container size={12}>
+          <Typography variant="h6" sx={{ pr: 4 }}>
+            {book.title}
           </Typography>
-        </CardContent>
+          <IconButton onClick={handleClose} sx={{ position: 'absolute', top: 5, right: 5 }}>
+            <ClearIcon />
+          </IconButton>
+        </Grid>
 
-        {/* Bottom: Action Buttons */}
-        <CardActions sx={{ pr: 1, pl: 1 }}>
-          <BottomRowButtons
-            book={book}
-            handleEdit={handleEdit}
-            handleReturn={handleReturn}
-            handleExtend={handleExtend}
-            handleBorrow={handleBorrow}
-            handleAddToQueue={handleAddToQueue}
-            handleRemoveFromQueue={handleRemoveFromQueue}
-          />
-        </CardActions>
-      </Box>
+        {/* Book Cover and Book Info */}
+        <Grid
+          container
+          spacing={2}
+          direction={isSmallScreen ? 'column' : 'row'}
+          alignItems={'flex-start'}
+        >
+          {/* Book Cover */}
+          <Grid size={{ xs: 12, sm: 4 }}>
+            <CardMedia
+              component="img"
+              image={book.imageLink ?? getPlaceholderSVG(book)}
+              alt="book cover"
+              sx={{
+                boxShadow: 5,
+                maxWidth: '160px',
+                margin: '0 auto',
+              }}
+            />
+          </Grid>
+
+          {/* Book Info */}
+          <Grid size={{ xs: 12, sm: 8 }}>
+            <CardContent>
+              <Typography variant="subtitle1" color="text.secondary">
+                <strong>Title:</strong> {book.title}
+              </Typography>
+              <Typography variant="subtitle1" color="text.secondary">
+                <strong>Authors:</strong> {book.authors}
+              </Typography>
+              <Typography variant="subtitle1" color="text.secondary">
+                <strong>Published:</strong> {book.publishedDate}
+              </Typography>
+              <Typography variant="subtitle1" color="text.secondary">
+                <strong>Copies available:</strong>{' '}
+                {Math.max(book.copiesAvailable - book.queueSize, 0) +
+                  (book.status == 'ready' ? 1 : 0)}
+              </Typography>
+              {book.borrowedByMe && (
+                <Typography variant="subtitle1" color="text.secondary">
+                  <strong>Return date: </strong>
+                  {returnDateString}
+                </Typography>
+              )}
+              {book.queuedByMe && (
+                <Typography variant="subtitle1" color="text.secondary">
+                  <strong>Available in:</strong> {book.queueTime} days
+                </Typography>
+              )}
+            </CardContent>
+          </Grid>
+        </Grid>
+
+        {/* Tags Slider */}
+        <Grid container size={12}>
+          <CardContent>
+            <ItemsSlider renderButtons={false} backgroundColor={theme.palette.componentBack.light}>
+              {book.tags.map((tag) => (
+                <Chip key={tag.id} label={tag.name} size="small" />
+              ))}
+            </ItemsSlider>
+          </CardContent>
+        </Grid>
+
+        {/* Description */}
+        <Grid container size={12}>
+          <CardContent>
+            <Typography variant="body1" className="book-modal-description">
+              {book.description}
+            </Typography>
+          </CardContent>
+        </Grid>
+
+        {/* Action Buttons */}
+        <Grid container size={12}>
+          <CardActions>
+            <BottomRowButtons
+              book={book}
+              handleEdit={handleEdit}
+              handleReturn={handleReturn}
+              handleExtend={handleExtend}
+              handleBorrow={handleBorrow}
+              handleAddToQueue={handleAddToQueue}
+              handleRemoveFromQueue={handleRemoveFromQueue}
+            />
+          </CardActions>
+        </Grid>
+      </Grid>
     </Card>
   );
 };
