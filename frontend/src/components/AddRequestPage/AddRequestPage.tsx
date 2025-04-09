@@ -1,6 +1,6 @@
 import { SyntheticEvent, useState } from 'react';
 
-import { Button, ButtonGroup, Grid } from '@mui/material';
+import { Box, Button, ButtonGroup, Grid, ListItem, ListItemButton } from '@mui/material';
 
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import { searchBooks } from '../../services/isbn';
@@ -33,9 +33,11 @@ const AddRequestPage = () => {
         setSearchResults(result);
       } else {
         console.log('No books found.');
+        setSearchResults([]);
       }
     } catch (error) {
       console.error('Error in searching books:', error);
+      setSearchResults([]);
     }
   };
   const handleSubmit = async (e: SyntheticEvent) => {
@@ -66,6 +68,12 @@ const AddRequestPage = () => {
     setIsbn(isbn);
   };
 
+  const handleClear = () => {
+    setTitle('');
+    setAuthor('');
+    setIsbn('');
+  };
+
   return (
     <article>
       <h2>Search matching books or fill manually</h2>
@@ -75,28 +83,45 @@ const AddRequestPage = () => {
           <StyledTextField label="Author" value={author} setValue={setAuthor} />
           <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
         </Grid>
-        <ButtonGroup variant="contained" className="addrequest-buttons">
-          <Button type="button" onClick={handleSearch} variant="contained">
-            Search
-          </Button>
-          <Button type="submit" variant="contained">
+        <Box justifyContent="space-between" display="flex">
+          <ButtonGroup variant="contained" className="addrequest-buttons">
+            <Button type="button" onClick={handleClear} variant="contained">
+              Clear
+            </Button>
+            <Button type="button" onClick={handleSearch} variant="contained">
+              Search
+            </Button>
+          </ButtonGroup>
+          <Button type="submit" variant="contained" className="addrequest-buttons">
             Send
           </Button>
-        </ButtonGroup>
+        </Box>
       </form>
       <h2>Search results</h2>
-      <ul>
-        {searchResults.length === 0 && <p>No results found.</p>}
-        {searchResults.length > 0 && <p>Click on a book to fill the form.</p>}
-        {searchResults.map((book, index) => (
-          <li key={index}>
-            <a onClick={() => handleClick(book.title, book.authors, book.isbn)}>
-              <strong>{book.title}</strong> {book.authors && `by ${book.authors}`}{' '}
-              {book.isbn && `(ISBN: ${book.isbn})`}
-            </a>
-          </li>
-        ))}
-      </ul>
+      {searchResults.length === 0 && <p>No results found</p>}
+      {searchResults.length > 0 && <p>Click on a book to fill the form</p>}
+      { searchResults.length > 0 &&
+        <Box
+          sx={{
+            width: '90%',
+            padding: '16px',
+            bgcolor: 'background.paper',
+            border: '1px solid #ccc',
+            borderRadius: '8px',
+          }}
+        >
+          {searchResults.map((book, index) => (
+            <ListItem key={index} component="div" disablePadding>
+              <ListItemButton>
+                <a onClick={() => handleClick(book.title, book.authors, book.isbn)}>
+                  <strong>{book.title}</strong> {book.authors && `by ${book.authors}`}{' '}
+                  {book.isbn && `(ISBN: ${book.isbn})`}
+                </a>
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </Box>
+      }
     </article>
   );
 };
