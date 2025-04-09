@@ -46,6 +46,10 @@ const AddRequestPage = () => {
       isbn,
     };
     try {
+      if (!title && !author && !isbn) {
+        showNotification('Please fill in at least one field!', 'error');
+        return;
+      }
       await sendBookRequest(request);
       showNotification('New request added successfully!', 'success');
       setTitle('');
@@ -56,12 +60,6 @@ const AddRequestPage = () => {
     }
   };
 
-  const handleSearchClear = () => {
-    setTitle('');
-    setAuthor('');
-    setIsbn('');
-  };
-
   const handleClick = (title: string, author: string, isbn: string) => {
     setTitle(title);
     setAuthor(author);
@@ -70,27 +68,26 @@ const AddRequestPage = () => {
 
   return (
     <article>
-      <h2>Search matching books</h2>
+      <h2>Search matching books or fill manually</h2>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={1} direction={'row'}>
-          <StyledTextField label="Search by title" value={title} setValue={setTitle} />
-          <StyledTextField label="Search by author" value={author} setValue={setAuthor} />
-          <StyledTextField label="Search by ISBN" value={isbn} setValue={setIsbn} />
+          <StyledTextField label="Title" value={title} setValue={setTitle} />
+          <StyledTextField label="Author" value={author} setValue={setAuthor} />
+          <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
         </Grid>
         <ButtonGroup variant="contained" className="addrequest-buttons">
-          <Button type="button" onClick={handleSearchClear} variant="contained">
-            Clear
-          </Button>
           <Button type="button" onClick={handleSearch} variant="contained">
             Search
           </Button>
           <Button type="submit" variant="contained">
-            Add
+            Send
           </Button>
         </ButtonGroup>
       </form>
       <h2>Search results</h2>
       <ul>
+        {searchResults.length === 0 && <p>No results found.</p>}
+        {searchResults.length > 0 && <p>Click on a book to fill the form.</p>}
         {searchResults.map((book, index) => (
           <li key={index}>
             <a onClick={() => handleClick(book.title, book.authors, book.isbn)}>
