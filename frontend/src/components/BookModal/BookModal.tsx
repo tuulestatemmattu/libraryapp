@@ -25,6 +25,7 @@ import {
   returnBook,
 } from '../../services/book';
 import { getPlaceholderSVG } from '../../util/svgUtils';
+import { ExpandableCollapsable } from '../ExpandableCollapsable/ExpandableCollapsable';
 import ItemsSlider from '../ItemsSlider/ItemsSlider';
 import BottomRowButtons from './BottomRowButtons/BottomRowButtons';
 
@@ -189,13 +190,18 @@ const BookModal = ({ book, setOpen }: BookModalProps) => {
         </Grid>
 
         {/* Description */}
-        <Grid container size={12}>
-          <CardContent>
-            <Typography variant="body1" className="book-modal-description">
-              {book.description}
-            </Typography>
-          </CardContent>
-        </Grid>
+        {book.description && (
+          <Grid container size={12}>
+            <CardContent className="book-modal-description">
+              <ExpandableCollapsable
+                charLimit={400}
+                readMoreText={'Read more ▼'}
+                readLessText={'Read less ▲'}
+                content={book.description}
+              />
+            </CardContent>
+          </Grid>
+        )}
 
         {/* Action Buttons */}
         <Grid container size={12}>
