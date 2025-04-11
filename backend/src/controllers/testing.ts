@@ -19,6 +19,8 @@ router.get('/resetdb', async (req, res) => {
   }
 
   await resetTables();
+  /* DON'T CHANGE */
+  /* Hardcoded into lighthouse ci */
   await User.create({
     google_id: 'test_google_id',
     name: 'Test user',

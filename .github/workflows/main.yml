@@ -100,22 +100,54 @@ jobs:
         HD_SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         HD_STAGING: 1
   lhci:
-    #needs: [deploy-staging]
+    needs: [deploy-staging]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    defaults:
+      run:
+        working-directory: lighthouse    
     steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: lighthouse
       - name: extract-user-token
         run: |
-          TOKEN=$(curl --header "Content-Type: application/json" \
-            --request POST \
-            --data '{"secret": "${{ secrets.CRON_SECRET }}"}' \
-            -s -i "https://${{ secrets.HEROKU_STAGING_APP_NAME }}.herokuapp.com/api/testing/login" \
-            | grep -i 'Set-Cookie' \
-            | tr ',' '\n' \
-            | grep 'token=' \
-            | sed -n 's/.*token=\([^;]*\).*/\1/p')
-          echo "TOKEN=${TOKEN} ">> $GITHUB_OUTPUT
-          echo $TOKEN
-  
+          TOKEN=$(
+            curl --header "Content-Type: application/json" \
+              --request POST \
+              --data '{"secret": "${{secrets.CRON_SECRET}}"}' \
+              -s -i "https://ohtu-library-staging-c43b89853868.herokuapp.com/api/testing/login" |
+              grep -i 'Set-Cookie' |
+              tr ',' '\n' |
+              grep 'token=' |
+              sed -n 's/.*token=\([^;]*\).*/\1/p'
+          )
+
+          echo "TOKEN=${TOKEN}"
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm install
+      - name: lighthouse
+        run: |
+          result=$(node lighthouse-ci.js "https://ohtu-library-staging-c43b89853868.herokuapp.com" "${{steps.extract-user-token.outputs.token}}" | tail -n 1)
+          echo "Lighthouse accessibility score: $result" 
+          echo "score=$result" >> $GITHUB_OUTPUT
+      - name: ligthouse badge
+        uses: RubbaBoy/BYOB@v1.3.0
+        with:
+          NAME: Lighthouse_accessibility_score
+          LABEL: 'Lighthouse'
+          STATUS: ${{ steps.lighthouse.outputs.score }}
+          COLOR: blue
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
 
     
   deploy-production:
