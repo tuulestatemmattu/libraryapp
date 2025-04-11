@@ -100,7 +100,7 @@ jobs:
         HD_SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         HD_STAGING: 1
   lhci:
-    #needs: [deploy-staging]
+    needs: [deploy-staging]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -126,7 +126,8 @@ jobs:
               sed -n 's/.*token=\([^;]*\).*/\1/p'
           )
 
-          echo "TOKEN=${TOKEN}"
+          echo "token=${TOKEN}" >> $GITHUB_OUTPUT
+        id: bearer_token
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
@@ -135,15 +136,16 @@ jobs:
         run: npm install
       - name: lighthouse
         run: |
-          result=$(node lighthouse-ci.js "https://ohtu-library-staging-c43b89853868.herokuapp.com" "${{steps.extract-user-token.outputs.token}}" | tail -n 1)
+          result=$(node lighthouse-ci.js "https://ohtu-library-staging-c43b89853868.herokuapp.com" "${{steps.bearer_token.outputs.token}}" | tail -n 1)
           echo "Lighthouse accessibility score: $result" 
           echo "score=$result" >> $GITHUB_OUTPUT
+        id: lh_score
       - name: ligthouse badge
         uses: RubbaBoy/BYOB@v1.3.0
         with:
           NAME: las
           LABEL: 'Lighthouse'
-          STATUS: "${{ steps.lighthouse.outputs.score }} / 100"  
+          STATUS: "${{steps.lh_score.outputs.score}}/100"  
           COLOR: blue
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
