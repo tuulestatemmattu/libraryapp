@@ -205,7 +205,7 @@ const BookModal = ({ book, setOpen }: BookModalProps) => {
         )}
 
         {/* Action Buttons */}
-        <Grid container sx={{ mt: 1 }}>
+        <Grid container sx={{ mt: 2 }}>
           <CardActions>
             <BottomRowButtons
               book={book}
