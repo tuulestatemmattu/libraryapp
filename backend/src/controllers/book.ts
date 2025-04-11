@@ -8,6 +8,7 @@ import {
   fetchBooks,
   prepareBookForFrontend,
 } from '../util/bookUtils';
+import { NODE_ENV } from '../util/config';
 import { requireAdmin } from '../util/middleware/requireAdmin';
 import { requireLogin } from '../util/middleware/requireLogin';
 import { sendNotificationToChannel, sendPrivateMessage } from '../util/slackbot';
@@ -30,61 +31,55 @@ bookRouter.post('/', requireAdmin, bookValidator, async (req, res) => {
     ? req.body.imageLinks[Object.keys(req.body.imageLinks).slice(-1)[0]]
     : undefined;
 
-  try {
-    if (await Book.findOne({ where: { isbn, location } })) {
-      res.status(400).send('Book is already in the database');
-      return;
-    }
+  if (await Book.findOne({ where: { isbn, location } })) {
+    res.status(400).send('Book is already in the database');
+    return;
+  }
 
-    const book = await Book.create(
-      {
-        title,
-        authors,
-        isbn,
-        description,
-        publishedDate,
-        location,
-        copies,
-        copiesAvailable: copies,
-        imageLink,
-      },
-      { validate: true },
-    );
+  const book = await Book.create(
+    {
+      title,
+      authors,
+      isbn,
+      description,
+      publishedDate,
+      location,
+      copies,
+      copiesAvailable: copies,
+      imageLink,
+    },
+    { validate: true },
+  );
 
-    const tag_ids = tags.map((tag: Tag) => tag.id);
-    await book.setTags(tag_ids);
+  const tag_ids = tags.map((tag: Tag) => tag.id);
+  await book.setTags(tag_ids);
 
-    const fetchedBook = (await fetchBook(book.id)) as Book;
-    res.status(201).send(prepareBookForFrontend(fetchedBook, userId));
+  const fetchedBook = (await fetchBook(book.id)) as Book;
+  res.status(201).send(prepareBookForFrontend(fetchedBook, userId));
 
-    const tagNames = fetchedBook.tags?.map((tag: Tag) => tag.name).join(', ');
+  const tagNames = fetchedBook.tags?.map((tag: Tag) => tag.name).join(', ');
 
-    if (location === 'Helsinki') {
-      const payload = {
-        text: `:books: A new book "*${title}*" has been added to the library!`,
-        attachments: [
-          {
-            author_name: authors,
-            fallback: 'Book image',
-            image_url: imageLink,
-            fields: [
-              {
-                title: ':paperclip: Tags:',
-                value: `*${tagNames ?? 'No tags'}*`,
-                short: false,
-              },
-            ],
-          },
-        ],
-      };
-      sendNotificationToChannel(payload).catch((err: unknown) => {
-        console.error('Failed to send Slack notification:', err);
-      });
-    }
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      res.status(500).send({ message: error.message });
-    }
+  if (location === 'Helsinki' && NODE_ENV !== 'test') {
+    const payload = {
+      text: `:books: A new book "*${title}*" has been added to the library!`,
+      attachments: [
+        {
+          author_name: authors,
+          fallback: 'Book image',
+          image_url: imageLink,
+          fields: [
+            {
+              title: ':paperclip: Tags:',
+              value: `*${tagNames ?? 'No tags'}*`,
+              short: false,
+            },
+          ],
+        },
+      ],
+    };
+    sendNotificationToChannel(payload).catch((err: unknown) => {
+      console.error('Failed to send Slack notification:', err);
+    });
   }
 });
 
@@ -129,20 +124,14 @@ bookRouter.put('/:id', requireAdmin, bookValidator, async (req, res) => {
 });
 
 bookRouter.delete('/:id', requireAdmin, async (req, res) => {
-  try {
-    const bookId = req.params.id;
-    const book = await Book.findByPk(bookId);
-    if (!book) {
-      res.status(404).send({ message: 'Book not found' });
-      return;
-    }
-    await book.destroy();
-    res.status(204).send();
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      res.status(500).send({ message: error.message });
-    }
+  const bookId = req.params.id;
+  const book = await Book.findByPk(bookId);
+  if (!book) {
+    res.status(404).send({ message: 'Book not found' });
+    return;
   }
+  await book.destroy();
+  res.status(204).send();
 });
 
 bookRouter.post('/:id/borrow', async (req, res) => {
@@ -150,23 +139,25 @@ bookRouter.post('/:id/borrow', async (req, res) => {
   const bookId = req.params.id;
 
   const book = await fetchBook(bookId);
-  if (book) {
-    if (book.copiesAvailable > 0) {
-      const timeNow = new Date();
-      const borrowedDate = timeNow;
-      await Borrow.create({ bookId: book.id, userGoogleId: userId, borrowedDate, active: true });
-      await QueueEntry.destroy({ where: { bookId: book.id, userGoogleId: userId } });
-
-      await book.decrement('copiesAvailable');
-      await book.reload();
-      const borrowedBook = prepareBookForFrontend(book, userId);
-      res.json(borrowedBook);
-    } else {
-      res.status(403).send({ message: 'book is not available' });
-    }
-  } else {
+  if (!book) {
     res.status(404).send({ message: 'book does not exist' });
+    return;
   }
+
+  if (!book.copiesAvailable) {
+    res.status(403).send({ message: 'book is not available' });
+    return;
+  }
+
+  const timeNow = new Date();
+  const borrowedDate = timeNow;
+  await Borrow.create({ bookId: book.id, userGoogleId: userId, borrowedDate, active: true });
+  await QueueEntry.destroy({ where: { bookId: book.id, userGoogleId: userId } });
+
+  await book.decrement('copiesAvailable');
+  await book.reload();
+  const borrowedBook = prepareBookForFrontend(book, userId);
+  res.json(borrowedBook);
 });
 
 bookRouter.post('/:id/return', async (req, res) => {
@@ -338,20 +329,14 @@ bookRouter.get('/queue', requireAdmin, async (req, res) => {
 bookRouter.delete('/queue/:id', requireAdmin, async (req, res) => {
   const { id } = req.params;
 
-  try {
-    const queueEntry = await QueueEntry.findByPk(id);
-    if (!queueEntry) {
-      res.status(404).send({ message: 'Queue entry not found' });
-      return;
-    }
-
-    await queueEntry.destroy();
-    res.status(204).send();
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      res.status(500).send({ message: error.message });
-    }
+  const queueEntry = await QueueEntry.findByPk(id);
+  if (!queueEntry) {
+    res.status(404).send({ message: 'Queue entry not found' });
+    return;
   }
+
+  await queueEntry.destroy();
+  res.status(204).send();
 });
 
 export default bookRouter;
