@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { useTheme } from '@mui/material/styles';
+
 import { Box } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 interface ExpandableCollapsableProps {
   content: string;
@@ -27,7 +28,11 @@ export const ExpandableCollapsable = ({
       <Box
         component="span"
         onClick={toggleExpand}
-        sx={{ cursor: 'pointer', color: theme.palette.expandableCollapsable.main, whiteSpace: 'nowrap' }}
+        sx={{
+          cursor: 'pointer',
+          color: theme.palette.expandableCollapsable.main,
+          whiteSpace: 'nowrap',
+        }}
       >
         {isExpanded ? readLessText : readMoreText}
       </Box>

@@ -19,8 +19,3 @@
   padding: 0 !important;
   width: 100% !important;
 }
-
-.book-modal-description {
-  max-height: 30vh;
-  overflow-y: scroll;
-}

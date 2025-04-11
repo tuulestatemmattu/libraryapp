@@ -192,9 +192,9 @@ const BookModal = ({ book, setOpen }: BookModalProps) => {
         {/* Description */}
         {book.description && (
           <Grid container size={12}>
-            <CardContent className="book-modal-description">
+            <CardContent>
               <ExpandableCollapsable
-                charLimit={400}
+                charLimit={500}
                 readMoreText={'Read more ▼'}
                 readLessText={'Read less ▲'}
                 content={book.description}
