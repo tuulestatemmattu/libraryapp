@@ -117,7 +117,7 @@ const BookModal = ({ book, setOpen }: BookModalProps) => {
       <Grid container sx={{ m: 1.5, overflowY: 'scroll', overflowX: 'hidden' }}>
         {/* Book Title and Close Button */}
         <Grid container size={12}>
-          <Typography variant="h6" sx={{ pr: 4 }}>
+          <Typography variant="h6" sx={{ pr: 4, pb: 2 }}>
             {book.title}
           </Typography>
           <IconButton onClick={handleClose} sx={{ position: 'absolute', top: 5, right: 5 }}>
@@ -129,6 +129,7 @@ const BookModal = ({ book, setOpen }: BookModalProps) => {
         <Grid
           container
           spacing={2}
+          sx={{ width: '100%', mb: 1 }}
           direction={isSmallScreen ? 'column' : 'row'}
           alignItems={'flex-start'}
         >
@@ -179,7 +180,7 @@ const BookModal = ({ book, setOpen }: BookModalProps) => {
         </Grid>
 
         {/* Tags Slider */}
-        <Grid container size={12}>
+        <Grid container>
           <CardContent>
             <ItemsSlider renderButtons={false} backgroundColor={theme.palette.componentBack.light}>
               {book.tags.map((tag) => (
@@ -191,7 +192,7 @@ const BookModal = ({ book, setOpen }: BookModalProps) => {
 
         {/* Description */}
         {book.description && (
-          <Grid container size={12}>
+          <Grid container sx={{ my: 1 }}>
             <CardContent>
               <ExpandableCollapsable
                 charLimit={500}
@@ -204,7 +205,7 @@ const BookModal = ({ book, setOpen }: BookModalProps) => {
         )}
 
         {/* Action Buttons */}
-        <Grid container size={12}>
+        <Grid container sx={{ mt: 1 }}>
           <CardActions>
             <BottomRowButtons
               book={book}
