@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import { useTheme } from '@mui/material/styles';
 import { Box } from '@mui/material';
 
 interface ExpandableCollapsableProps {
@@ -16,7 +16,7 @@ export const ExpandableCollapsable = ({
   readLessText,
 }: ExpandableCollapsableProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
-
+  const theme = useTheme();
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
@@ -27,7 +27,7 @@ export const ExpandableCollapsable = ({
       <Box
         component="span"
         onClick={toggleExpand}
-        sx={{ cursor: 'pointer', color: 'primary.main', whiteSpace: 'nowrap' }}
+        sx={{ cursor: 'pointer', color: theme.palette.expandableCollapsable.main, whiteSpace: 'nowrap' }}
       >
         {isExpanded ? readLessText : readMoreText}
       </Box>
