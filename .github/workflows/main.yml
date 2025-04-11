@@ -141,9 +141,9 @@ jobs:
       - name: ligthouse badge
         uses: RubbaBoy/BYOB@v1.3.0
         with:
-          NAME: Lighthouse_accessibility_score
+          NAME: las
           LABEL: 'Lighthouse'
-          STATUS: ${{ steps.lighthouse.outputs.score }}
+          STATUS: "${{ steps.lighthouse.outputs.score }}"
           COLOR: blue
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
