@@ -24,18 +24,21 @@ export const ExpandableCollapsable = ({
 
   return (
     <Box>
-      {isExpanded || content.length <= charLimit ? content : content.slice(0, charLimit) + '...'}{' '}
-      <Box
-        component="span"
-        onClick={toggleExpand}
-        sx={{
-          cursor: 'pointer',
-          color: theme.palette.expandableCollapsable.main,
-          whiteSpace: 'nowrap',
-        }}
-      >
-        {isExpanded ? readLessText : readMoreText}
-      </Box>
+      {isExpanded || content.length <= charLimit ? content : content.slice(0, charLimit) + '...'}
+      {'   '}
+      {content.length > charLimit && (
+        <Box
+          component="span"
+          onClick={toggleExpand}
+          sx={{
+            cursor: 'pointer',
+            color: theme.palette.expandableCollapsable.main,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {isExpanded ? readLessText : readMoreText}
+        </Box>
+      )}
     </Box>
   );
 };
