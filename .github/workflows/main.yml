@@ -102,6 +102,10 @@ jobs:
   lhci:
     #needs: [deploy-staging]
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: lighthouse
+    
     steps:
       - name: extract-user-token
         run: |
@@ -117,6 +121,18 @@ jobs:
           )
 
           echo "TOKEN=${TOKEN}"
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: lighthouse
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm install
+      - name: run lighthouse
+        run: npx lighthouse-ci.js "https://ohtu-library-staging-c43b89853868.herokuapp.com/api/testing/login" "${{steps.extract-user-token.outputs.token}}"
   
 
     

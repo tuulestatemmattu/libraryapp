@@ -4,6 +4,7 @@ import * as chromeLauncher from 'chrome-launcher';
 import puppeteer from 'puppeteer';
 
 const url = process.argv[2];
+const domain = url.replace("https://", "").replace("http://", "")
 const bearer = process.argv[3];
 
 const user = {
@@ -17,7 +18,7 @@ const chrome = await chromeLauncher.launch(/*{chromeFlags: ['--headless']}*/);
 const resp = await fetch(`http://localhost:${chrome.port}/json/version`);
 const {webSocketDebuggerUrl} = await resp.json();
 const browser = await puppeteer.connect({browserWSEndpoint: webSocketDebuggerUrl});
-await browser.setCookie({name: 'profile', value: JSON.stringify(user), domain: "ohtu-library-staging-c43b89853868.herokuapp.com"}, {name: 'token', value: `bearer ${bearer}`, domain: "ohtu-library-staging-c43b89853868.herokuapp.com"})
+await browser.setCookie({name: 'profile', value: JSON.stringify(user), domain }, {name: 'token', value: bearer, domain})
 const page = await browser.newPage()
 
 
@@ -31,4 +32,6 @@ fs.writeFileSync('lhreport.html', reportHtml);
 // `.lhr` is the Lighthouse Result as a JS object
 console.log('Report is done for', runnerResult.lhr.finalDisplayedUrl);
 console.log('Accessibility score was', runnerResult.lhr.categories.accessibility.score * 100);
-// chrome.kill();
+
+await browser.disconnect();
+chrome.kill();
