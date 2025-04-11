@@ -4,4 +4,15 @@ interface Request {
   isbn: string;
 }
 
-export type { Request };
+interface FetchedRequest {
+  id: number;
+  title: string;
+  author: string;
+  isbn: string;
+  user: {
+    name: string;
+    email: string;
+  };
+}
+
+export type { Request, FetchedRequest };

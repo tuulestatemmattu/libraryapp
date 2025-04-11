@@ -112,11 +112,10 @@ const AddRequestPage = () => {
         >
           {searchResults.map((book, index) => (
             <ListItem key={index} component="div" disablePadding>
-              <ListItemButton>
-                <a onClick={() => handleClick(book.title, book.authors, book.isbn)}>
-                  <strong>{book.title}</strong> {book.authors && `by ${book.authors}`}{' '}
-                  {book.isbn && `(ISBN: ${book.isbn})`}
-                </a>
+              <ListItemButton onClick={() => handleClick(book.title, book.authors, book.isbn)}>
+                <strong>{book.title}</strong>
+                {book.authors && `\xa0by ${book.authors}`}
+                {book.isbn && ` (ISBN: ${book.isbn})`}
               </ListItemButton>
             </ListItem>
           ))}

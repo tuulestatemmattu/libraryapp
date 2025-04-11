@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express from 'express';
+import 'express-async-errors';
 import path from 'path';
 
 import adminRouter from './controllers/admin';
@@ -12,6 +13,7 @@ import tagRouter from './controllers/tag';
 import testingRouter from './controllers/testing';
 import userRouter from './controllers/users';
 import { NODE_ENV, STAGING } from './util/config';
+import errorHandler from './util/middleware/errorHandler';
 import { tokenExtractor } from './util/middleware/tokenExtractor';
 
 declare global {
@@ -53,5 +55,7 @@ if (NODE_ENV == 'production') {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
   });
 }
+
+app.use(errorHandler);
 
 export default app;

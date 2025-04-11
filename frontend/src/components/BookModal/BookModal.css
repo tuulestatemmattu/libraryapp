@@ -1,0 +1,22 @@
+.book-modal {
+  display: flex;
+  position: relative;
+
+  top: 50%;
+  flex-direction: column;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  margin: auto;
+
+  border-radius: 25px !important;
+  padding-left: 1vw;
+  width: 90vw;
+  max-width: 600px;
+  max-height: 90vh;
+}
+
+/* overrides CardContent rules within this modal */
+.book-modal .MuiGrid-root .MuiCardContent-root {
+  padding: 0 !important;
+  width: 100% !important;
+}
