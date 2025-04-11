@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
+import { Modal } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
-import { Modal } from '@mui/material';
 
 import { useNotification } from '../../context/NotificationsProvider/NotificationProvider';
 import useMainStore from '../../hooks/useMainStore';
@@ -62,7 +62,7 @@ const AddBookPage = ({ borderColor }: AddBookPageProps) => {
         copies: 1,
       });
     }
-    setScannerOpen(false)
+    setScannerOpen(false);
     return false; // Prevent scanner restart
   };
 
@@ -73,7 +73,7 @@ const AddBookPage = ({ borderColor }: AddBookPageProps) => {
   return (
     <article>
       <div className="center">
-        <Button onClick={() => setScannerOpen(true) }>Scan :D</Button>
+        <Button onClick={() => setScannerOpen(true)}>Scan :D</Button>
       </div>
       <div className={'book-content'}>
         <Content />
