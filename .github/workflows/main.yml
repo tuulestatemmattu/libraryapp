@@ -143,7 +143,7 @@ jobs:
         with:
           NAME: las
           LABEL: 'Lighthouse'
-          STATUS: ${{ steps.lighthouse.outputs.score }}
+          STATUS: "${{ steps.lighthouse.outputs.score }}"
           COLOR: blue
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
