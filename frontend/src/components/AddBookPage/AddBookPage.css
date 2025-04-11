@@ -50,27 +50,15 @@
   object-fit: cover;
 }
 
-.scan-box {
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  align-items: center;
-  margin-top: auto;
-  margin-right: auto;
-  margin-bottom: auto;
-  margin-left: auto;
-  max-width: 90vw;
-  max-height: 80vh;
-}
-
 .scan-box video {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100%;
-  height: 100%;
+  width: 70%;
+  height: 70%;
   max-height: 120vmin;
+  max-width: 700px;
   object-fit: cover;
 }
 
@@ -81,9 +69,7 @@
   transform: translate(-50%, -50%);
   opacity: 0.9;
   background: transparent;
-  width: 30vw;
-  min-width: 200px;
-  max-width: 300px;
-  height: 100px;
+  width: 50vw;
+  height: 20vh;
   pointer-events: none;
 }

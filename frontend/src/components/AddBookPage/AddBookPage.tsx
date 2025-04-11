@@ -47,6 +47,12 @@ const AddBookPage = ({ borderColor }: AddBookPageProps) => {
   };
 
   const handleScannerSubmit = async (isbn: string): Promise<boolean> => {
+    await handleIsbnSearch(isbn);
+    setScannerOpen(false);
+    return false; // Prevent scanner restart
+  };
+
+  const handleIsbnSearch = async (isbn: string): Promise<void> => {
     const book = await getInfoFromIsbn(isbn);
     if (book) {
       setBook(book);
@@ -61,25 +67,28 @@ const AddBookPage = ({ borderColor }: AddBookPageProps) => {
         tags: [],
         copies: 1,
       });
+      showNotification(
+        'The given ISBN was not found in the database. Please check the input.',
+        'info',
+      );
     }
-    setScannerOpen(false);
-    return false; // Prevent scanner restart
   };
 
   const Content = () => {
-    return <AddBookForm onSubmit={handleManualSubmit} initialValues={book} />;
+    return <AddBookForm onSubmit={handleManualSubmit} onIsbnSearch={handleIsbnSearch} initialValues={book} />
   };
 
   return (
     <article>
+      <h2>Add a new book</h2>
       <div className="center">
-        <Button onClick={() => setScannerOpen(true)}>Scan :D</Button>
+        <Button onClick={() => setScannerOpen(true)}>Scan ISBN</Button>
       </div>
       <div className={'book-content'}>
         <Content />
       </div>
-      <Modal className={'scan-box'} open={scannerOpen} onClose={() => setScannerOpen(false)}>
-        <div>
+      <Modal open={scannerOpen} onClose={() => setScannerOpen(false)}>
+        <div className='scan-box'>
           <BarcodeScanner isbnHandler={handleScannerSubmit} />
           <div
             className="scan-overlay"
