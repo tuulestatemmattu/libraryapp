@@ -14,7 +14,7 @@ const user = {
     admin: true
 }
 
-const chrome = await chromeLauncher.launch(/*{chromeFlags: ['--headless']}*/);
+const chrome = await chromeLauncher.launch({chromeFlags: ['--headless']});
 const resp = await fetch(`http://localhost:${chrome.port}/json/version`);
 const {webSocketDebuggerUrl} = await resp.json();
 const browser = await puppeteer.connect({browserWSEndpoint: webSocketDebuggerUrl});
@@ -22,7 +22,7 @@ await browser.setCookie({name: 'profile', value: JSON.stringify(user), domain },
 const page = await browser.newPage()
 
 
-const options = {logLevel: 'info', output: 'html', onlyCategories: ['accessibility']};
+const options = {logLevel: 'quiet', output: 'html', onlyCategories: ['accessibility']};
 const runnerResult = await lighthouse(url, options, undefined, page);
 
 // `.report` is the HTML report as a string
@@ -30,8 +30,7 @@ const reportHtml = runnerResult.report;
 fs.writeFileSync('lhreport.html', reportHtml);
 
 // `.lhr` is the Lighthouse Result as a JS object
-console.log('Report is done for', runnerResult.lhr.finalDisplayedUrl);
-console.log('Accessibility score was', runnerResult.lhr.categories.accessibility.score * 100);
+console.log(runnerResult.lhr.categories.accessibility.score * 100);
 
 await browser.disconnect();
 chrome.kill();

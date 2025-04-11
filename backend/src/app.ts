@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express from 'express';
+import 'express-async-errors';
 import path from 'path';
 
 import adminRouter from './controllers/admin';
@@ -7,10 +8,12 @@ import bookRouter from './controllers/book';
 import cronRouter from './controllers/cron';
 import isbnRouter from './controllers/isbn_api';
 import loginRouter from './controllers/login';
+import requestsRouter from './controllers/requests';
 import tagRouter from './controllers/tag';
 import testingRouter from './controllers/testing';
 import userRouter from './controllers/users';
 import { NODE_ENV, STAGING } from './util/config';
+import errorHandler from './util/middleware/errorHandler';
 import { tokenExtractor } from './util/middleware/tokenExtractor';
 
 declare global {
@@ -36,6 +39,7 @@ app.use('/api/tags', tagRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/users', userRouter);
 app.use('/api/cron', cronRouter);
+app.use('/api/requests', requestsRouter);
 
 app.get('/api/ping', (_req, res) => {
   res.send('pong');
@@ -51,5 +55,7 @@ if (NODE_ENV == 'production') {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
   });
 }
+
+app.use(errorHandler);
 
 export default app;

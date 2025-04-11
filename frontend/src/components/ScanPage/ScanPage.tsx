@@ -7,7 +7,7 @@ import { useNotification } from '../../context/NotificationsProvider/Notificatio
 import useMainStore from '../../hooks/useMainStore';
 import { FetchedBook } from '../../interfaces/Book';
 import BarcodeScanner from '../BarcodeScanner';
-import BookOverview from '../BookOverview/BookOverview';
+import BookModal from '../BookModal/BookModal';
 
 import '../../style.css';
 import './ScanPage.css';
@@ -64,7 +64,7 @@ const ScanPage = ({ borderColor }: ScanPageProps) => {
           zIndex: 1500,
         }}
       >
-        {scannedBook ? <BookOverview book={scannedBook} setOpen={setOpen} /> : <></>}
+        {scannedBook ? <BookModal book={scannedBook} setOpen={setOpen} /> : <></>}
       </Modal>
     </article>
   );

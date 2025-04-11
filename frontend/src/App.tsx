@@ -3,7 +3,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { CssBaseline, ThemeProvider } from '@mui/material';
 
-import AddBooksPage from './components/AddBookPage/AddBookPage';
+import AddBookPage from './components/AddBookPage/AddBookPage';
+import AddRequestPage from './components/AddRequestPage/AddRequestPage';
 import AdminPage from './components/AdminPage/AdminPage';
 import FloatingButton from './components/FloatingButton/FloatingButton';
 import HomePage from './components/HomePage';
@@ -57,8 +58,9 @@ const App = () => {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/scan" element={<ScanPage />} />
-              <Route path="/addBook" element={<AddBooksPage />} />
+              <Route path="/addBook" element={<AddBookPage />} />
               <Route path="/admin" element={<AdminPage />} />
+              <Route path="/addRequest" element={<AddRequestPage />} />
             </Routes>
           </main>
           <FloatingButton type="scan" />
