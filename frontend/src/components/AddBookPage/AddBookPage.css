@@ -56,9 +56,9 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 70%;
+  max-width: 700px;
   height: 70%;
   max-height: 120vmin;
-  max-width: 700px;
   object-fit: cover;
 }
 

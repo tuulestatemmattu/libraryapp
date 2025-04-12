@@ -75,7 +75,13 @@ const AddBookPage = ({ borderColor }: AddBookPageProps) => {
   };
 
   const Content = () => {
-    return <AddBookForm onSubmit={handleManualSubmit} onIsbnSearch={handleIsbnSearch} initialValues={book} />
+    return (
+      <AddBookForm
+        onSubmit={handleManualSubmit}
+        onIsbnSearch={handleIsbnSearch}
+        initialValues={book}
+      />
+    );
   };
 
   return (
@@ -88,7 +94,7 @@ const AddBookPage = ({ borderColor }: AddBookPageProps) => {
         <Content />
       </div>
       <Modal open={scannerOpen} onClose={() => setScannerOpen(false)}>
-        <div className='scan-box'>
+        <div className="scan-box">
           <BarcodeScanner isbnHandler={handleScannerSubmit} />
           <div
             className="scan-overlay"
