@@ -153,6 +153,12 @@ theme = createTheme(theme, {
       },
       name: 'unavailable',
     }),
+    expandableCollapsable: theme.palette.augmentColor({
+      color: {
+        main: 'rgb(0, 128, 164)',
+      },
+      name: 'expandableCollapsable',
+    }),
   },
 });
 
@@ -164,6 +170,7 @@ declare module '@mui/material/styles' {
     ready: Palette['primary'];
     reserved: Palette['primary'];
     unavailable: Palette['primary'];
+    expandableCollapsable: Palette['primary'];
   }
 
   interface PaletteOptions {
@@ -174,6 +181,7 @@ declare module '@mui/material/styles' {
     ready?: PaletteOptions['primary'];
     reserved?: PaletteOptions['primary'];
     unavailable?: PaletteOptions['primary'];
+    expandableCollapsable?: PaletteOptions['primary'];
   }
 }
 

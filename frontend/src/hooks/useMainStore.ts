@@ -2,6 +2,7 @@ import { create } from 'zustand';
 
 import { FetchedBook } from '../interfaces/Book';
 import Profile from '../interfaces/Profile';
+import { FetchedRequest } from '../interfaces/Request';
 import { FetchedTag } from '../interfaces/Tags';
 
 interface StoreState {
@@ -22,6 +23,11 @@ interface StoreState {
   setBooks: (books: FetchedBook[]) => void;
   addOrUpdateBook: (book: FetchedBook) => void;
   deleteBook: (id: number) => void;
+
+  bookRequests: FetchedRequest[];
+  setBookRequests: (bookRequests: FetchedRequest[]) => void;
+  addBookRequest: (bookRequest: FetchedRequest) => void;
+  deleteBookRequest: (id: number) => void;
 }
 
 const useMainStore = create<StoreState>((set) => ({
@@ -68,6 +74,16 @@ const useMainStore = create<StoreState>((set) => ({
     set((state) => ({
       ...state,
       books: state.books.filter((book) => book.id !== id),
+    })),
+
+  bookRequests: [],
+  setBookRequests: (bookRequests: FetchedRequest[]) => set((state) => ({ ...state, bookRequests })),
+  addBookRequest: (bookRequest: FetchedRequest) =>
+    set((state) => ({ ...state, bookRequests: [...state.bookRequests, bookRequest] })),
+  deleteBookRequest: (id: number) =>
+    set((state) => ({
+      ...state,
+      bookRequests: state.bookRequests.filter((bookRequest) => bookRequest.id != id),
     })),
 }));
 
