@@ -10,7 +10,12 @@ import {
 } from '../util/bookUtils';
 import { requireAdmin } from '../util/middleware/requireAdmin';
 import { requireLogin } from '../util/middleware/requireLogin';
-import { SlackBlock, sendNotificationToChannel, sendPrivateMessage } from '../util/slackbot';
+import {
+  SlackAttachment,
+  SlackBlock,
+  sendNotificationToChannel,
+  sendPrivateMessage,
+} from '../util/slackbot';
 import bookValidator from '../util/validation';
 
 const bookRouter = express.Router();
@@ -60,8 +65,18 @@ bookRouter.post('/', requireAdmin, bookValidator, async (req, res) => {
     const tagNames = fetchedBook.tags?.map((tag: Tag) => tag.name).join(', ');
 
     if (location === 'Helsinki') {
-      const payload: { blocks: SlackBlock[] } = {
+      const payload: {
+        blocks: SlackBlock[];
+        attachments: SlackAttachment[];
+      } = {
         blocks: [
+          {
+            type: 'section',
+            text: {
+              type: 'mrkdwn',
+              text: `:books: *${title}* has been added to the library!`,
+            },
+          },
           {
             type: 'image',
             image_url: imageLink ?? '',
@@ -72,13 +87,6 @@ bookRouter.post('/', requireAdmin, bookValidator, async (req, res) => {
             },
           },
           {
-            type: 'section',
-            text: {
-              type: 'mrkdwn',
-              text: `:books: *${title}* has been added to the library!\n>${description}`,
-            },
-          },
-          {
             type: 'context',
             elements: [
               {
@@ -86,6 +94,13 @@ bookRouter.post('/', requireAdmin, bookValidator, async (req, res) => {
                 text: `:paperclip: *Tags:* ${tagNames ?? 'No tags'}`,
               },
             ],
+          },
+        ],
+        attachments: [
+          {
+            fallback: `Description: ${description}`,
+            color: '#e0e0e0',
+            text: `*Description:*\n${description}`,
           },
         ],
       };

@@ -40,6 +40,12 @@ export type SlackBlock =
       title?: { type: 'plain_text'; text: string };
     };
 
+export interface SlackAttachment {
+  fallback: string;
+  color?: string;
+  text?: string;
+}
+
 export const sendPrivateMessage = async (email: string, message: string) => {
   const slackUserIdResponse = await axios.post<slackUserResponse>(
     'https://slack.com/api/users.lookupByEmail',
@@ -90,7 +96,10 @@ export const sendPrivateMessage = async (email: string, message: string) => {
   }
 };
 
-export const sendNotificationToChannel = async (payload: { blocks: SlackBlock[] }) => {
+export const sendNotificationToChannel = async (payload: {
+  blocks: SlackBlock[];
+  attachments?: SlackAttachment[];
+}) => {
   try {
     const slackMessageResponse = await axios.post(SLACK_WEBHOOK_URL, payload);
     if (slackMessageResponse.status !== 200) {
