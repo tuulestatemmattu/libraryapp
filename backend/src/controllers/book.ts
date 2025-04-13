@@ -11,7 +11,12 @@ import {
 import { NODE_ENV } from '../util/config';
 import { requireAdmin } from '../util/middleware/requireAdmin';
 import { requireLogin } from '../util/middleware/requireLogin';
-import { sendNotificationToChannel, sendPrivateMessage } from '../util/slackbot';
+import {
+  SlackAttachment,
+  SlackBlock,
+  sendNotificationToChannel,
+  sendPrivateMessage,
+} from '../util/slackbot';
 import bookValidator from '../util/validation';
 
 const bookRouter = express.Router();
@@ -60,20 +65,42 @@ bookRouter.post('/', requireAdmin, bookValidator, async (req, res) => {
   const tagNames = fetchedBook.tags?.map((tag: Tag) => tag.name).join(', ');
 
   if (location === 'Helsinki' && NODE_ENV !== 'test') {
-    const payload = {
-      text: `:books: A new book "*${title}*" has been added to the library!`,
-      attachments: [
+    const payload: {
+      blocks: SlackBlock[];
+      attachments: SlackAttachment[];
+    } = {
+      blocks: [
         {
-          author_name: authors,
-          fallback: 'Book image',
-          image_url: imageLink,
-          fields: [
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: `:books: *${title}* has been added to the library!`,
+          },
+        },
+        {
+          type: 'image',
+          image_url: imageLink ?? '',
+          alt_text: 'Book cover image',
+          title: {
+            type: 'plain_text',
+            text: title,
+          },
+        },
+        {
+          type: 'context',
+          elements: [
             {
-              title: ':paperclip: Tags:',
-              value: `*${tagNames ?? 'No tags'}*`,
-              short: false,
+              type: 'mrkdwn',
+              text: `:paperclip: *Tags:* ${tagNames ?? 'No tags'}`,
             },
           ],
+        },
+      ],
+      attachments: [
+        {
+          fallback: `Description: ${description}`,
+          color: '#e0e0e0',
+          text: `*Description:*\n${description}`,
         },
       ],
     };
