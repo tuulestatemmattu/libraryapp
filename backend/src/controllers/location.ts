@@ -13,3 +13,5 @@ locationRouter.get('/', (_req, res) => {
     res.send(officeLocations);
   }
 });
+
+export default locationRouter;
