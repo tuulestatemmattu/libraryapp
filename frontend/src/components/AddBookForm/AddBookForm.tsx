@@ -10,7 +10,6 @@ import { useNotification } from '../../context/NotificationsProvider/Notificatio
 import useMainStore from '../../hooks/useMainStore';
 import { CreatedBook } from '../../interfaces/Book';
 import { FetchedTag } from '../../interfaces/Tags';
-import getInfoFromIsbn from '../../services/isbn';
 import StyledTextField from '../StyledTextField/StyledTextField';
 import CopiesInput from './CopiesInput/CopiesInput';
 import LocationSelect from './LocationSelect/LocationSelect';
@@ -21,10 +20,11 @@ import './AddBookForm.css';
 
 interface AddBookFormProps {
   onSubmit: (book: CreatedBook) => Promise<{ status: number }>;
+  onIsbnSearch: (isbn: string) => Promise<void>;
   initialValues: CreatedBook | null;
 }
 
-const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
+const AddBookForm = ({ onSubmit, onIsbnSearch, initialValues }: AddBookFormProps) => {
   const defaultLocation = useMainStore((state) => state.location);
   const tags = useMainStore((state) => state.tags);
 
@@ -75,19 +75,7 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
   };
 
   const handleIsbnSearch = async () => {
-    const book = await getInfoFromIsbn(isbn);
-    if (book) {
-      setTitle(book.title);
-      setAuthors(book.authors);
-      setDescription(book.description);
-      setPublishedDate(book.publishedDate);
-      setImageLinks(book.imageLinks);
-    } else {
-      showNotification(
-        'The given ISBN was not found in the database. Please check the input.',
-        'info',
-      );
-    }
+    await onIsbnSearch(isbn);
   };
 
   const handleClear = () => {
@@ -119,49 +107,54 @@ const AddBookForm = ({ onSubmit, initialValues }: AddBookFormProps) => {
 
   return (
     <article>
-      <h2>Add a new book</h2>
       <form onSubmit={handleSubmit}>
-        <Grid container spacing={1} direction="row">
-          <Box display="flex" flexDirection="row" alignItems="center" gap={2} width="100%">
-            <Grid sx={{ flexGrow: 1 }}>
-              <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
-            </Grid>
-            <Grid>
-              <Button onClick={handleIsbnSearch}>Search</Button>
-            </Grid>
-          </Box>
-          <StyledTextField label="Title" value={title} setValue={setTitle} />
-          <StyledTextField label="Author" value={authors} setValue={setAuthors} />
-          <StyledTextField
-            label="Publication date"
-            value={publishedDate}
-            setValue={setPublishedDate}
-          />
-          <StyledTextField
-            label="Description"
-            value={description}
-            setValue={setDescription}
-            multiline={true}
-          />
-          <div className="tag-select-div">
-            <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
-          </div>
-          <Box display="flex" flexDirection="row" alignItems="center" gap={2} width="100%">
-            <Grid sx={{ flexShrink: 0, width: 130 }}>
-              <CopiesInput copies={copies} setCopies={setCopies} />
-            </Grid>
-            <Grid sx={{ flexGrow: 1 }}>
-              <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
-            </Grid>
-          </Box>
-          <ButtonGroup variant="contained" className="addbookform-buttons">
-            <Button type="button" onClick={handleClear} variant="contained">
-              Clear
-            </Button>
-            <Button type="submit" variant="contained">
-              Add
-            </Button>
-          </ButtonGroup>
+        <Grid
+          container
+          spacing={1}
+          direction="row" /*in MUI v7, this is just Grid and the old one is GridLegacy*/
+        >
+          <Grid container spacing={1} direction="row">
+            <Box display="flex" flexDirection="row" alignItems="center" gap={2} width="100%">
+              <Grid sx={{ flexGrow: 1 }}>
+                <StyledTextField label="ISBN" value={isbn} setValue={setIsbn} />
+              </Grid>
+              <Grid>
+                <Button onClick={handleIsbnSearch}>Search</Button>
+              </Grid>
+            </Box>
+            <StyledTextField label="Title" value={title} setValue={setTitle} />
+            <StyledTextField label="Author" value={authors} setValue={setAuthors} />
+            <StyledTextField
+              label="Publication date"
+              value={publishedDate}
+              setValue={setPublishedDate}
+            />
+            <StyledTextField
+              label="Description"
+              value={description}
+              setValue={setDescription}
+              multiline={true}
+            />
+            <div className="tag-select-div">
+              <TagSelect tags={tags} selectedTags={selectedTags} onSelectTag={handleTagSelection} />
+            </div>
+            <Box display="flex" flexDirection="row" alignItems="center" gap={2} width="100%">
+              <Grid sx={{ flexShrink: 0, width: 130 }}>
+                <CopiesInput copies={copies} setCopies={setCopies} />
+              </Grid>
+              <Grid sx={{ flexGrow: 1 }}>
+                <LocationSelect value={location} onChangeLocation={handleChangeLocation} />
+              </Grid>
+            </Box>
+            <ButtonGroup variant="contained" className="addbookform-buttons">
+              <Button type="button" onClick={handleClear} variant="contained">
+                Clear
+              </Button>
+              <Button type="submit" variant="contained">
+                Add
+              </Button>
+            </ButtonGroup>
+          </Grid>
         </Grid>
       </form>
     </article>

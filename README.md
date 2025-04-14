@@ -1,6 +1,7 @@
 # [Libraryapp](https://ohtu-library-7801af5eb8b8.herokuapp.com/) 
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/d076ef5e55b14733b6292ddb3391bbdc)](https://app.codacy.com/gh/tuulestatemmattu/libraryapp/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+![](https://byob.yarr.is/tuulestatemmattu/libraryapp/las)
 
 ### Backlog links
 
@@ -12,6 +13,7 @@
 - [Sprint 4 Backlog](https://github.com/orgs/tuulestatemmattu/projects/30)
 - [Sprint 5 Backlog](https://github.com/orgs/tuulestatemmattu/projects/31)
 - [Sprint 6 Backlog](https://github.com/orgs/tuulestatemmattu/projects/33)
+- [Sprint 7 Backlog](https://github.com/orgs/tuulestatemmattu/projects/36)
 
 ### Definition of Done
 Definition of done can be found [here](documents/definition_of_done.md)

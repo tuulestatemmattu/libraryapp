@@ -50,6 +50,18 @@
   object-fit: cover;
 }
 
+.scan-box video {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  max-width: 700px;
+  height: 70%;
+  max-height: 120vmin;
+  object-fit: cover;
+}
+
 .scan-overlay {
   position: absolute;
   top: 50%;
@@ -57,9 +69,7 @@
   transform: translate(-50%, -50%);
   opacity: 0.9;
   background: transparent;
-  width: 30vw;
-  min-width: 200px;
-  max-width: 300px;
-  height: 100px;
+  width: 50vw;
+  height: 20vh;
   pointer-events: none;
 }

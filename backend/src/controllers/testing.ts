@@ -9,12 +9,18 @@ const router = express.Router();
 
 router.get('/resetdb', async (req, res) => {
   const { secret } = req.body;
-  if (!crypto.timingSafeEqual(Buffer.from(secret), Buffer.from(CRON_SECRET))) {
+  if (
+    !secret ||
+    secret.length != CRON_SECRET.length ||
+    !crypto.timingSafeEqual(Buffer.from(secret), Buffer.from(CRON_SECRET))
+  ) {
     res.status(401).json({ message: 'invalid or missing secret' });
     return;
   }
 
   await resetTables();
+  /* DON'T CHANGE */
+  /* Hardcoded into lighthouse ci */
   await User.create({
     google_id: 'test_google_id',
     name: 'Test user',
@@ -26,15 +32,19 @@ router.get('/resetdb', async (req, res) => {
   res.status(200).end();
 });
 
-router.get('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
   const { secret } = req.body;
-  if (!crypto.timingSafeEqual(Buffer.from(secret), Buffer.from(CRON_SECRET))) {
+  if (
+    !secret ||
+    secret.length != CRON_SECRET.length ||
+    !crypto.timingSafeEqual(Buffer.from(secret), Buffer.from(CRON_SECRET))
+  ) {
     res.status(401).json({ message: 'invalid or missing secret' });
     return;
   }
-  if (!(await User.findOne({ where: { google_id: 'test google id' } }))) {
+  if (!(await User.findOne({ where: { google_id: 'test_google_id' } }))) {
     await User.create({
-      google_id: 'test google id',
+      google_id: 'test_google_id',
       name: 'Test user',
       email: 'test.user@example.com',
       picture: 'sample_picture_url',
