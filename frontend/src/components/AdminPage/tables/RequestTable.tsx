@@ -25,6 +25,8 @@ import useRequireAdmin from '../../../hooks/useRequireAdmin';
 import { FetchedRequest } from '../../../interfaces/Request';
 import { deleteBookRequest } from '../../../services/request';
 
+import '../AdminPage.css';
+
 const RequestTable = () => {
   useRequireAdmin();
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
@@ -98,7 +100,7 @@ const RequestTable = () => {
       <Box sx={{ textAlign: 'center' }}>
         <h1>Book Requests</h1>
       </Box>
-      <Paper sx={{ height: 'auto', width: '100%' }}>
+      <Paper className="admin-table">
         <DataGrid
           disableRowSelectionOnClick
           rows={rows}

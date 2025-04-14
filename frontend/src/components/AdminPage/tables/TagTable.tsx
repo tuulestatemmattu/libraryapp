@@ -34,6 +34,8 @@ import useRequireAdmin from '../../../hooks/useRequireAdmin';
 import { FetchedTag } from '../../../interfaces/Tags';
 import { addTag, deleteTag, updateTag } from '../../../services/tag';
 
+import '../AdminPage.css';
+
 const TagTable = () => {
   useRequireAdmin();
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
@@ -162,7 +164,7 @@ const TagTable = () => {
       <Box sx={{ textAlign: 'center' }}>
         <h1>Tags</h1>
       </Box>
-      <Paper sx={{ height: 'auto', width: '100%' }}>
+      <Paper className="admin-table">
         <DataGrid
           disableVirtualization
           disableRowSelectionOnClick
