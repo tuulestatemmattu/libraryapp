@@ -7,7 +7,8 @@ const locationRouter = express.Router();
 
 locationRouter.get('/', (_req, res) => {
   if (NODE_ENV == 'development' || NODE_ENV == 'test' || STAGING) {
-    res.send(officeLocations.concat(['testing']));
+    const officeLocationsTesting = officeLocations.concat(['testing']);
+    res.send(officeLocationsTesting);
   } else {
     res.send(officeLocations);
   }
