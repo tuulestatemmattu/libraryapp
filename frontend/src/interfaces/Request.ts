@@ -13,6 +13,7 @@ interface FetchedRequest {
     name: string;
     email: string;
   };
+  status: string;
 }
 
 export type { Request, FetchedRequest };

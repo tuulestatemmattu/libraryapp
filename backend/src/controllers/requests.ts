@@ -9,7 +9,7 @@ const router = expresss.Router();
 
 router.get('/', requireAdmin, async (req, res) => {
   const data = await BookRequest.findAll({
-    attributes: ['id', 'title', 'author', 'isbn'],
+    attributes: ['id', 'title', 'author', 'isbn', 'status'],
     include: [
       {
         model: User,
@@ -50,7 +50,15 @@ router.delete('/:id', requireAdmin, async (req, res) => {
 router.put('/:id', requireAdmin, async (req, res) => {
   const { status } = req.body;
   const id = req.params.id;
-  const bookRequest = await BookRequest.findByPk(id);
+  const bookRequest = await BookRequest.findByPk(id, {
+    attributes: ['id', 'title', 'author', 'isbn', 'status'],
+    include: [
+      {
+        model: User,
+        attributes: ['name', 'email'],
+      },
+    ],
+  });
   if (bookRequest) {
     const editedRequest = { ...BookRequest, status: status };
     await bookRequest.update(editedRequest);
