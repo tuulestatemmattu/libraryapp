@@ -19,6 +19,7 @@ class BookRequest extends Model<
   declare title: string;
   declare author: string;
   declare isbn: string;
+  declare status: string;
 }
 
 BookRequest.init(
@@ -47,6 +48,9 @@ BookRequest.init(
     isbn: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    status: {
+      type: DataTypes.STRING,
     },
   },
   {
