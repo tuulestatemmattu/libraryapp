@@ -1,7 +1,9 @@
+import { useEffect, useState } from 'react';
+
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 
-import { officeLocations } from '../../../constants';
+import { getLocations } from '../../../services/locations.ts';
 
 import './LocationSelect.css';
 
@@ -11,6 +13,16 @@ interface LocationSelectProps {
 }
 
 const LocationSelect = ({ value, onChangeLocation }: LocationSelectProps) => {
+  const [officeLocations, setOfficeLocations] = useState(['Helsinki']);
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      const locations = await getLocations();
+      setOfficeLocations(locations);
+    };
+    fetchLocations();
+  }, []);
+
   return (
     <TextField
       select
