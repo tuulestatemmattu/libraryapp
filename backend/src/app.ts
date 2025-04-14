@@ -41,7 +41,7 @@ app.use('/api/admin', adminRouter);
 app.use('/api/users', userRouter);
 app.use('/api/cron', cronRouter);
 app.use('/api/requests', requestsRouter);
-app.use('/api/locations');
+app.use('/api/locations', locationRouter);
 
 app.get('/api/ping', (_req, res) => {
   res.send('pong');
