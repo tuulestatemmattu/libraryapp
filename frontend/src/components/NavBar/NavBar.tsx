@@ -54,6 +54,7 @@ const NavBar = () => {
                 component="div"
                 className="typmenuicon"
                 onClick={() => navigate('/')}
+                sx={{ cursor: 'pointer' }}
               >
                 <MenuBookIcon className="typemenuicon" />
               </Typography>
