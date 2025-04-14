@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import MenuBookIcon from '@mui/icons-material/MenuBook';
@@ -9,8 +10,8 @@ import Select from '@mui/material/Select';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import { officeLocations } from '../../constants';
 import useMainStore from '../../hooks/useMainStore';
+import { getLocations } from '../../services/locations';
 import ProfilePicture from '../ProfilePicture';
 
 import './NavBar.css';
@@ -20,6 +21,16 @@ const NavBar = () => {
   const location = useMainStore((state) => state.location);
   const setLocation = useMainStore((state) => state.setLocation);
   const profile = useMainStore((state) => state.profile);
+
+  const [officeLocations, setOfficeLocations] = useState(['Helsinki']);
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      const locations = await getLocations();
+      setOfficeLocations(locations);
+    };
+    fetchLocations();
+  }, []);
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -54,6 +65,7 @@ const NavBar = () => {
                 component="div"
                 className="typmenuicon"
                 onClick={() => navigate('/')}
+                sx={{ cursor: 'pointer' }}
               >
                 <MenuBookIcon className="typemenuicon" />
               </Typography>

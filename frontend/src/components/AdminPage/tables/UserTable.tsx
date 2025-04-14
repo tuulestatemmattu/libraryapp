@@ -18,6 +18,8 @@ import useRequireAdmin from '../../../hooks/useRequireAdmin';
 import Profile from '../../../interfaces/Profile';
 import { demoteUser, getUsers, promoteUser } from '../../../services/admin';
 
+import '../AdminPage.css';
+
 const UserTable = () => {
   useRequireAdmin();
   const [rows, setRows] = useState([]);
@@ -102,7 +104,7 @@ const UserTable = () => {
       <Box sx={{ textAlign: 'center' }}>
         <h1>users</h1>
       </Box>
-      <Paper sx={{ height: 400, width: '100%' }}>
+      <Paper className="admin-table">
         <DataGrid
           rows={rows}
           columns={columns}
