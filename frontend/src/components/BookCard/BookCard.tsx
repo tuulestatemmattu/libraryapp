@@ -110,13 +110,12 @@ const BookCard = ({ book, loading }: BookCardProps) => {
           )}
         </CardContent>
       </CardActionArea>
-      <Modal
-        open={open}
-        onClose={() => setOpen(false)}
-      >
-        <>
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <Box
+          sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}
+        >
           <BookModal book={book} setOpen={setOpen} />
-        </>
+        </Box>
       </Modal>
     </Card>
   );
