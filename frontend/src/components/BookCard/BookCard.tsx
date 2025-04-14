@@ -113,9 +113,6 @@ const BookCard = ({ book, loading }: BookCardProps) => {
       <Modal
         open={open}
         onClose={() => setOpen(false)}
-        sx={{
-          zIndex: 1500,
-        }}
       >
         <>
           <BookModal book={book} setOpen={setOpen} />
