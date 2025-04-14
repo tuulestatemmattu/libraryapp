@@ -1,0 +1,18 @@
+export const officeLocations: string[] = [
+  'Helsinki',
+  'Tampere',
+  'Copenhagen',
+  'Aarhus',
+  'Munich',
+  'Berlin',
+  'Oslo',
+  'Łódź',
+  'Malmö',
+  'Stockholm',
+  'Gothenburg',
+  'Amsterdam',
+  'Zurich',
+  'London',
+  'Southampton',
+  'Philadelphia',
+];
