@@ -1,7 +1,7 @@
 import express from 'express';
 
+import { NODE_ENV, STAGING } from '../util/config';
 import { officeLocations } from '../util/officeLocations';
-import { NODE_ENV, STAGING } from './util/config';
 
 const locationRouter = express.Router();
 
