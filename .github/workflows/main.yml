@@ -183,4 +183,3 @@ jobs:
         HD_CRON_SECRET: ${{ secrets.CRON_SECRET }}
         HD_SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         HD_SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        HD_PRODUCTION: 1
