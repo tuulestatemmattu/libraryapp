@@ -13,6 +13,8 @@ import {
 import { BorrowData } from '../../../interfaces/Borrow';
 import { getBorrows, returnBook } from '../../../services/book';
 
+import '../AdminPage.css';
+
 const BorrowTable = () => {
   const [rows, setRows] = useState([]);
 
@@ -135,7 +137,7 @@ const BorrowTable = () => {
       <Box sx={{ textAlign: 'center' }}>
         <h1>Borrow data</h1>
       </Box>
-      <Paper sx={{ height: 'auto', width: '100%' }}>
+      <Paper className="admin-table">
         <DataGrid
           rows={rows}
           columns={columns}
