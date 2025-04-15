@@ -1,29 +1,9 @@
-.typemenuicon {
-  left: 5px;
-  margin-top: 40%;
-}
-
-.location-box {
-  margin: '0 auto';
-  overflow-y: 'visible';
-  font-weight: 600 !important;
-  font-size: 20px;
-  letter-spacing: 3px !important;
-}
-
-.leftside-items {
+.navbar-logo-appname-location {
   display: flex;
   align-items: center;
-  gap: 10px !important;
 }
 
-.admin-button {
-  align-self: center; /* This will vertically center the button */
-  font-size: 15px !important;
-}
-
-@media (max-width: 480px) {
-  .admin-button {
-    font-size: 3.125vw !important;
-  }
+.navbar-admin-profile {
+  display: flex;
+  align-items: center;
 }
