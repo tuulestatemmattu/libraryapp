@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import { Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 
 import useMainStore from '../../hooks/useMainStore';
 import { getLocations } from '../../services/locations';
@@ -32,17 +32,6 @@ const NavBar = () => {
     fetchLocations();
   }, []);
 
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 150,
-      },
-    },
-  };
-
   const handleAdminClick = () => {
     navigate('/admin');
   };
@@ -52,64 +41,47 @@ const NavBar = () => {
   }
 
   return (
-    <div>
-      <Box>
-        <AppBar>
-          <Toolbar>
-            <Box
-              className="leftside-items"
-              sx={{ width: '20%', display: 'flex', justifyContent: 'flex-start' }}
+    <Box>
+      <AppBar>
+        <Toolbar sx={{ display: 'flex', gap: 2 }}>
+          <Box
+            className="navbar-logo-appname-location"
+            sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}
+          >
+            <Button
+              onClick={() => navigate('/')}
+              sx={{ display: 'flex', alignItems: 'center', px: 0, pb: 0 }}
             >
-              <Typography
-                variant="h6"
-                component="div"
-                className="typmenuicon"
-                onClick={() => navigate('/')}
-                sx={{ cursor: 'pointer' }}
-              >
-                <MenuBookIcon className="typemenuicon" />
+              <MenuBookIcon sx={{ pl: 0, mr: 1, mt: -0.5 }} />
+              <Typography sx={{ textTransform: 'none', fontSize: '1.4rem', fontWeight: 'bold' }}>
+                LibraryApp
               </Typography>
-              {profile.admin && (
-                <Button color="inherit" onClick={handleAdminClick} className="admin-button">
-                  Admin Panel
-                </Button>
-              )}
-            </Box>
-            <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-              <Select
-                className="location-box"
-                value={location}
-                onChange={({ target }) => setLocation(target.value)}
-                sx={{
-                  boxShadow: 'none',
-                  '.MuiOutlinedInput-notchedOutline': { border: 0 },
-                  '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                    border: 0,
-                  },
-                  '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    border: 0,
-                  },
-                }}
-                MenuProps={MenuProps}
-              >
-                {officeLocations.map((officeLocation) => (
-                  <MenuItem
-                    key={officeLocation}
-                    value={officeLocation}
-                    style={{ letterSpacing: '3px', fontWeight: '666' }}
-                  >
-                    {officeLocation}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Box>
-            <Box sx={{ width: '20%', display: 'flex', justifyContent: 'flex-end' }}>
-              <ProfilePicture />
-            </Box>
-          </Toolbar>
-        </AppBar>
-      </Box>
-    </div>
+            </Button>
+            <Select
+              variant="standard"
+              disableUnderline={true}
+              value={location}
+              onChange={({ target }) => setLocation(target.value)}
+              sx={{ mt: -1, fontSize: '0.9rem' }}
+            >
+              {officeLocations.map((officeLocation) => (
+                <MenuItem key={officeLocation} value={officeLocation}>
+                  {officeLocation}
+                </MenuItem>
+              ))}
+            </Select>
+          </Box>
+          <Box className="navbar-admin-profile" sx={{ display: 'flex', alignItems: 'center' }}>
+            {profile.admin && (
+              <Button onClick={handleAdminClick} sx={{ fontSize: '0.9rem', textAlign: 'right' }}>
+                Admin Panel
+              </Button>
+            )}
+            <ProfilePicture />
+          </Box>
+        </Toolbar>
+      </AppBar>
+    </Box>
   );
 };
 
