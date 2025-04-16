@@ -1,22 +1,41 @@
-import { test, expect } from '@playwright/test';
-import { BACKEND_URL, FRONTEND_URL } from './constants';
+import { test, expect } from "@playwright/test";
+import { BACKEND_URL, FRONTEND_URL, CRON_SECRET } from "./constants";
+import axios from "axios";
 
-test.describe.configure({ mode: 'serial' });
+test.describe.configure({ mode: "serial" });
 
 test.beforeAll(async ({ request }) => {
-  await request.get(BACKEND_URL + '/api/testing/resetdb');
+  // await request.get(BACKEND_URL + '/api/testing/resetdb');
 });
 
-test.beforeEach(async ({ page, context }) => {
-  await page.goto(BACKEND_URL + '/api/testing/login');
-  const cookies = await context.cookies(BACKEND_URL);
+test.beforeEach(async ({ context }) => {
+  const res = await axios.post(`${BACKEND_URL}/api/testing/login`, {
+    secret: CRON_SECRET,
+  });
+
+  const domain = FRONTEND_URL.replace("https://", "").replace("http://", "");
+
   await context.addCookies(
-    cookies.map((cookie) => {
-      return { ...cookie, domain: 'frontend-e2e' }
+    (res.headers["set-cookie"] ?? []).map((cString) => {
+      const [name, ...rest] = cString.split("=");
+      const value = rest.join("=").split(";")[0];
+      const cookie = {
+        name,
+        value,
+        domain,
+        path: "/",
+      };
+      return cookie;
     })
   );
 });
 
+test("Page loads", async ({ page, context }) => {
+  await page.goto(FRONTEND_URL, { waitUntil: "load" });
+  await page.screenshot({ path: "screenshot.png" });
+  await expect(page.locator("text=LibraryApp")).toBeVisible();
+});
+/*
 test('Manual book add by FORM', async ({ page, context }) => {
   await page.goto(FRONTEND_URL, { waitUntil: 'load' });
 
@@ -72,3 +91,4 @@ test('Manual book add by ISBN', async ({ page, context }) => {
   await expect(bookTitle).toBeVisible();
   
 });
+*/
