@@ -50,7 +50,7 @@ let theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "'Roboto', serif",
+    fontFamily: "'Montserrat', sans-serif",
     h2: {
       fontSize: 'medium',
     },
@@ -84,7 +84,7 @@ let theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         '*': {
-          fontFamily: "'Roboto', serif",
+          fontFamily: "'Montserrat', sans-serif",
         },
         body: {
           backgroundColor: '#f0f0ec',
