@@ -9,10 +9,8 @@ interface FetchedRequest {
   title: string;
   author: string;
   isbn: string;
-  user: {
-    name: string;
-    email: string;
-  };
+  user_emails: string;
+  request_count: number;
 }
 
 export type { Request, FetchedRequest };

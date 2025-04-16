@@ -42,9 +42,10 @@ const RequestTable = () => {
       title: bookRequest.title,
       author: bookRequest.author,
       isbn: bookRequest.isbn,
-      user_email: bookRequest.user.email,
+      user_emails: bookRequest.user_emails.replace(';', '\n'),
+      request_count: bookRequest.request_count,
     }))
-    .sort((a, b) => a.id - b.id);
+    .sort((a, b) => a.request_count - b.request_count);
 
   const handleDeleteClick = (id: GridRowId) => () => {
     setDeleteId(id);
@@ -70,11 +71,11 @@ const RequestTable = () => {
   };
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 100 },
     { field: 'title', headerName: 'Title', width: 250 },
     { field: 'author', headerName: 'Auhors', width: 200 },
     { field: 'isbn', headerName: 'ISBN', width: 150 },
-    { field: 'user_email', headerName: 'User', width: 200 },
+    { field: 'user_emails', headerName: 'Users', width: 200 },
+    { field: 'request_count', headerName: 'Request Count', width: 150 },
     {
       field: 'actions',
       type: 'actions',
@@ -106,7 +107,10 @@ const RequestTable = () => {
           rows={rows}
           columns={columns}
           editMode="row"
-          initialState={{ pagination: { paginationModel } }}
+          initialState={{
+            pagination: { paginationModel },
+            sorting: { sortModel: [{ field: 'request_count', sort: 'desc' }] },
+          }}
           pageSizeOptions={[5, 10]}
           rowModesModel={rowModesModel}
           onRowModesModelChange={handleRowModesModelChange}

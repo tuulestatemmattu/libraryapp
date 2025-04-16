@@ -1,6 +1,6 @@
 import expresss from 'express';
-import { QueryTypes } from 'sequelize';
 
+import { User } from '../models';
 import BookRequest from '../models/book_request';
 import { sequelize } from '../util/db';
 import { requireAdmin } from '../util/middleware/requireAdmin';
@@ -9,27 +9,36 @@ import { requireLogin } from '../util/middleware/requireLogin';
 const router = expresss.Router();
 
 router.get('/', requireAdmin, async (req, res) => {
-  const data = await sequelize.query(
-    `
-      SELECT
-        MIN(br.id) AS id,
-        (ARRAY_AGG(br.title) FILTER (WHERE br.title IS NOT NULL))[1] AS title,
-        (ARRAY_AGG(br.author) FILTER (WHERE br.author IS NOT NULL))[1] AS author,
-        (ARRAY_AGG(br.isbn) FILTER (WHERE br.isbn IS NOT NULL))[1] AS isbn,
-        COUNT(DISTINCT br2.id) AS request_count
-      FROM book_requests br
-      LEFT JOIN book_requests br2
-        ON br.isbn = br2.isbn OR br.title = br2.title
-      ORDER BY request_count DESC
-    `,
-    {
-      type: QueryTypes.SELECT,
-    },
-  );
+  const data = await BookRequest.findAll({
+    attributes: [
+      'isbn',
+      [sequelize.fn('MIN', sequelize.col('id')), 'id'],
+      [
+        sequelize.literal("(ARRAY_AGG(title) FILTER (WHERE title IS NOT NULL AND title <> ''))[1]"),
+        'title',
+      ],
+      [
+        sequelize.literal(
+          "(ARRAY_AGG(author) FILTER (WHERE author IS NOT NULL AND author <> ''))[1]",
+        ),
+        'author',
+      ],
+      [sequelize.fn('STRING_AGG', sequelize.col('user_google_id'), ';'), 'user_emails'],
+      [sequelize.fn('COUNT', sequelize.col('id')), 'request_count'],
+    ],
+    group: ['isbn', 'user.google_id'],
+    order: [[sequelize.fn('COUNT', sequelize.col('id')), 'DESC']],
+    include: [
+      {
+        model: User,
+        attributes: ['email'],
+        required: false,
+      },
+    ],
+  });
 
-  console.log(data);
-  //const bookRequests = data.map((bookRequest) => bookRequest.toJSON());
-  //res.json(bookRequests);
+  const bookRequests = data.map((bookRequest) => bookRequest.toJSON());
+  res.json(bookRequests);
 });
 
 router.post('/', requireLogin, async (req, res) => {
