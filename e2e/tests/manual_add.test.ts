@@ -30,9 +30,15 @@ test.beforeEach(async ({ context }) => {
   );
 });
 
+test.afterEach({}, async ({ context }) => {
+  await axios.post(`${BACKEND_URL}/api/testing/resetdb`, {
+    secret: CRON_SECRET,
+  });
+  await context.clearCookies();
+});
+
 test("Page loads", async ({ page, context }) => {
   await page.goto(FRONTEND_URL, { waitUntil: "load" });
-  await page.screenshot({ path: "screenshot.png" });
   await expect(page.locator("text=LibraryApp")).toBeVisible();
 });
 /*
