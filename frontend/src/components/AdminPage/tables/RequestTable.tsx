@@ -56,7 +56,7 @@ const RequestTable = () => {
       isbn: bookRequest.isbn,
       user_emails: bookRequest.user_emails.replace(';', '\n'),
       request_count: bookRequest.request_count,
-      status: bookRequest.status
+      status: bookRequest.status,
     }))
     .sort((a, b) => a.request_count - b.request_count);
 

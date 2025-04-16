@@ -1,4 +1,5 @@
 import expresss from 'express';
+import { Op } from 'sequelize';
 
 import { User } from '../models';
 import BookRequest from '../models/book_request';
@@ -11,7 +12,7 @@ import { sendPrivateMessage } from '../util/slackbot';
 
 const router = expresss.Router();
 
-router.get('/', requireAdmin, async (req, res) => {
+const getBookRequests = async () => {
   const data = await BookRequest.findAll({
     attributes: [
       'isbn',
@@ -40,7 +41,11 @@ router.get('/', requireAdmin, async (req, res) => {
       },
     ],
   });
+  return data;
+};
 
+router.get('/', requireAdmin, async (req, res) => {
+  const data = await getBookRequests();
   const bookRequests = data.map((bookRequest) => bookRequest.toJSON());
   res.json(bookRequests);
 });
@@ -72,8 +77,19 @@ router.delete('/:id', requireAdmin, async (req, res) => {
 
 router.put('/:id', requireAdmin, async (req, res) => {
   const { message, status } = req.body;
-  const id = req.params.id;
-  const bookRequest = await BookRequest.findByPk(id, {
+  const id = parseInt(req.params.id);
+
+  const bookRequests = await BookRequest.findAll({
+    where: {
+      [Op.or]: [
+        { id },
+        sequelize.where(
+          sequelize.col('isbn'),
+          '=',
+          sequelize.literal(`(SELECT isbn FROM book_requests WHERE id = ${id})`),
+        ),
+      ],
+    },
     attributes: ['id', 'title', 'author', 'isbn', 'status', 'user_google_id'],
     include: [
       {
@@ -82,20 +98,23 @@ router.put('/:id', requireAdmin, async (req, res) => {
       },
     ],
   });
-  if (bookRequest) {
+
+  if (bookRequests.length === 0) {
+    res.status(404).send({ message: 'Book request not found' });
+    return;
+  }
+
+  for (const bookRequest of bookRequests) {
     const editedRequest = { ...BookRequest, status: status };
     await bookRequest.update(editedRequest);
-    res.status(200).send(bookRequest);
-    const user = await User.findByPk(bookRequest.dataValues.user_google_id, {
-      attributes: ['email'],
-    });
+
     const user_message = `Your request for book "${bookRequest.title}" was ${status}.\nMessage from administrator: ${message}`;
-    if (user) {
-      await sendPrivateMessage(user.email, user_message);
-    }
-  } else {
-    res.status(404).send({ message: 'Book request not found' });
+    await sendPrivateMessage(bookRequest.user?.email as string, user_message);
   }
+
+  const data = await getBookRequests();
+  const bookRequest = data.find((bookRequest) => bookRequest.id === id) as BookRequest;
+  res.status(200).json(bookRequest);
 });
 
 export default router;
