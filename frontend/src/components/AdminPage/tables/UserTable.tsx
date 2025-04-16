@@ -84,7 +84,7 @@ const UserTable = () => {
     { ...GRID_CHECKBOX_SELECTION_COL_DEF },
   ];
 
-  const paginationModel = { page: 0, pageSize: 5 };
+  const paginationModel = { page: 0, pageSize: 20 };
 
   const CustomToolBar = () => {
     return (
@@ -109,7 +109,7 @@ const UserTable = () => {
           rows={rows}
           columns={columns}
           initialState={{ pagination: { paginationModel } }}
-          pageSizeOptions={[5, 10]}
+          pageSizeOptions={[5, 10, 20, 50, 100]}
           checkboxSelection
           rowSelectionModel={selected}
           onRowSelectionModelChange={(ids) => {

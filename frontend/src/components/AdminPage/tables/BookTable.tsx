@@ -230,7 +230,7 @@ const BookTable = () => {
     },
   ];
 
-  const paginationModel = { page: 0, pageSize: 5 };
+  const paginationModel = { page: 0, pageSize: 20 };
 
   const CustomToolBar = () => {
     return (
@@ -255,7 +255,7 @@ const BookTable = () => {
           editMode="row"
           getRowHeight={() => 'auto'}
           initialState={{ pagination: { paginationModel } }}
-          pageSizeOptions={[5, 10]}
+          pageSizeOptions={[5, 10, 20, 50, 100]}
           rowModesModel={rowModesModel}
           onRowModesModelChange={handleRowModesModelChange}
           onRowEditStop={handleRowEditStop}
