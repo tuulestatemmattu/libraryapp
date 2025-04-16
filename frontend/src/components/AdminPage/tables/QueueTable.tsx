@@ -23,6 +23,8 @@ import {
 import { QueueEntryData } from '../../../interfaces/QueueEntry';
 import { deleteQueueEntry, getQueueEntries } from '../../../services/book';
 
+import '../AdminPage.css';
+
 const QueueTable = () => {
   const [rows, setRows] = useState<
     { id: number; title: string; user: string; createdAt: string; position: number }[]
@@ -129,7 +131,7 @@ const QueueTable = () => {
       <Box sx={{ textAlign: 'center' }}>
         <h1>Queue entry data</h1>
       </Box>
-      <Paper sx={{ height: 'auto', width: '100%' }}>
+      <Paper className="admin-table">
         <DataGrid
           rows={rows}
           columns={columns}
