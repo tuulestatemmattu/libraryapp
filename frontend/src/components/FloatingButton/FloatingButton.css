@@ -5,33 +5,10 @@
   width: 56px;
   height: 56px;
   font-weight: 6000 !important;
+  bottom: 20px;
 }
 
 .floatingicon {
   width: 24px;
   height: 24px;
-}
-
-@media (max-width: 599px) {
-  .floatingbutton {
-    bottom: 30px;
-  }
-}
-
-@media (min-width: 600px) and (max-width: 899px) {
-  .floatingbutton {
-    bottom: 40px;
-  }
-}
-
-@media (min-width: 900px) and (max-width: 1199px) {
-  .floatingbutton {
-    bottom: 60px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .floatingbutton {
-    bottom: 80px;
-  }
 }
