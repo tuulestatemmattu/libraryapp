@@ -66,7 +66,7 @@ const RequestTable = () => {
 
   const handleAcceptClick = async (id: number | null) => {
     if (id) {
-      const updatedRequest = await modifyRequestStatus(id, 'accepted');
+      const updatedRequest = await modifyRequestStatus(id, userMessage, 'accepted');
       storeUpdateBookRequest(updatedRequest);
       showNotification('Book request accepted', 'success');
       setOpen(false);
@@ -77,7 +77,7 @@ const RequestTable = () => {
 
   const handleRejectClick = async (id: number | null) => {
     if (id) {
-      const updatedRequest = await modifyRequestStatus(id, 'rejected');
+      const updatedRequest = await modifyRequestStatus(id, userMessage, 'rejected');
       storeUpdateBookRequest(updatedRequest);
       showNotification('Book request rejected', 'success');
       setOpen(false);

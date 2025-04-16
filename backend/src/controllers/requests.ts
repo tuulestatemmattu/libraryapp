@@ -4,6 +4,9 @@ import { User } from '../models';
 import BookRequest from '../models/book_request';
 import { requireAdmin } from '../util/middleware/requireAdmin';
 import { requireLogin } from '../util/middleware/requireLogin';
+import { sendPrivateMessage } from '../util/slackbot';
+
+//import { sendPrivateMessage } from '../util/slackbot';
 
 const router = expresss.Router();
 
@@ -48,10 +51,10 @@ router.delete('/:id', requireAdmin, async (req, res) => {
 });
 
 router.put('/:id', requireAdmin, async (req, res) => {
-  const { status } = req.body;
+  const { message, status } = req.body;
   const id = req.params.id;
   const bookRequest = await BookRequest.findByPk(id, {
-    attributes: ['id', 'title', 'author', 'isbn', 'status'],
+    attributes: ['id', 'title', 'author', 'isbn', 'status', 'user_google_id'],
     include: [
       {
         model: User,
@@ -63,6 +66,13 @@ router.put('/:id', requireAdmin, async (req, res) => {
     const editedRequest = { ...BookRequest, status: status };
     await bookRequest.update(editedRequest);
     res.status(200).send(bookRequest);
+    const user = await User.findByPk(bookRequest.dataValues.user_google_id, {
+      attributes: ['email'],
+    });
+    const user_message = `Your request for book "${bookRequest.title}" was ${status}.\n Message from administrator: ${message}`;
+    if (user) {
+      await sendPrivateMessage(user.email, user_message);
+    }
   } else {
     res.status(404).send({ message: 'Book request not found' });
   }
