@@ -54,7 +54,7 @@ const RequestTable = () => {
       title: bookRequest.title,
       author: bookRequest.author,
       isbn: bookRequest.isbn,
-      user_emails: bookRequest.user_emails.replace(';', '\n'),
+      user_emails: bookRequest.user_emails,
       request_count: bookRequest.request_count,
       status: bookRequest.status,
     }))

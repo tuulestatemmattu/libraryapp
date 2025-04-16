@@ -28,7 +28,7 @@ const getBookRequests = async () => {
         ),
         'author',
       ],
-      [sequelize.fn('STRING_AGG', sequelize.col('user_google_id'), ';'), 'user_emails'],
+      [sequelize.fn('STRING_AGG', sequelize.col('email'), ';'), 'user_emails'],
       [sequelize.fn('COUNT', sequelize.col('id')), 'request_count'],
     ],
     group: ['isbn', 'user.google_id'],
