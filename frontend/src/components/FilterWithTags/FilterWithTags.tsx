@@ -39,6 +39,11 @@ const FilterWithTags = ({ selectedTags, setSelectedTags }: FilterWithTagsProps) 
                 ? theme.palette.secondary.main
                 : theme.palette.text.primary,
               borderColor: theme.palette.componentBack.main,
+              '&:hover': {
+                backgroundColor: selectedTags.includes(tag)
+                  ? theme.palette.hoverTag.main
+                  : undefined,
+              },
             }}
           />
         ))}
