@@ -81,13 +81,6 @@ let theme = createTheme({
         },
       },
     },
-    MuiBackdrop: {
-      styleOverrides: {
-        root: {
-          zIndex: 1301,
-        },
-      },
-    },
     MuiCssBaseline: {
       styleOverrides: {
         '*': {

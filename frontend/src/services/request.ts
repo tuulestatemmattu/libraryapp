@@ -19,4 +19,9 @@ const deleteBookRequest = async (id: number) => {
   await axios.delete(`${baseUrl}/${id}`);
 };
 
-export { getBookRequests, sendBookRequest, deleteBookRequest };
+const modifyRequestStatus = async (id: number, status: string) => {
+  const response = await axios.put(`${baseUrl}/${id}`, { status });
+  return response.data;
+};
+
+export { getBookRequests, sendBookRequest, deleteBookRequest, modifyRequestStatus };
