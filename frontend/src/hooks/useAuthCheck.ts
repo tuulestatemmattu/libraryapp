@@ -12,7 +12,6 @@ export const useAuthCheck = () => {
     const cookies = document.cookie.split('; ').map((cookie) => cookie.split('='));
     const tokenCookie = cookies.find((cookie) => cookie[0] === 'token');
     const profileCookie = cookies.find((cookie) => cookie[0] === 'profile');
-    console.log(tokenCookie, profileCookie);
 
     if (tokenCookie && profileCookie) {
       const token = tokenCookie[1];
