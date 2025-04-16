@@ -8,7 +8,8 @@ test.beforeAll(async ({ request }) => {
   // await request.get(BACKEND_URL + '/api/testing/resetdb');
 });
 
-test.beforeEach(async ({ context }) => {
+test.beforeEach(async ({ page, context }) => {
+  await context.clearCookies();
   const res = await axios.post(`${BACKEND_URL}/api/testing/login`, {
     secret: CRON_SECRET,
   });
@@ -28,73 +29,90 @@ test.beforeEach(async ({ context }) => {
       return cookie;
     })
   );
+
+  await page.goto(FRONTEND_URL, { waitUntil: "load" });
+  await page.screenshot({ path: "screenshot.png" });
+  await page.getByTestId("location-select").waitFor();
+  await page.getByTestId("location-select").click();
+  await page.getByTestId("location-option-testing").waitFor();
+  await page.getByTestId("location-option-testing").click();
 });
 
-test.afterEach({}, async ({ context }) => {
+test.afterEach({}, async () => {
   await axios.post(`${BACKEND_URL}/api/testing/resetdb`, {
     secret: CRON_SECRET,
   });
-  await context.clearCookies();
 });
 
 test("Page loads", async ({ page, context }) => {
   await page.goto(FRONTEND_URL, { waitUntil: "load" });
   await expect(page.locator("text=LibraryApp")).toBeVisible();
 });
-/*
-test('Manual book add by FORM', async ({ page, context }) => {
-  await page.goto(FRONTEND_URL, { waitUntil: 'load' });
 
-  await page.getByRole('button', { name: 'Add book' }).waitFor();
-  await page.getByRole('button', { name: 'Add book' }).click()
-  await page.getByRole('button', { name: 'FORM' }).waitFor();
-  await page.getByRole('button', { name: 'FORM' }).click();
+test("Manual book add by FORM", async ({ page, context }) => {
+  await page.goto(FRONTEND_URL, { waitUntil: "load" });
 
-  await page.getByLabel('Title').waitFor();
-  await page.getByLabel('Author').waitFor();
-  await page.getByLabel('ISBN').waitFor();
-  await page.getByLabel('Description').waitFor();
-  await page.getByLabel('Publication date').waitFor();
+  await page.getByRole("button", { name: "Add book" }).waitFor();
+  await page.getByRole("button", { name: "Add book" }).click();
 
-  await page.getByLabel('Title').fill('Learn Objective-C on the Mac');
-  await page.getByLabel('Author').fill('Scott Knaster, Mark Dalrymple, Waqar Malik');
-  await page.getByLabel('ISBN').fill('978-1-4302-4188-1');
-  await page.getByLabel('Description').fill('Test description');
-  await page.getByLabel('Publication date').fill('2012-06-29');
+  await page.getByLabel("Title").waitFor();
+  await page.getByLabel("Author").waitFor();
+  await page.getByLabel("ISBN").waitFor();
+  await page.getByLabel("Description").waitFor();
+  await page.getByLabel("Publication date").waitFor();
 
+  await page.getByLabel("Title").fill("Testing book1");
+  await page
+    .getByLabel("Author")
+    .fill("Test Author 1, Test Author 2, Test Author 3");
+  await page.getByLabel("ISBN").fill("9780134685991");
+  await page.getByLabel("Description").fill("Test description");
+  await page.getByLabel("Publication date").fill("2012-06-29");
 
-  await page.getByRole('button', { name: 'Add', exact: true }).waitFor();
-  await page.getByRole('button', { name: 'Add', exact: true }).click();
+  await page.getByRole("button", { name: "Add", exact: true }).waitFor();
+  await page.getByRole("button", { name: "Add", exact: true }).click();
 
-  await page.goto(FRONTEND_URL, { waitUntil: 'load' });
+  await page.goto(FRONTEND_URL, { waitUntil: "load" });
 
-  const bookTitle = await page.getByText('Learn Objective-C on the Mac');
+  const bookTitle = await page.getByText("Testing book1");
   await expect(bookTitle).toBeVisible();
-  
 });
 
-test('Manual book add by ISBN', async ({ page, context }) => {
-  await page.goto(FRONTEND_URL, { waitUntil: 'load' });
+test("Manual book add by ISBN", async ({ page, context }) => {
+  await page.goto(FRONTEND_URL, { waitUntil: "load" });
 
-  await page.getByRole('button', { name: 'Add book' }).waitFor();
-  await page.getByRole('button', { name: 'Add book' }).click()
-  
-  await page.getByRole('button', { name: 'ISBN' }).waitFor();
-  await page.getByRole('button', { name: 'ISBN' }).click();
+  await page.screenshot({ path: "screenshot4.png" });
 
-  await page.getByLabel('ISBN').waitFor();
-  await page.getByLabel('ISBN').fill('9781507707616');
+  await page.getByRole("button", { name: "Add book" }).waitFor();
+  await page.getByRole("button", { name: "Add book" }).click();
 
-  await page.getByRole('button', { name: 'Search', exact: true }).waitFor();
-  await page.getByRole('button', { name: 'Search', exact: true }).click();
+  await page.getByLabel("ISBN").waitFor();
+  await page.getByLabel("ISBN").fill("9781507707616");
 
-  await page.getByRole('button', { name: 'Add', exact: true }).waitFor();
-  await page.getByRole('button', { name: 'Add', exact: true }).click();
+  await page.getByRole("button", { name: "Search", exact: true }).waitFor();
+  await page.getByRole("button", { name: "Search", exact: true }).click();
 
-  await page.goto(FRONTEND_URL, { waitUntil: 'load' });
+  await expect(page.getByLabel("Title")).toHaveValue(
+    "C# Programming for Beginners",
+    {
+      timeout: 20000,
+    }
+  );
 
-  const bookTitle = await page.getByText('C# Programming for Beginners');
-  await expect(bookTitle).toBeVisible();
-  
+  await page.screenshot({ path: "screenshot2.png" });
+
+  await page.getByRole("button", { name: "Add", exact: true }).waitFor();
+  await page.getByRole("button", { name: "Add", exact: true }).click();
+
+  await page.goto(FRONTEND_URL, { waitUntil: "load" });
+  await page.screenshot({ path: "screenshot1.png" });
+
+  await (
+    await page.getByTestId("book-card-9781507707616")
+  ).scrollIntoViewIfNeeded();
+
+  page.screenshot({ path: "screenshot3.png" });
+  await expect(
+    await page.getByText("C# Programming for Beginners")
+  ).toBeVisible();
 });
-*/

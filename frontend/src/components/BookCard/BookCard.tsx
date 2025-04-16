@@ -63,7 +63,7 @@ const BookCard = ({ book, loading }: BookCardProps) => {
   };
 
   return (
-    <Card className="book-card">
+    <Card className="book-card" data-testid={`book-card-${book.isbn}`}>
       <CardActionArea className="book-card-action" onClick={() => setOpen(true)}>
         <Box
           sx={{
