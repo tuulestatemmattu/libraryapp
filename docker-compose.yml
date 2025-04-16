@@ -71,6 +71,7 @@ services:
     environment:
       FRONTEND_URL: http://frontend-e2e:5173
       BACKEND_URL: http://backend-e2e:3001
+      CRON_SECRET: salainen
     container_name: e2e
 
   db:

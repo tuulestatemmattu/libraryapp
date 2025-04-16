@@ -99,6 +99,33 @@ jobs:
         HD_SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         HD_SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         HD_STAGING: 1
+  
+  e2e:
+    needs: [deploy-staging]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: e2e
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        sparse-checkout: e2e
+    - name: Install Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '23'
+    - name: Install dependencies
+      run: |
+        npm install  
+        npx playwright install chromium
+    - name: Run e2e tests
+      run: npm run test
+      env:
+        FRONTEND_URL: "https://ohtu-library-staging-c43b89853868.herokuapp.com"
+        BACKEND_URL: "https://ohtu-library-staging-c43b89853868.herokuapp.com"
+        CRON_SECRET: ${{ secrets.CRON_SECRET }}
+  
   lhci:
     needs: [deploy-staging]
     runs-on: ubuntu-latest
@@ -148,10 +175,7 @@ jobs:
           STATUS: "${{steps.lh_score.outputs.score}}/100"  
           COLOR: blue
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-
-    
+ 
   deploy-production:
     needs: [frontend, backend]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'

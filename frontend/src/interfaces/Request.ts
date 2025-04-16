@@ -11,6 +11,7 @@ interface FetchedRequest {
   isbn: string;
   user_emails: string;
   request_count: number;
+  status: string;
 }
 
 export type { Request, FetchedRequest };
