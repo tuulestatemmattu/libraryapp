@@ -2,12 +2,12 @@ import crypto from 'crypto';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 
-import { User, resetTables } from '../models';
+import { Book, User } from '../models';
 import { CRON_SECRET, JWT_SECRET } from '../util/config';
 
 const router = express.Router();
 
-router.get('/resetdb', async (req, res) => {
+router.post('/resetdb', async (req, res) => {
   const { secret } = req.body;
   if (
     !secret ||
@@ -18,16 +18,7 @@ router.get('/resetdb', async (req, res) => {
     return;
   }
 
-  await resetTables();
-  /* DON'T CHANGE */
-  /* Hardcoded into lighthouse ci */
-  await User.create({
-    google_id: 'test_google_id',
-    name: 'Test user',
-    email: 'test.user@example.com',
-    picture: 'sample_picture_url',
-    admin: true,
-  });
+  await Book.destroy({ where: { location: 'testing' } });
 
   res.status(200).end();
 });
@@ -43,6 +34,8 @@ router.post('/login', async (req, res) => {
     return;
   }
   if (!(await User.findOne({ where: { google_id: 'test_google_id' } }))) {
+    /* DON'T CHANGE test user info*/
+    /* Hardcoded into lighthouse ci */
     await User.create({
       google_id: 'test_google_id',
       name: 'Test user',
