@@ -69,7 +69,7 @@ router.put('/:id', requireAdmin, async (req, res) => {
     const user = await User.findByPk(bookRequest.dataValues.user_google_id, {
       attributes: ['email'],
     });
-    const user_message = `Your request for book "${bookRequest.title}" was ${status}.\n Message from administrator: ${message}`;
+    const user_message = `Your request for book "${bookRequest.title}" was ${status}.\nMessage from administrator: ${message}`;
     if (user) {
       await sendPrivateMessage(user.email, user_message);
     }
