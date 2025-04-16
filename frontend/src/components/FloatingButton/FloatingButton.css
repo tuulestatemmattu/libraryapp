@@ -1,11 +1,11 @@
 .floatingbutton {
   position: fixed !important;
   right: 20px;
+  bottom: 20px;
   border-radius: 50%;
   width: 56px;
   height: 56px;
   font-weight: 6000 !important;
-  bottom: 20px;
 }
 
 .floatingicon {
