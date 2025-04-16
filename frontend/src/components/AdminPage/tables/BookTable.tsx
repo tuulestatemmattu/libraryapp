@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 
+import CancelIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
@@ -112,6 +113,13 @@ const BookTable = () => {
     setDeleteId(null);
   };
 
+  const handleCancelClick = (id: GridRowId) => () => {
+    setRowModesModel({
+      ...rowModesModel,
+      [id]: { mode: GridRowModes.View, ignoreModifications: true },
+    });
+  };
+
   const processRowUpdate = async (newRow: GridRowModel) => {
     const updatedRow = await updateBook(newRow as AdminViewBook);
     storeAddOrUpdateBook(updatedRow);
@@ -202,6 +210,11 @@ const BookTable = () => {
         if (isInEditMode) {
           return [
             <GridActionsCellItem icon={<SaveIcon />} label="Save" onClick={handleSaveClick(id)} />,
+            <GridActionsCellItem
+              icon={<CancelIcon />}
+              label="Cancel"
+              onClick={handleCancelClick(id)}
+            />,
           ];
         }
 
@@ -252,6 +265,8 @@ const BookTable = () => {
             '& .MuiDataGrid-row.MuiDataGrid-row--editing': {
               '& .MuiDataGrid-cell': {
                 backgroundColor: 'rgba(255, 235, 60, 0.5) !important',
+                display: 'flex',
+                alignItems: 'center',
               },
             },
             border: 1,
