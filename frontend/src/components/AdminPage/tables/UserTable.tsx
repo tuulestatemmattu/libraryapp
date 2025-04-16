@@ -102,7 +102,7 @@ const UserTable = () => {
   return (
     <article>
       <Box sx={{ textAlign: 'center' }}>
-        <h1>users</h1>
+        <h1>Users</h1>
       </Box>
       <Paper className="admin-table">
         <DataGrid

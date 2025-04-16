@@ -90,7 +90,7 @@ const RequestTable = () => {
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 100 },
     { field: 'title', headerName: 'Title', width: 250 },
-    { field: 'author', headerName: 'Auhors', width: 200 },
+    { field: 'author', headerName: 'Authors', width: 200 },
     { field: 'isbn', headerName: 'ISBN', width: 150 },
     { field: 'user_email', headerName: 'User', width: 200 },
     { field: 'status', headerName: 'Status', width: 100 },
