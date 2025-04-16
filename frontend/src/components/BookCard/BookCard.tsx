@@ -11,8 +11,8 @@ import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 
 import { FetchedBook } from '../../interfaces/Book';
-import BookModal from '../BookModal/BookModal';
 import { getPlaceholderSVG } from '../../util/svgUtils';
+import BookModal from '../BookModal/BookModal';
 
 import './BookCard.css';
 
