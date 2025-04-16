@@ -160,7 +160,7 @@ const TagTable = () => {
   const paginationModel = { page: 0, pageSize: 5 };
 
   return (
-    <div>
+    <article>
       <Box sx={{ textAlign: 'center' }}>
         <h1>Tags</h1>
       </Box>
@@ -243,7 +243,7 @@ const TagTable = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </article>
   );
 };
 
