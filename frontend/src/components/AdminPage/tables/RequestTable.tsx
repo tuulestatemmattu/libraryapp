@@ -3,6 +3,7 @@ import { useState } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import { TextField } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -30,11 +31,17 @@ import { deleteBookRequest, modifyRequestStatus } from '../../../services/reques
 
 import '../AdminPage.css';
 
+type DialogueOption = 'accept' | 'reject';
+
 const RequestTable = () => {
   useRequireAdmin();
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<string | number | null>(null);
+  const [open, setOpen] = useState(false);
+  const [dialogueOption, setDialogueOption] = useState<DialogueOption>('accept');
+  const [id, setId] = useState<number | null>(null);
+  const [userMessage, setUserMessage] = useState('');
   const { showNotification } = useNotification();
 
   const bookRequests = useMainStore((state) => state.bookRequests);
@@ -57,16 +64,26 @@ const RequestTable = () => {
     setDeleteDialogOpen(true);
   };
 
-  const handleAcceptClick = async (id: GridRowId) => {
-    const updatedRequest = await modifyRequestStatus(Number(id), 'accepted');
-    storeUpdateBookRequest(updatedRequest);
-    showNotification('Book request accepted', 'success');
+  const handleAcceptClick = async (id: number | null) => {
+    if (id) {
+      const updatedRequest = await modifyRequestStatus(id, userMessage, 'accepted');
+      storeUpdateBookRequest(updatedRequest);
+      showNotification('Book request accepted', 'success');
+      setOpen(false);
+      setUserMessage('');
+      setId(null);
+    }
   };
 
-  const handleRejectClick = async (id: GridRowId) => {
-    const updatedRequest = await modifyRequestStatus(Number(id), 'rejected');
-    storeUpdateBookRequest(updatedRequest);
-    showNotification('Book request rejected', 'success');
+  const handleRejectClick = async (id: number | null) => {
+    if (id) {
+      const updatedRequest = await modifyRequestStatus(id, userMessage, 'rejected');
+      storeUpdateBookRequest(updatedRequest);
+      showNotification('Book request rejected', 'success');
+      setOpen(false);
+      setUserMessage('');
+      setId(null);
+    }
   };
 
   const handleConfirmDelete = async () => {
@@ -106,7 +123,11 @@ const RequestTable = () => {
             <GridActionsCellItem
               icon={<CheckIcon />}
               label="Accept"
-              onClick={() => handleAcceptClick(id)}
+              onClick={() => {
+                setId(Number(id));
+                setDialogueOption('accept');
+                setOpen(true);
+              }}
             />
             <GridActionsCellItem
               icon={<DeleteIcon />}
@@ -116,7 +137,11 @@ const RequestTable = () => {
             <GridActionsCellItem
               icon={<ClearIcon />}
               label="Reject"
-              onClick={() => handleRejectClick(id)}
+              onClick={() => {
+                setId(Number(id));
+                setDialogueOption('reject');
+                setOpen(true);
+              }}
             />
           </>,
         ];
@@ -163,6 +188,35 @@ const RequestTable = () => {
           </Button>
           <Button onClick={handleConfirmDelete} color="primary">
             Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>
+          {dialogueOption === 'accept' ? 'Accept request' : 'Reject request'}
+        </DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Message to user"
+            type="text"
+            fullWidth
+            value={userMessage}
+            onChange={(e) => setUserMessage(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={() =>
+              dialogueOption === 'accept' ? handleAcceptClick(id) : handleRejectClick(id)
+            }
+            color="primary"
+          >
+            {dialogueOption === 'accept' ? 'Accept' : 'Reject'}
           </Button>
         </DialogActions>
       </Dialog>
