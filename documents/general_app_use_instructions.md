@@ -35,11 +35,11 @@ To log out, click your profile picture in the top-right corner of the screen
 # Admin Instructions
 
 1. **Adding Books**  
-   Admins can add new books by clicking the **“+”** icon in the bottom-right corner of the front page    
+   Admins can add new books by clicking the **+** icon in the bottom-right corner of the front page    
    This opens the book form page, where an admin can:
-   - Manually fill out book details  
-   - Auto-fill information by searching with the ISBN  
-   - Scan the book’s barcode
+   - Manually fill out book's information  
+   - Auto-fill book's information by searching with the ISBN  
+   - Scan the book’s barcode to fill the information
 
 2. **Accessing the Admin Panel**  
    The admin panel can be accessed from the top-right corner of the page at any time
