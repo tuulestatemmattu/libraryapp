@@ -32,6 +32,12 @@
   padding: 2%;
 }
 
+.link-button {
+  text-decoration: none;
+  color: inherit;
+  font-size: 80%;
+}
+
 @media (max-width: 599px) {
   .grid-container {
     grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
