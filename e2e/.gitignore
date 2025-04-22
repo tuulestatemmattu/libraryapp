@@ -6,4 +6,5 @@ node_modules/
 /playwright/.cache/
 
 #For playwright debug screenshots
-screenshot.png  
+*.png  
+.env
