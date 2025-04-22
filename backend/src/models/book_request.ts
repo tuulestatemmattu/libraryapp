@@ -5,6 +5,7 @@ import {
   InferAttributes,
   InferCreationAttributes,
   Model,
+  NonAttribute,
 } from 'sequelize';
 
 import { sequelize } from '../util/db';
@@ -20,6 +21,8 @@ class BookRequest extends Model<
   declare author: string;
   declare isbn: string;
   declare status: string;
+
+  declare user?: NonAttribute<User>;
 }
 
 BookRequest.init(
