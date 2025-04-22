@@ -6,10 +6,10 @@ test.describe.configure({ mode: "serial" });
 
 test.beforeAll(async ({ request }) => {
   // await request.get(BACKEND_URL + '/api/testing/resetdb');
+  console.log(BACKEND_URL);
 });
 
 test.beforeEach(async ({ page, context }) => {
-  await context.clearCookies();
   const res = await axios.post(`${BACKEND_URL}/api/testing/login`, {
     secret: CRON_SECRET,
   });
@@ -31,7 +31,7 @@ test.beforeEach(async ({ page, context }) => {
   );
 
   await page.goto(FRONTEND_URL, { waitUntil: "load" });
-  await page.screenshot({ path: "screenshot.png" });
+
   await page.getByTestId("location-select").waitFor();
   await page.getByTestId("location-select").click();
   await page.getByTestId("location-option-testing").waitFor();
@@ -49,7 +49,7 @@ test("Page loads", async ({ page, context }) => {
   await expect(page.locator("text=LibraryApp")).toBeVisible();
 });
 
-test("Manual book add by FORM", async ({ page, context }) => {
+test("Add book by form", async ({ page, context }) => {
   await page.goto(FRONTEND_URL, { waitUntil: "load" });
 
   await page.getByRole("button", { name: "Add book" }).waitFor();
@@ -78,10 +78,8 @@ test("Manual book add by FORM", async ({ page, context }) => {
   await expect(bookTitle).toBeVisible();
 });
 
-test("Manual book add by ISBN", async ({ page, context }) => {
+test("Add book by isbn", async ({ page, context }) => {
   await page.goto(FRONTEND_URL, { waitUntil: "load" });
-
-  await page.screenshot({ path: "screenshot4.png" });
 
   await page.getByRole("button", { name: "Add book" }).waitFor();
   await page.getByRole("button", { name: "Add book" }).click();
@@ -99,19 +97,15 @@ test("Manual book add by ISBN", async ({ page, context }) => {
     }
   );
 
-  await page.screenshot({ path: "screenshot2.png" });
-
   await page.getByRole("button", { name: "Add", exact: true }).waitFor();
   await page.getByRole("button", { name: "Add", exact: true }).click();
 
   await page.goto(FRONTEND_URL, { waitUntil: "load" });
-  await page.screenshot({ path: "screenshot1.png" });
 
   await (
     await page.getByTestId("book-card-9781507707616")
   ).scrollIntoViewIfNeeded();
 
-  page.screenshot({ path: "screenshot3.png" });
   await expect(
     await page.getByText("C# Programming for Beginners")
   ).toBeVisible();
