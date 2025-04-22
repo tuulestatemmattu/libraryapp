@@ -47,6 +47,7 @@ test.afterEach({}, async () => {
 test("Page loads", async ({ page, context }) => {
   await page.goto(FRONTEND_URL, { waitUntil: "load" });
   await expect(page.locator("text=LibraryApp")).toBeVisible();
+  await expect(page.getByText("testing")).toBeVisible();
 });
 
 test("Add book by form", async ({ page, context }) => {
@@ -72,7 +73,8 @@ test("Add book by form", async ({ page, context }) => {
   await page.getByRole("button", { name: "Add", exact: true }).waitFor();
   await page.getByRole("button", { name: "Add", exact: true }).click();
 
-  await page.goto(FRONTEND_URL, { waitUntil: "load" });
+  await page.getByText("LibraryApp").waitFor();
+  await page.getByText("LibraryApp").click();
 
   const bookTitle = await page.getByText("Testing book1");
   await expect(bookTitle).toBeVisible();
@@ -100,7 +102,8 @@ test("Add book by isbn", async ({ page, context }) => {
   await page.getByRole("button", { name: "Add", exact: true }).waitFor();
   await page.getByRole("button", { name: "Add", exact: true }).click();
 
-  await page.goto(FRONTEND_URL, { waitUntil: "load" });
+  await page.getByText("LibraryApp").waitFor();
+  await page.getByText("LibraryApp").click();
 
   await (
     await page.getByTestId("book-card-9781507707616")
