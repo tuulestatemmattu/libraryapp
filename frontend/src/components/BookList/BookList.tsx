@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Stack } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -25,6 +26,7 @@ const BookList = ({ books }: BookListProps) => {
   const location = useMainStore((state) => state.location);
 
   const theme = useTheme();
+  const navigate = useNavigate();
   const componentBackColor = theme.palette.componentBack.main;
 
   const filteredBooks = books.filter((book) => {
@@ -47,7 +49,7 @@ const BookList = ({ books }: BookListProps) => {
         <Box justifyContent="space-between" display="flex" alignItems="center">
           <h2>Books in office</h2>
 
-          <a href="/addRequest" className="link-button">
+          <a onClick={() => navigate('/addRequest')} className="link-button">
             Request a new book
           </a>
         </Box>
