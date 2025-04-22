@@ -28,6 +28,7 @@ interface StoreState {
   setBookRequests: (bookRequests: FetchedRequest[]) => void;
   addBookRequest: (bookRequest: FetchedRequest) => void;
   deleteBookRequest: (id: number) => void;
+  updateBookRequest: (bookRequest: FetchedRequest) => void;
 }
 
 const useMainStore = create<StoreState>((set) => ({
@@ -84,6 +85,13 @@ const useMainStore = create<StoreState>((set) => ({
     set((state) => ({
       ...state,
       bookRequests: state.bookRequests.filter((bookRequest) => bookRequest.id != id),
+    })),
+  updateBookRequest: (bookRequest: FetchedRequest) =>
+    set((state) => ({
+      ...state,
+      bookRequests: state.bookRequests.map((request) =>
+        request.id === bookRequest.id ? bookRequest : request,
+      ),
     })),
 }));
 

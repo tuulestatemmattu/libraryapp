@@ -97,6 +97,7 @@ const AddRequestPage = () => {
           </Button>
         </Box>
       </form>
+      <p></p>
       <h2>Search results</h2>
       {searchResults.length === 0 && <p>No results found</p>}
       {searchResults.length > 0 && <p>Click on a book to fill the form</p>}

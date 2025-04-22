@@ -37,6 +37,8 @@ import { FetchedTag } from '../../../interfaces/Tags';
 import { deleteBook, updateBook } from '../../../services/book';
 import SelectTags from './SelectTags';
 
+import '../AdminPage.css';
+
 const BookTable = () => {
   const queryParams = new URLSearchParams(location.search);
   const bookIdParam = Number(queryParams.get('bookId'));
@@ -233,7 +235,7 @@ const BookTable = () => {
       <Box sx={{ textAlign: 'center' }}>
         <h1>Books</h1>
       </Box>
-      <Paper sx={{ height: 'auto', width: '100%' }}>
+      <Paper className="admin-table">
         <DataGrid
           rows={rows}
           columns={columns}
