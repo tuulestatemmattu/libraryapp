@@ -53,7 +53,7 @@ LibraryApp is a modern web application designed to streamline library operations
 * [Setting up a development environment](documents/development_environment_setup.md)
 * [Setting up Slack integration](https://github.com/tuulestatemmattu/libraryapp/blob/main/documents/slack_bot_setup.md)
 
-### Development workflow
+### Supportive documentation
 * [Build pipeline flowchart](https://github.com/tuulestatemmattu/libraryapp/blob/staging/documents/build_pipeline_documentation.md)
 
 ### Services for local development
