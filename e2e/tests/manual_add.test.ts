@@ -5,7 +5,7 @@ import axios from "axios";
 test.describe.configure({ mode: "serial" });
 
 test.beforeAll(async ({ request }) => {
-  // await request.get(BACKEND_URL + '/api/testing/resetdb');
+  await request.get(BACKEND_URL + "/api/testing/resetdb");
 });
 
 test.beforeEach(async ({ page, context }) => {
