@@ -15,6 +15,8 @@ LibraryApp is a modern web application designed to streamline library operations
 - Promote other users to administrators.
 - Process book requests and notify requesters via Slack.
 
+&nbsp;
+
 ## 👁️ System Overview
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/d076ef5e55b14733b6292ddb3391bbdc)](https://app.codacy.com/gh/tuulestatemmattu/libraryapp/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
@@ -38,11 +40,21 @@ LibraryApp is a modern web application designed to streamline library operations
 - **Accessibility**: Lighthouse
 - **Other Tools**: Docker, ESLint, Prettier
 
+### User guides:
+- [User guide for regular users](https://github.com/tuulestatemmattu/libraryapp/blob/staging/documents/general_app_use_instructions.md)
+- [User guide for admin users](https://github.com/tuulestatemmattu/libraryapp/blob/staging/documents/general_app_use_instructions.md)
+
+&nbsp;
+
+
 ## 🛠️ Developer Resources
 
 ### Setup
 * [Setting up a development environment](documents/development_environment_setup.md)
 * [Setting up Slack integration](https://github.com/tuulestatemmattu/libraryapp/blob/main/documents/slack_bot_setup.md)
+
+### Development workflow
+* [Build pipeline flowchart](https://github.com/tuulestatemmattu/libraryapp/blob/staging/documents/build_pipeline_documentation.md)
 
 ### Services for local development
 * Backend [http://localhost:3001](http://localhost:3001)
@@ -64,6 +76,9 @@ LibraryApp is a modern web application designed to streamline library operations
 * `make lint`: Lints both frontend & backend
 * `make prettier`: Runs prettier for both frontend & backend
 * `make e2e`: Run e2e tests
+
+&nbsp;
+
 
 ## 🚀 Project
 
