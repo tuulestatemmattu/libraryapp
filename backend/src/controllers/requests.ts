@@ -8,8 +8,6 @@ import { requireAdmin } from '../util/middleware/requireAdmin';
 import { requireLogin } from '../util/middleware/requireLogin';
 import { sendPrivateMessage } from '../util/slackbot';
 
-//import { sendPrivateMessage } from '../util/slackbot';
-
 const router = expresss.Router();
 
 const getBookRequests = async () => {
