@@ -6,7 +6,6 @@ test.describe.configure({ mode: "serial" });
 
 test.beforeAll(async ({ request }) => {
   // await request.get(BACKEND_URL + '/api/testing/resetdb');
-  console.log(BACKEND_URL);
 });
 
 test.beforeEach(async ({ page, context }) => {
@@ -73,16 +72,13 @@ test("Add book by form", async ({ page, context }) => {
   await page.getByRole("button", { name: "Add", exact: true }).waitFor();
   await page.getByRole("button", { name: "Add", exact: true }).click();
 
-  await page.getByText("LibraryApp").waitFor();
-  await page.getByText("LibraryApp").click();
+  await page.goto(FRONTEND_URL, { waitUntil: "load" });
 
   const bookTitle = await page.getByText("Testing book1");
   await expect(bookTitle).toBeVisible();
 });
 
 test("Add book by isbn", async ({ page, context }) => {
-  await page.goto(FRONTEND_URL, { waitUntil: "load" });
-
   await page.getByRole("button", { name: "Add book" }).waitFor();
   await page.getByRole("button", { name: "Add book" }).click();
 
@@ -102,8 +98,7 @@ test("Add book by isbn", async ({ page, context }) => {
   await page.getByRole("button", { name: "Add", exact: true }).waitFor();
   await page.getByRole("button", { name: "Add", exact: true }).click();
 
-  await page.getByText("LibraryApp").waitFor();
-  await page.getByText("LibraryApp").click();
+  await page.goto(FRONTEND_URL, { waitUntil: "load" });
 
   await (
     await page.getByTestId("book-card-9781507707616")
@@ -112,4 +107,42 @@ test("Add book by isbn", async ({ page, context }) => {
   await expect(
     await page.getByText("C# Programming for Beginners")
   ).toBeVisible();
+});
+
+test("Add multiple books", async ({ page, context }) => {
+  await page.getByRole("button", { name: "Add book" }).waitFor();
+  await page.getByRole("button", { name: "Add book" }).click();
+
+  await page.getByLabel("ISBN").waitFor();
+  await page.getByLabel("ISBN").fill("9781507707616");
+
+  await page.getByRole("button", { name: "Search", exact: true }).waitFor();
+  await page.getByRole("button", { name: "Search", exact: true }).click();
+
+  await expect(page.getByLabel("Title")).toHaveValue(
+    "C# Programming for Beginners",
+    {
+      timeout: 20000,
+    }
+  );
+
+  await page.getByText("+").waitFor();
+  await page.getByText("+").click();
+
+  await page.getByRole("button", { name: "Add", exact: true }).waitFor();
+  await page.getByRole("button", { name: "Add", exact: true }).click();
+
+  await page.goto(FRONTEND_URL, { waitUntil: "load" });
+
+  await (
+    await page.getByTestId("book-card-9781507707616")
+  ).scrollIntoViewIfNeeded();
+
+  await page.getByTestId("book-card-9781507707616").click();
+
+  await expect(
+    await page.getByText("Title: C# Programming for Beginners")
+  ).toBeVisible();
+
+  await expect(await page.getByText("Copies available: 2")).toBeVisible();
 });
