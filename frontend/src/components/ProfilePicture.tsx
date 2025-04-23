@@ -21,7 +21,7 @@ const ProfilePicture = () => {
   return (
     <>
       <div onClick={() => setOpen(true)}>
-        <Avatar src={profile.picture} sx={{ cursor: 'pointer' }} />
+        <Avatar src={profile.picture} alt="Profile picture" sx={{ cursor: 'pointer' }} />
       </div>
       <Backdrop
         open={open}

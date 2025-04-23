@@ -35,23 +35,43 @@ const BottomRowButtons: React.FC<BottomRowButtonsProps> = ({
       )}
       {book.status === 'borrowed' || book.status === 'late' ? (
         <>
-          <Button variant="contained" onClick={() => handleReturn(book.id)}>
+          <Button
+            variant="contained"
+            onClick={() => handleReturn(book.id)}
+            data-testid="return-button"
+          >
             Return
           </Button>
-          <Button variant="contained" onClick={() => handleExtend(book.id)}>
+          <Button
+            variant="contained"
+            onClick={() => handleExtend(book.id)}
+            data-testid="extend-button"
+          >
             Extend
           </Button>
         </>
       ) : book.status === 'available' || book.status === 'ready' ? (
-        <Button variant="contained" onClick={() => handleBorrow(book.id)}>
+        <Button
+          variant="contained"
+          onClick={() => handleBorrow(book.id)}
+          data-testid="borrow-button"
+        >
           Borrow
         </Button>
       ) : book.status === 'unavailable' ? (
-        <Button variant="contained" onClick={() => handleAddToQueue(book.id)}>
+        <Button
+          variant="contained"
+          onClick={() => handleAddToQueue(book.id)}
+          data-testid="reserve-button"
+        >
           Reserve
         </Button>
       ) : book.status === 'reserved' ? (
-        <Button variant="contained" onClick={() => handleRemoveFromQueue(book.id)}>
+        <Button
+          variant="contained"
+          onClick={() => handleRemoveFromQueue(book.id)}
+          data-testid="unreserve-button"
+        >
           Unreserve
         </Button>
       ) : (
