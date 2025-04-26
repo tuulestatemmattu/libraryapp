@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { Book, Borrow, QueueEntry, Tag, User } from '../models';
+import { Book, BookRequest, Borrow, QueueEntry, Tag, User } from '../models';
 import {
   calculateDaysLeft,
   calculateDueDate,
@@ -107,6 +107,29 @@ bookRouter.post('/', requireAdmin, bookValidator, async (req, res) => {
     sendNotificationToChannel(payload).catch((err: unknown) => {
       console.error('Failed to send Slack notification:', err);
     });
+    const related_requests = await BookRequest.findAll({
+      where: { isbn: isbn },
+      include: [
+        {
+          model: User,
+          attributes: ['email'],
+          required: false,
+        },
+      ],
+    });
+    for (const related_request of related_requests) {
+      if (related_request.user) {
+        sendPrivateMessage(
+          related_request.user.email,
+          `:bell: A book you requested has been added to the library!
+          *${title}*
+          *Authors*: ${authors}
+          *ISBN*: ${isbn}`,
+        ).catch((error: unknown) => {
+          console.error('Failed to send Slack notification:', error);
+        });
+      }
+    }
   }
 });
 
