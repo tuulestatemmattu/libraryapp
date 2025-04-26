@@ -103,8 +103,7 @@ router.put('/:id', requireAdmin, async (req, res) => {
   }
 
   for (const bookRequest of bookRequests) {
-    const editedRequest = { ...BookRequest, status: status };
-    await bookRequest.update(editedRequest);
+    await bookRequest.update({ status: status });
 
     const user_message = `Your request for book "${bookRequest.title}" was ${status}.\nMessage from administrator: ${message}`;
     await sendPrivateMessage(bookRequest.user?.email as string, user_message);
