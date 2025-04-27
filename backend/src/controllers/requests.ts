@@ -1,4 +1,4 @@
-import expresss from 'express';
+import express from 'express';
 import { Op } from 'sequelize';
 
 import { User } from '../models';
@@ -8,7 +8,7 @@ import { requireAdmin } from '../util/middleware/requireAdmin';
 import { requireLogin } from '../util/middleware/requireLogin';
 import { sendPrivateMessage } from '../util/slackbot';
 
-const router = expresss.Router();
+const router = express.Router();
 
 const getBookRequests = async () => {
   const data = await BookRequest.findAll({
@@ -103,10 +103,13 @@ router.put('/:id', requireAdmin, async (req, res) => {
   }
 
   for (const bookRequest of bookRequests) {
-    const editedRequest = { ...BookRequest, status: status };
-    await bookRequest.update(editedRequest);
+    let msg_status = status;
+    if (bookRequest.status === 'delivered' && status === 'accepted') {
+      msg_status = 'reverted to accepted';
+    }
+    await bookRequest.update({ status: status });
 
-    const user_message = `Your request for book "${bookRequest.title}" was ${status}.\nMessage from administrator: ${message}`;
+    const user_message = `Your request for book "${bookRequest.title}" was ${msg_status}.\nMessage from administrator: ${message}`;
     await sendPrivateMessage(bookRequest.user?.email as string, user_message);
   }
 

@@ -46,4 +46,14 @@ const resetTables = async () => {
   await BookRequest.destroy({ where: {} });
 };
 
-export { syncModels, resetTables, Book, User, Borrow, Tag, ConnectionBookTag, QueueEntry };
+export {
+  syncModels,
+  resetTables,
+  Book,
+  User,
+  Borrow,
+  Tag,
+  ConnectionBookTag,
+  QueueEntry,
+  BookRequest,
+};
