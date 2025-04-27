@@ -75,7 +75,7 @@ const BorrowTable = () => {
     },
     {
       field: 'due',
-      headerName: 'Due date',
+      headerName: 'Due Date',
       width: 150,
       valueFormatter: (_value, row) => {
         if (!row.active) {
@@ -85,7 +85,7 @@ const BorrowTable = () => {
     },
     {
       field: 'days',
-      headerName: 'Days left',
+      headerName: 'Days Left',
       width: 100,
       renderCell: (params) => {
         if (!params.row.active) {
@@ -135,7 +135,7 @@ const BorrowTable = () => {
   return (
     <article>
       <Box sx={{ textAlign: 'center' }}>
-        <h1>Borrow data</h1>
+        <h1>Borrow Data</h1>
       </Box>
       <Paper className="admin-table">
         <DataGrid

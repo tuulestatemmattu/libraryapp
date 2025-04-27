@@ -68,6 +68,7 @@ const NavBar = () => {
               </Typography>
             </Button>
             <Select
+              data-testid="location-select"
               variant="standard"
               disableUnderline={true}
               value={location}
@@ -75,7 +76,11 @@ const NavBar = () => {
               sx={{ mt: -1, fontSize: '0.9rem' }}
             >
               {officeLocations.map((officeLocation) => (
-                <MenuItem key={officeLocation} value={officeLocation}>
+                <MenuItem
+                  key={officeLocation}
+                  value={officeLocation}
+                  data-testid={`location-option-${officeLocation}`}
+                >
                   {officeLocation}
                 </MenuItem>
               ))}

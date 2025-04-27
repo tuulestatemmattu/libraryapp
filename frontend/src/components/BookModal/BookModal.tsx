@@ -114,7 +114,7 @@ const BookModal = ({ book, setOpen }: BookModalProps) => {
 
   return (
     <Card className="book-modal">
-      <Grid container sx={{ m: 1.5, overflowY: 'scroll', overflowX: 'hidden' }}>
+      <Grid container sx={{ m: 1.5, overflowX: 'hidden' }}>
         {/* Book Title and Close Button */}
         <Grid container size={12}>
           <Typography variant="h6" sx={{ pr: 4, pb: 2 }}>
