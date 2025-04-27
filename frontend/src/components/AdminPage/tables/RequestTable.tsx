@@ -124,7 +124,28 @@ const RequestTable = () => {
     { field: 'isbn', headerName: 'ISBN', width: 150 },
     { field: 'user_emails', headerName: 'Users', width: 200 },
     { field: 'request_count', headerName: 'Request Count', width: 150 },
-    { field: 'status', headerName: 'Status', width: 100 },
+    {
+      field: 'status',
+      headerName: 'Status',
+      width: 100,
+      renderCell: (params) => {
+        if (!params.row.status) {
+          return <span>-</span>;
+        } else {
+          let textColor = '';
+
+          if (params.value === 'accepted') {
+            textColor = '#66bb6a';
+          } else if (params.value === 'rejected') {
+            textColor = '#f44336';
+          } else {
+            textColor = '#000000';
+          }
+
+          return <span style={{ color: textColor, fontWeight: 'bold' }}>{params.value}</span>;
+        }
+      },
+    },
     {
       field: 'actions',
       type: 'actions',
