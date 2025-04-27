@@ -119,6 +119,7 @@ bookRouter.post('/', requireAdmin, bookValidator, async (req, res) => {
     });
     for (const related_request of related_requests) {
       if (related_request.user) {
+        await related_request.update({ status: 'delivered' });
         sendPrivateMessage(
           related_request.user.email,
           `:bell: A book you requested has been added to the library!
