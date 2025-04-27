@@ -1,4 +1,4 @@
-import expresss from 'express';
+import express from 'express';
 import { Op } from 'sequelize';
 
 import { User } from '../models';
@@ -8,7 +8,7 @@ import { requireAdmin } from '../util/middleware/requireAdmin';
 import { requireLogin } from '../util/middleware/requireLogin';
 import { sendPrivateMessage } from '../util/slackbot';
 
-const router = expresss.Router();
+const router = express.Router();
 
 const getBookRequests = async () => {
   const data = await BookRequest.findAll({

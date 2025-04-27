@@ -3,6 +3,7 @@ import { useState } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import { TextField } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -31,7 +32,7 @@ import { deleteBookRequest, modifyRequestStatus } from '../../../services/reques
 
 import '../AdminPage.css';
 
-type DialogueOption = 'accept' | 'reject';
+type DialogueOption = 'accept' | 'reject' | 'deliver';
 
 const RequestTable = () => {
   useRequireAdmin();
@@ -87,6 +88,17 @@ const RequestTable = () => {
     }
   };
 
+  const handleDeliverClick = async (id: number | null) => {
+    if (id) {
+      const updatedRequest = await modifyRequestStatus(id, userMessage, 'delivered');
+      storeUpdateBookRequest(updatedRequest);
+      showNotification('Book request marked as delivered', 'success');
+      setOpen(false);
+      setUserMessage('');
+      setId(null);
+    }
+  };
+
   const handleConfirmDelete = async () => {
     if (deleteId !== null) {
       await deleteBookRequest(Number(deleteId));
@@ -118,34 +130,83 @@ const RequestTable = () => {
       headerName: 'Actions',
       width: 150,
       cellClassName: 'actions',
-      getActions: ({ id }) => {
-        return [
-          <>
-            <GridActionsCellItem
-              icon={<CheckIcon />}
-              label="Accept"
-              onClick={() => {
-                setId(Number(id));
-                setDialogueOption('accept');
-                setOpen(true);
-              }}
-            />
-            <GridActionsCellItem
-              icon={<DeleteIcon />}
-              label="Delete"
-              onClick={() => handleDeleteClick(id)}
-            />
-            <GridActionsCellItem
-              icon={<ClearIcon />}
-              label="Reject"
-              onClick={() => {
-                setId(Number(id));
-                setDialogueOption('reject');
-                setOpen(true);
-              }}
-            />
-          </>,
-        ];
+      getActions: ({ id, row }) => {
+        if (row.status == 'delivered') {
+          return [
+            <>
+              <GridActionsCellItem
+                icon={<DeleteIcon />}
+                label="Delete"
+                onClick={() => handleDeleteClick(id)}
+              />
+              <GridActionsCellItem
+                icon={<ClearIcon />}
+                label="Reject"
+                onClick={() => {
+                  setId(Number(id));
+                  setDialogueOption('reject');
+                  setOpen(true);
+                }}
+              />
+            </>,
+          ];
+        } else if (row.status == 'accepted') {
+          return [
+            <>
+              <GridActionsCellItem
+                icon={<LocalShippingIcon />}
+                label="Deliver"
+                onClick={() => {
+                  setId(Number(id));
+                  setDialogueOption('deliver');
+                  setOpen(true);
+                }}
+              />
+              <GridActionsCellItem
+                icon={<DeleteIcon />}
+                label="Delete"
+                onClick={() => handleDeleteClick(id)}
+              />
+              <GridActionsCellItem
+                icon={<ClearIcon />}
+                label="Reject"
+                onClick={() => {
+                  setId(Number(id));
+                  setDialogueOption('reject');
+                  setOpen(true);
+                }}
+              />
+            </>,
+          ];
+        } else {
+          return [
+            <>
+              <GridActionsCellItem
+                icon={<CheckIcon />}
+                label="Accept"
+                onClick={() => {
+                  setId(Number(id));
+                  setDialogueOption('accept');
+                  setOpen(true);
+                }}
+              />
+              <GridActionsCellItem
+                icon={<DeleteIcon />}
+                label="Delete"
+                onClick={() => handleDeleteClick(id)}
+              />
+              <GridActionsCellItem
+                icon={<ClearIcon />}
+                label="Reject"
+                onClick={() => {
+                  setId(Number(id));
+                  setDialogueOption('reject');
+                  setOpen(true);
+                }}
+              />
+            </>,
+          ];
+        }
       },
     },
   ];
@@ -197,7 +258,11 @@ const RequestTable = () => {
       </Dialog>
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>
-          {dialogueOption === 'accept' ? 'Accept request' : 'Reject request'}
+          {dialogueOption === 'accept'
+            ? 'Accept request'
+            : dialogueOption === 'reject'
+              ? 'Reject request'
+              : 'Mark as delivered'}
         </DialogTitle>
         <DialogContent>
           <TextField
@@ -216,11 +281,19 @@ const RequestTable = () => {
           </Button>
           <Button
             onClick={() =>
-              dialogueOption === 'accept' ? handleAcceptClick(id) : handleRejectClick(id)
+              dialogueOption === 'accept'
+                ? handleAcceptClick(id)
+                : dialogueOption === 'reject'
+                  ? handleRejectClick(id)
+                  : handleDeliverClick(id)
             }
             color="primary"
           >
-            {dialogueOption === 'accept' ? 'Accept' : 'Reject'}
+            {dialogueOption === 'accept'
+              ? 'Accept'
+              : dialogueOption === 'reject'
+                ? 'Reject'
+                : 'Deliver'}
           </Button>
         </DialogActions>
       </Dialog>
