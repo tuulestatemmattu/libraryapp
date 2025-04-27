@@ -28,9 +28,19 @@ const NavBar = () => {
     const fetchLocations = async () => {
       const locations = await getLocations();
       setOfficeLocations(locations);
+
+      const storedLocation = localStorage.getItem('location');
+      if (storedLocation && locations.includes(storedLocation)) {
+        setLocation(storedLocation);
+      }
     };
     fetchLocations();
   }, []);
+
+  const updateLocation = (newLocation: string) => {
+    setLocation(newLocation);
+    localStorage.setItem('location', newLocation);
+  };
 
   const handleAdminClick = () => {
     navigate('/admin');
@@ -58,14 +68,19 @@ const NavBar = () => {
               </Typography>
             </Button>
             <Select
+              data-testid="location-select"
               variant="standard"
               disableUnderline={true}
               value={location}
-              onChange={({ target }) => setLocation(target.value)}
+              onChange={({ target }) => updateLocation(target.value)}
               sx={{ mt: -1, fontSize: '0.9rem' }}
             >
               {officeLocations.map((officeLocation) => (
-                <MenuItem key={officeLocation} value={officeLocation}>
+                <MenuItem
+                  key={officeLocation}
+                  value={officeLocation}
+                  data-testid={`location-option-${officeLocation}`}
+                >
                   {officeLocation}
                 </MenuItem>
               ))}

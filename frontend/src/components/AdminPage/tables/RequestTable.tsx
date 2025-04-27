@@ -107,7 +107,7 @@ const RequestTable = () => {
 
   const columns: GridColDef[] = [
     { field: 'title', headerName: 'Title', width: 250 },
-    { field: 'author', headerName: 'Auhors', width: 200 },
+    { field: 'author', headerName: 'Authors', width: 200 },
     { field: 'isbn', headerName: 'ISBN', width: 150 },
     { field: 'user_emails', headerName: 'Users', width: 200 },
     { field: 'request_count', headerName: 'Request Count', width: 150 },
@@ -171,7 +171,7 @@ const RequestTable = () => {
     },
   ];
 
-  const paginationModel = { page: 0, pageSize: 5 };
+  const paginationModel = { page: 0, pageSize: 20 };
 
   return (
     <article>
@@ -188,7 +188,7 @@ const RequestTable = () => {
             pagination: { paginationModel },
             sorting: { sortModel: [{ field: 'request_count', sort: 'desc' }] },
           }}
-          pageSizeOptions={[5, 10]}
+          pageSizeOptions={[5, 10, 20, 50, 100]}
           rowModesModel={rowModesModel}
           onRowModesModelChange={handleRowModesModelChange}
           sx={{ border: 1 }}

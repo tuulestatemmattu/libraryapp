@@ -129,7 +129,7 @@ const QueueTable = () => {
   return (
     <article>
       <Box sx={{ textAlign: 'center' }}>
-        <h1>Queue entry data</h1>
+        <h1>Queue Entry Data</h1>
       </Box>
       <Paper className="admin-table">
         <DataGrid
