@@ -4,6 +4,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import RestoreIcon from '@mui/icons-material/Restore';
 import { TextField } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -32,7 +33,7 @@ import { deleteBookRequest, modifyRequestStatus } from '../../../services/reques
 
 import '../AdminPage.css';
 
-type DialogueOption = 'accept' | 'reject' | 'deliver';
+type DialogueOption = 'accept' | 'reject' | 'deliver' | 'undeliver';
 
 const RequestTable = () => {
   useRequireAdmin();
@@ -134,6 +135,15 @@ const RequestTable = () => {
         if (row.status == 'delivered') {
           return [
             <>
+              <GridActionsCellItem
+                icon={<RestoreIcon />}
+                label="Undeliver"
+                onClick={() => {
+                  setId(Number(id));
+                  setDialogueOption('undeliver');
+                  setOpen(true);
+                }}
+              />
               <GridActionsCellItem
                 icon={<DeleteIcon />}
                 label="Delete"
@@ -262,7 +272,9 @@ const RequestTable = () => {
             ? 'Accept request'
             : dialogueOption === 'reject'
               ? 'Reject request'
-              : 'Mark as delivered'}
+              : dialogueOption === 'deliver'
+                ? 'Mark as delivered'
+                : 'Revert to accepted'}
         </DialogTitle>
         <DialogContent>
           <TextField
@@ -285,7 +297,9 @@ const RequestTable = () => {
                 ? handleAcceptClick(id)
                 : dialogueOption === 'reject'
                   ? handleRejectClick(id)
-                  : handleDeliverClick(id)
+                  : dialogueOption === 'deliver'
+                    ? handleDeliverClick(id)
+                    : handleAcceptClick(id)
             }
             color="primary"
           >
@@ -293,7 +307,9 @@ const RequestTable = () => {
               ? 'Accept'
               : dialogueOption === 'reject'
                 ? 'Reject'
-                : 'Deliver'}
+                : dialogueOption === 'deliver'
+                  ? 'Deliver'
+                  : 'Revert'}
           </Button>
         </DialogActions>
       </Dialog>

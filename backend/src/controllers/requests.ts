@@ -103,9 +103,13 @@ router.put('/:id', requireAdmin, async (req, res) => {
   }
 
   for (const bookRequest of bookRequests) {
+    let msg_status = status;
+    if (bookRequest.status === 'delivered' && status === 'accepted') {
+      msg_status = 'reverted to accepted';
+    }
     await bookRequest.update({ status: status });
 
-    const user_message = `Your request for book "${bookRequest.title}" was ${status}.\nMessage from administrator: ${message}`;
+    const user_message = `Your request for book "${bookRequest.title}" was ${msg_status}.\nMessage from administrator: ${message}`;
     await sendPrivateMessage(bookRequest.user?.email as string, user_message);
   }
 
