@@ -29,10 +29,8 @@ const AddRequestPage = () => {
     try {
       const result = await searchBooks(title, author, isbn);
       if (result && result.length > 0) {
-        console.log('Books found:', result);
         setSearchResults(result);
       } else {
-        console.log('No books found.');
         setSearchResults([]);
       }
     } catch (error) {

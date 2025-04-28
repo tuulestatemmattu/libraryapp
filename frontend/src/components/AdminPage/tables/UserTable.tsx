@@ -47,12 +47,10 @@ const UserTable = () => {
 
   const handlePromotion = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    console.log(selected);
 
     for (const user of selected) {
       try {
-        const result = await promoteUser(user);
-        console.log(result);
+        await promoteUser(user);
         showNotification('User promoted successfully!', 'success');
       } catch {
         showNotification(`Failed to promote ${user}`, 'error');
@@ -63,12 +61,10 @@ const UserTable = () => {
 
   const handleDemotion = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    console.log(selected);
 
     for (const user of selected) {
       try {
-        const result = await demoteUser(user);
-        console.log(result);
+        await demoteUser(user);
         showNotification('User demoted successfully!', 'success');
       } catch {
         showNotification(`Failed to demote ${user}`, 'error');

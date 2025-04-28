@@ -44,7 +44,6 @@ const BorrowTable = () => {
   const handleReturn = async (id: number) => {
     try {
       await returnBook(id); // Ensure the return is completed before fetching new data
-      console.log(`Book with ID ${id} returned successfully.`);
 
       const result = await getBorrows(); // Fetch updated borrow list
 

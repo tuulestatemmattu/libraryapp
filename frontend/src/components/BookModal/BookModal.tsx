@@ -67,7 +67,6 @@ const BookModal = ({ book, setOpen }: BookModalProps) => {
   const handleExtend = async (id: number) => {
     try {
       const newLoan = await extendBookLoan(id);
-      console.log('Extended book:', newLoan);
       addOrUpdateBook(newLoan);
       showNotification('Loan extended successfully', 'success');
       handleClose();

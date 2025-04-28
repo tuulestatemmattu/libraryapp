@@ -37,7 +37,6 @@ const BarcodeScanner = ({ isbnHandler }: BarcodeScannerProps) => {
 
   const stopVideoStream = () => {
     if (stopStreamRef.current) {
-      console.log('Turning off camera');
       stopStreamRef.current();
     }
   };
@@ -56,7 +55,6 @@ const BarcodeScanner = ({ isbnHandler }: BarcodeScannerProps) => {
   };
 
   const handleBarcodeDetection = async (data: QuaggaJSResultObject) => {
-    console.log(data.codeResult.code);
     const code = data.codeResult.code;
     if (alreadyScanned || !code) {
       return;
@@ -107,7 +105,6 @@ const BarcodeScanner = ({ isbnHandler }: BarcodeScannerProps) => {
           console.error(err);
           return;
         }
-        console.log('Initialization finished. Ready to start');
         Quagga.start();
       },
     );
