@@ -59,7 +59,6 @@ const RequestTable = () => {
     request_count: bookRequest.request_count,
     status: bookRequest.status,
   }));
-  //sort((a, b) => a.request_count - b.request_count);
 
   const handleDeleteClick = (id: GridRowId) => {
     setDeleteId(id);
@@ -256,7 +255,6 @@ const RequestTable = () => {
           editMode="row"
           initialState={{
             pagination: { paginationModel },
-            //sorting: { sortModel: [{ field: 'request_count', sort: 'desc' }] },
           }}
           pageSizeOptions={[5, 10, 20, 50, 100]}
           rowModesModel={rowModesModel}
