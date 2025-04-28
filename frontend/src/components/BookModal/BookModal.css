@@ -7,6 +7,7 @@
   max-height: 90vh;
   overflow-y: scroll !important;
   scrollbar-width: none;
+  margin-bottom: 10vh;
 }
 
 /* overrides CardContent rules within this modal */
