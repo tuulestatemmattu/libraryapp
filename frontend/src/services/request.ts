@@ -7,6 +7,7 @@ const baseUrl = apiBaseUrl + '/requests';
 
 const getBookRequests = async () => {
   const response = await axios.get(baseUrl);
+  console.log('Book requests:', response.data);
   return response.data;
 };
 
