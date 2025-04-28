@@ -50,17 +50,16 @@ const RequestTable = () => {
   const storeDeleteBookRequest = useMainStore((state) => state.deleteBookRequest);
   const storeUpdateBookRequest = useMainStore((state) => state.updateBookRequest);
 
-  const rows = bookRequests
-    .map((bookRequest: FetchedRequest) => ({
-      id: bookRequest.id,
-      title: bookRequest.title,
-      author: bookRequest.author,
-      isbn: bookRequest.isbn,
-      user_emails: bookRequest.user_emails,
-      request_count: bookRequest.request_count,
-      status: bookRequest.status,
-    }))
-    .sort((a, b) => a.request_count - b.request_count);
+  const rows = bookRequests.map((bookRequest: FetchedRequest) => ({
+    id: bookRequest.id,
+    title: bookRequest.title,
+    author: bookRequest.author,
+    isbn: bookRequest.isbn,
+    user_emails: bookRequest.user_emails,
+    request_count: bookRequest.request_count,
+    status: bookRequest.status,
+  }));
+  //sort((a, b) => a.request_count - b.request_count);
 
   const handleDeleteClick = (id: GridRowId) => {
     setDeleteId(id);
@@ -257,7 +256,7 @@ const RequestTable = () => {
           editMode="row"
           initialState={{
             pagination: { paginationModel },
-            sorting: { sortModel: [{ field: 'request_count', sort: 'desc' }] },
+            //sorting: { sortModel: [{ field: 'request_count', sort: 'desc' }] },
           }}
           pageSizeOptions={[5, 10, 20, 50, 100]}
           rowModesModel={rowModesModel}

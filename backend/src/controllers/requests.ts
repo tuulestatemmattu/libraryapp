@@ -30,7 +30,22 @@ const getBookRequests = async () => {
       [sequelize.fn('COUNT', sequelize.col('id')), 'request_count'],
     ],
     group: ['isbn', 'user.google_id'],
-    order: [[sequelize.fn('COUNT', sequelize.col('id')), 'DESC']],
+    order: [
+      // First, order by status: open -> accepted -> rejected
+      [
+        sequelize.literal(
+          `CASE 
+            WHEN MIN(status) = 'open' THEN 0 
+            WHEN MIN(status) = 'accepted' THEN 1 
+            WHEN MIN(status) = 'rejected' THEN 2 
+            ELSE 3 
+          END`,
+        ),
+        'ASC',
+      ],
+      // Second, order by request count (descending) within each status group
+      [sequelize.fn('COUNT', sequelize.col('id')), 'DESC'],
+    ],
     include: [
       {
         model: User,
