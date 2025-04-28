@@ -180,7 +180,7 @@ const BookModal = ({ book, setOpen }: BookModalProps) => {
         </Grid>
 
         {/* Tags Slider */}
-        <Grid container>
+        <Grid container sx={{ width: '100%', my: 0 }}>
           <CardContent>
             <ItemsSlider renderButtons={false} backgroundColor={theme.palette.componentBack.light}>
               {book.tags.map((tag) => (
