@@ -190,6 +190,21 @@ const BookModal = ({ book, setOpen }: BookModalProps) => {
           </CardContent>
         </Grid>
 
+        {/* Action Buttons */}
+        <Grid container>
+          <CardActions>
+            <BottomRowButtons
+              book={book}
+              handleEdit={handleEdit}
+              handleReturn={handleReturn}
+              handleExtend={handleExtend}
+              handleBorrow={handleBorrow}
+              handleAddToQueue={handleAddToQueue}
+              handleRemoveFromQueue={handleRemoveFromQueue}
+            />
+          </CardActions>
+        </Grid>
+
         {/* Description */}
         {book.description && (
           <Grid container sx={{ my: 1 }}>
@@ -203,21 +218,6 @@ const BookModal = ({ book, setOpen }: BookModalProps) => {
             </CardContent>
           </Grid>
         )}
-
-        {/* Action Buttons */}
-        <Grid container sx={{ mt: 2 }}>
-          <CardActions>
-            <BottomRowButtons
-              book={book}
-              handleEdit={handleEdit}
-              handleReturn={handleReturn}
-              handleExtend={handleExtend}
-              handleBorrow={handleBorrow}
-              handleAddToQueue={handleAddToQueue}
-              handleRemoveFromQueue={handleRemoveFromQueue}
-            />
-          </CardActions>
-        </Grid>
       </Grid>
     </Card>
   );
