@@ -1,5 +1,6 @@
 .book-modal {
   position: relative;
+  margin-bottom: 10vh;
   border-radius: 25px !important;
   padding-left: 1vw;
   width: 90vw;
@@ -7,7 +8,6 @@
   max-height: 90vh;
   overflow-y: scroll !important;
   scrollbar-width: none;
-  margin-bottom: 10vh;
 }
 
 /* overrides CardContent rules within this modal */
