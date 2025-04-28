@@ -15,7 +15,7 @@ const ScrollableList = ({ title, books }: ScrollableListProps) => {
   const theme = useTheme();
 
   return (
-    <div>
+    <div data-testid={title}>
       {title}
       <article
         style={{

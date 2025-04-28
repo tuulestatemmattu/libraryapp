@@ -18,6 +18,8 @@ import useRequireAdmin from '../../../hooks/useRequireAdmin';
 import Profile from '../../../interfaces/Profile';
 import { demoteUser, getUsers, promoteUser } from '../../../services/admin';
 
+import '../AdminPage.css';
+
 const UserTable = () => {
   useRequireAdmin();
   const [rows, setRows] = useState([]);
@@ -82,7 +84,7 @@ const UserTable = () => {
     { ...GRID_CHECKBOX_SELECTION_COL_DEF },
   ];
 
-  const paginationModel = { page: 0, pageSize: 5 };
+  const paginationModel = { page: 0, pageSize: 20 };
 
   const CustomToolBar = () => {
     return (
@@ -100,14 +102,14 @@ const UserTable = () => {
   return (
     <article>
       <Box sx={{ textAlign: 'center' }}>
-        <h1>users</h1>
+        <h1>Users</h1>
       </Box>
-      <Paper sx={{ height: 400, width: '100%' }}>
+      <Paper className="admin-table">
         <DataGrid
           rows={rows}
           columns={columns}
           initialState={{ pagination: { paginationModel } }}
-          pageSizeOptions={[5, 10]}
+          pageSizeOptions={[5, 10, 20, 50, 100]}
           checkboxSelection
           rowSelectionModel={selected}
           onRowSelectionModelChange={(ids) => {

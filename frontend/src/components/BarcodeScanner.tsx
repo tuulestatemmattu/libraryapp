@@ -42,7 +42,21 @@ const BarcodeScanner = ({ isbnHandler }: BarcodeScannerProps) => {
     }
   };
 
+  const validateCodeResult = (data: QuaggaJSResultObject, errorThreshold: number) => {
+    // extracts the error value for each decoded number in the barcode
+    const decodedCodeErrors = data.codeResult.decodedCodes
+      .filter((code) => code.code !== undefined)
+      .map((code) => code.error)
+      .filter((error) => error !== undefined);
+    if (Math.max(...decodedCodeErrors) > errorThreshold) {
+      // if error value for some number in the barcode is higher than threshold, reject the result
+      return false;
+    }
+    return true;
+  };
+
   const handleBarcodeDetection = async (data: QuaggaJSResultObject) => {
+    console.log(data.codeResult.code);
     const code = data.codeResult.code;
     if (alreadyScanned || !code) {
       return;
@@ -50,6 +64,10 @@ const BarcodeScanner = ({ isbnHandler }: BarcodeScannerProps) => {
 
     const isbn = eanToIsbn(code);
     if (!validateIsbn(isbn)) {
+      return;
+    }
+
+    if (!validateCodeResult(data, 0.16)) {
       return;
     }
 

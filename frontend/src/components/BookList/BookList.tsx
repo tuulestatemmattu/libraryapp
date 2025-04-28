@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Stack } from '@mui/material';
-import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Input from '@mui/material/Input';
@@ -25,9 +24,9 @@ const BookList = ({ books }: BookListProps) => {
   const [filter, setFilter] = useState('');
   const [selectedTags, setSelectedTags] = useState<FetchedTag[]>([]);
   const location = useMainStore((state) => state.location);
-  const navigate = useNavigate();
 
   const theme = useTheme();
+  const navigate = useNavigate();
   const componentBackColor = theme.palette.componentBack.main;
 
   const filteredBooks = books.filter((book) => {
@@ -50,9 +49,9 @@ const BookList = ({ books }: BookListProps) => {
         <Box justifyContent="space-between" display="flex" alignItems="center">
           <h2>Books in office</h2>
 
-          <Button variant="contained" color="primary" onClick={() => navigate('/addRequest')}>
+          <a onClick={() => navigate('/addRequest')} className="link-button">
             Request a new book
-          </Button>
+          </a>
         </Box>
         <Box className="filter-box">
           <Input

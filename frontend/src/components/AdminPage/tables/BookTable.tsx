@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 
+import CancelIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
@@ -36,6 +37,8 @@ import { AdminViewBook, FetchedBook } from '../../../interfaces/Book';
 import { FetchedTag } from '../../../interfaces/Tags';
 import { deleteBook, updateBook } from '../../../services/book';
 import SelectTags from './SelectTags';
+
+import '../AdminPage.css';
 
 const BookTable = () => {
   const queryParams = new URLSearchParams(location.search);
@@ -108,6 +111,13 @@ const BookTable = () => {
   const handleDeleteCancel = () => {
     setDeleteDialogOpen(false);
     setDeleteId(null);
+  };
+
+  const handleCancelClick = (id: GridRowId) => () => {
+    setRowModesModel({
+      ...rowModesModel,
+      [id]: { mode: GridRowModes.View, ignoreModifications: true },
+    });
   };
 
   const processRowUpdate = async (newRow: GridRowModel) => {
@@ -200,6 +210,11 @@ const BookTable = () => {
         if (isInEditMode) {
           return [
             <GridActionsCellItem icon={<SaveIcon />} label="Save" onClick={handleSaveClick(id)} />,
+            <GridActionsCellItem
+              icon={<CancelIcon />}
+              label="Cancel"
+              onClick={handleCancelClick(id)}
+            />,
           ];
         }
 
@@ -215,7 +230,7 @@ const BookTable = () => {
     },
   ];
 
-  const paginationModel = { page: 0, pageSize: 5 };
+  const paginationModel = { page: 0, pageSize: 20 };
 
   const CustomToolBar = () => {
     return (
@@ -233,14 +248,14 @@ const BookTable = () => {
       <Box sx={{ textAlign: 'center' }}>
         <h1>Books</h1>
       </Box>
-      <Paper sx={{ height: 'auto', width: '100%' }}>
+      <Paper className="admin-table">
         <DataGrid
           rows={rows}
           columns={columns}
           editMode="row"
           getRowHeight={() => 'auto'}
           initialState={{ pagination: { paginationModel } }}
-          pageSizeOptions={[5, 10]}
+          pageSizeOptions={[5, 10, 20, 50, 100]}
           rowModesModel={rowModesModel}
           onRowModesModelChange={handleRowModesModelChange}
           onRowEditStop={handleRowEditStop}
@@ -250,6 +265,8 @@ const BookTable = () => {
             '& .MuiDataGrid-row.MuiDataGrid-row--editing': {
               '& .MuiDataGrid-cell': {
                 backgroundColor: 'rgba(255, 235, 60, 0.5) !important',
+                display: 'flex',
+                alignItems: 'center',
               },
             },
             border: 1,

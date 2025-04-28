@@ -50,7 +50,7 @@ let theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "'Roboto', serif",
+    fontFamily: "'Montserrat', sans-serif",
     h2: {
       fontSize: 'medium',
     },
@@ -81,17 +81,10 @@ let theme = createTheme({
         },
       },
     },
-    MuiBackdrop: {
-      styleOverrides: {
-        root: {
-          zIndex: 1301,
-        },
-      },
-    },
     MuiCssBaseline: {
       styleOverrides: {
         '*': {
-          fontFamily: "'Roboto', serif",
+          fontFamily: "'Montserrat', sans-serif",
         },
         body: {
           backgroundColor: '#f0f0ec',
@@ -159,6 +152,12 @@ theme = createTheme(theme, {
       },
       name: 'expandableCollapsable',
     }),
+    hoverTag: theme.palette.augmentColor({
+      color: {
+        main: 'rgb(255, 180, 0)',
+      },
+      name: 'hoverTag',
+    }),
   },
 });
 
@@ -171,6 +170,7 @@ declare module '@mui/material/styles' {
     reserved: Palette['primary'];
     unavailable: Palette['primary'];
     expandableCollapsable: Palette['primary'];
+    hoverTag: Palette['primary'];
   }
 
   interface PaletteOptions {
@@ -182,6 +182,7 @@ declare module '@mui/material/styles' {
     reserved?: PaletteOptions['primary'];
     unavailable?: PaletteOptions['primary'];
     expandableCollapsable?: PaletteOptions['primary'];
+    hoverTag?: PaletteOptions['primary'];
   }
 }
 
@@ -193,6 +194,7 @@ declare module '@mui/material/Chip' {
     ready: true;
     reserved: true;
     unavailable: true;
+    hoverTag: true;
   }
 }
 
