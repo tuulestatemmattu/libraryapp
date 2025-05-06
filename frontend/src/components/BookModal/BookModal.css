@@ -1,5 +1,7 @@
 .book-modal {
   position: relative;
+  margin-top: 5vh;
+  margin-bottom: 10vh;
   border-radius: 25px !important;
   padding-left: 1vw;
   width: 90vw;

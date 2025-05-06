@@ -180,7 +180,7 @@ const BookModal = ({ book, setOpen }: BookModalProps) => {
         </Grid>
 
         {/* Tags Slider */}
-        <Grid container>
+        <Grid container sx={{ width: '100%', my: 0 }}>
           <CardContent>
             <ItemsSlider renderButtons={false} backgroundColor={theme.palette.componentBack.light}>
               {book.tags.map((tag) => (
@@ -190,22 +190,8 @@ const BookModal = ({ book, setOpen }: BookModalProps) => {
           </CardContent>
         </Grid>
 
-        {/* Description */}
-        {book.description && (
-          <Grid container sx={{ my: 1 }}>
-            <CardContent>
-              <ExpandableCollapsable
-                charLimit={500}
-                readMoreText={'Read more ▼'}
-                readLessText={'Read less ▲'}
-                content={book.description}
-              />
-            </CardContent>
-          </Grid>
-        )}
-
         {/* Action Buttons */}
-        <Grid container sx={{ mt: 2 }}>
+        <Grid container>
           <CardActions>
             <BottomRowButtons
               book={book}
@@ -218,6 +204,20 @@ const BookModal = ({ book, setOpen }: BookModalProps) => {
             />
           </CardActions>
         </Grid>
+
+        {/* Description */}
+        {book.description && (
+          <Grid container sx={{ my: 1 }}>
+            <CardContent>
+              <ExpandableCollapsable
+                charLimit={100}
+                readMoreText={'Read more ▼'}
+                readLessText={'Read less ▲'}
+                content={book.description}
+              />
+            </CardContent>
+          </Grid>
+        )}
       </Grid>
     </Card>
   );
